@@ -2,13 +2,14 @@
 <html lang="vi">
 <head>
 <meta charset="utf-8">
-<title>NPD Build Status</title>
+<title>JLTN Web</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<!-- GitHub Pages opens index.html at the site root: send visitors on to the dashboard (keeps any #hash) -->
-<meta http-equiv="refresh" content="0; url=NPD_BuildStatus.html">
-<script>location.replace("NPD_BuildStatus.html" + location.search + location.hash);</script>
+<!-- GitHub Pages opens index.html at the site root: send visitors on to JLTN_WEBSITE (keeps ?query and #hash). On GitHub Pages the address
+     shows without ".html" (…/JLTN_WEBSITE); elsewhere (a local server) the file name is used as is. -->
+<meta http-equiv="refresh" content="0; url=JLTN_WEBSITE.html">
+<script>location.replace((/\.github\.io$/.test(location.hostname) ? "JLTN_WEBSITE" : "JLTN_WEBSITE.html") + location.search + location.hash);</script>
 </head>
 <body>
-<p><a href="NPD_BuildStatus.html">Mở NPD Build Status</a></p>
+<p><a href="JLTN_WEBSITE.html">Mở JLTN Web</a></p>
 </body>
 </html>
