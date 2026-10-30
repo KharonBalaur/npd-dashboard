@@ -128,7 +128,8 @@
   function render(data, user) {
     const tabs = Object.fromEntries(Object.entries(data.tabs || {})
       .map(([name, t]) => [name, toRecords(t.headers, t.rows)]));
-    const payload = { tabs, fetchedAt: data.fetchedAt, user };
+    // sheets: dữ liệu thô (headers + rows) để phần lưu biết tên cột / giá trị gốc; history: tab Lịch sử
+    const payload = { tabs, sheets: data.tabs || {}, history: data.history || [], fetchedAt: data.fetchedAt, user };
     if (typeof window.renderDashboard === 'function') window.renderDashboard(payload);
     else console.warn('Chưa có window.renderDashboard – dữ liệu:', payload);
     document.dispatchEvent(new CustomEvent('npd:data', { detail: payload }));
@@ -154,9 +155,7 @@
         if (r.expired) { logout(false); showLogin('Phiên đã hết hạn, vui lòng đăng nhập lại'); return; }
         throw new Error(r.error);
       }
-      const data = { tabs: r.tabs, fetchedAt: r.fetchedAt };
-      store.set(DATA_KEY, { token: s.token, data });
-      render(data, s.user);
+      apply(r);
     } catch (ex) {
       if (!cached) alert('Không tải được dữ liệu: ' + ex.message);
       else console.warn('Không cập nhật được, đang hiển thị dữ liệu cũ:', ex.message);
@@ -164,6 +163,15 @@
       bar.remove();
       loading = false;
     }
+  }
+
+  // Kết quả "data" / "save" từ máy chủ → cập nhật phiên (Quyền có thể vừa đổi), lưu bản tạm, vẽ lại
+  function apply(r) {
+    const s = getSession(); if (!s) return;
+    if (r.user) { s.user = r.user; store.set(STORE_KEY, s); }
+    const data = { tabs: r.tabs, history: r.history, fetchedAt: r.fetchedAt };
+    store.set(DATA_KEY, { token: s.token, data });
+    render(data, s.user);
   }
 
   function logout(reload = true) {
@@ -186,8 +194,17 @@
     loadData();
   }
 
-  // Cho phép gọi từ trang: NPD.refresh(), NPD.logout(), NPD.user()
-  window.NPD = { refresh: loadData, logout, user: () => getSession()?.user || null };
+  // Cho phép gọi từ trang: NPD.refresh(), NPD.logout(), NPD.user(), NPD.call('save', {...}), NPD.apply(kết quả)
+  window.NPD = {
+    refresh: loadData, logout, apply,
+    user: () => getSession()?.user || null,
+    call: (action, payload) => {
+      const s = getSession();
+      if (!s) { showLogin('Phiên đã hết hạn, vui lòng đăng nhập lại'); return Promise.resolve({ ok: false, expired: true, error: 'Phiên đã hết hạn' }); }
+      return api(action, { ...payload, token: s.token });
+    },
+    expired: () => { logout(false); showLogin('Phiên đã hết hạn, vui lòng đăng nhập lại'); },
+  };
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
   else init();
