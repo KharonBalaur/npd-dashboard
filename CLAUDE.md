@@ -19,6 +19,7 @@ Ngôn ngữ giao diện: tiếng Anh / tiếng Việt; trao đổi với chủ d
     Harvard (1 cột, serif đen trắng; bỏ mục / dòng trống; tiêu đề EN hoặc VI theo nội dung; tự co 82–112% cho vừa trang).
   - Tools: danh sách bên trái (tìm kiếm, phím /) + vùng làm việc; TOOLS / TOOL_RUN; link thẳng #tool/<key> (toolHash).
     Ô nhập / nút / tab dạng segmented dùng chung CSS "#tool .tl-main …".
+    Cpk và Gage R&R có nút "Xuất báo cáo PDF" (tlReport: A4, thông tin rp_* tùy chọn, kết quả, biểu đồ SVG, số liệu, phương pháp, ô ký).
   - English / 中文: khung iframe tới study/*.html; window.npdStudy {load, save, extra, user} nối tiến độ theo tài khoản.
 - `study/english.html`, `study/chinese.html` – app học (do chủ dự án viết); `study/*-bank.js` – bài học mỗi ngày
   (window.ENG_BANK / ZH_BANK). Chạy riêng thì lưu localStorage; trong web thì lưu theo tài khoản + nhận thêm dữ liệu
