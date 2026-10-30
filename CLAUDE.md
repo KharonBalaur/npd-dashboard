@@ -15,17 +15,24 @@ Ngôn ngữ giao diện: tiếng Anh / tiếng Việt; trao đổi với chủ d
   PHẢI luôn rỗng: {"version":1,"projects":[],"history":[]}
   - Training: LIB_STAGES (kiến thức lộ trình, viết sẵn trong file) + Thư viện (S.library, tab "Thư viện" của Sheet,
     sửa trên web: renderBooks / bookAct; định dạng nội dung mdLite, câu hỏi quizOf). Tu vi = npdLib (cá nhân).
-  - Cave: hồ sơ / CV (cave(): profile, skills, exp, edu, cert, lang, proj), xuất CV PDF (cavePdf), việc cần làm, lời nhắc.
+  - Cave: hồ sơ / CV (cave(): profile, skills, exp, edu, cert, lang, proj), việc cần làm, lời nhắc. cavePdf: CV chuẩn
+    Harvard (1 cột, serif đen trắng; bỏ mục / dòng trống; tiêu đề EN hoặc VI theo nội dung; tự co 82–112% cho vừa trang).
+  - Tools: danh sách bên trái (tìm kiếm, phím /) + vùng làm việc; TOOLS / TOOL_RUN; link thẳng #tool/<key> (toolHash).
+    Ô nhập / nút / tab dạng segmented dùng chung CSS "#tool .tl-main …".
   - English / 中文: khung iframe tới study/*.html; window.npdStudy {load, save, extra, user} nối tiến độ theo tài khoản.
 - `study/english.html`, `study/chinese.html` – app học (do chủ dự án viết); `study/*-bank.js` – bài học mỗi ngày
   (window.ENG_BANK / ZH_BANK). Chạy riêng thì lưu localStorage; trong web thì lưu theo tài khoản + nhận thêm dữ liệu
   từ tab English / Chinese của Sheet.
-- `sheets-auth.js` – đăng nhập / tạo tài khoản, menu tài khoản (đổi mật khẩu, đăng xuất), gọi API, lưu phiên (token 6h).
+- `sheets-auth.js` – đăng nhập / tạo tài khoản, menu tài khoản (đổi mật khẩu, đăng xuất), gọi API, lưu phiên (token 6h):
+  mặc định trong sessionStorage (tab mới / người khác mở link = phải đăng nhập); tick "Ghi nhớ" → localStorage.
   window.NPD: refresh(), logout(), user(), call(action, payload), apply(kết quả), expired(), menu()
 - `sheets-bridge.js` – Sheet → S (settingsOf, libraryOf, studyOf); thay saveFile() bằng lưu vào Sheet (TABS: Cài đặt,
   Thư viện; makePlan() so với BASE lúc tải; tab/cột thiếu → máy chủ tự tạo); dữ liệu cá nhân (npdPersonal → "mine")
 - Cảnh 3D Home: `<script id="tc3d">` = JSON {css, body, map:{module: data-URL base64}, img}. Sửa module tc/*.js:
   giải mã base64 → sửa → mã hóa lại. tc/fairy.js: Ngọc Nhi bay tự do (đứng yên khi trang gửi "tc-fy-hold");
+  tc/environment.js: rừng trúc (trúc 3D instanced + lớp trúc xa vẽ canvas), hồ nước xanh ngọc (phản chiếu = bản sao
+  lật ngược của nhóm "near" dưới mặt nước trong suốt), tranh cuộn cong vẽ lầu vàng, lầu gác, tia nắng – dựng bằng code.
+  Ngọc Nhi: 4 ảnh webp img["assets/fairy/fairy_{front,back,right,left}.webp"] cắt từ bảng thiết kế nhân vật (left = right lật).
   tc/beasts.js: thú nhỏ chơi trên bục đá (config SLAB, BEAST_SCALE); tc/main.js: nhúng thì camera cố định, gửi vị trí
   tiên nữ {tc:"info", fy:[x,y,h]} và {tc:"fairy"} khi bấm
 - `apps-script/Code.gs` – bản gốc code Apps Script. Sau khi sửa: chủ dự án copy sang
