@@ -5,8 +5,9 @@ Web nội bộ cho team QE: **Training** (lộ trình tu luyện + thư viện k
 
 | File / thư mục | Vai trò |
 |---|---|
-| `NPD_BuildStatus.html` | App chính (một file: giao diện, Training, Tools, Cave, cảnh 3D Home) |
-| `index.html` | Trang gốc của GitHub Pages, tự chuyển sang `NPD_BuildStatus.html` |
+| `JLTN_WEBSITE.html` | App chính (một file: giao diện, Training, Tools, Cave, cảnh 3D Home) |
+| `index.html` | Trang gốc của GitHub Pages, tự chuyển sang `JLTN_WEBSITE` |
+| `NPD_BuildStatus.html` | Địa chỉ cũ, tự chuyển sang `JLTN_WEBSITE` |
 | `study/` | App học tiếng Anh / tiếng Trung và ngân hàng bài học mỗi ngày |
 | `sheets-auth.js`, `sheets-bridge.js` | Đăng nhập / tạo tài khoản, đọc và lưu dữ liệu Google Sheet |
 | `apps-script/Code.gs` | Mã Apps Script (dán vào Google Sheet → Extensions → Apps Script) |

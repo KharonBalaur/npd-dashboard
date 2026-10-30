@@ -5,12 +5,12 @@ học tiếng Trung, Tools, Cave (hồ sơ cá nhân / CV). Dashboard NPD, SER T
 Ngôn ngữ giao diện: tiếng Anh / tiếng Việt; trao đổi với chủ dự án: tiếng Việt.
 
 ## Kiến trúc
-- Web tĩnh trên GitHub Pages (repo public): https://kharonbalaur.github.io/npd-dashboard/
+- Web tĩnh trên GitHub Pages (repo public, tên repo jltn_web): https://kharonbalaur.github.io/jltn_web/JLTN_WEBSITE
 - Dữ liệu + đăng nhập: Google Sheet + Apps Script Web App (không nằm trên GitHub Pages)
 
 ## Files
-- `index.html` – chuyển hướng sang NPD_BuildStatus.html
-- `NPD_BuildStatus.html` – app chính (1 file, JS thuần). Trang: home, lib (Training), eng, zh, tool, cave; showTab(t).
+- `index.html` – chuyển hướng sang JLTN_WEBSITE; `NPD_BuildStatus.html` – chuyển hướng (giữ link cũ)
+- `JLTN_WEBSITE.html` – app chính (1 file, JS thuần). Trang: home, lib (Training), eng, zh, tool, cave; showTab(t).
   Biến toàn cục: S (dữ liệu chung: links, address, library, study, history), tabNow. Thẻ `<script id="board-data">`
   PHẢI luôn rỗng: {"version":1,"projects":[],"history":[]}
   - Training: LIB_STAGES (kiến thức lộ trình, viết sẵn trong file) + Thư viện (S.library, tab "Thư viện" của Sheet,
@@ -71,4 +71,4 @@ Ngôn ngữ giao diện: tiếng Anh / tiếng Việt; trao đổi với chủ d
 
 ## Việc tiếp theo
 - Sao lưu Sheet tự động hằng tuần vào thư mục Backup trên Drive (giữ 12 bản)
-- Gỡ CSS cũ của Dashboard / SER / Data Entry còn sót trong NPD_BuildStatus.html
+- Gỡ CSS cũ của Dashboard / SER / Data Entry còn sót trong JLTN_WEBSITE.html
