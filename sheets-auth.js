@@ -58,9 +58,12 @@
   /* ---------- Màn hình đăng nhập ---------- */
   const css = `
   #npd-login{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;
-    background:#14213d;font-family:Inter,system-ui,Segoe UI,sans-serif;padding:16px}
-  #npd-login form{background:#fff;border-radius:14px;padding:32px 28px;width:100%;max-width:360px;
+    background:rgba(12,20,42,.38);-webkit-backdrop-filter:blur(14px) saturate(1.15);backdrop-filter:blur(14px) saturate(1.15);
+    font-family:Inter,system-ui,Segoe UI,sans-serif;padding:16px}
+  #npd-login form{background:rgba(255,255,255,.78);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
+    border:1px solid rgba(255,255,255,.6);border-radius:16px;padding:32px 28px;width:100%;max-width:360px;
     box-shadow:0 20px 50px rgba(0,0,0,.35);display:flex;flex-direction:column;gap:14px}
+  #npd-login input{background:rgba(255,255,255,.9)}
   #npd-login h1{margin:0;font-size:22px;color:#14213d}
   #npd-login h1 span{color:#8a9400}
   #npd-login p{margin:0;font-size:13px;color:#5b6372}
@@ -83,7 +86,7 @@
     wrap.innerHTML = `
       <form novalidate>
         <h1>NPD <span>Build Status</span></h1>
-        <p>Đăng nhập để xem dashboard</p>
+        <p>Đăng nhập để vào Thiên Công Tông</p>
         <label>Tên đăng nhập<input name="u" autocomplete="username" required></label>
         <label>Mật khẩu<input name="p" type="password" autocomplete="current-password" required></label>
         <div class="err" role="alert"></div>
@@ -129,7 +132,7 @@
     const tabs = Object.fromEntries(Object.entries(data.tabs || {})
       .map(([name, t]) => [name, toRecords(t.headers, t.rows)]));
     // sheets: dữ liệu thô (headers + rows) để phần lưu biết tên cột / giá trị gốc; history: tab Lịch sử
-    const payload = { tabs, sheets: data.tabs || {}, history: data.history || [], fetchedAt: data.fetchedAt, user };
+    const payload = { tabs, sheets: data.tabs || {}, history: data.history || [], mine: data.mine || null, fetchedAt: data.fetchedAt, user };
     if (typeof window.renderDashboard === 'function') window.renderDashboard(payload);
     else console.warn('Chưa có window.renderDashboard – dữ liệu:', payload);
     document.dispatchEvent(new CustomEvent('npd:data', { detail: payload }));
@@ -170,13 +173,17 @@
     const s = getSession(); if (!s) return;
     if (r.user) { s.user = r.user; store.set(STORE_KEY, s); }
     const data = { tabs: r.tabs, history: r.history, fetchedAt: r.fetchedAt };
-    store.set(DATA_KEY, { token: s.token, data });
-    render(data, s.user);
+    store.set(DATA_KEY, { token: s.token, data });                        // dữ liệu cá nhân không giữ trong bản tạm
+    render(Object.assign({ mine: r.mine }, data), s.user);
   }
 
-  function logout(reload = true) {
+  async function logout(reload = true) {
     const s = getSession();
+    if (s && reload && window.npdPersonalFlush) await window.npdPersonalFlush().catch(() => {});   // gửi nốt dữ liệu cá nhân vừa sửa
     if (s) api('logout', { token: s.token }).catch(() => {});
+    if (s && s.user && reload) {                                         // máy dùng chung: xóa dữ liệu cá nhân của người này khỏi trình duyệt
+      try { Object.keys(localStorage).filter(k => k.endsWith('@' + s.user.username)).forEach(k => localStorage.removeItem(k)); } catch (e) { /* bỏ qua */ }
+    }
     store.del(STORE_KEY);
     store.del(DATA_KEY);
     if (reload) location.reload();

@@ -7,7 +7,9 @@
  * và phải có token mới lấy được dữ liệu các tab còn lại
  * (Model, Timeline, SER, NPQ, PSR, NPPR, NPPR_Readiness).
  *
- * Sửa dữ liệu (action "save") chỉ dành cho tài khoản có cột Quyền = Admin.
+ * Sửa dữ liệu chung (action "save"): mọi tài khoản đã đăng nhập, trừ Quyền = Viewer.
+ * Dữ liệu cá nhân (Động Phủ, Training, sổ OT, lời nhắc) lưu ở tab "Cá nhân", mỗi người chỉ đọc/ghi phần của mình.
+ * Ảnh sản phẩm lưu trong một thư mục Drive riêng tư, chỉ trả về khi có token hợp lệ.
  * Mỗi ô được sửa ghi một dòng vào tab "Lịch sử". Trước khi ghi, máy chủ so
  * giá trị hiện tại trong Sheet với giá trị người sửa đã thấy lúc tải trang:
  * nếu người khác đã sửa ô đó trong lúc đó → không ghi gì, báo xung đột.
@@ -20,14 +22,19 @@ const CFG = {
   LOCK_SEC: 10 * 60,       // khóa 10 phút
   SHEET_HISTORY: 'Lịch sử',
   HISTORY_SEND: 500,       // số dòng Lịch sử mới nhất gửi về trang (Change log)
-  MAX_CHANGES: 2000,       // tối đa số thay đổi trong một lần lưu
+  MAX_CHANGES: 5000,       // tối đa số thay đổi trong một lần lưu (nhập cả file SER)
+  SHEET_MINE: 'Cá nhân',
+  MINE_MAX: 45000,         // ký tự / ô (giới hạn của Sheet là 50.000)
+  IMG_MAX: 4 * 1024 * 1024,
   PRESENCE_SEC: 120,       // "đang sửa" còn hiệu lực bao lâu sau lần báo cuối
 };
 
-// Tab được phép sửa từ web (SER chỉ sửa trong Sheet / file Excel SER)
-const EDIT_TABS = ['Model', 'Timeline', 'NPQ', 'PSR', 'NPPR', 'NPPR_Readiness'];
+// Tab được phép sửa từ web (tab chưa có thì tự tạo, cột chưa có thì tự thêm vào cuối)
+const EDIT_TABS = ['Model', 'Timeline', 'SER', 'NPQ', 'PSR', 'NPPR', 'NPPR_Readiness', 'NPPR_Open', 'NPPR_Approval', 'Cài đặt'];
+const MINE_HEAD = ['Tên đăng nhập', 'Khóa', 'Dữ liệu', 'Cập nhật'];
+const MINE_KEYS = ['npdCave', 'npdLib', 'npdOT', 'npdFairy'];
 const HISTORY_HEAD = ['Thời gian', 'Người sửa', 'Tab', 'TTi model', 'Dòng', 'Cột', 'Giá trị cũ', 'Giá trị mới'];
-const ADMIN_ROLES = ['admin', 'quản trị', 'quản trị viên', 'quan tri'];
+const VIEW_ROLES = ['viewer', 'view', 'xem', 'chỉ xem', 'chi xem'];
 
 // Tên cột được chấp nhận ở dòng 1 của tab "Tài khoản" (không phân biệt hoa/thường)
 const COLS = {
@@ -49,7 +56,10 @@ function doPost(e) {
     switch (req.action) {
       case 'login':  out = login_(req.username, req.password); break;
       case 'data':   out = getData_(req.token); break;
-      case 'save':   out = save_(req.token, req.changes); break;
+      case 'save':   out = save_(req.token, req.changes, req.ensure); break;
+      case 'mine':   out = mine_(req.token, req.key, req.value); break;
+      case 'img_put': out = imgPut_(req.token, req.name, req.data); break;
+      case 'img_get': out = imgGet_(req.token, req.ids); break;
       case 'presence': out = presence_(req.token, req.model, req.active); break;
       case 'logout': out = logout_(req.token); break;
       default:       out = { ok: false, error: 'Yêu cầu không hợp lệ' };
@@ -134,8 +144,9 @@ function authFresh_(token) {
   return user;
 }
 
-function isAdmin_(user) {
-  return !!user && ADMIN_ROLES.includes(norm_(user.role));
+// Được sửa dữ liệu chung: mọi tài khoản trừ Quyền = Viewer
+function canEdit_(user) {
+  return !!user && !VIEW_ROLES.includes(norm_(user.role));
 }
 
 /* ---------------- Dữ liệu ---------------- */
@@ -147,13 +158,13 @@ function isAdmin_(user) {
 function getData_(token) {
   const user = authFresh_(token);
   if (!user) return { ok: false, expired: true, error: 'Phiên đăng nhập đã hết hạn' };
-  return Object.assign({ ok: true, user }, readAll_());
+  return Object.assign({ ok: true, user, mine: readMine_(user.username) }, readAll_());
 }
 
 function readAll_() {
   const ss = SpreadsheetApp.getActive();
   const tz = ss.getSpreadsheetTimeZone();
-  const skip = [norm_(CFG.SHEET_USERS), norm_('Hướng dẫn'), norm_(CFG.SHEET_HISTORY)];
+  const skip = [norm_(CFG.SHEET_USERS), norm_('Hướng dẫn'), norm_(CFG.SHEET_HISTORY), norm_(CFG.SHEET_MINE)];
   const tabs = {};
 
   ss.getSheets().forEach(sh => {
@@ -188,10 +199,10 @@ function readHistory_() {
 //  - add:    thêm dòng mới; báo xung đột nếu người khác đã thêm dòng cùng khóa
 //  - delete: xóa dòng theo match (dòng đã bị người khác xóa thì bỏ qua)
 // Có xung đột → không ghi gì cả, trả về danh sách xung đột (ai sửa, lúc nào, giá trị hiện tại).
-function save_(token, changes) {
+function save_(token, changes, ensure) {
   const user = authFresh_(token);
   if (!user) return { ok: false, expired: true, error: 'Phiên đăng nhập đã hết hạn' };
-  if (!isAdmin_(user)) return { ok: false, error: 'Tài khoản của bạn chỉ có quyền xem (Viewer), không được sửa dữ liệu' };
+  if (!canEdit_(user)) return { ok: false, error: 'Tài khoản của bạn chỉ có quyền xem (Viewer), không được sửa dữ liệu' };
   if (!Array.isArray(changes) || !changes.length) return { ok: false, error: 'Không có thay đổi nào' };
   if (changes.length > CFG.MAX_CHANGES) return { ok: false, error: 'Quá nhiều thay đổi trong một lần lưu (tối đa ' + CFG.MAX_CHANGES + ')' };
 
@@ -200,6 +211,7 @@ function save_(token, changes) {
   try {
     const ss = SpreadsheetApp.getActive();
     const tz = ss.getSpreadsheetTimeZone();
+    ensureColumns_(ensure);
     const books = {};   // tab → { sh, head: [tên cột đã chuẩn hóa], values }
     const book = name => {
       const real = EDIT_TABS.find(t => norm_(t) === norm_(name));
@@ -274,20 +286,29 @@ function save_(token, changes) {
       writeCell_(p.b.sh.getRange(p.r + 1, x.c + 1), x.to);
       logRow(p.b, p.label, x.h, x.from, x.to);
     }));
-    plan.filter(p => p.op === 'delete').sort((a, b) => b.r - a.r).forEach(p => {
+    const dels = plan.filter(p => p.op === 'delete').sort((a, b) => b.r - a.r);
+    dels.forEach(p => {
       const before = p.b.values[p.r].map((v, i) => [p.b.values[0][i], str(v)]).filter(([h, v]) => h !== '' && v !== '')
         .map(([h, v]) => h + '=' + v).join('; ');
-      p.b.sh.deleteRow(p.r + 1);
       logRow(p.b, p.label, '(xóa dòng)', before, '');
     });
-    plan.filter(p => p.op === 'add').forEach(p => {
-      const sh = p.b.sh, at = sh.getLastRow() + 1;
-      Object.keys(p.set).forEach(h => {
-        if (p.set[h] === '' || p.set[h] == null) return;
-        writeCell_(sh.getRange(at, col(p.b, h) + 1), p.set[h]);
+    for (let i = 0; i < dels.length;) {                    // các dòng liền nhau xóa một lần (nhanh hơn nhiều khi nhập lại cả file SER)
+      let j = i;
+      while (j + 1 < dels.length && dels[j + 1].b === dels[i].b && dels[j + 1].r === dels[j].r - 1) j++;
+      dels[i].b.sh.deleteRows(dels[j].r + 1, j - i + 1);
+      i = j + 1;
+    }
+    Object.values(books).forEach(b => {                    // thêm dòng: ghi cả khối một lần cho mỗi tab
+      const adds = plan.filter(p => p.op === 'add' && p.b === b);
+      if (!adds.length) return;
+      const w = b.head.length, rows = adds.map(p => {
+        const row = new Array(w).fill('');
+        Object.keys(p.set).forEach(h => { row[col(b, h)] = cellValue_(p.set[h]); });
+        logRow(b, p.label, '(thêm dòng)', '', Object.keys(p.set).filter(h => str(p.set[h]) !== '')
+          .map(h => h + '=' + str(p.set[h])).join('; '));
+        return row;
       });
-      logRow(p.b, p.label, '(thêm dòng)', '', Object.keys(p.set).filter(h => str(p.set[h]) !== '')
-        .map(h => h + '=' + str(p.set[h])).join('; '));
+      b.sh.getRange(b.sh.getLastRow() + 1, 1, rows.length, w).setValues(rows);
     });
 
     if (log.length) {
@@ -354,12 +375,32 @@ function cellStr_(v, tz) {
 
 // Ghi một ô: yyyy-mm-dd → Sheet tự hiểu là ngày (không lệch múi giờ); chữ có thể bị Sheet hiểu thành số / ngày / công thức → ghi dạng text
 function writeCell_(range, v) {
-  if (v === null || v === undefined || v === '') { range.setValue(''); return; }
-  if (typeof v === 'number' || typeof v === 'boolean') { range.setValue(v); return; }
+  range.setValue(cellValue_(v));
+}
+
+// Dấu ' ở đầu = Sheet giữ nguyên dạng chữ (không hiện dấu '), vd 096838001, 1/2, =abc
+function cellValue_(v) {
+  if (v === null || v === undefined || v === '') return '';
+  if (typeof v === 'number' || typeof v === 'boolean') return v;
   const s = String(v);
-  if (/^\d{4}-\d{2}-\d{2}$/.test(s)) { range.setValue(s); return; }
-  if (/^[=+\-@]/.test(s) || !isNaN(s) || /^\d{1,4}[\/.\-]\d{1,2}([\/.\-]\d{1,4})?$/.test(s)) range.setNumberFormat('@');
-  range.setValue(s);
+  if (/^\d{4}-\d{2}-\d{2}$/.test(s)) return s;
+  if (/^[=+\-@']/.test(s) || !isNaN(s) || /^\d{1,4}[\/.\-]\d{1,2}([\/.\-]\d{1,4})?$/.test(s)) return "'" + s;
+  return s;
+}
+
+// Tab / cột trang web cần mà Sheet chưa có: tạo tab, thêm cột vào cuối dòng tiêu đề
+function ensureColumns_(ensure) {
+  if (!ensure || typeof ensure !== 'object') return;
+  const ss = SpreadsheetApp.getActive();
+  Object.keys(ensure).forEach(name => {
+    const real = EDIT_TABS.find(t => norm_(t) === norm_(name));
+    if (!real || !Array.isArray(ensure[name])) return;
+    let sh = ss.getSheetByName(real);
+    if (!sh) { sh = ss.insertSheet(real); sh.setFrozenRows(1); }
+    const head = sh.getLastColumn() ? sh.getRange(1, 1, 1, sh.getLastColumn()).getValues()[0].map(norm_) : [];
+    const add = ensure[name].map(h => String(h).trim()).filter((h, i, a) => h && a.indexOf(h) === i && !head.includes(norm_(h)));
+    if (add.length) sh.getRange(1, head.length + 1, 1, add.length).setValues([add]).setFontWeight('bold');
+  });
 }
 
 /* ---------------- Ai đang sửa (báo khi 2 người cùng sửa) ---------------- */
@@ -377,7 +418,7 @@ function presence_(token, model, active) {
     let list = {};
     try { list = JSON.parse(cache.get('presence') || '{}'); } catch (e) { list = {}; }
     Object.keys(list).forEach(k => { if (now - list[k].t > CFG.PRESENCE_SEC * 1000) delete list[k]; });
-    if (active && isAdmin_(user)) list[user.username] = { name: user.name, model: String(model || '').slice(0, 60), t: now };
+    if (active && canEdit_(user)) list[user.username] = { name: user.name, model: String(model || '').slice(0, 60), t: now };
     else delete list[user.username];
     if (locked) cache.put('presence', JSON.stringify(list), CFG.PRESENCE_SEC * 3);
     const others = Object.keys(list).filter(k => k !== user.username)
@@ -459,4 +500,101 @@ function hashAllPasswords() {
   });
   sh.getRange(2, idx.pass + 1, col.length, 1).setValues(col);
   SpreadsheetApp.getUi().alert('Đã mã hóa ' + n + ' mật khẩu.');
+}
+
+/* ---------------- Dữ liệu cá nhân (Động Phủ, Training, sổ OT, lời nhắc) ---------------- */
+
+// Chỉ đọc / ghi dòng của chính người đăng nhập. Không bao giờ gửi dữ liệu của người khác.
+function readMine_(username) {
+  const sh = SpreadsheetApp.getActive().getSheetByName(CFG.SHEET_MINE);
+  const out = {};
+  if (!sh || sh.getLastRow() < 2) return out;
+  sh.getRange(2, 1, sh.getLastRow() - 1, MINE_HEAD.length).getValues().forEach(r => {
+    if (norm_(r[0]) !== norm_(username) || !MINE_KEYS.includes(String(r[1]))) return;
+    try { out[r[1]] = JSON.parse(r[2]); } catch (e) { /* ô hỏng: bỏ qua */ }
+  });
+  return out;
+}
+
+function mine_(token, key, value) {
+  const user = auth_(token);
+  if (!user) return { ok: false, expired: true, error: 'Phiên đăng nhập đã hết hạn' };
+  if (!MINE_KEYS.includes(key)) return { ok: false, error: 'Khóa không hợp lệ' };
+  const json = JSON.stringify(value == null ? {} : value);
+  if (json.length > CFG.MINE_MAX) return { ok: false, error: 'Dữ liệu quá lớn (' + json.length + ' ký tự)' };
+  const lock = LockService.getScriptLock();
+  if (!lock.tryLock(10000)) return { ok: false, error: 'Máy chủ bận, thử lại sau' };
+  try {
+    const sh = mineSheet_();
+    const n = sh.getLastRow() - 1;
+    const rows = n > 0 ? sh.getRange(2, 1, n, 2).getValues() : [];
+    const i = rows.findIndex(r => norm_(r[0]) === norm_(user.username) && String(r[1]) === key);
+    const row = [user.username, key, json, new Date()];
+    if (i >= 0) sh.getRange(i + 2, 1, 1, 4).setValues([row]);
+    else sh.getRange(sh.getLastRow() + 1, 1, 1, 4).setValues([row]);
+    return { ok: true };
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+function mineSheet_() {
+  const ss = SpreadsheetApp.getActive();
+  let sh = ss.getSheetByName(CFG.SHEET_MINE);
+  if (!sh) {
+    sh = ss.insertSheet(CFG.SHEET_MINE);
+    sh.getRange(1, 1, 1, MINE_HEAD.length).setValues([MINE_HEAD]).setFontWeight('bold');
+    sh.setFrozenRows(1);
+    sh.getRange('A:C').setNumberFormat('@');
+  }
+  return sh;
+}
+
+/* ---------------- Ảnh sản phẩm (thư mục Drive riêng tư) ---------------- */
+
+function imgFolder_() {
+  const props = PropertiesService.getScriptProperties();
+  const id = props.getProperty('IMG_FOLDER');
+  if (id) { try { return DriveApp.getFolderById(id); } catch (e) { /* bị xóa: tạo lại */ } }
+  const f = DriveApp.createFolder('NPD Dashboard – Ảnh sản phẩm (riêng tư)');
+  props.setProperty('IMG_FOLDER', f.getId());
+  return f;
+}
+
+// data: "data:image/jpeg;base64,...." (trang đã nén) → { ok, ref: "npd:<id file>" } để ghi vào cột Link ảnh
+function imgPut_(token, name, data) {
+  const user = authFresh_(token);
+  if (!user) return { ok: false, expired: true, error: 'Phiên đăng nhập đã hết hạn' };
+  if (!canEdit_(user)) return { ok: false, error: 'Tài khoản chỉ có quyền xem' };
+  const m = String(data || '').match(/^data:(image\/(?:jpeg|png|webp));base64,([A-Za-z0-9+/=]+)$/);
+  if (!m) return { ok: false, error: 'Ảnh không hợp lệ' };
+  const bytes = Utilities.base64Decode(m[2]);
+  if (bytes.length > CFG.IMG_MAX) return { ok: false, error: 'Ảnh quá lớn' };
+  const file = imgFolder_().createFile(Utilities.newBlob(bytes, m[1], String(name || 'image').replace(/[^\w.\- ]/g, '_').slice(0, 80) + '.' + m[1].split('/')[1]));
+  return { ok: true, ref: 'npd:' + file.getId() };
+}
+
+// ids: các id trong cột Link ảnh dạng "npd:<id>" → { ok, images: { id: dataUrl } }. Chỉ file nằm trong thư mục ảnh.
+function imgGet_(token, ids) {
+  const user = auth_(token);
+  if (!user) return { ok: false, expired: true, error: 'Phiên đăng nhập đã hết hạn' };
+  const folderId = imgFolder_().getId(), images = {};
+  (Array.isArray(ids) ? ids : []).slice(0, 30).forEach(id => {
+    if (!/^[\w-]{10,}$/.test(String(id))) return;
+    try {
+      const f = DriveApp.getFileById(id), parents = f.getParents();
+      let mine = false;
+      while (parents.hasNext()) if (parents.next().getId() === folderId) mine = true;
+      if (!mine) return;
+      const b = f.getBlob();
+      images[id] = 'data:' + b.getContentType() + ';base64,' + Utilities.base64Encode(b.getBytes());
+    } catch (e) { /* không có quyền / đã xóa */ }
+  });
+  return { ok: true, images };
+}
+
+// Chạy 1 lần trong trình soạn Apps Script (chọn hàm setup → Run) để cấp quyền Drive và tạo sẵn các tab
+function setup() {
+  imgFolder_(); mineSheet_(); historySheet_();
+  ensureColumns_({ 'Cài đặt': ['Khóa', 'Giá trị'] });
 }
