@@ -42,14 +42,26 @@
     }
   }
 
-  /* ---------- Lưu phiên (an toàn khi trình duyệt chặn storage) ---------- */
+  /* ---------- Lưu phiên (an toàn khi trình duyệt chặn storage) ----------
+     Mặc định phiên chỉ sống trong tab đang mở (sessionStorage): mở link ở tab mới / máy khác / gửi link cho người khác
+     đều phải đăng nhập lại. Chỉ khi tick "Ghi nhớ trên máy này" phiên mới được giữ trong trình duyệt này (localStorage). */
+  const areas = () => { const a = []; try { a.push(sessionStorage); } catch { /* bị chặn */ } try { a.push(localStorage); } catch { /* bị chặn */ } return a; };
+  const remembered = () => { try { const s = JSON.parse(localStorage.getItem(STORE_KEY)); return !!(s && s.remember); } catch { return false; } };
   const store = {
-    get(k) { try { return JSON.parse(localStorage.getItem(k)); } catch { return null; } },
-    set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch { /* bỏ qua */ } },
-    del(k) { try { localStorage.removeItem(k); } catch { /* bỏ qua */ } },
+    get(k) { for (const a of areas()) { try { const v = a.getItem(k); if (v != null) return JSON.parse(v); } catch { /* bỏ qua */ } } return null; },
+    set(k, v, remember) {                                                 // cùng nơi với phiên hiện tại
+      const keep = remember != null ? remember : remembered();
+      try { (keep ? localStorage : sessionStorage).setItem(k, JSON.stringify(v)); } catch { /* bỏ qua */ }
+      try { (keep ? sessionStorage : localStorage).removeItem(k); } catch { /* bỏ qua */ }
+    },
+    del(k) { areas().forEach(a => { try { a.removeItem(k); } catch { /* bỏ qua */ } }); },
   };
 
   function getSession() {
+    try {                                                                  // phiên cũ (trước khi có "Ghi nhớ") không được tự giữ nữa
+      const old = JSON.parse(localStorage.getItem(STORE_KEY));
+      if (old && !old.remember) { localStorage.removeItem(STORE_KEY); localStorage.removeItem(DATA_KEY); }
+    } catch { /* bỏ qua */ }
     const s = store.get(STORE_KEY);
     if (!s || !s.token || Date.now() > s.exp) { store.del(STORE_KEY); return null; }
     return s;
@@ -78,6 +90,8 @@
   #npd-login button:disabled{opacity:.6;cursor:wait}
   #npd-login .err{color:#a8231e;font-size:13px;min-height:18px} #npd-login .err.ok{color:#1f7a45}
   #npd-login .note{text-align:center;font-size:12px}
+  #npd-login label.rem{flex-direction:row;align-items:center;gap:8px;font-weight:500;color:#3d4555;cursor:pointer}
+  #npd-login label.rem input{width:18px;height:18px;margin:0;padding:0;accent-color:#14213d}
   #npd-loading{position:fixed;top:0;left:0;height:3px;width:100%;z-index:9998;
     background:linear-gradient(90deg,transparent,#c8d400,transparent);background-size:50% 100%;
     animation:npdbar 1s linear infinite}
@@ -96,6 +110,7 @@
         <label>Tên đăng nhập<input name="u" autocomplete="username" required ${up ? 'placeholder="vd nguyenvana (không dấu)" maxlength="30"' : ''}></label>
         <label>Mật khẩu<input name="p" type="password" autocomplete="${up ? 'new-password' : 'current-password'}" required ${up ? 'placeholder="Tối thiểu 8 ký tự"' : ''}></label>
         ${up ? `<label>Nhập lại mật khẩu<input name="p2" type="password" autocomplete="new-password" required></label>` : ''}
+        ${up ? '' : `<label class="rem"><input type="checkbox" name="r"> Ghi nhớ đăng nhập trên máy này</label>`}
         <div class="err" role="alert"></div>
         <button type="submit" class="go">${up ? 'Tạo tài khoản' : 'Đăng nhập'}</button>
         <p class="note">${up ? 'Tài khoản mới cần quản trị viên duyệt trước khi đăng nhập.' : 'Quên mật khẩu? Báo quản trị viên để đặt lại.'}</p>
@@ -121,7 +136,8 @@
         }
         const r = await api('login', { username, password });
         if (!r.ok) throw new Error(r.error);
-        store.set(STORE_KEY, { token: r.token, user: r.user, exp: Date.now() + r.expiresIn * 1000 });
+        const remember = !!(form.r && form.r.checked);
+        store.set(STORE_KEY, { token: r.token, user: r.user, exp: Date.now() + r.expiresIn * 1000, remember }, remember);
         wrap.remove();
         userMenu();
         await loadData();
@@ -234,10 +250,10 @@
   // Kết quả "data" / "save" từ máy chủ → cập nhật phiên (Quyền có thể vừa đổi), lưu bản tạm, vẽ lại
   function apply(r) {
     const s = getSession(); if (!s) return;
-    if (r.user) { s.user = r.user; store.set(STORE_KEY, s); }
+    if (r.user) { s.user = r.user; store.set(STORE_KEY, s, !!s.remember); }
     userMenu();
     const data = { tabs: r.tabs, history: r.history, fetchedAt: r.fetchedAt };
-    store.set(DATA_KEY, { token: s.token, data });                        // dữ liệu cá nhân không giữ trong bản tạm
+    store.set(DATA_KEY, { token: s.token, data }, !!s.remember);                      // dữ liệu cá nhân không giữ trong bản tạm
     render(Object.assign({ mine: r.mine }, data), s.user);
   }
 
