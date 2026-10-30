@@ -60,68 +60,131 @@
   #npd-login{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;
     background:rgba(12,20,42,.38);-webkit-backdrop-filter:blur(14px) saturate(1.15);backdrop-filter:blur(14px) saturate(1.15);
     font-family:Inter,system-ui,Segoe UI,sans-serif;padding:16px}
-  #npd-login form{background:rgba(255,255,255,.78);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
-    border:1px solid rgba(255,255,255,.6);border-radius:16px;padding:32px 28px;width:100%;max-width:360px;
-    box-shadow:0 20px 50px rgba(0,0,0,.35);display:flex;flex-direction:column;gap:14px}
-  #npd-login input{background:rgba(255,255,255,.9)}
-  #npd-login h1{margin:0;font-size:22px;color:#14213d}
-  #npd-login h1 span{color:#8a9400}
-  #npd-login p{margin:0;font-size:13px;color:#5b6372}
+  #npd-login form{background:rgba(255,255,255,.8);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
+    border:1px solid rgba(255,255,255,.6);border-radius:18px;padding:28px 26px;width:100%;max-width:380px;
+    box-shadow:0 20px 50px rgba(0,0,0,.35);display:flex;flex-direction:column;gap:12px}
+  #npd-login .brand{display:flex;align-items:center;gap:12px}
+  #npd-login .lg{display:grid;place-items:center;width:44px;height:44px;border-radius:50%;background:#14213d;color:#d9ad55;font-size:24px;flex:none}
+  #npd-login h1{margin:0;font-size:21px;color:#14213d;font-family:"Noto Serif",Georgia,serif}
+  #npd-login p{margin:0;font-size:12.5px;color:#5b6372}
+  #npd-login .seg{display:flex;gap:4px;padding:4px;border-radius:10px;background:rgba(20,33,61,.08)}
+  #npd-login .seg button{flex:1;min-height:34px;padding:6px;font-size:13.5px;background:transparent;color:#3d4555}
+  #npd-login .seg button.on{background:#fff;color:#14213d;box-shadow:0 1px 4px rgba(0,0,0,.12)}
   #npd-login label{display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:600;color:#1b2333}
-  #npd-login input{font:inherit;font-size:15px;padding:11px 12px;border:1px solid #cfd5df;border-radius:8px}
+  #npd-login input{font:inherit;font-size:15px;padding:10px 12px;border:1px solid #cfd5df;border-radius:8px;background:rgba(255,255,255,.92)}
   #npd-login input:focus{outline:2px solid #c8d400;border-color:#14213d}
   #npd-login button{font:inherit;font-weight:700;font-size:15px;padding:12px;border:0;border-radius:8px;
     background:#14213d;color:#fff;cursor:pointer;min-height:44px}
   #npd-login button:disabled{opacity:.6;cursor:wait}
-  #npd-login .err{color:#a8231e;font-size:13px;min-height:18px}
+  #npd-login .err{color:#a8231e;font-size:13px;min-height:18px} #npd-login .err.ok{color:#1f7a45}
+  #npd-login .note{text-align:center;font-size:12px}
   #npd-loading{position:fixed;top:0;left:0;height:3px;width:100%;z-index:9998;
     background:linear-gradient(90deg,transparent,#c8d400,transparent);background-size:50% 100%;
     animation:npdbar 1s linear infinite}
   @keyframes npdbar{from{background-position:-50% 0}to{background-position:150% 0}}`;
 
-  function showLogin(message = '') {
-    if (document.getElementById('npd-login')) return;
-    const wrap = document.createElement('div');
-    wrap.id = 'npd-login';
+  // Đăng nhập / Tạo tài khoản (tài khoản mới được ghi vào tab Tài khoản trên Google Sheet, chờ duyệt)
+  function showLogin(message = '', mode = 'in') {
+    let wrap = document.getElementById('npd-login');
+    if (!wrap) { wrap = document.createElement('div'); wrap.id = 'npd-login'; document.body.appendChild(wrap); wrap.addEventListener('click', e => e.stopPropagation()); }
+    const up = mode === 'up';
     wrap.innerHTML = `
       <form novalidate>
-        <h1>NPD <span>Build Status</span></h1>
-        <p>Đăng nhập để vào Thiên Công Tông</p>
-        <label>Tên đăng nhập<input name="u" autocomplete="username" required></label>
-        <label>Mật khẩu<input name="p" type="password" autocomplete="current-password" required></label>
+        <div class="brand"><span class="lg">☯</span><div><h1>Thiên Công Tông</h1><p>QE Workspace · Training · English · 中文 · Tools</p></div></div>
+        <div class="seg" role="tablist"><button type="button" data-m="in" class="${up ? '' : 'on'}">Đăng nhập</button><button type="button" data-m="up" class="${up ? 'on' : ''}">Tạo tài khoản</button></div>
+        ${up ? `<label>Họ tên<input name="n" autocomplete="name" maxlength="60" required placeholder="Nguyễn Văn A"></label>` : ''}
+        <label>Tên đăng nhập<input name="u" autocomplete="username" required ${up ? 'placeholder="vd nguyenvana (không dấu)" maxlength="30"' : ''}></label>
+        <label>Mật khẩu<input name="p" type="password" autocomplete="${up ? 'new-password' : 'current-password'}" required ${up ? 'placeholder="Tối thiểu 8 ký tự"' : ''}></label>
+        ${up ? `<label>Nhập lại mật khẩu<input name="p2" type="password" autocomplete="new-password" required></label>` : ''}
         <div class="err" role="alert"></div>
-        <button type="submit">Đăng nhập</button>
+        <button type="submit" class="go">${up ? 'Tạo tài khoản' : 'Đăng nhập'}</button>
+        <p class="note">${up ? 'Tài khoản mới cần quản trị viên duyệt trước khi đăng nhập.' : 'Quên mật khẩu? Báo quản trị viên để đặt lại.'}</p>
       </form>`;
-    document.body.appendChild(wrap);
-    wrap.addEventListener('click', e => e.stopPropagation());
-
-    const form = wrap.querySelector('form');
-    const err = wrap.querySelector('.err');
-    const btn = wrap.querySelector('button');
+    const form = wrap.querySelector('form'), err = wrap.querySelector('.err'), btn = wrap.querySelector('.go');
     err.textContent = message;
-    form.u.focus();
+    err.classList.toggle('ok', /^✓/.test(message));
+    (form.n || form.u).focus();
+    wrap.querySelectorAll('[data-m]').forEach(b => b.onclick = () => showLogin('', b.dataset.m));
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const username = form.u.value.trim();
-      const password = form.p.value;
-      if (!username || !password) { err.textContent = 'Vui lòng nhập đủ thông tin'; return; }
-
-      btn.disabled = true; btn.textContent = 'Đang kiểm tra…'; err.textContent = '';
+      const username = form.u.value.trim(), password = form.p.value;
+      if (!username || !password || (up && !form.n.value.trim())) { err.textContent = 'Vui lòng nhập đủ thông tin'; return; }
+      if (up && password !== form.p2.value) { err.textContent = 'Hai mật khẩu không giống nhau'; return; }
+      btn.disabled = true; btn.textContent = up ? 'Đang tạo…' : 'Đang kiểm tra…'; err.textContent = '';
       try {
+        if (up) {
+          const r = await api('register', { username, password, name: form.n.value.trim() });
+          if (!r.ok) throw new Error(r.error);
+          showLogin('✓ ' + r.message, 'in'); const f = document.querySelector('#npd-login form'); if (f) f.u.value = username;
+          return;
+        }
         const r = await api('login', { username, password });
         if (!r.ok) throw new Error(r.error);
         store.set(STORE_KEY, { token: r.token, user: r.user, exp: Date.now() + r.expiresIn * 1000 });
         wrap.remove();
+        userMenu();
         await loadData();
       } catch (ex) {
-        err.textContent = ex.message;
-        form.p.value = ''; form.p.focus();
+        err.textContent = ex.message; err.classList.remove('ok');
+        form.p.value = ''; if (form.p2) form.p2.value = ''; form.p.focus();
       } finally {
-        btn.disabled = false; btn.textContent = 'Đăng nhập';
+        if (btn.isConnected) { btn.disabled = false; btn.textContent = up ? 'Tạo tài khoản' : 'Đăng nhập'; }
       }
     });
   }
+
+  /* ---------- Menu tài khoản (góc phải thanh trên) ---------- */
+  const initials = n => String(n || '?').trim().split(/\s+/).slice(-2).map(w => w[0]).join('').toUpperCase();
+  const escH = v => String(v ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  function userMenu() {
+    const el = document.getElementById('um'), s = getSession(); if (!el) return;
+    if (!s) { el.innerHTML = ''; return; }
+    const u = s.user, av = window.npdAvatar ? window.npdAvatar() : '';
+    el.innerHTML = `<button class="um-b" aria-haspopup="true" title="${escH(u.name)}">${av ? `<img src="${escH(av)}" alt="">` : `<i>${escH(initials(u.name))}</i>`}<span>${escH(u.name)}</span></button>
+      <div class="um-m" role="menu"><div class="um-h"><b>${escH(u.name)}</b><small>@${escH(u.username)} · ${escH(u.role || 'Member')}</small></div>
+        <button data-go="cave" role="menuitem">🏯 Hồ sơ của tôi</button><button data-um="pw" role="menuitem">🔑 Đổi mật khẩu</button>
+        <button data-um="help" role="menuitem">❔ Hướng dẫn</button><hr><button data-npd-logout role="menuitem">↩ Đăng xuất</button></div>`;
+    el.querySelector('.um-b').onclick = e => { e.stopPropagation(); el.classList.toggle('open'); };
+  }
+  document.addEventListener('click', e => { const m = document.getElementById('um'); if (m && !e.target.closest('#um')) m.classList.remove('open'); });
+  function pwDialog() {
+    const m = document.createElement('div'); m.className = 'ask';
+    m.innerHTML = `<form class="ask-b" novalidate><div class="ask-t">🔑 Đổi mật khẩu</div>
+      <input class="ask-in" name="o" type="password" placeholder="Mật khẩu hiện tại" autocomplete="current-password">
+      <input class="ask-in" name="n" type="password" placeholder="Mật khẩu mới (tối thiểu 8 ký tự)" autocomplete="new-password">
+      <input class="ask-in" name="n2" type="password" placeholder="Nhập lại mật khẩu mới" autocomplete="new-password">
+      <div class="ask-s err" style="color:#a8231e"></div>
+      <div class="ask-a"><button type="button" data-x0>Đóng</button><button class="ask-ok pri">Đổi mật khẩu</button></div></form>`;
+    document.body.appendChild(m);
+    const f = m.querySelector('form'), er = m.querySelector('.err'); f.o.focus();
+    m.addEventListener('click', e => { if (e.target === m || e.target.closest('[data-x0]')) m.remove(); });
+    f.onsubmit = async e => {
+      e.preventDefault();
+      if (f.n.value.length < 8) { er.textContent = 'Mật khẩu mới tối thiểu 8 ký tự'; return; }
+      if (f.n.value !== f.n2.value) { er.textContent = 'Hai mật khẩu mới không giống nhau'; return; }
+      const r = await window.NPD.call('password', { old: f.o.value, password: f.n.value }).catch(ex => ({ ok: false, error: ex.message }));
+      if (!r.ok) { er.textContent = r.error; return; }
+      m.remove(); alert('Đã đổi mật khẩu.');
+    };
+  }
+  function helpDialog() {
+    const m = document.createElement('div'); m.className = 'ask';
+    m.innerHTML = `<div class="ask-b" style="max-width:560px;text-align:left"><div class="ask-t">❔ Hướng dẫn nhanh</div>
+      <ul class="hp"><li><b>Training</b>: lộ trình tu luyện QE (tu vi lưu theo tài khoản) và <b>Thư viện</b> kiến thức — ai có quyền sửa đều thêm / sửa bài được.</li>
+      <li><b>English · 中文</b>: mỗi ngày một bài mới; tiến độ lưu theo tài khoản. Từ / mẫu câu mới do nhóm thêm ở tab English / Chinese trong Google Sheet.</li>
+      <li><b>Tools</b>: AQL, Cp/Cpk, GR&amp;R, lịch công, đổi đơn vị, link nhanh dùng chung.</li>
+      <li><b>Cave</b>: hồ sơ cá nhân, xuất CV (PDF), việc cần làm, lời nhắc của Ngọc Nhi.</li>
+      <li>Thay đổi dữ liệu chung: bấm <b>Save</b> (Ctrl+S). Mọi thay đổi được ghi vào tab Lịch sử.</li></ul>
+      <div class="ask-a"><button class="ask-ok pri" data-x0>Đã hiểu</button></div></div>`;
+    document.body.appendChild(m);
+    m.addEventListener('click', e => { if (e.target === m || e.target.closest('[data-x0]')) m.remove(); });
+  }
+  document.addEventListener('click', e => {
+    const b = e.target.closest('[data-um]'); if (!b) return;
+    document.getElementById('um')?.classList.remove('open');
+    if (b.dataset.um === 'pw') pwDialog(); else if (b.dataset.um === 'help') helpDialog();
+  });
 
   /* ---------- Lấy dữ liệu ---------- */
   function toRecords(headers, rows) {
@@ -172,6 +235,7 @@
   function apply(r) {
     const s = getSession(); if (!s) return;
     if (r.user) { s.user = r.user; store.set(STORE_KEY, s); }
+    userMenu();
     const data = { tabs: r.tabs, history: r.history, fetchedAt: r.fetchedAt };
     store.set(DATA_KEY, { token: s.token, data });                        // dữ liệu cá nhân không giữ trong bản tạm
     render(Object.assign({ mine: r.mine }, data), s.user);
@@ -191,6 +255,7 @@
 
   /* ---------- Khởi động ---------- */
   function init() {
+    userMenu();
     const style = document.createElement('style');
     style.textContent = css;
     document.head.appendChild(style);
@@ -203,7 +268,7 @@
 
   // Cho phép gọi từ trang: NPD.refresh(), NPD.logout(), NPD.user(), NPD.call('save', {...}), NPD.apply(kết quả)
   window.NPD = {
-    refresh: loadData, logout, apply,
+    refresh: loadData, logout, apply, menu: userMenu,
     user: () => getSession()?.user || null,
     call: (action, payload) => {
       const s = getSession();
