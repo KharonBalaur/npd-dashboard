@@ -1266,6 +1266,8 @@ a.lk:hover{border-color:#d9ad55;box-shadow:0 4px 14px rgba(20,33,61,.1)} .lk .lk
 #tool .tt-d input{height:28px;padding:0 4px;font-size:12px;text-align:center}
 #tool .aq-t input{width:76px;height:32px}
 #tool .uc-in{max-width:520px} #tool .uc-in input{font-size:16px}
+#tool .tl-meta{margin:0 0 12px} #tool .tl-meta summary{cursor:pointer;font-size:13px;font-weight:600;color:var(--navy);padding:4px 0}
+#tool .tl-meta summary small{font-weight:400;color:var(--muted)} #tool .tl-meta .tl-form{margin:8px 0 0} #tool .tl-meta label.w{grid-column:1/-1}
 @media (max-width:900px){
   .tl-app{grid-template-columns:minmax(0,1fr);gap:10px} .tl-side,.tl-main{min-width:0}
   .tl-side{position:static;max-height:none;padding:8px;gap:8px}
@@ -3051,7 +3053,8 @@ function cpkHtml() {
       <label><span>Cỡ nhóm con</span><select data-cpk="n">${[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(v => `<option ${+C.n === v ? "selected" : ""}>${v}</option>`).join("")}</select></label></div>
     <label class="tl-data"><span>Dữ liệu đo theo thứ tự thời gian · dán cột từ Excel (mỗi nhóm con là ${esc(C.n)} giá trị liên tiếp)</span>
       <textarea data-cpk="data" rows="5" placeholder="10,02&#10;10,03&#10;9,99&#10;…">${esc(C.data)}</textarea></label>
-    <div class="tl-act"><button data-x="cpkDemo">Dữ liệu mẫu</button><button data-x="cpkClr">Xóa dữ liệu</button><span class="muted">Cp/Cpk dùng σ trong nhóm (R̄ ÷ d2); Pp/Ppk dùng σ tổng thể (độ lệch chuẩn mẫu).</span></div>
+    ${tlMetaHtml("cpk", C)}
+    <div class="tl-act"><button data-x="cpkDemo">Dữ liệu mẫu</button><button data-x="cpkClr">Xóa dữ liệu</button><button class="pri" data-x="tlPdf" data-k="cpk">📄 Xuất báo cáo PDF</button><span class="muted">Cp/Cpk dùng σ trong nhóm (R̄ ÷ d2); Pp/Ppk dùng σ tổng thể (độ lệch chuẩn mẫu).</span></div>
     <div id="cpkOut">${cpkOut()}</div>`;
 }
 let TL_T = 0;
@@ -3148,6 +3151,98 @@ function grrOut() {
     <details class="tl-anova"><summary>Bảng ANOVA (chi tiết)</summary><table class="tl-tbl"><thead><tr><th>Nguồn</th><th>DF</th><th>SS</th><th>MS</th><th>F</th><th>P</th></tr></thead><tbody>
       ${R.A.map(a => `<tr><td>${esc(a[0])}</td><td>${a[1]}</td><td>${fN(a[2], 6)}</td><td>${a[3] != null ? fN(a[3], 6) : ""}</td><td>${a[4] != null ? fN(a[4], 2) : ""}</td><td>${a[5] != null ? fN(a[5], 3) : ""}</td></tr>`).join("")}</tbody></table></details>`;
 }
+// ---- printable study reports (Cpk, Gage R&R): A4, header, study information, results, charts, raw data, method and
+// sign-off boxes. Opened in a new window and printed (Save as PDF). The charts are the same SVGs the tool draws.
+const TL_META = [["rp_part", "Sản phẩm / mã hàng", "vd Máy khoan DCD-01 · P/N 123-456"], ["rp_char", "Đặc tính đo", "vd Đường kính trục Ø10 ±0,10"],
+  ["rp_unit", "Đơn vị", "mm"], ["rp_gauge", "Thiết bị đo / mã", "vd Thước cặp điện tử GA-012"], ["rp_by", "Người lập", ""], ["rp_note", "Ghi chú", "Nơi đo, lô, điều kiện…"]];
+function tlMetaHtml(kind, st) {
+  const by = st.rp_by || (sheetUser() || {}).name || "";
+  return `<details class="tl-meta"${TL_META.some(([k]) => st[k]) ? " open" : ""}><summary>🧾 Thông tin in trên báo cáo PDF <small>(tùy chọn)</small></summary><div class="tl-form">${TL_META.map(([k, l, ph]) =>
+    `<label${k === "rp_note" ? ' class="w"' : ""}><span>${l}</span><input data-${kind === "cpk" ? "cpk" : "gs"}="${k}" value="${esc(k === "rp_by" ? by : st[k] || "")}" placeholder="${esc(ph)}"></label>`).join("")}</div></details>`;
+}
+function tlReport(kind) {
+  const isC = kind === "cpk", st = isC ? cpkSt() : grrSt(), u = sheetUser() || {};
+  if (isC) { const R = cpkCalc(); if (R.err) return alert("Chưa xuất được báo cáo: " + R.err); }
+  else { const R = grrCalc(); if (R.miss) return alert(`Chưa xuất được báo cáo: còn ${R.miss} / ${R.total} ô chưa có số đo.`); }
+  const tmp = document.createElement("div"); tmp.innerHTML = isC ? cpkOut() : grrOut();
+  const pick = q => [...tmp.querySelectorAll(q)].map(n => n.outerHTML).join("");
+  tmp.querySelectorAll("details").forEach(d => d.setAttribute("open", ""));
+  const now = new Date(), stamp = now.getFullYear() + pad(now.getMonth() + 1) + pad(now.getDate()) + "-" + pad(now.getHours()) + pad(now.getMinutes());
+  const no = (isC ? "CPK-" : "GRR-") + stamp, unit = st.rp_unit ? " " + esc(st.rp_unit) : "";
+  const kv = rows => `<table class="kv"><tbody>${rows.filter(r => r[1] !== "" && r[1] != null).map(([k, v]) => `<tr><th>${k}</th><td>${v}</td></tr>`).join("")}</tbody></table>`;
+  const info = kv([["Sản phẩm / mã hàng", esc(st.rp_part || "")], ["Đặc tính đo", esc(st.rp_char || "")], ["Thiết bị đo", esc(st.rp_gauge || "")],
+    ["Người lập", esc(st.rp_by || u.name || "")], ["Ngày lập", fmt(todayISO()) + " " + pad(now.getHours()) + ":" + pad(now.getMinutes())], ["Số báo cáo", no]]);
+  let setup, data, method, title, sub, body;
+  if (isC) {
+    const R = cpkCalc();
+    setup = kv([["LSL", R.lsl != null ? fN(R.lsl, R.d) + unit : "–"], ["Target", R.tgt != null ? fN(R.tgt, R.d) + unit : "–"], ["USL", R.usl != null ? fN(R.usl, R.d) + unit : "–"],
+      ["Cỡ nhóm con", R.n === 1 ? "1 (giá trị đơn, I-MR)" : R.n + ` (${R.pts.length} nhóm con)`], ["Số giá trị N", R.N]]);
+    const per = R.n === 1 ? 10 : R.n, rows = []; for (let i = 0; i < R.x.length; i += per) rows.push(R.x.slice(i, i + per));
+    data = `<table class="raw"><thead><tr><th>${R.n === 1 ? "#" : "Nhóm"}</th>${Array.from({ length:per }, (_, j) => `<th>${R.n === 1 ? j + 1 : "x" + (j + 1)}</th>`).join("")}${R.n > 1 ? "<th>X̄</th><th>R</th>" : ""}</tr></thead><tbody>
+      ${rows.map((r, i) => `<tr><th>${R.n === 1 ? i * per + 1 + "–" + (i * per + r.length) : i + 1}</th>${Array.from({ length:per }, (_, j) => `<td>${r[j] != null ? fN(r[j], R.d) : ""}</td>`).join("")}${R.n > 1 ? `<td><b>${fN(avg(r), R.d + 1)}</b></td><td>${fN(Math.max(...r) - Math.min(...r), R.d)}</td>` : ""}</tr>`).join("")}</tbody></table>`;
+    title = "BÁO CÁO NĂNG LỰC QUÁ TRÌNH"; sub = "Process Capability Study · Cp · Cpk · Pp · Ppk";
+    method = `<p>Cp, Cpk dùng độ lệch chuẩn trong nhóm σ<sub>w</sub> = R̄ / d₂${R.n === 1 ? " (MR̄ / 1,128 với giá trị đơn)" : ""}; Pp, Ppk dùng độ lệch chuẩn tổng thể (độ lệch chuẩn mẫu).
+      Cpk = min(USL − X̄, X̄ − LSL) / 3σ. PPM dự đoán theo phân phối chuẩn. Giới hạn kiểm soát ±3σ (AIAG SPC 2nd ed.).
+      Mức đánh giá: ≥ 1,67 rất tốt · ≥ 1,33 đạt · 1,00 – 1,33 cần cải tiến · &lt; 1,00 không đạt. Khuyến nghị ≥ 25 nhóm con / ≥ 100 giá trị, quá trình ổn định thống kê và phân phối gần chuẩn.</p>`;
+    body = `${pick(".tl-ks")}${pick(".tl-ver")}<h2>Thống kê</h2>${pick(".tl-two")}<h2>Biểu đồ</h2>${pick(".tl-fig")}`;
+  } else {
+    const R = grrCalc(), G = st, nm = j => esc(G.nm[j] || String.fromCharCode(65 + j));
+    setup = kv([["Bố trí", `${R.p} mẫu × ${R.o} người đo × ${R.r} lần đo (crossed)`], ["Người đo", Array.from({ length:R.o }, (_, j) => nm(j)).join(", ")],
+      ["Dung sai", R.tol ? `${esc(G.lsl)} – ${esc(G.usl)}${unit} (USL − LSL = ${fN(R.tol, R.d)})` : "– (không tính %Dung sai)"]]);
+    data = `<table class="raw"><thead><tr><th rowspan="2">Mẫu</th>${Array.from({ length:R.o }, (_, j) => `<th colspan="${R.r}">${nm(j)}</th>`).join("")}</tr>
+      <tr>${Array.from({ length:R.o }, () => Array.from({ length:R.r }, (_, k) => `<th>Lần ${k + 1}</th>`).join("")).join("")}</tr></thead><tbody>
+      ${Array.from({ length:R.p }, (_, i) => `<tr><th>${i + 1}</th>${Array.from({ length:R.o }, (_, j) => Array.from({ length:R.r }, (_, k) => `<td>${esc(G.v[`${i}_${j}_${k}`] || "")}</td>`).join("")).join("")}</tr>`).join("")}</tbody></table>`;
+    title = "BÁO CÁO PHÂN TÍCH HỆ THỐNG ĐO"; sub = "Gage R&R Study · ANOVA method";
+    method = `<p>Gage R&R chéo (crossed) theo phương pháp ANOVA (AIAG MSA 4th ed.). Tương tác Người đo × Mẫu được giữ khi p &lt; 0,05, ngược lại gộp vào Lặp lại.
+      Study Var = 6σ. ndc = 1,41 × σ<sub>mẫu</sub> / σ<sub>GRR</sub>. Chấp nhận: %GRR &lt; 10 % tốt · 10 – 30 % có điều kiện · &gt; 30 % không chấp nhận; ndc ≥ 5.</p>`;
+    body = `${pick(".tl-ks")}${pick(".tl-ver")}<h2>Thành phần biến động</h2>${pick(".tl-cmp")}<h2>Biểu đồ</h2>${pick(".tl-fig")}<h2>Bảng ANOVA</h2>${pick(".tl-anova table")}`;
+  }
+  // the tool's own CSS for cards, verdict, tables and charts, with the page colours resolved
+  const css = [...document.styleSheets].flatMap(sh => { try { return [...sh.cssRules]; } catch (e) { return []; } })
+    .filter(r => r.selectorText && /\.tl-(ks|k|ver|tbl|cmp|two|fig|svg)\b/.test(r.selectorText) && !/#tool|\.tl-run|\.tl-main/.test(r.selectorText)).map(r => r.cssText).join("\n");
+  const cs = getComputedStyle(document.documentElement), vars = ["--navy", "--muted", "--bd", "--ink", "--ink2", "--line", "--lime"].map(v => `${v}:${cs.getPropertyValue(v) || "#333"}`).join(";");
+  const fname = (isC ? "Cpk_" : "GageRR_") + String(st.rp_part || st.rp_char || "").replace(/[^\w\-]+/g, "_").slice(0, 40) + "_" + stamp;
+  const html = `<!DOCTYPE html><html lang="vi"><head><meta charset="utf-8"><title>${esc(fname)}</title><style>
+    @page{size:A4;margin:14mm 13mm 16mm}
+    @page{@bottom-left{content:"${no} · JLTN Web";font:8pt Arial,sans-serif;color:#777}@bottom-right{content:"Trang " counter(page) " / " counter(pages);font:8pt Arial,sans-serif;color:#777}}
+    :root{${vars}} *{box-sizing:border-box}
+    body{margin:0;font:9.5pt/1.4 "Segoe UI",Arial,sans-serif;color:#1d2433;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    ${css}
+    header{display:flex;justify-content:space-between;align-items:flex-end;gap:8mm;padding-bottom:3mm;border-bottom:2.5px solid #14213d}
+    header .org{font-size:8pt;letter-spacing:1.5pt;text-transform:uppercase;color:#7a6420;font-weight:700}
+    header h1{margin:1mm 0 0;font-size:16pt;color:#14213d} header .sub{font-size:9pt;color:#5b6372}
+    header .meta{text-align:right;font-size:8.5pt;color:#5b6372;white-space:nowrap} header .meta b{color:#14213d}
+    h2{margin:5mm 0 2mm;padding-left:2.5mm;border-left:3px solid #d9ad55;font-size:10.5pt;color:#14213d;text-transform:uppercase;letter-spacing:.6pt;break-after:avoid}
+    .two{display:grid;grid-template-columns:1fr 1fr;gap:5mm}
+    table.kv{width:100%;border-collapse:collapse} .kv th,.kv td{padding:1.4mm 2mm;border:1px solid #dfe3ea;text-align:left;vertical-align:top}
+    .kv th{width:38%;background:#f5f7fa;font-weight:600;color:#5b6372}
+    .tl-ks{display:grid;grid-template-columns:repeat(auto-fit,minmax(30mm,1fr));gap:3mm;margin:0 0 3mm} .tl-k{padding:2mm 3mm} .tl-k b{font-size:15pt}
+    .tl-ver{margin:0 0 2mm;font-size:9pt}
+    .tl-tbl{font-size:8.6pt;margin-bottom:2mm} .tl-tbl th,.tl-tbl td{padding:1.2mm 2mm}
+    .tl-fig{break-inside:avoid;margin:0 0 3mm} .tl-svg{font-size:10px}
+    table.raw{width:100%;border-collapse:collapse;font-size:8pt;font-variant-numeric:tabular-nums} .raw th,.raw td{padding:.8mm 1.5mm;border:1px solid #dfe3ea;text-align:right}
+    .raw th{background:#f5f7fa;color:#5b6372;font-weight:600;text-align:center} .raw tr{break-inside:avoid}
+    .method p{margin:0;font-size:8.6pt;color:#3d4555;text-align:justify}
+    .note{padding:2mm 3mm;border:1px solid #dfe3ea;border-radius:2mm;background:#fafbfc;white-space:pre-wrap}
+    .sign{display:grid;grid-template-columns:repeat(3,1fr);gap:5mm;margin-top:7mm;break-inside:avoid}
+    .sign div{border:1px solid #c9ced8;border-radius:2mm;padding:2mm 3mm;height:27mm;display:flex;flex-direction:column;justify-content:space-between;font-size:8.5pt;color:#5b6372}
+    .sign b{color:#14213d;font-size:9pt} .sign span{border-top:1px dotted #9aa3b2;padding-top:1mm}
+    section{break-inside:auto}
+    @media screen{body{background:#e9ecf1;padding:8mm 0} .page{width:210mm;margin:auto;padding:14mm 13mm 16mm;background:#fff;box-shadow:0 4px 18px rgba(0,0,0,.18)}}
+  </style></head><body><div class="page">
+    <header><div><div class="org">JLTN Web · Quality Engineering</div><h1>${title}</h1><div class="sub">${sub}</div></div>
+      <div class="meta">Số: <b>${no}</b><br>Ngày: <b>${fmt(todayISO())}</b></div></header>
+    <h2>1. Thông tin</h2><div class="two">${info}${setup}</div>
+    <h2>2. Kết quả &amp; kết luận</h2>${body}
+    <h2>3. Số liệu đo${unit ? ` (${esc(st.rp_unit)})` : ""}</h2>${data}
+    <h2>4. Phương pháp</h2><div class="method">${method}</div>
+    ${st.rp_note ? `<h2>5. Ghi chú</h2><div class="note">${esc(st.rp_note)}</div>` : ""}
+    <div class="sign"><div><b>Người lập</b><span>${esc(st.rp_by || u.name || "")}</span></div><div><b>Kiểm tra</b><span>&nbsp;</span></div><div><b>Phê duyệt</b><span>&nbsp;</span></div></div>
+  </div><script>window.onload=function(){setTimeout(function(){window.print()},350)}<\/script></body></html>`;
+  const w = window.open("", "_blank");
+  if (!w) return alert("Trình duyệt chặn cửa sổ mới. Hãy cho phép pop-up cho trang này rồi thử lại.");
+  w.document.open(); w.document.write(html); w.document.close();
+}
 function grrHtml() {
   const G = grrSt(), p = +G.p, o = +G.o, r = +G.r, sel = (k, a) => `<select data-gs="${k}">${a.map(v => `<option ${+G[k] === v ? "selected" : ""}>${v}</option>`).join("")}</select>`;
   return `<ol class="tl-steps"><li>Chọn ${p} mẫu trải đều dải biến động của quá trình (có cả mẫu gần LSL và USL), đánh số.</li>
@@ -3160,7 +3255,8 @@ function grrHtml() {
     <div class="tl-scroll"><table class="grr-t"><thead><tr><th rowspan="2">Mẫu</th>${Array.from({ length:o }, (_, j) => `<th colspan="${r}" style="--c:${GR_COL[j]}">${esc(G.nm[j] || "")}</th>`).join("")}</tr>
       <tr>${Array.from({ length:o }, () => Array.from({ length:r }, (_, k) => `<th>Lần ${k + 1}</th>`).join("")).join("")}</tr></thead>
       <tbody>${Array.from({ length:p }, (_, i) => `<tr><th>${i + 1}</th>${Array.from({ length:o }, (_, j) => Array.from({ length:r }, (_, k) => `<td><input data-gr="${i}_${j}_${k}" value="${esc(G.v[`${i}_${j}_${k}`] || "")}" inputmode="decimal"></td>`).join("")).join("")}</tr>`).join("")}</tbody></table></div>
-    <div class="tl-act"><button data-x="grrDemo">Dữ liệu mẫu</button><button data-x="grrClr">Xóa dữ liệu</button><span class="muted">Mẹo: copy vùng số liệu trong Excel (mẫu theo hàng, người đo × lần đo theo cột) rồi dán vào ô đầu tiên.</span></div>
+    ${tlMetaHtml("grr", G)}
+    <div class="tl-act"><button data-x="grrDemo">Dữ liệu mẫu</button><button data-x="grrClr">Xóa dữ liệu</button><button class="pri" data-x="tlPdf" data-k="grr">📄 Xuất báo cáo PDF</button><span class="muted">Mẹo: copy vùng số liệu trong Excel (mẫu theo hàng, người đo × lần đo theo cột) rồi dán vào ô đầu tiên.</span></div>
     <div id="grrOut">${grrOut()}</div>`;
 }
 document.addEventListener("input", e => {
@@ -3511,6 +3607,7 @@ document.addEventListener("click", e => {                                // butt
   if (x === "toolLink") { const u = location.href.split("#")[0] + "#tool/" + toolSel;
     (navigator.clipboard ? navigator.clipboard.writeText(u) : Promise.reject()).then(() => { b.innerHTML = "✓ <span>Đã sao chép</span>"; setTimeout(() => b.isConnected && (b.innerHTML = "🔗 <span>Sao chép link</span>"), 1600); }, () => prompt("Sao chép đường dẫn:", u)); return; }
   if (x === "cpkDemo") return cpkDemo();
+  if (x === "tlPdf") return tlReport(k);
   if (x === "cpkClr") { if (cpkSt().data && !confirm("Xóa dữ liệu đo đang nhập?")) return; cpkSt().data = ""; lsSet("npdTlCpk", cpkSt()); return renderTools(); }
   if (x === "grrDemo") { if (Object.values(grrSt().v).some(Boolean) && !confirm("Thay dữ liệu đang nhập bằng dữ liệu mẫu?")) return; return grrDemo(); }
   if (x === "grrClr") { if (!confirm("Xóa toàn bộ số đo trong bảng?")) return; grrSt().v = {}; grrSave(); return renderTools(); }
