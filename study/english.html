@@ -1,0 +1,715 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>English Study</title>
+<style>
+:root{--lime:#E1E622;--lime-soft:#F4F6CC;--ink:#111111;--mut:#6B6B5E;--line:#E2E2DA;--bg:#F2F2EC;--surface:#FFFFFF;--ok:#2E7D32;--ok-s:#E3F4E4;--bad:#C00000;--bad-s:#FBE3E3;--warn:#9A6A12;color-scheme:light}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;font-size:14px;line-height:1.45;padding:16px max(16px,env(safe-area-inset-right,0px)) 48px max(16px,env(safe-area-inset-left,0px))}
+.wrap{max-width:1100px;margin:0 auto;display:flex;flex-direction:column;gap:14px}
+.banner{background:var(--lime);border-radius:18px;padding:14px 16px;display:flex;flex-direction:column;gap:12px;box-shadow:0 6px 20px rgba(120,125,0,.25)}
+.banner .top{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 20px}
+.banner .brand{display:flex;align-items:center;flex-wrap:wrap;gap:6px 14px}
+.banner .mark{height:34px;width:auto;display:block}
+.banner h1{margin:0;font-size:19px;font-weight:800;letter-spacing:.01em}
+.banner .sub{font-size:12px;font-weight:600;color:#3A3A2A}
+.banner .home{color:var(--ink);font-weight:700;font-size:13px;text-decoration:none;background:rgba(255,255,255,.55);padding:7px 14px;border-radius:999px}
+.banner .home:hover{background:#fff}
+.bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.bar .sp{flex:1}
+.tabs{display:flex;gap:4px;background:rgba(255,255,255,.45);padding:4px;border-radius:999px;flex-wrap:wrap}
+.tabs button{border:0;background:none;font:inherit;font-weight:700;font-size:13px;padding:7px 13px;border-radius:999px;cursor:pointer;color:var(--ink)}
+.tabs button.on{background:#111;color:var(--lime)}
+.tabs button:not(.on):hover{background:rgba(255,255,255,.7)}
+.chips{display:flex;gap:6px;flex-wrap:wrap;font-size:12px;font-weight:600;color:#3A3A2A}
+.chips span{background:rgba(255,255,255,.55);border-radius:999px;padding:4px 10px}.chips b{color:var(--ink)}
+button{font:inherit;cursor:pointer}
+.pri,.sec,.ghost{border:0;border-radius:999px;padding:8px 16px;font-weight:700;font-size:13px}
+.pri{background:#111;color:var(--lime)}.pri:hover{filter:brightness(1.25)}
+.sec{background:var(--lime-soft);color:var(--ink)}.sec:hover{filter:brightness(.96)}
+.banner .sec{background:rgba(255,255,255,.55)}
+.ghost{background:none;color:var(--mut);padding:6px 10px}.ghost:hover{color:var(--ink);background:var(--lime-soft)}
+.bad-b{background:var(--bad-s);color:var(--bad)}.ok-b{background:var(--ok-s);color:var(--ok)}
+button:disabled{opacity:.45;cursor:not-allowed}
+#sv{font-size:12px;font-weight:600;color:#3A3A2A;cursor:pointer}#sv:hover{text-decoration:underline}#sv.er{color:var(--bad)}
+.card{background:var(--surface);border-radius:16px;padding:16px 18px;box-shadow:0 1px 2px rgba(60,62,0,.06),0 6px 18px rgba(60,62,0,.06)}
+.card h2{margin:0 0 10px;font-size:13px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--mut)}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.row.sp{justify-content:space-between}
+label{font-size:12.5px;font-weight:600;color:var(--mut);display:inline-flex;gap:6px;align-items:center}
+.banner label{color:#3A3A2A}
+select,input,textarea{font:inherit;color:inherit;border:1px solid var(--line);border-radius:10px;padding:7px 10px;background:#fff}
+select{max-width:220px}
+select:focus,input:focus,textarea:focus{outline:0;border-color:var(--ink);box-shadow:0 0 0 3px var(--lime)}
+input[type=range]{padding:0;accent-color:#111;width:110px}input[type=checkbox]{accent-color:#111;width:16px;height:16px;margin:0}
+.mut{color:var(--mut);font-size:12.5px}
+.vi{color:var(--mut);font-size:.9em;font-style:italic}
+body:not(.show-vi) .vi{display:none}
+.tab{display:none;flex-direction:column;gap:14px}.tab.on{display:flex}
+/* dictation */
+.play{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:6px 0 12px}
+.bigplay{width:58px;height:58px;border-radius:50%;border:0;background:#111;color:var(--lime);font-size:22px;display:grid;place-items:center;box-shadow:0 6px 16px rgba(0,0,0,.2);flex:none}
+.bigplay:hover{transform:scale(1.05)}
+#dIn{width:100%;min-height:90px;font-size:17px;line-height:1.6;resize:vertical}
+.hint{font:15px/1.7 ui-monospace,Menlo,Consolas,monospace;color:var(--mut);margin:8px 0 0;letter-spacing:.04em}
+.res{margin-top:12px;padding:12px 14px;border-radius:12px;background:var(--bg);font-size:17px;line-height:1.9}
+.res .ok{color:var(--ok);font-weight:600}.res .miss{color:var(--bad);font-weight:700;background:var(--bad-s);border-radius:4px;padding:0 3px}.res .x{color:var(--mut);text-decoration:line-through}
+.score{font-size:13px;font-weight:700;margin-bottom:4px}.score.perfect{color:var(--ok)}
+.legend{font-size:11.5px;color:var(--mut);margin-top:6px}
+details.card summary{cursor:pointer;font-weight:800;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--mut)}
+details.card[open] summary{margin-bottom:12px}
+textarea.my{width:100%;min-height:110px}
+/* flashcards */
+.stats{display:flex;gap:8px;flex-wrap:wrap}
+.stat{background:var(--bg);border-radius:12px;padding:8px 14px;min-width:92px}.stat b{display:block;font-size:20px;line-height:1.1}.stat span{font-size:11.5px;color:var(--mut);font-weight:600}
+.stat.hl{background:var(--lime-soft)}
+.flash{margin-top:14px;min-height:220px;border-radius:16px;background:linear-gradient(160deg,#FCFCF4,#F4F6CC);border:1px solid var(--line);padding:18px 20px;display:flex;flex-direction:column;gap:10px;align-items:center;justify-content:center;text-align:center}
+.fc-top{align-self:stretch;display:flex;justify-content:space-between;font-size:12px;color:var(--mut);font-weight:600}
+.front{font-size:30px;font-weight:800;letter-spacing:-.01em;line-height:1.2}
+.front.def{font-size:21px;font-weight:700}
+.pos{font-size:12px;color:var(--mut);font-weight:600;font-style:italic}
+.back{font-size:18px;font-weight:600}.ex{font-size:14.5px;color:#3A3A2A;font-style:italic;max-width:640px}
+.spk{border:0;background:#111;color:var(--lime);width:30px;height:30px;border-radius:50%;font-size:13px;vertical-align:middle;flex:none}
+.spk.sm{width:24px;height:24px;font-size:11px;background:var(--lime-soft);color:var(--ink)}
+.fbtn{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:4px}
+.fbtn button{min-width:130px}
+.kb{font:11px ui-monospace,Menlo,Consolas,monospace;border:1px solid currentColor;border-radius:4px;padding:0 4px;opacity:.6;margin-left:4px}
+#fcIn{font-size:18px;text-align:center;width:min(420px,100%)}
+.verdict{font-weight:800;font-size:15px}.verdict.ok{color:var(--ok)}.verdict.bad{color:var(--bad)}
+.done{font-size:16px;font-weight:700}
+.tblw{overflow:auto;max-height:420px;border:1px solid var(--line);border-radius:12px;margin-top:10px}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{padding:7px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{position:sticky;top:0;background:var(--lime-soft);font-size:11.5px;text-transform:uppercase;letter-spacing:.05em}
+td.w{font-weight:700;white-space:nowrap}td.e{color:var(--mut);font-style:italic}
+.lvl{display:inline-flex;gap:2px}.lvl i{width:7px;height:7px;border-radius:2px;background:var(--line)}.lvl i.f{background:#111}
+form.add input{flex:1;min-width:150px}
+/* side list + detail (grammar, listening) */
+.gwrap{display:grid;grid-template-columns:290px 1fr;gap:14px;align-items:start}
+.glist{display:flex;flex-direction:column;gap:6px}
+.gi{border:1px solid transparent;background:var(--surface);border-radius:12px;padding:10px 12px;text-align:left;display:flex;gap:8px;align-items:center;box-shadow:0 1px 2px rgba(60,62,0,.06);font-weight:600}
+.gi:hover{border-color:var(--line)}.gi.on{border-color:#111;box-shadow:0 0 0 3px var(--lime)}
+.gi small{display:block;font-weight:600;color:var(--mut);font-size:11.5px}
+.gi .ck{margin-left:auto;min-width:22px;height:22px;border-radius:999px;padding:0 6px;display:grid;place-items:center;font-size:11px;background:var(--bg);color:var(--mut);flex:none}
+.gi .ck.y{background:var(--ok);color:#fff}
+.gd h3{margin:0 0 6px;font-size:20px}
+.form{background:#111;color:var(--lime);border-radius:10px;padding:8px 12px;font:13px/1.6 ui-monospace,Menlo,Consolas,monospace;white-space:pre-wrap}
+.gd ul{margin:8px 0;padding-left:20px}.gd li{margin:3px 0}
+.exs{display:flex;flex-direction:column;gap:6px;margin:10px 0}
+.exs div{background:var(--bg);border-radius:10px;padding:7px 10px;display:flex;gap:8px;align-items:center}
+.qz{border-top:1px solid var(--line);margin-top:14px;padding-top:12px;display:flex;flex-direction:column;gap:12px}
+.qz .q{font-weight:600}.qz .opts{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+.qz .opts label{border:1px solid var(--line);border-radius:999px;padding:5px 12px;cursor:pointer;color:var(--ink);font-weight:600}
+.qz .opts label.r{border-color:var(--ok);background:var(--ok-s);color:var(--ok)}.qz .opts label.w{border-color:var(--bad);background:var(--bad-s);color:var(--bad)}
+.lvtag{font-size:11px;font-weight:700;border-radius:999px;padding:1px 8px;background:var(--lime-soft)}
+.lvtag.l2{background:#FFE9C7}.lvtag.l3{background:#FFD6D1}
+/* listening player */
+.lplayer{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin:10px 0 6px}
+.lines{display:flex;flex-direction:column;gap:6px;margin-top:10px}
+.ln{display:flex;gap:10px;align-items:flex-start;padding:8px 10px;border-radius:12px;background:var(--bg);cursor:pointer;border:1px solid transparent}
+.ln:hover{border-color:var(--line)}
+.ln.cur{background:var(--lime-soft);border-color:#111}
+.ln .who{font-weight:800;font-size:12px;min-width:72px;padding-top:2px}
+.ln .who.b{color:#3B1FA8}
+.ln .tx{flex:1;font-size:15px}
+.ln .tx.hide{color:transparent;text-shadow:0 0 8px rgba(17,17,17,.45);user-select:none}
+.ln .tx.hide .vi{display:none}
+.k+.vi,.dhead .vi{margin-top:-6px;font-size:12px}
+/* today */
+.dhead{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.dhead h2{margin:0;font-size:22px;letter-spacing:-.01em;text-transform:none;color:var(--ink)}
+.dhead .dt{font-size:12.5px;color:var(--mut);font-weight:600;margin-top:2px}
+.nav{display:flex;gap:6px;align-items:center}.nav button{width:34px;height:34px;padding:0;border-radius:50%}
+.lgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px}
+.lc{background:var(--surface);border-radius:16px;padding:14px 16px;box-shadow:0 1px 2px rgba(60,62,0,.06),0 6px 18px rgba(60,62,0,.06);display:flex;flex-direction:column;gap:8px;border-top:5px solid var(--lime)}
+.lc .k{font-size:11.5px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--mut)}
+.lc .big{font-size:22px;font-weight:800;line-height:1.25;letter-spacing:-.01em}
+.lc .mean{font-weight:600}
+.lc .item+.item{border-top:1px dashed var(--line);padding-top:10px}
+.lc .item{display:flex;flex-direction:column;gap:4px}
+.tag{align-self:flex-start;font-size:11px;font-weight:700;background:var(--lime-soft);border-radius:999px;padding:1px 9px}
+.wrong{color:var(--bad);text-decoration:line-through;font-weight:600}.right{color:var(--ok);font-weight:700}
+.mq{display:flex;flex-direction:column;gap:6px;margin-top:4px}.mq button{text-align:left;border:1px solid var(--line);background:#fff;border-radius:10px;padding:7px 10px}
+.mq button:hover{border-color:var(--ink)}.mq button.r{border-color:var(--ok);background:var(--ok-s);color:var(--ok)}.mq button.w{border-color:var(--bad);background:var(--bad-s);color:var(--bad)}
+.dfoot{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+@media (max-width:760px){.gwrap{grid-template-columns:1fr}.front{font-size:24px}.ln .who{min-width:56px}}
+body.embed{padding-top:12px}
+</style></head><body>
+<div class="wrap">
+<div class="banner">
+ <div class="top"><div class="brand"><h1>ENGLISH STUDY</h1><span class="sub">Daily lesson · Listening · Dictation · Vocabulary · Idioms · Grammar</span></div></div>
+ <div class="bar">
+  <div class="tabs" id="tabs"><button data-t="today">📅 Today</button><button data-t="listen">🎧 Listening</button><button data-t="dict">✍️ Dictation</button><button data-t="vocab">📘 Vocabulary</button><button data-t="idiom">💬 Idioms &amp; phrases</button><button data-t="gram">🧩 Grammar</button></div>
+ </div>
+ <div class="bar">
+  <label>Voice <select id="voice"></select></label>
+  <label title="Second voice, used for the other person in dialogues">Voice 2 <select id="voice2"></select></label>
+  <label>Speed <input type="range" id="rate" min="0.6" max="1.2" step="0.05"></label>
+  <label title="Show Vietnamese translations under the English meanings"><input type="checkbox" id="showVi"> Show Vietnamese</label>
+  <span class="sp"></span>
+  <button class="sec" id="rst" title="Clear your learning progress (your own words and sentences are kept)">↺ Reset</button>
+ </div>
+ <div class="bar"><div class="chips" id="chips"></div><span class="sp"></span><span id="sv" title="Click to connect / save again to qe_data.json in the data folder">…</span></div>
+</div>
+
+<section class="tab" id="t-today"></section>
+
+<section class="tab" id="t-listen">
+ <div class="gwrap"><div class="glist" id="lList"></div><div class="card gd" id="lDet"></div></div>
+</section>
+
+<section class="tab" id="t-dict">
+ <div class="card">
+  <div class="row sp"><h2 style="margin:0">Listen and write</h2>
+   <div class="row"><label>Level <select id="dLvl"><option value="0">All</option><option value="1">Easy</option><option value="2">Medium</option><option value="3">Hard</option><option value="today">Today's lesson</option><option value="listen">Current listening lesson</option><option value="my">My sentences</option></select></label><span class="mut" id="dStat"></span></div></div>
+  <div class="play"><button class="bigplay" id="dPlay" title="Play (Ctrl + Space)">▶</button><button class="sec" id="dSlow" title="Play slowly">🐢 Slow</button><button class="ghost" id="dHint">💡 Hint</button><span class="mut">Ctrl+Space: play again · Enter: check · Enter again: next sentence</span></div>
+  <textarea id="dIn" placeholder="Type what you hear…" spellcheck="false"></textarea>
+  <div class="hint" id="dHintT" hidden></div>
+  <div class="row" style="margin-top:10px"><button class="pri" id="dChk">✓ Check</button><button class="sec" id="dShow">Show answer</button><button class="ghost" id="dNext">Next sentence →</button></div>
+  <div id="dRes"></div>
+ </div>
+ <details class="card"><summary>My sentences (paste any text to practise)</summary>
+  <p class="mut" style="margin:0 0 8px">One sentence per line. Choose the level “My sentences” to practise them.</p>
+  <textarea class="my" id="dMy" placeholder="Example: The customer requested a containment plan by Friday."></textarea>
+  <div class="row" style="margin-top:8px"><button class="pri" id="dMySave">Save list</button><span class="mut" id="dMyN"></span></div>
+ </details>
+</section>
+
+<section class="tab" id="t-vocab"></section>
+<section class="tab" id="t-idiom"></section>
+
+<section class="tab" id="t-gram">
+ <div class="gwrap"><div class="glist" id="gList"></div><div class="card gd" id="gDet"></div></div>
+</section>
+</div>
+
+<script src="english-bank.js"></script>
+<script>
+/* Thiên Công Tông: inside the site (frame), extra lessons added by the team in the Google Sheet (tab English)
+   join the bank, and progress is saved to the signed-in account instead of this browser / qe_data.json */
+(function(){try{var h=window.parent!==window&&window.parent.npdStudy;if(!h)return;var x=h.extra('eng');if(!x)return;
+ var B=window.ENG_BANK=window.ENG_BANK||{};Object.keys(x).forEach(function(k){var have={};(B[k]||[]).forEach(function(r){have[r[0]]=1});
+ B[k]=(B[k]||[]).concat((x[k]||[]).filter(function(r){return !have[r[0]]}))})}catch(e){}})();
+</script>
+<script>
+(function(){
+'use strict';
+if(/[?&]embed=1/.test(location.search))document.body.classList.add('embed');
+const $=id=>document.getElementById(id);
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]]}return a};
+const dayNum=(d=new Date())=>Math.floor((d.getTime()-d.getTimezoneOffset()*6e4)/864e5);
+const dayStr=(d=new Date())=>new Date(d.getTime()-d.getTimezoneOffset()*6e4).toISOString().slice(0,10);
+const norm=w=>w.replace(/[’‘]/g,"'").toLowerCase().replace(/[^\p{L}\p{N}']/gu,'');
+const viSpan=v=>v?`<div class="vi">${esc(v)}</div>`:'';
+/* Vietnamese for any English text shown (English_VI.js), visible only when "Show Vietnamese" is on */
+const VI=Object.assign({},window.ENG_VI||{});
+const tv=t=>viSpan(VI[t]);
+
+/* ================= content ================= */
+const DICT=[
+ [1,"Please check the label before packing."],[1,"The line will start at eight o'clock."],[1,"We need more samples for the test."],[1,"The battery is fully charged."],[1,"Can you send me the report today?"],
+ [1,"This part does not fit the housing."],[1,"Let's have a short meeting after lunch."],[1,"The customer approved the new color."],[1,"Please wear your safety glasses."],[1,"The machine is running normally now."],
+ [2,"We found three scratches on the motor cover during inspection."],[2,"Could you update the work instruction before the next build?"],[2,"The supplier promised to ship the parts by Friday."],
+ [2,"Our first pass yield improved a lot this week."],[2,"Please keep the defective units in the red box."],[2,"The engineer adjusted the torque setting on the screwdriver."],
+ [2,"I will follow up with the vendor and let you know."],[2,"The pilot run is scheduled for the end of the month."],[2,"Make sure every operator signs the training record."],[2,"The leak test failed because the seal was not seated correctly."],
+ [3,"If the root cause is not confirmed, we cannot close the corrective action."],[3,"The customer asked us to provide a detailed containment plan within one day."],
+ [3,"Although the samples passed the drop test, the noise level is still higher than the specification."],[3,"Before mass production, all critical characteristics must be verified with a capable measurement system."],
+ [3,"We should review the process failure mode and effects analysis whenever the design changes."],[3,"The audit team noticed that several calibration labels had already expired."],
+ [3,"Please summarize the key findings and share them with the project team by tomorrow morning."],[3,"Because the new fixture reduces handling, we expect fewer cosmetic defects on the final assembly line."]
+].map(([l,t],i)=>({id:'d'+i,l,t}));
+
+/* [word, part of speech, English meaning, Vietnamese, example] */
+const VOCAB=[
+ ['defect','n','a fault that makes a product imperfect','lỗi, khuyết tật (sản phẩm)','We found a cosmetic defect on the housing.'],
+ ['inspection','n','careful checking of something against a standard','sự kiểm tra','Incoming inspection rejected the whole lot.'],
+ ['specification','n','a detailed description of how something must be made or perform','thông số kỹ thuật, tiêu chuẩn','The noise level is out of specification.'],
+ ['tolerance','n','the allowed amount of variation in a measurement','dung sai','The diameter is within tolerance.'],
+ ['root cause','n','the basic reason why a problem happened','nguyên nhân gốc','We need to find the root cause before we close the issue.'],
+ ['containment','n','actions that stop bad parts from reaching the customer','biện pháp ngăn chặn (cô lập hàng lỗi)','Containment started right after the complaint.'],
+ ['corrective action','n','a change made to remove the cause of a problem','hành động khắc phục','The supplier submitted a corrective action report.'],
+ ['deviation','n','a difference from the standard; written permission to accept it','sự sai lệch; sự cho phép ngoại lệ','We shipped the parts under a temporary deviation.'],
+ ['approve','v','to officially accept or agree to something','phê duyệt','The customer approved the golden sample.'],
+ ['reject','v','to refuse to accept something','từ chối, loại bỏ','QC rejected three units at final test.'],
+ ['supplier','n','a company that provides parts or materials','nhà cung cấp','Our supplier changed the resin without notice.'],
+ ['shipment','n','goods that are sent together','lô hàng (giao đi)','The shipment will leave the factory on Monday.'],
+ ['deadline','n','the latest time by which something must be finished','hạn chót','The deadline for the PPAP is next Friday.'],
+ ['schedule','n/v','a plan of when things will happen; to plan a time for something','lịch trình; lên lịch','The pilot run is scheduled for week 45.'],
+ ['priority','n','something that is more important than other things','sự ưu tiên','Safety issues always have the highest priority.'],
+ ['feasible','adj','possible and practical to do','khả thi','Is it feasible to finish the tooling in two weeks?'],
+ ['reliable','adj','able to be trusted to work well','đáng tin cậy','We need a more reliable switch.'],
+ ['consistent','adj','always the same; not changing','nhất quán, ổn định','The results are consistent across all three lots.'],
+ ['verify','v','to check that something is true or correct','xác minh, kiểm chứng','Please verify the fix with ten samples.'],
+ ['implement','v','to put a plan or change into action','triển khai, thực hiện','The new poka-yoke was implemented last week.'],
+ ['evaluate','v','to judge how good or useful something is','đánh giá','We will evaluate the new supplier next month.'],
+ ['estimate','v/n','to guess a number or cost from the information you have','ước tính; bản ước tính','Can you estimate the cost of the rework?'],
+ ['assess','v','to judge the size or level of something, such as a risk','đánh giá (mức độ, rủi ro)','We need to assess the risk before shipping.'],
+ ['mitigate','v','to make something less serious','giảm thiểu (rủi ro, tác động)','The extra check mitigates the risk of mixed parts.'],
+ ['compliance','n','the act of following rules or standards','sự tuân thủ','The product must be in compliance with UL standards.'],
+ ['requirement','n','something that is needed or demanded','yêu cầu','This test is a customer requirement.'],
+ ['procedure','n','an official way of doing something','quy trình, thủ tục','Follow the procedure for handling nonconforming parts.'],
+ ['fixture','n','a tool that holds a part in position','đồ gá','The fixture holds the motor during screwing.'],
+ ['assembly','n','putting parts together; a group of joined parts','sự lắp ráp; cụm lắp ráp','The handle assembly is made on line 3.'],
+ ['durability','n','the ability to last a long time','độ bền','The durability test runs for 500 hours.'],
+ ['batch','n','a group of products made at the same time','mẻ, lô (sản xuất)','All units from this batch are on hold.'],
+ ['yield','n','the percentage of good products','tỉ lệ đạt','First pass yield dropped after the change.'],
+ ['throughput','n','how much a process produces in a given time','sản lượng đi qua (năng suất dây chuyền)','The new layout increased throughput by 10%.'],
+ ['bottleneck','n','the slowest point that limits the whole process','điểm nghẽn','The leak test station is the bottleneck.'],
+ ['escalate','v','to pass a problem to a higher level of management','báo lên cấp trên; leo thang','If the supplier does not respond, escalate it to the manager.'],
+ ['clarify','v','to make something clear','làm rõ','Could you clarify the sampling plan?'],
+ ['postpone','v','to move something to a later time','hoãn lại','The audit was postponed until next week.'],
+ ['negotiate','v','to discuss something in order to reach an agreement','đàm phán','We negotiated a shorter lead time.'],
+ ['acknowledge','v','to confirm that you received something; to accept that something is true','xác nhận đã nhận; thừa nhận','Please acknowledge receipt of this email.'],
+ ['attach','v','to add a file to an email','đính kèm','I have attached the test report.'],
+ ['overdue','adj','late; past the due date','quá hạn','Two calibration records are overdue.'],
+ ['lead time','n','the time between ordering something and receiving it','thời gian chờ (từ đặt hàng đến nhận)','The lead time for the motor is eight weeks.'],
+ ['on behalf of','phr','representing someone','thay mặt cho','I am writing on behalf of the QE team.'],
+ ['in charge of','phr','responsible for','phụ trách','Who is in charge of the new model?']
+].map(([w,p,m,v,e])=>({id:'v:'+w,w,p,m,v,e}));
+
+/* [idiom, English meaning, Vietnamese, example] */
+const IDIOMS=[
+ ['a piece of cake','very easy','rất dễ, dễ như ăn bánh','With the new fixture, the job is a piece of cake.'],
+ ['hit the ground running','to start new work quickly and successfully','bắt tay vào việc ngay và hiệu quả','The new engineer hit the ground running.'],
+ ['back to the drawing board','to start again because a plan failed','làm lại từ đầu (vì kế hoạch thất bại)','The design failed the drop test, so it is back to the drawing board.'],
+ ['cut corners','to do something badly to save time or money','làm ẩu, đi tắt để tiết kiệm','Never cut corners on safety checks.'],
+ ['get the ball rolling','to start something','bắt đầu một việc','Let\'s get the ball rolling on the new project.'],
+ ['on the same page','having the same understanding','hiểu giống nhau, cùng quan điểm','Let\'s have a quick call to make sure we are on the same page.'],
+ ['touch base','to contact someone briefly for an update','liên lạc nhanh để cập nhật','I will touch base with the supplier tomorrow.'],
+ ['in the long run','over a long period of time','về lâu dài','Automation will save money in the long run.'],
+ ['the bottom line','the most important fact','điều cốt lõi, kết luận cuối cùng','The bottom line is that we cannot ship these units.'],
+ ['call it a day','to stop working for today','dừng làm việc (hôm nay)','We have done enough; let\'s call it a day.'],
+ ['a ballpark figure','a rough estimate','con số ước chừng','Can you give me a ballpark figure for the cost?'],
+ ['think outside the box','to think in a new, creative way','suy nghĩ sáng tạo, khác lối mòn','We need to think outside the box to fix this issue.'],
+ ['keep someone in the loop','to keep someone informed','cập nhật thông tin cho ai','Please keep me in the loop on the audit results.'],
+ ['up in the air','not decided yet','chưa quyết định, còn bỏ ngỏ','The launch date is still up in the air.'],
+ ['by the book','exactly following the rules','đúng quy định, theo đúng quy trình','The auditor wants everything done by the book.'],
+ ['under the weather','slightly ill','không khỏe, hơi ốm','I am feeling a bit under the weather today.'],
+ ['break the ice','to help people feel relaxed at the start','phá vỡ sự ngại ngùng ban đầu','He told a joke to break the ice.'],
+ ['the ball is in your court','it is your turn to act or decide','đến lượt bạn quyết định / hành động','We sent our proposal; now the ball is in their court.'],
+ ['go the extra mile','to do more than is expected','nỗ lực hơn mức yêu cầu','She always goes the extra mile for our customers.'],
+ ['learn the ropes','to learn how to do a new job','học cách làm một công việc mới','It takes a few weeks to learn the ropes.'],
+ ['a blessing in disguise','something bad that turns out to be good','trong cái rủi có cái may','The delay was a blessing in disguise; we found another issue.'],
+ ['hit the nail on the head','to describe a problem exactly','nói trúng vấn đề','You hit the nail on the head: the seal is the problem.'],
+ ['once in a blue moon','very rarely','rất hiếm khi','This failure happens once in a blue moon.'],
+ ['cost an arm and a leg','to be very expensive','rất đắt','A new tester would cost an arm and a leg.'],
+ ['on the fence','unable to decide','lưỡng lự, chưa quyết','The manager is still on the fence about the change.'],
+ ['pull your weight','to do your fair share of the work','làm tròn phần việc của mình','Everyone on the team needs to pull their weight.'],
+ ['see eye to eye','to agree','đồng quan điểm','We don\'t always see eye to eye, but we work well together.'],
+ ['run out of steam','to lose energy','cạn năng lượng, hết hơi','The team ran out of steam after the long build.'],
+ ['burn the midnight oil','to work late into the night','thức khuya làm việc','We burned the midnight oil to finish the report.'],
+ ['easier said than done','harder to do than to talk about','nói dễ hơn làm','Zero defects is easier said than done.'],
+ ['let the cat out of the bag','to reveal a secret by mistake','lỡ tiết lộ bí mật','He let the cat out of the bag about the new model.'],
+ ['miss the boat','to miss an opportunity','lỡ mất cơ hội','If we wait too long, we will miss the boat.']
+].map(([w,m,v,e])=>({id:'i:'+w,w,p:'idiom',m,v,e}));
+
+const GRAM=[
+ {id:'g1',t:'Present simple vs present continuous',f:'S + V(s/es)            → habits, facts, timetables\nS + am/is/are + V-ing   → happening now or temporary',
+  x:['Present simple: repeated actions, fixed schedules and general truths (usually, every day, always).','Present continuous: actions in progress right now or temporary situations (now, at the moment, this week).','State verbs (know, like, need, belong) are normally not used in the -ing form.'],
+  ex:['The line usually starts at 7:30.','The operator is checking the fixture right now.','We need more samples.'],
+  q:[['The line usually ___ at 7:30.',['starts','is starting'],0],['Look! The operator ___ the fixture now.',['checks','is checking'],1],['Water ___ at 100 degrees Celsius.',['boils','is boiling'],0]]},
+ {id:'g2',t:'Past simple vs present perfect',f:'S + V2/ed                 → a finished time in the past\nS + have/has + V3/ed      → experience, or a result that matters now',
+  x:['Past simple goes with a finished time: yesterday, last week, in 2023, ago.','Present perfect: no exact time, or a period that is not finished: ever, never, already, yet, so far, this year, since, for.'],
+  ex:['I finished the report yesterday.','We have had three audits so far this year.','Have you ever been to the US office?'],
+  q:[['I ___ the report yesterday.',['finished','have finished'],0],['We ___ three audits so far this year.',['had','have had'],1],['___ you ever ___ to the US office?',['Did … go','Have … been'],1]]},
+ {id:'g3',t:'Future: will vs be going to',f:'will + V               → instant decisions, predictions, promises\nam/is/are going to + V → plans already made, predictions from evidence',
+  x:['will: a decision made at the moment of speaking ("I\'ll call him"), promises and offers.','be going to: a plan decided before, or a prediction based on something you can see now.'],
+  ex:['The phone is ringing. — I\'ll answer it.','We are going to launch the new model in March.','Look at those clouds. It is going to rain.'],
+  q:[['Look at those clouds. It ___ rain.',['will','is going to'],1],['The phone is ringing. — I ___ answer it.',['\'ll','am going to'],0],['The plan is approved: we ___ launch the model in March.',['will','are going to'],1]]},
+ {id:'g4',t:'Passive voice',f:'S + be + V3/ed (+ by …)\nmodal + be + V3   ·   be being + V3',
+  x:['Use the passive when the action matters more than who does it. It is very common in technical reports.','Change "be" for the tense: is/are (present), was/were (past), has been (present perfect), is being (continuous).'],
+  ex:['The samples were sent to the lab yesterday.','All parts must be inspected before packing.','The new fixture is being installed now.'],
+  q:[['The samples ___ to the lab yesterday.',['sent','were sent'],1],['All parts must ___ before packing.',['inspect','be inspected'],1],['The new fixture ___ by the ME team now.',['is being installed','is installing'],0]]},
+ {id:'g5',t:'Conditionals (first & second)',f:'First:  If + present, will + V    → real and possible\nSecond: If + past, would + V      → imaginary or unlikely now',
+  x:['First conditional: a real condition with a possible result.','Second conditional: an imaginary situation. With "be", use "were" for all persons (If I were you…).'],
+  ex:['If the test fails, we will hold the shipment.','If I were you, I would ask the supplier for a CoC.','If we had more time, we would test more samples.'],
+  q:[['If the test fails, we ___ the shipment.',['will hold','would hold'],0],['If I ___ you, I would ask the supplier.',['am','were'],1],['If we had more time, we ___ more samples.',['will test','would test'],1]]},
+ {id:'g6',t:'Comparatives & superlatives',f:'short adjectives: -er than / the -est\nlong adjectives : more … than / the most …\nequal           : as + adjective + as',
+  x:['One-syllable adjectives (and two-syllable ones ending in -y) add -er / -est: cheap → cheaper, easy → easier.','Longer adjectives use more / most. Irregular: good → better → best, bad → worse → worst.'],
+  ex:['This fixture is more stable than the old one.','It is the worst defect we found this month.','The new motor is as quiet as the old one.'],
+  q:[['This fixture is ___ than the old one.',['more stable','most stable'],0],['It is the ___ defect we found this month.',['worse','worst'],1],['The new motor is ___ the old one.',['as quiet as','as quieter as'],0]]},
+ {id:'g7',t:'Much / many / a few / a little',f:'many, a few     + plural countable nouns\nmuch, a little  + uncountable nouns',
+  x:['Countable: samples, units, parts → many / a few / few.','Uncountable: time, information, equipment, advice → much / a little / little.','"A few / a little" = some (enough); "few / little" = almost none (not enough).'],
+  ex:['How many samples do you need?','We don\'t have much time left.','There are a few units left.'],
+  q:[['How ___ samples do you need?',['much','many'],1],['We don\'t have ___ time left.',['much','many'],0],['There are ___ units left, maybe five.',['a few','a little'],0]]},
+ {id:'g8',t:'Relative clauses: who / which / that / whose',f:'who   → people\nwhich → things\nthat  → people or things (defining clauses)\nwhose → possession',
+  x:['A relative clause gives more information about the noun before it.','Non-defining clauses (with commas) never use "that".'],
+  ex:['The operator who found the defect got a reward.','This is the tester which we bought last year.','The supplier whose parts failed sent an 8D report.'],
+  q:[['The operator ___ found the defect got a reward.',['who','which'],0],['This is the tester ___ we bought last year.',['who','which'],1],['The supplier ___ parts failed sent an 8D.',['whose','who'],0]]},
+ {id:'g9',t:'Gerund vs infinitive',f:'decide / plan / need / agree / promise + to V\navoid / finish / suggest / consider / mind + V-ing\nlook forward to / be used to + V-ing',
+  x:['Some verbs are followed by "to + verb", others by "verb-ing". Learn them in groups.','After a preposition (including "to" in "look forward to" and "be used to"), always use -ing.'],
+  ex:['We decided to hold the shipment.','Please avoid touching the housing with bare hands.','I look forward to hearing from you.'],
+  q:[['We decided ___ the shipment.',['to hold','holding'],0],['Please avoid ___ the housing with bare hands.',['to touch','touching'],1],['I look forward to ___ from you.',['hear','hearing'],1]]},
+ {id:'g10',t:'Must / have to / should / mustn\'t',f:'must / have to   → necessary, obligatory\nshould           → advice\nmustn\'t          → not allowed\ndon\'t have to    → not necessary',
+  x:['"Mustn\'t" (not allowed) is very different from "don\'t have to" (not necessary).','"Have to" is often used for rules from outside; its past form is "had to".'],
+  ex:['You must wear safety shoes in the workshop.','You don\'t have to come on Saturday.','You should double-check the drawing revision.'],
+  q:[['You ___ wear safety shoes in the workshop. It\'s the rule.',['must','might'],0],['The build is cancelled, so you ___ come on Saturday.',['don\'t have to','mustn\'t'],0],['You ___ smoke in the warehouse. It is dangerous.',['mustn\'t','don\'t have to'],0]]},
+ {id:'g11',t:'Prepositions of time: in / on / at',f:'at + clock times, at night, at the weekend (UK)\non + days and dates\nin + months, years, seasons, parts of the day',
+  x:['Go from small to big: at (a point in time) → on (a day) → in (a month or year).','No preposition before next, last, this, every (next Monday, last week).'],
+  ex:['The meeting is on Monday.','The build starts at 8 a.m.','The audit is in December.'],
+  q:[['The meeting is ___ Monday.',['in','on','at'],1],['The build starts ___ 8 a.m.',['in','on','at'],2],['The audit is ___ December.',['in','on','at'],0]]},
+ {id:'g12',t:'Reported speech',f:'am/is → was · will → would · can → could\npresent → past · past → past perfect\nQuestions: asked + wh-word + subject + verb (no inversion)',
+  x:['When the reporting verb is in the past (said, asked), move the tense back.','Reported questions use normal statement word order: He asked where the report was.'],
+  ex:['She said she was busy.','He said he would send it today.','He asked where the report was.'],
+  q:[['She said, "I am busy." → She said she ___ busy.',['is','was'],1],['He said, "I will send it." → He said he ___ send it.',['will','would'],1],['"Where is the report?" → He asked where ___.',['the report was','was the report'],0]]},
+ {id:'g13',t:'Articles: a / an / the',f:'a  + consonant sound: a unit, a user\nan + vowel sound: an hour, an engineer\nthe → something specific or unique',
+  x:['Choose a/an by the sound, not the letter: an hour (silent h), a European.','Use "the" for something already mentioned, something the listener knows, or something unique (the sun).'],
+  ex:['We need an hour to finish.','The sun rises in the east.','She is an engineer at TTI.'],
+  q:[['We need ___ hour to finish.',['a','an'],1],['___ sun rises in the east.',['A','The'],1],['She is ___ engineer at TTI.',['a','an'],1]]}
+];
+
+/* listening lessons: lines = [speaker, text]; the first speaker uses Voice, the second uses Voice 2 */
+const LISTEN=[
+ {id:'l1',t:'Shift handover',lv:1,k:'Dialogue',lines:[
+  ['Lan','Good morning, Tom. How was the night shift?'],
+  ['Tom','Pretty good. We built four hundred units, but the screwdriver at station five stopped twice.'],
+  ['Lan','Did the technician fix it?'],
+  ['Tom','Yes, he replaced the bit at around three a.m. It has been fine since then.'],
+  ['Lan','Great. Any quality issues?'],
+  ['Tom','We found two scratched housings. They are in the red box with the tags.'],
+  ['Lan','OK, I\'ll ask QC to check them this morning.'],
+  ['Tom','Thanks. Oh, and we are running low on labels. There is only one roll left.'],
+  ['Lan','I\'ll call the warehouse now. Have a good rest!']],
+  q:[['How many units did the night shift build?',['Two hundred','Four hundred','Four thousand'],1],['What was the problem at station five?',['The tester failed','The screwdriver stopped','The labels ran out'],1],['Where are the scratched housings?',['In the red box','On the line','In the warehouse'],0],['What will Lan do next?',['Fix the screwdriver','Call the warehouse','Go home'],1]]},
+ {id:'l2',t:'Safety briefing',lv:1,k:'Talk',lines:[
+  ['Supervisor','Good morning, everyone. Before we start, here are three safety reminders.'],
+  ['Supervisor','First, always wear your safety glasses and gloves on the line.'],
+  ['Supervisor','Second, if you see a damaged battery, do not touch it. Put up the warning sign and call your supervisor right away.'],
+  ['Supervisor','Third, keep the walkways clear. Last week, someone almost fell over a box near station two.'],
+  ['Supervisor','Remember, the emergency exits are at the back of the building and next to the canteen.'],
+  ['Supervisor','Thank you, and have a safe day.']],
+  q:[['What should you do if you see a damaged battery?',['Put it in the bin','Call your supervisor','Charge it'],1],['What happened last week?',['A fire started','Someone almost fell','A machine broke down'],1],['Where are the emergency exits?',['At the back and next to the canteen','Next to station two','Only at the front door'],0]]},
+ {id:'l3',t:'Small talk with a visitor',lv:1,k:'Dialogue',lines:[
+  ['Lan','Hi Kevin, welcome to Vietnam! How was your flight?'],
+  ['Kevin','Long, but OK. I slept for most of it.'],
+  ['Lan','Is this your first time here?'],
+  ['Kevin','Yes, it is. I\'m really excited to try the food.'],
+  ['Lan','You should try pho for breakfast. There\'s a good place near your hotel.'],
+  ['Kevin','Sounds great. How long have you worked here?'],
+  ['Lan','About five years. I started as a quality inspector.'],
+  ['Kevin','Nice. Well, I\'m looking forward to seeing the new line.'],
+  ['Lan','Let me show you around after the meeting.']],
+  q:[['How was Kevin\'s flight?',['Short and easy','Long but OK','Cancelled'],1],['What does Lan suggest for breakfast?',['Pho','Bread','Rice'],0],['How long has Lan worked there?',['About one year','About five years','About ten years'],1]]},
+ {id:'l4',t:'A voicemail from the US office',lv:1,k:'Voicemail',lines:[
+  ['Jennifer','Hi Minh, this is Jennifer from the Anderson office. I\'m calling about the samples you sent last week.'],
+  ['Jennifer','We received them this morning, and they look good. But we only got eight pieces, and the request was for ten.'],
+  ['Jennifer','Could you check whether the other two were shipped separately?'],
+  ['Jennifer','Also, our design review has moved from Thursday to Friday at nine a.m. your time.'],
+  ['Jennifer','Please call me back or send me an email when you get this. Thanks, bye.']],
+  q:[['How many samples did Jennifer receive?',['Two','Eight','Ten'],1],['When is the design review now?',['Thursday','Friday','Monday'],1],['What does Jennifer want Minh to do?',['Send ten more samples','Check the two missing pieces','Cancel the review'],1]]},
+ {id:'l5',t:'Checking in at the hotel',lv:1,k:'Dialogue',lines:[
+  ['Receptionist','Good evening. Welcome to the Riverside Hotel. How can I help you?'],
+  ['Guest','Hi, I have a reservation under the name Nguyen.'],
+  ['Receptionist','Let me check. Yes, a single room for three nights. Could I see your passport, please?'],
+  ['Guest','Here you are. What time is breakfast?'],
+  ['Receptionist','From six thirty to ten, on the second floor.'],
+  ['Guest','Great. Is there a shuttle to the industrial park?'],
+  ['Receptionist','Yes, it leaves at seven fifteen every morning from the main entrance.'],
+  ['Guest','Perfect. Thank you.']],
+  q:[['How many nights is the guest staying?',['One','Three','Five'],1],['Where is breakfast served?',['On the first floor','On the second floor','In the room'],1],['What time does the shuttle leave?',['6:30','7:15','10:00'],1]]},
+ {id:'l6',t:'Late parts from a supplier',lv:2,k:'Phone call',lines:[
+  ['David','Hello, this is David Chen from Sunrise Plastics.'],
+  ['Anna','Hi David, it\'s Anna from TTI. I\'m calling about the battery covers. They were due yesterday.'],
+  ['David','Yes, I\'m sorry. One of our molding machines broke down last week.'],
+  ['Anna','I see. When can you ship them?'],
+  ['David','We can send half of the order on Thursday and the rest next Monday.'],
+  ['Anna','That\'s too late for the rest. Our line needs them by Saturday. Is there any chance you could use another machine?'],
+  ['David','Let me check with the production team and get back to you this afternoon.'],
+  ['Anna','OK. Please also send me the inspection report with the first shipment.'],
+  ['David','Sure, no problem.']],
+  q:[['Why are the parts late?',['A machine broke down','There was a customs delay','There was a material shortage'],0],['When will half of the order be shipped?',['Saturday','Thursday','Monday'],1],['When does Anna\'s line need the parts?',['By Saturday','By Monday','By Thursday'],0],['What document does Anna ask for?',['An invoice','An inspection report','A drawing'],1]]},
+ {id:'l7',t:'Customer complaint call',lv:2,k:'Online call',lines:[
+  ['Mike','Hi Hoa, thanks for joining. We have received six returns of the leaf blower this month.'],
+  ['Hoa','I\'m sorry to hear that. What is the failure?'],
+  ['Mike','The motor stops after a few minutes. Customers say it gets very hot.'],
+  ['Hoa','Could you send us the returned units? We need to analyze them in our lab.'],
+  ['Mike','They are on the way. You should receive them by Wednesday.'],
+  ['Hoa','Thank you. In the meantime, we will check all finished goods in the warehouse and add a run test at the end of the line.'],
+  ['Mike','Good. When can you send the 8D report?'],
+  ['Hoa','We will send the containment plan within twenty-four hours and the full 8D in two weeks.'],
+  ['Mike','That works for me. Please keep me in the loop.']],
+  q:[['How many returns did they receive this month?',['Six','Sixteen','Sixty'],0],['What is the failure?',['The battery leaks','The motor stops and gets hot','The housing cracks'],1],['What will Hoa add at the end of the line?',['A drop test','A run test','A label check'],1],['When will Hoa send the full 8D?',['Within 24 hours','In two weeks','On Wednesday'],1]]},
+ {id:'l8',t:'Planning the pilot run',lv:2,k:'Dialogue',lines:[
+  ['Linh','James, do you have a minute to talk about the pilot run?'],
+  ['James','Sure. Is it still planned for next Tuesday?'],
+  ['Linh','Yes, we will build fifty units. All the new fixtures arrived yesterday.'],
+  ['James','Great. Have the work instructions been updated?'],
+  ['Linh','Most of them. Station eight still needs new photos.'],
+  ['James','OK. I\'ll prepare the inspection check sheet and the sample plan. How many units go to the reliability test?'],
+  ['Linh','Ten units for the life test and five for the drop test.'],
+  ['James','Got it. Let\'s meet on Monday afternoon to go over everything.']],
+  q:[['How many units will they build?',['Fifteen','Fifty','Five hundred'],1],['Which station still needs new photos?',['Station five','Station eight','Station ten'],1],['How many units go to the life test?',['Five','Ten','Fifty'],1],['When will they meet?',['Monday afternoon','Tuesday morning','Today'],0]]},
+ {id:'l9',t:'Training a new operator',lv:2,k:'Dialogue',lines:[
+  ['Hung','Mai, today I\'ll show you how to use the leak tester.'],
+  ['Mai','OK. Do I need to wear anything special?'],
+  ['Hung','Just your gloves and glasses. First, put the tank in the fixture and close the cover.'],
+  ['Mai','Like this?'],
+  ['Hung','Yes. Now press both green buttons at the same time. The test takes about twenty seconds.'],
+  ['Mai','The screen says pass. What do I do if it says fail?'],
+  ['Hung','Test it one more time. If it fails again, put a red tag on it and place it in the reject box. Don\'t try to fix it yourself.'],
+  ['Mai','Got it. Should I record the results?'],
+  ['Hung','The tester saves them automatically, but write the failed serial numbers on the check sheet.']],
+  q:[['What machine is Mai learning to use?',['The leak tester','The scale','The screwdriver'],0],['How long does the test take?',['About two seconds','About twenty seconds','About two minutes'],1],['What should Mai do if a part fails twice?',['Fix it herself','Red-tag it and put it in the reject box','Ship it'],1],['What must Mai write on the check sheet?',['All serial numbers','The failed serial numbers','The test time'],1]]},
+ {id:'l10',t:'Audit opening meeting',lv:3,k:'Talk',lines:[
+  ['Laura','Good morning, and thank you for having us. My name is Laura, and I will be leading the audit today together with my colleague, Peter.'],
+  ['Laura','The purpose of this audit is to review your process controls for the new string trimmer before mass production.'],
+  ['Laura','This morning, we will look at the control plan, the PFMEA, and your calibration records.'],
+  ['Laura','After lunch, we will walk through the production line and talk to some operators. We would also like to see how you handle nonconforming parts.'],
+  ['Laura','We plan to share our findings at a closing meeting at four o\'clock.'],
+  ['Laura','If anything is unclear during the day, please feel free to ask us.']],
+  q:[['What product is the audit about?',['A string trimmer','A leaf blower','A pressure washer'],0],['What will they review in the morning?',['The production line','Documents such as the control plan and PFMEA','The warehouse'],1],['What will they do after lunch?',['Have the closing meeting','Walk through the line and talk to operators','Check the warehouse'],1],['When is the closing meeting?',['At noon','At two o\'clock','At four o\'clock'],2]]},
+ {id:'l11',t:'Weekly quality report',lv:3,k:'Presentation',lines:[
+  ['Presenter','Let me give you a quick update on this week\'s quality results.'],
+  ['Presenter','Overall, first pass yield went up from ninety-four to ninety-six percent.'],
+  ['Presenter','The main improvement came from the screw station, where the new torque controller reduced loose screws by half.'],
+  ['Presenter','However, cosmetic defects are still our top issue. Most of them are scratches on the motor cover, and we think they happen during handling between stations eight and nine.'],
+  ['Presenter','Next week, we will add protective trays and train the operators again.'],
+  ['Presenter','On the supplier side, the switch problem is now closed, and the last three lots passed incoming inspection without any defects.']],
+  q:[['What was the first pass yield this week?',['94 percent','96 percent','99 percent'],1],['What is still the top issue?',['Loose screws','Cosmetic defects','Switch failures'],1],['What will they add next week?',['Protective trays','A new tester','More inspectors'],0],['What is the status of the switch problem?',['It got worse','It is now closed','It is still open'],1]]},
+ {id:'l12',t:'Discussing a design change',lv:3,k:'Dialogue',lines:[
+  ['Peter','Thu, we\'re planning to change the battery latch material to reduce cost. What do you think?'],
+  ['Thu','It depends on how strong the new material is. The latch is a critical part for safety.'],
+  ['Peter','The supplier says it has the same strength, and it\'s fifteen percent cheaper.'],
+  ['Thu','That sounds good, but we need to verify it. I\'d like to see drop test and fatigue test results first.'],
+  ['Peter','Fair enough. How many samples would you need?'],
+  ['Thu','At least thirty for the fatigue test. We should also update the PFMEA and the control plan before we approve the change.'],
+  ['Peter','Understood. I\'ll ask the supplier for samples and a material certificate.'],
+  ['Thu','Great. And let\'s inform the customer too, since it\'s a change to a safety-related part.']],
+  q:[['Why do they want to change the material?',['To improve strength','To reduce cost','To change the color'],1],['How much cheaper is the new material?',['Five percent','Fifteen percent','Fifty percent'],1],['How many samples does Thu want for the fatigue test?',['At least thirteen','At least thirty','At least three hundred'],1],['Why should they inform the customer?',['It is a safety-related part','The price changes','The color changes'],0]]}
+];
+const LVN={1:'Easy',2:'Medium',3:'Hard'};
+
+/* ================= state & storage (qe_data.json › eng) ================= */
+const KEY='eng.v1',INT=[0,1,2,4,7,15],NEW_MAX=10;
+const DEF=()=>({v:2,savedAt:0,start:0,done:{},srs:{},gram:{},listen:{},custom:{vocab:[],idiom:[],dict:''},stats:{days:{},dOk:0,dAll:0},opts:{tab:'today',lvl:'0',rate:.9,voice:'',voice2:'',vi:false,lsel:'l1',dir:{vocab:'en',idiom:'en'}}});
+function fill(d){const b=DEF();if(!d||typeof d!=='object')return b;const o=d.opts||{};
+ return Object.assign(b,d,{done:d.done||{},srs:d.srs||{},gram:d.gram||{},listen:d.listen||{},custom:Object.assign(b.custom,d.custom||{}),stats:Object.assign(b.stats,d.stats||{}),opts:Object.assign(b.opts,o,{dir:Object.assign(b.opts.dir,o.dir||{})})})}
+const HOST=(()=>{try{return window.parent!==window&&window.parent.npdStudy||null}catch(e){return null}})();   /* the site: progress per account */
+let S;try{S=fill(HOST?HOST.load('eng'):JSON.parse(localStorage.getItem(KEY)||'null'))}catch(e){S=DEF()}
+if(!S.start)S.start=dayNum();   /* day 1 of the daily lessons = the first day this app was opened */
+const QE_FILE='qe_data.json',QE_OLD='bom_auto_data.json';
+const qeDir=()=>new Promise(ok=>{try{const q=indexedDB.open('bom_auto',1);q.onupgradeneeded=()=>q.result.createObjectStore('d');q.onerror=()=>ok(null);
+ q.onsuccess=()=>{try{const g=q.result.transaction('d').objectStore('d').get('dir');g.onsuccess=()=>ok(g.result||null);g.onerror=()=>ok(null)}catch(e){ok(null)}}}catch(e){ok(null)}});
+async function qeRead(h){let fh=null;try{fh=await h.getFileHandle(QE_FILE)}catch(e){if(e.name!=='NotFoundError')throw e}
+ if(fh)return JSON.parse(await (await fh.getFile()).text());                       /* a broken file throws, so nothing gets overwritten */
+ try{const o=await h.getFileHandle(QE_OLD);return{ser:JSON.parse(await (await o.getFile()).text())}}catch(e){return null}}
+async function qeWrite(h,key,val){const j=(await qeRead(h))||{};j.app='QE Dashboard';j.version=1;j.savedAt=new Date().toISOString();j[key]=val;   /* rewrite only this section */
+ const w=await (await h.getFileHandle(QE_FILE,{create:true})).createWritable();await w.write(JSON.stringify(j));await w.close()}
+async function qeHandle(ask){if(!window.indexedDB)return null;const h=await qeDir();if(!h)return null;let p=await h.queryPermission({mode:'readwrite'});if(p!=='granted'&&ask)p=await h.requestPermission({mode:'readwrite'});return p==='granted'?h:null}
+function svSet(t,c){const e=$('sv');e.textContent=t;e.className=c||''}
+async function fileSave(ask){if(HOST){svSet('✓ Saved to your account');return}try{const h=await qeHandle(ask);if(!h){svSet('Saved in this browser · click to connect qe_data.json');return}
+ await qeWrite(h,'eng',S);svSet('Saved · qe_data.json')}catch(e){svSet('⚠ Could not save qe_data.json: '+(e.message||e),'er')}}
+let st=0;function save(){clearTimeout(st);svSet('Saving…');st=setTimeout(()=>{S.savedAt=Date.now();if(HOST)HOST.save('eng',S);else try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}fileSave(false)},500)}
+function bump(){const k=dayStr();S.stats.days[k]=(S.stats.days[k]||0)+1}
+function streak(){const D=S.stats.days;let d=new Date(),n=0;if(!D[dayStr(d)])d.setDate(d.getDate()-1);while(D[dayStr(d)]){n++;d.setDate(d.getDate()-1)}return n}
+
+/* ================= daily lessons (English_Daily_Bank.js) =================
+   Day n takes the next items of each list in order; once a list runs out it starts again from the top (review round). */
+const BK=Object.assign({words:[],idioms:[],phrasal:[],phrases:[],mistakes:[]},window.ENG_BANK||{});
+const BW=BK.words.map(([w,p,m,v,e])=>({id:'b:'+w,w,p,m,v,e})),BI=BK.idioms.map(([w,m,v,e])=>({id:'bi:'+w,w,p:'idiom',m,v,e})),
+ BP=BK.phrasal.map(([w,m,v,e])=>({id:'bp:'+w,w,p:'phrasal verb',m,v,e})),BS=BK.phrases.map(([w,v,c])=>({id:'bs:'+w,w,p:'phrase',m:c,v,e:'',c})),
+ BM=BK.mistakes.map(([x,o,m],i)=>({id:'bm'+i,x,o,m}));
+BS.forEach(x=>{if(x.v&&!VI[x.w])VI[x.w]=x.v});   /* work phrases carry their own translation */
+const todayIdx=()=>Math.max(0,dayNum()-S.start);
+const pick=(arr,per,i)=>{const o=[];if(arr.length)for(let j=0;j<per;j++)o.push(arr[(i*per+j)%arr.length]);return o};
+const unlocked=(arr,per)=>arr.slice(0,Math.min(arr.length,(todayIdx()+1)*per));
+const lesson=i=>({w:pick(BW,2,i),i:pick(BI,1,i)[0],p:pick(BP,1,i)[0],s:pick(BS,1,i)[0],m:pick(BM,1,i)[0]});
+const lessonSentences=i=>{const L=lesson(i);return[...L.w.map(x=>x.e),L.i&&L.i.e,L.p&&L.p.e,L.s&&L.s.w].filter(Boolean).map((t,k)=>({id:'t'+k,l:'today',t}))};
+
+/* ================= speech ================= */
+let VO=[];
+function voiceOpts(sel,want,fallback){sel.innerHTML=VO.length?VO.map(v=>`<option value="${esc(v.name)}">${esc(v.name.replace(/^(Microsoft|Google)\s+/,'').replace(/\s*Online.*$/,''))} · ${esc(v.lang)}</option>`).join(''):'<option value="">(no English voice installed)</option>';
+ if(want&&VO.some(v=>v.name===want))sel.value=want;else if(fallback)sel.value=fallback.name}
+function loadVoices(){VO=speechSynthesis.getVoices().filter(v=>/^en/i.test(v.lang));
+ const d1=VO.find(v=>/en-US/i.test(v.lang))||VO[0],d2=VO.find(v=>v!==d1&&v.lang===(d1||{}).lang)||VO.find(v=>v!==d1)||d1;
+ voiceOpts($('voice'),S.opts.voice,d1);voiceOpts($('voice2'),S.opts.voice2,d2)}
+function utter(t,who,r){const u=new SpeechSynthesisUtterance(t);const v=VO.find(x=>x.name===$(who==='B'?'voice2':'voice').value);if(v){u.voice=v;u.lang=v.lang}else u.lang='en-US';u.rate=r||S.opts.rate;return u}
+function say(t,r){if(!('speechSynthesis' in window)){alert('This browser cannot read text aloud.');return}speechSynthesis.cancel();lHl(-1);speechSynthesis.speak(utter(t,'A',r))}
+if('speechSynthesis' in window){loadVoices();speechSynthesis.onvoiceschanged=loadVoices}else{$('voice').innerHTML=$('voice2').innerHTML='<option>(not supported)</option>'}
+$('voice').onchange=e=>{S.opts.voice=e.target.value;save()};$('voice2').onchange=e=>{S.opts.voice2=e.target.value;save()};
+$('rate').value=S.opts.rate;$('rate').oninput=e=>{S.opts.rate=+e.target.value;save()};
+const applyVi=()=>{document.body.classList.toggle('show-vi',!!S.opts.vi);$('showVi').checked=!!S.opts.vi};applyVi();
+$('showVi').onchange=e=>{S.opts.vi=e.target.checked;applyVi();save()};
+document.addEventListener('click',e=>{const b=e.target.closest('[data-say]');if(b){e.stopPropagation();say(b.dataset.say)}});
+const spk=(t,sm)=>`<button class="spk${sm?' sm':''}" data-say="${esc(t)}" title="Listen">🔊</button>`;
+
+/* ================= header chips & tabs ================= */
+function decks(d){return d==='vocab'?VOCAB.concat(unlocked(BW,2),unlocked(BP,1),S.custom.vocab):IDIOMS.concat(unlocked(BI,1),unlocked(BS,1),S.custom.idiom)}   /* lesson items join the decks on the day they are taught */
+function dueCount(d){const t=dayNum();return decks(d).filter(it=>S.srs[it.id]&&S.srs[it.id].due<=t).length}
+function chips(){const g=GRAM.filter(x=>S.gram[x.id]).length,ls=LISTEN.filter(x=>S.listen[x.id]).length,acc=S.stats.dAll?Math.round(S.stats.dOk/S.stats.dAll*100):0;
+ $('chips').innerHTML=`<span>🔥 Streak <b>${streak()}</b> day${streak()===1?'':'s'}</span><span>Lesson #${todayIdx()+1} <b>${S.done[todayIdx()]?'✓ done':'to learn'}</b></span><span>Today <b>${S.stats.days[dayStr()]||0}</b> activities</span><span>To review <b>${dueCount('vocab')}</b> words · <b>${dueCount('idiom')}</b> idioms</span><span>Listening <b>${ls}</b>/${LISTEN.length}</span><span>Dictation <b>${S.stats.dOk}</b>/${S.stats.dAll} perfect${S.stats.dAll?` (${acc}%)`:''}</span><span>Grammar <b>${g}</b>/${GRAM.length}</span>`}
+function tab(t,quiet){S.opts.tab=t;document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.t===t));document.querySelectorAll('.tab').forEach(s=>s.classList.toggle('on',s.id==='t-'+t));
+ if(t==='vocab'||t==='idiom')deckRender(t);if(t==='gram')gramRender();if(t==='today')todayRender();if(t==='listen')listenRender();if(!quiet)save()}
+$('tabs').onclick=e=>{const b=e.target.closest('[data-t]');if(b)tab(b.dataset.t)};
+
+/* ================= dictation ================= */
+let DC=null,dChecked=false,dLast='';
+function myDict(){return S.custom.dict.split('\n').map(s=>s.trim()).filter(Boolean).map((t,i)=>({id:'m'+i,l:'my',t}))}
+function dPool(){const l=S.opts.lvl;if(l==='my')return myDict();if(l==='today')return lessonSentences(tView);
+ if(l==='listen'){const L=LISTEN.find(x=>x.id===S.opts.lsel)||LISTEN[0];return L.lines.map(([,t],i)=>({id:'ls'+i,l:'listen',t}))}
+ return l==='0'?DICT:DICT.filter(x=>String(x.l)===l)}
+function dNext(){const p=dPool();if(!p.length){DC=null;$('dRes').innerHTML='<p class="mut">No sentences yet. Add some under “My sentences” below.</p>';return}
+ let c;do{c=p[Math.random()*p.length|0]}while(p.length>1&&c.t===dLast);DC=c;dLast=c.t;dChecked=false;$('dIn').value='';$('dRes').innerHTML='';$('dHintT').hidden=true;
+ $('dStat').textContent=`${p.length} sentence${p.length===1?'':'s'} at this level`;setTimeout(()=>say(DC.t),150);$('dIn').focus()}
+function diff(target,input){const T=(target.match(/\S+/g)||[]).filter(w=>norm(w)),U=(input.match(/\S+/g)||[]).filter(w=>norm(w)),a=T.map(norm),b=U.map(norm),m=a.length,k=b.length;
+ const L=Array.from({length:m+1},()=>new Uint16Array(k+1));
+ for(let i=m-1;i>=0;i--)for(let j=k-1;j>=0;j--)L[i][j]=a[i]===b[j]?L[i+1][j+1]+1:Math.max(L[i+1][j],L[i][j+1]);
+ const out=[];let i=0,j=0,ok=0,extra=0;
+ while(i<m||j<k){if(i<m&&j<k&&a[i]===b[j]){out.push(['ok',T[i]]);ok++;i++;j++}else if(j<k&&(i>=m||L[i][j+1]>=L[i+1][j])){out.push(['x',U[j]]);extra++;j++}else{out.push(['miss',T[i]]);i++}}
+ return{out,ok,total:m,extra}}
+function dCheck(){if(!DC)return;const v=$('dIn').value.trim();if(!v){$('dIn').focus();return}
+ const r=diff(DC.t,v),pct=r.total?Math.round(r.ok/r.total*100):0,perfect=r.ok===r.total&&!r.extra;
+ if(!dChecked){S.stats.dAll++;if(perfect)S.stats.dOk++;bump();save();chips()}dChecked=true;
+ $('dRes').innerHTML=`<div class="res"><div class="score ${perfect?'perfect':''}">${perfect?'🎉 100% correct!':`${r.ok}/${r.total} words correct (${pct}%)`}</div>${r.out.map(([c,w])=>`<span class="${c}">${esc(w)}</span>`).join(' ')}
+  <div class="legend"><span style="color:var(--ok)">green</span> = correct · <span style="color:var(--bad)">red</span> = missing or wrong (the right word) · <s>struck out</s> = extra or wrong word you typed</div>
+  <div class="row" style="margin-top:8px">${spk(DC.t)}<span>${esc(DC.t)}${tv(DC.t)}</span></div></div>`}
+$('dPlay').onclick=()=>DC?say(DC.t):dNext();$('dSlow').onclick=()=>DC&&say(DC.t,Math.max(.5,S.opts.rate-.3));
+$('dHint').onclick=()=>{if(!DC)return;const h=$('dHintT');h.hidden=false;h.textContent=DC.t.split(/\s+/).map(w=>w.replace(/[A-Za-z0-9]/g,(c,i)=>i===0?c:'_')).join('  ')};
+$('dChk').onclick=dCheck;$('dNext').onclick=dNext;
+$('dShow').onclick=()=>{if(!DC)return;dChecked=true;$('dRes').innerHTML=`<div class="res"><div class="score">Answer</div>${spk(DC.t)} ${esc(DC.t)}${tv(DC.t)}</div>`};
+$('dIn').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();dChecked?dNext():dCheck()}});
+$('dLvl').value=S.opts.lvl;$('dLvl').onchange=e=>{S.opts.lvl=e.target.value;save();dNext()};
+$('dMy').value=S.custom.dict;const myN=()=>$('dMyN').textContent=myDict().length+' sentences';myN();
+$('dMySave').onclick=()=>{S.custom.dict=$('dMy').value;save();myN();if(S.opts.lvl==='my')dNext()};
+
+/* ================= flashcards (vocabulary & idioms, spaced repetition) ================= */
+const DL={vocab:{name:'Vocabulary',word:'Word / phrase'},idiom:{name:'Idioms & phrases',word:'Idiom / phrase'}};
+const Q={vocab:null,idiom:null};
+['vocab','idiom'].forEach(d=>{const L=DL[d];$('t-'+d).innerHTML=`
+ <div class="card"><div class="row sp"><div class="stats" id="${d}-st"></div>
+  <div class="row"><label>Mode <select id="${d}-dir"><option value="en">Word → meaning (flip)</option><option value="vi">Meaning → word (type)</option></select></label><button class="pri" id="${d}-go">▶ Start review</button></div></div>
+  <div class="flash" id="${d}-fc"></div></div>
+ <details class="card"><summary>List & add ${L.name.toLowerCase()}</summary>
+  <form class="row add" id="${d}-add"><input name="w" placeholder="${L.word}" required><input name="m" placeholder="Meaning" required><input name="e" placeholder="Example (optional)"><button class="pri">+ Add</button></form>
+  <div class="row" style="margin-top:10px"><input id="${d}-q" placeholder="Search…" style="flex:1;min-width:160px"><span class="mut" id="${d}-cnt"></span></div>
+  <div class="tblw"><table><thead><tr><th>${L.word}</th><th>Meaning</th><th>Example</th><th>Level</th><th></th></tr></thead><tbody id="${d}-tb"></tbody></table></div></details>`;
+ $(d+'-dir').value=S.opts.dir[d];$(d+'-dir').onchange=e=>{S.opts.dir[d]=e.target.value;save();if(Q[d])flash(d)};
+ $(d+'-go').onclick=()=>start(d);
+ $(d+'-q').oninput=()=>listRender(d);
+ $(d+'-add').onsubmit=e=>{e.preventDefault();const f=e.target,w=f.w.value.trim(),m=f.m.value.trim();if(!w||!m)return;
+  S.custom[d].push({id:'c'+d[0]+':'+Date.now().toString(36)+Math.random().toString(36).slice(2,5),w,p:d==='idiom'?'idiom':'',m,e:f.e.value.trim(),my:1});f.reset();f.w.focus();save();deckRender(d)};
+ $(d+'-tb').onclick=e=>{const b=e.target.closest('[data-del]');if(!b)return;if(!confirm('Delete this item?'))return;S.custom[d]=S.custom[d].filter(x=>x.id!==b.dataset.del);delete S.srs[b.dataset.del];save();deckRender(d)};
+ $(d+'-fc').addEventListener('click',e=>{const a=e.target.closest('[data-a]');if(a)act(d,a.dataset.a)});
+});
+function deckStats(d){const t=dayNum(),all=decks(d);let nw=0,lr=0,ms=0,due=0;all.forEach(it=>{const s=S.srs[it.id];if(!s)nw++;else{if(s.b>=4)ms++;else lr++;if(s.due<=t)due++}});return{all:all.length,nw,lr,ms,due}}
+function deckRender(d){const s=deckStats(d);
+ $(d+'-st').innerHTML=`<div class="stat hl"><b>${s.due}</b><span>Due today</span></div><div class="stat"><b>${s.nw}</b><span>New</span></div><div class="stat"><b>${s.lr}</b><span>Learning</span></div><div class="stat"><b>${s.ms}</b><span>Mastered</span></div>`;
+ if(!Q[d])$(d+'-fc').innerHTML=`<div class="done">${s.due?`<b>${s.due}</b> card${s.due===1?'':'s'} due`:'No cards due'}${s.nw?` and <b>${Math.min(NEW_MAX,s.nw)}</b> new card${Math.min(NEW_MAX,s.nw)===1?'':'s'}`:''}.</div><div class="mut">Click <b>▶ Start review</b>. “Got it” brings a card back after 1, 2, 4, 7 and 15 days; “Again” repeats it in this session.</div>`;
+ listRender(d);chips()}
+function listRender(d){const q=$(d+'-q').value.trim().toLowerCase(),all=decks(d).filter(it=>!q||(it.w+' '+it.m+' '+(it.v||'')).toLowerCase().includes(q));$(d+'-cnt').textContent=all.length+' items';
+ $(d+'-tb').innerHTML=all.map(it=>{const b=(S.srs[it.id]||{}).b||0;return`<tr><td class="w">${spk(it.w,1)} ${esc(it.w)}${it.p&&it.p!=='idiom'?` <span class="pos">${esc(it.p)}</span>`:''}</td><td>${esc(it.m)}${viSpan(it.v)}</td><td class="e">${esc(it.e||'')}${it.e?tv(it.e):''}</td><td><span class="lvl" title="Level ${b}/5">${[1,2,3,4,5].map(i=>`<i class="${i<=b?'f':''}"></i>`).join('')}</span></td><td>${it.my?`<button class="ghost" data-del="${esc(it.id)}" title="Delete">✕</button>`:''}</td></tr>`}).join('')}
+function start(d){const t=dayNum(),all=decks(d),due=shuffle(all.filter(it=>S.srs[it.id]&&S.srs[it.id].due<=t)),nw=shuffle(all.filter(it=>!S.srs[it.id])).slice(0,NEW_MAX);
+ Q[d]={list:due.concat(nw),i:0,shown:false,res:null,ok:0,n:due.length+nw.length};if(!Q[d].list.length){Q[d]=null;deckRender(d);return}flash(d)}
+function flash(d){const q=Q[d],el=$(d+'-fc');if(!q)return deckRender(d);
+ if(q.i>=q.list.length){Q[d]=null;deckRender(d);el.innerHTML=`<div class="done">🎉 Session complete: ${q.ok}/${q.n} cards remembered the first time.</div><div class="mut">Come back tomorrow to review the cards that are due.</div>`;return}
+ const it=q.list[q.i],s=S.srs[it.id],dir=S.opts.dir[d],top=`<div class="fc-top"><span>${q.i+1} / ${q.list.length}</span><span>${s?'Level '+s.b+'/5':'New card'}</span></div>`;
+ const meaning=`<div class="back">${esc(it.m)}</div>${viSpan(it.v)}`;
+ if(dir==='en'){el.innerHTML=top+`<div class="front">${esc(it.w)} ${spk(it.w)}</div>${it.p&&it.p!=='idiom'?`<div class="pos">${esc(it.p)}</div>`:''}`+
+  (q.shown?meaning+(it.e?`<div class="ex">${spk(it.e,1)} “${esc(it.e)}”</div>${tv(it.e)}`:'')+`<div class="fbtn"><button class="sec bad-b" data-a="no">✗ Again<span class="kb">1</span></button><button class="sec ok-b" data-a="yes">✓ Got it<span class="kb">2</span></button></div>`
+   :`<div class="fbtn"><button class="pri" data-a="show">Show meaning<span class="kb">Space</span></button></div>`)}
+ else{const clue=`<div class="front def">${esc(it.m)}</div>${viSpan(it.v)}`;
+  if(!q.res){el.innerHTML=top+clue+`<input id="fcIn" autocomplete="off" spellcheck="false" placeholder="Type the English ${d==='idiom'?'idiom or phrase':'word'}…"><div class="fbtn"><button class="pri" data-a="chk">Check<span class="kb">Enter</span></button><button class="ghost" data-a="giveup">I don't know</button></div>`;
+   const inp=$('fcIn');inp.focus();inp.onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();act(d,'chk')}}}
+  else{el.innerHTML=top+clue+`<div class="verdict ${q.res.ok?'ok':'bad'}">${q.res.ok?'✓ Correct':'✗ Not quite'}${q.res.v&&!q.res.ok?` · you typed: “${esc(q.res.v)}”`:''}</div><div class="front">${esc(it.w)} ${spk(it.w)}</div>${it.e?`<div class="ex">${spk(it.e,1)} “${esc(it.e)}”</div>${tv(it.e)}`:''}<div class="fbtn"><button class="pri" data-a="next">Next<span class="kb">Enter</span></button></div>`}}}
+function grade(d,good){const q=Q[d],it=q.list[q.i],t=dayNum(),s=S.srs[it.id]||{b:0,due:t};
+ if(good){s.b=Math.min(5,s.b+1);s.due=t+INT[s.b];if(!q.miss||!q.miss[it.id])q.ok++}
+ else{s.b=1;s.due=t;q.miss=q.miss||{};q.miss[it.id]=1;q.list.splice(Math.min(q.list.length,q.i+4),0,it)}   /* missed: comes back a few cards later */
+ S.srs[it.id]=s;bump();save()}
+function act(d,a){const q=Q[d];if(!q)return;const it=q.list[q.i];
+ if(a==='show'){q.shown=true;say(it.w);flash(d)}
+ else if(a==='yes'||a==='no'){grade(d,a==='yes');q.i++;q.shown=false;flash(d);chips()}
+ else if(a==='chk'||a==='giveup'){const v=a==='giveup'?'':($('fcIn')||{}).value||'';if(a==='chk'&&!v.trim())return;
+  const ok=a==='chk'&&norm(v.replace(/\s+/g,''))===norm(it.w.replace(/\s+/g,''));q.res={ok,v:v.trim()};grade(d,ok);say(it.w);flash(d);chips()}
+ else if(a==='next'){q.res=null;q.i++;flash(d)}}
+document.addEventListener('keydown',e=>{const t=S.opts.tab;if(t!=='vocab'&&t!=='idiom')return;const q=Q[t];if(!q)return;const typing=/INPUT|TEXTAREA|SELECT/.test(e.target.tagName);
+ if(S.opts.dir[t]==='en'&&!typing){if(e.code==='Space'&&!q.shown){e.preventDefault();act(t,'show')}else if(q.shown&&e.key==='1')act(t,'no');else if(q.shown&&e.key==='2')act(t,'yes')}
+ else if(S.opts.dir[t]==='vi'&&q.res&&e.key==='Enter'){e.preventDefault();act(t,'next')}});
+document.addEventListener('keydown',e=>{if(S.opts.tab==='dict'&&e.ctrlKey&&e.code==='Space'){e.preventDefault();DC?say(DC.t):dNext()}});
+
+/* ================= listening ================= */
+let lShow=false;
+function lHl(i){document.querySelectorAll('#lDet .ln').forEach((el,k)=>el.classList.toggle('cur',k===i))}
+function lPlay(L,from,only){if(!('speechSynthesis' in window)){alert('This browser cannot read text aloud.');return}speechSynthesis.cancel();
+ const who=[...new Set(L.lines.map(l=>l[0]))],seq=only?[from]:L.lines.map((_,k)=>k).slice(from);
+ seq.forEach((k,n)=>{const u=utter(L.lines[k][1],who.indexOf(L.lines[k][0])===1?'B':'A');u.onstart=()=>lHl(k);if(n===seq.length-1)u.onend=()=>lHl(-1);speechSynthesis.speak(u)})}
+function listenRender(){const L=LISTEN.find(x=>x.id===S.opts.lsel)||LISTEN[0],who=[...new Set(L.lines.map(l=>l[0]))],r=S.listen[L.id];
+ $('lList').innerHTML=LISTEN.map((x,i)=>{const s=S.listen[x.id];return`<button class="gi ${x.id===L.id?'on':''}" data-l="${x.id}"><span>${i+1}. ${esc(x.t)}<small><span class="lvtag l${x.lv}">${LVN[x.lv]}</span> ${esc(x.k)}</small></span><span class="ck ${s&&s.best===100?'y':''}">${s?s.best+'%':''}</span></button>`}).join('');
+ $('lDet').innerHTML=`<h3>${esc(L.t)}</h3>${tv(L.t)}<div class="row"><span class="lvtag l${L.lv}">${LVN[L.lv]}</span><span class="mut">${esc(L.k)} · ${L.lines.length} lines${who.length>1?' · '+who.map(esc).join(' & '):''}</span></div>
+  <div class="lplayer"><button class="bigplay" id="lAll" title="Play the whole lesson">▶</button><button class="sec" id="lStop">■ Stop</button><button class="sec" id="lSlow">🐢 Slow</button>
+   <label><input type="checkbox" id="lTr" ${lShow?'checked':''}> Show transcript</label></div>
+  <p class="mut" style="margin:0">Listen first without the transcript, then answer the questions. Click any line to hear it again.</p>
+  <div class="lines">${L.lines.map(([w,t],k)=>`<div class="ln" data-k="${k}"><span class="who ${who.indexOf(w)===1?'b':''}">${esc(w)}</span><div class="tx ${lShow?'':'hide'}">${esc(t)}${tv(t)}</div></div>`).join('')}</div>
+  <div class="qz" id="lQz"><h2 style="margin:0">Questions</h2>${L.q.map(([q,o],i)=>`<div><div class="q">${i+1}. ${esc(q)}</div>${tv(q)}<div class="opts">${o.map((x,j)=>`<label><input type="radio" name="lq${i}" value="${j}">${esc(x)}</label>`).join('')}</div></div>`).join('')}
+  <div class="row"><button class="pri" id="lChk">✓ Check answers</button><button class="ghost" id="lDict">✍️ Practise dictation with this lesson →</button><span id="lMsg" class="mut">${r?`Best score: ${r.best}%`:''}</span></div></div>`;
+ $('lAll').onclick=()=>lPlay(L,0);$('lStop').onclick=()=>{speechSynthesis.cancel();lHl(-1)};
+ $('lSlow').onclick=()=>{const keep=S.opts.rate;S.opts.rate=Math.max(.5,keep-.25);lPlay(L,0);S.opts.rate=keep};
+ $('lTr').onchange=e=>{lShow=e.target.checked;document.querySelectorAll('#lDet .tx').forEach(x=>x.classList.toggle('hide',!lShow))};
+ document.querySelectorAll('#lDet .ln').forEach(el=>el.onclick=()=>lPlay(L,+el.dataset.k,true));
+ $('lDict').onclick=()=>{S.opts.lvl='listen';$('dLvl').value='listen';tab('dict');dNext()};
+ $('lChk').onclick=()=>{let right=0;L.q.forEach(([,o,a],i)=>{document.querySelectorAll(`#lQz input[name=lq${i}]`).forEach(x=>{const l=x.parentNode;l.classList.remove('r','w');if(+x.value===a)l.classList.add('r');else if(x.checked)l.classList.add('w')});
+   const c=document.querySelector(`#lQz input[name=lq${i}]:checked`);if(c&&+c.value===a)right++});
+  const pct=Math.round(right/L.q.length*100),prev=S.listen[L.id];S.listen[L.id]={best:Math.max(pct,prev?prev.best:0),last:pct,at:dayStr()};bump();save();chips();
+  $('lMsg').textContent=pct===100?'🎉 All correct!':`${right}/${L.q.length} correct. The right answers are in green; turn on the transcript to check.`;
+  const ck=document.querySelector(`.gi[data-l="${L.id}"] .ck`);if(ck){ck.textContent=S.listen[L.id].best+'%';ck.classList.toggle('y',S.listen[L.id].best===100)}}}
+$('lList').onclick=e=>{const b=e.target.closest('[data-l]');if(!b)return;if(window.speechSynthesis)speechSynthesis.cancel();S.opts.lsel=b.dataset.l;lShow=false;save();listenRender();$('lDet').scrollIntoView({block:'nearest',behavior:'smooth'})};
+
+/* ================= today's lesson ================= */
+let tView=todayIdx();
+function todayRender(){const n=todayIdx();tView=Math.min(Math.max(0,tView),n);const i=tView,L=lesson(i),dt=new Date();dt.setDate(dt.getDate()-(n-i));
+ if(!BW.length){$('t-today').innerHTML='<div class="card">Could not load english-bank.js. Keep it in the same folder as english.html.</div>';return}
+ const round=Math.floor(i*2/BW.length)+1,done=!!S.done[i];
+ const it=x=>`<div class="item"><div class="big">${esc(x.w)} ${spk(x.w)}</div>${x.p&&!/idiom|phrasal|phrase/.test(x.p)?`<span class="pos">${esc(x.p)}</span>`:''}<div class="mean">${esc(x.m)}</div>${viSpan(x.v)}${x.e?`<div class="ex">${spk(x.e,1)} “${esc(x.e)}”</div>${tv(x.e)}`:''}</div>`;
+ const K=(en,vi)=>`<span class="k">${en}</span>${viSpan(vi)}`;
+ const opts=L.m?(i%2?[L.m.o,L.m.x]:[L.m.x,L.m.o]):[];
+ $('t-today').innerHTML=`<div class="card"><div class="dhead"><div><h2>${i===n?'Today\'s lesson':'Lesson #'+(i+1)}</h2>${viSpan(i===n?'Bài học hôm nay':'Bài học ngày #'+(i+1))}
+   <div class="dt">Day ${i+1} · ${dt.toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long',year:'numeric'})}${round>1?` · Round ${round} (review)`:''}</div></div>
+   <div class="nav"><button class="sec" data-nav="-1" ${i===0?'disabled':''} title="Previous lesson">◀</button><button class="sec" data-nav="0" ${i===n?'disabled':''} title="Back to today">●</button><button class="sec" data-nav="1" ${i===n?'disabled':''} title="Next lesson">▶</button></div></div></div>
+  <div class="lgrid">
+   <div class="lc">${K('📘 New words','Từ mới')}${L.w.map(it).join('')}</div>
+   <div class="lc">${K('💬 Idiom','Thành ngữ')}${L.i?it(L.i):''}</div>
+   <div class="lc">${K('🔧 Phrasal verb','Cụm động từ')}${L.p?it(L.p):''}</div>
+   <div class="lc">${K('✉️ Useful phrase at work','Mẫu câu dùng trong công việc')}${L.s?`<span class="tag">${esc(L.s.c)}</span><div class="big" style="font-size:18px">${esc(L.s.w)} ${spk(L.s.w)}</div>${viSpan(L.s.v)}`:''}</div>
+   <div class="lc">${K('⚠️ Common mistake','Lỗi thường gặp')}${L.m?`<div style="font-weight:600">Which sentence is correct?</div>${viSpan('Câu nào đúng?')}<div class="mq" id="mq">${opts.map(o=>`<button data-mq="${o===L.m.o?1:0}">${esc(o)}</button>`).join('')}</div>
+     <div id="mqA" hidden><div><span class="wrong">${esc(L.m.x)}</span></div><div><span class="right">✓ ${esc(L.m.o)}</span> ${spk(L.m.o,1)}</div><div class="mut" style="font-size:13.5px">${esc(L.m.m)}</div>${tv(L.m.m)}</div>`:''}</div>
+   <div class="lc">${K('✍️ Dictation for this lesson','Chép chính tả theo bài')}<div class="mean">${lessonSentences(i).length} sentences from today's lesson.</div>${viSpan(lessonSentences(i).length+' câu lấy từ bài học hôm nay.')}<button class="pri" id="tDict" style="align-self:flex-start">Practise dictation →</button>
+    <span class="k" style="margin-top:6px">🎧 Listening</span>${viSpan('Luyện nghe')}<div class="mean">${(()=>{const x=LISTEN[i%LISTEN.length];return`Suggested: <b>${esc(x.t)}</b> (${LVN[x.lv]})`+tv(x.t)})()}</div><button class="sec" id="tListen" style="align-self:flex-start">Open listening →</button></div>
+  </div>
+  <div class="card dfoot"><button class="${done?'sec ok-b':'pri'}" id="tDone">${done?'✓ Lesson completed':'✓ Mark lesson as done'}</button>
+   <span class="mut">The words, idiom, phrasal verb and phrase from this lesson are added to your review cards in Vocabulary / Idioms. A new lesson opens every day (${BW.length/2} days per round).${viSpan('Từ, idiom, phrasal verb và mẫu câu của bài được thêm vào thẻ ôn ở tab Vocabulary / Idioms. Mỗi ngày mở một bài mới ('+BW.length/2+' ngày mỗi vòng).')}</span></div>`}
+$('t-today').addEventListener('click',e=>{const nv=e.target.closest('[data-nav]');
+ if(nv){const v=+nv.dataset.nav;tView=v===0?todayIdx():tView+v;todayRender();return}
+ const q=e.target.closest('[data-mq]');if(q){document.querySelectorAll('#mq button').forEach(b=>b.classList.add(b.dataset.mq==='1'?'r':'w'));$('mqA').hidden=false;bump();save();chips();return}
+ if(e.target.id==='tDict'){S.opts.lvl='today';$('dLvl').value='today';tab('dict');dNext();return}
+ if(e.target.id==='tListen'){S.opts.lsel=LISTEN[tView%LISTEN.length].id;lShow=false;tab('listen');return}
+ if(e.target.id==='tDone'){if(S.done[tView])delete S.done[tView];else{S.done[tView]=true;bump()}save();chips();todayRender()}});
+
+/* ================= grammar ================= */
+let gSel=null;
+function gramRender(){if(!gSel)gSel=(GRAM.find(g=>!S.gram[g.id])||GRAM[0]).id;
+ $('gList').innerHTML=GRAM.map((g,i)=>`<button class="gi ${g.id===gSel?'on':''}" data-g="${g.id}"><span>${i+1}. ${esc(g.t)}</span><span class="ck ${S.gram[g.id]?'y':''}">${S.gram[g.id]?'✓':''}</span></button>`).join('');
+ const g=GRAM.find(x=>x.id===gSel);
+ $('gDet').innerHTML=`<h3>${esc(g.t)}</h3>${tv(g.t)}<div class="form">${esc(g.f)}</div><ul>${g.x.map(s=>`<li>${esc(s)}${tv(s)}</li>`).join('')}</ul>
+  <div class="exs">${g.ex.map(s=>`<div>${spk(s,1)}<span>${esc(s)}${tv(s)}</span></div>`).join('')}</div>
+  <div class="qz" id="gQz"><h2 style="margin:0">Practice</h2>${g.q.map(([q,o],i)=>`<div><div class="q">${i+1}. ${esc(q)}</div><div class="opts">${o.map((x,j)=>`<label><input type="radio" name="q${i}" value="${j}">${esc(x)}</label>`).join('')}</div></div>`).join('')}
+  <div class="row"><button class="pri" id="gChk">✓ Check</button><span id="gMsg" class="mut">${S.gram[g.id]?'✓ You have completed this topic.':'Get all answers right to complete this topic.'}</span></div></div>`;
+ $('gChk').onclick=()=>{let right=0;g.q.forEach(([,o,a],i)=>{document.querySelectorAll(`#gQz input[name=q${i}]`).forEach(r=>{const l=r.parentNode;l.classList.remove('r','w');if(+r.value===a)l.classList.add('r');else if(r.checked)l.classList.add('w')});
+   const c=document.querySelector(`#gQz input[name=q${i}]:checked`);if(c&&+c.value===a)right++});
+  bump();const all=right===g.q.length;if(all)S.gram[g.id]=true;save();chips();
+  $('gMsg').textContent=all?'🎉 All correct! Topic completed.':`${right}/${g.q.length} correct. The right answers are in green.`;
+  const ck=document.querySelector(`.gi[data-g="${g.id}"] .ck`);if(all&&ck){ck.className='ck y';ck.textContent='✓'}}}
+$('gList').onclick=e=>{const b=e.target.closest('[data-g]');if(b){gSel=b.dataset.g;gramRender();$('gDet').scrollIntoView({block:'nearest',behavior:'smooth'})}};
+
+/* ================= reset ================= */
+$('rst').onclick=()=>{if(!confirm('Reset all learning progress?\n\nThis clears: card levels, dictation and listening results, completed grammar topics, daily lessons and your streak.\nThis keeps: the words, idioms and sentences you added; your voice and speed settings.'))return;
+ const keep={custom:S.custom,opts:S.opts};S=Object.assign(DEF(),keep,{start:dayNum()});tView=0;Q.vocab=Q.idiom=null;gSel=null;save();chips();tab(S.opts.tab);
+ if(S.opts.tab!=='vocab')deckRender('vocab');if(S.opts.tab!=='idiom')deckRender('idiom');$('dRes').innerHTML=''};
+
+/* ================= init ================= */
+function renderAll(){chips();deckRender('vocab');deckRender('idiom');tab(S.opts.tab||'today',true)}   /* no save on load, so an older browser copy never outruns qe_data.json */
+renderAll();
+(async()=>{if(HOST){svSet('✓ Progress saved to your account');return}try{const h=await qeHandle(false);if(!h){svSet('Saved in this browser · click to connect qe_data.json');return}
+ const j=await qeRead(h),d=j&&j.eng;
+ if(d&&(d.savedAt||0)>(S.savedAt||0)){S=fill(d);if(!S.start)S.start=dayNum();tView=todayIdx();try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}$('dLvl').value=S.opts.lvl;$('rate').value=S.opts.rate;$('dMy').value=S.custom.dict;myN();applyVi();
+  ['vocab','idiom'].forEach(k=>$(k+'-dir').value=S.opts.dir[k]);if(VO.length)loadVoices();renderAll();svSet('Loaded from qe_data.json')}
+ else if(!d||(S.savedAt||0)>(d.savedAt||0))await fileSave(false);else svSet('Saved · qe_data.json')}catch(e){svSet('⚠ qe_data.json has an error, not overwritten: '+(e.message||e),'er')}})();
+$('sv').onclick=()=>fileSave(true);
+})();
+</script></body></html>

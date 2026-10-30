@@ -1,11 +1,12 @@
 /**
- * NPD Dashboard – API Google Sheets
+ * Thiên Công Tông (QE Workspace) – API Google Sheets
  * Dán toàn bộ file này vào: Google Sheet → Extensions → Apps Script → Code.gs
  *
  * Việc kiểm tra mật khẩu chạy ở đây (phía Google), KHÔNG gửi tab "Tài khoản"
  * về trình duyệt. Website chỉ nhận một mã phiên (token) sau khi đăng nhập đúng,
- * và phải có token mới lấy được dữ liệu các tab còn lại
- * (Model, Timeline, SER, NPQ, PSR, NPPR, NPPR_Readiness).
+ * và phải có token mới lấy được dữ liệu. Chỉ các tab trong READ_TABS được gửi về.
+ * Tạo tài khoản (action "register"): ghi vào tab Tài khoản với Trạng thái = "Chờ duyệt";
+ * chủ Sheet xóa chữ đó là dùng được (đổi CFG.SIGNUP_APPROVAL = false để dùng ngay).
  *
  * Sửa dữ liệu chung (action "save"): mọi tài khoản đã đăng nhập, trừ Quyền = Viewer.
  * Dữ liệu cá nhân (Động Phủ, Training, sổ OT, lời nhắc) lưu ở tab "Cá nhân", mỗi người chỉ đọc/ghi phần của mình.
@@ -27,12 +28,18 @@ const CFG = {
   MINE_MAX: 45000,         // ký tự / ô (giới hạn của Sheet là 50.000)
   IMG_MAX: 4 * 1024 * 1024,
   PRESENCE_SEC: 120,       // "đang sửa" còn hiệu lực bao lâu sau lần báo cuối
+  SIGNUP_APPROVAL: true,   // tài khoản tự tạo phải được chủ Sheet duyệt (xóa "Chờ duyệt" ở cột Trạng thái)
+  SIGNUP_PER_HOUR: 20,     // tối đa số tài khoản tạo mới mỗi giờ (chống spam)
+  PENDING: 'Chờ duyệt',
 };
 
+// Tab gửi về trình duyệt (các tab khác trong Sheet, vd dữ liệu NPD cũ, không bao giờ gửi đi)
+const READ_TABS = ['Cài đặt', 'Thư viện', 'English', 'Chinese'];
+
 // Tab được phép sửa từ web (tab chưa có thì tự tạo, cột chưa có thì tự thêm vào cuối)
-const EDIT_TABS = ['Model', 'Timeline', 'SER', 'NPQ', 'PSR', 'NPPR', 'NPPR_Readiness', 'NPPR_Open', 'NPPR_Approval', 'Cài đặt'];
+const EDIT_TABS = ['Cài đặt', 'Thư viện'];
 const MINE_HEAD = ['Tên đăng nhập', 'Khóa', 'Dữ liệu', 'Cập nhật'];
-const MINE_KEYS = ['npdCave', 'npdLib', 'npdOT', 'npdFairy'];
+const MINE_KEYS = ['npdCave', 'npdLib', 'npdOT', 'npdFairy', 'npdEng', 'npdZh'];
 const HISTORY_HEAD = ['Thời gian', 'Người sửa', 'Tab', 'TTi model', 'Dòng', 'Cột', 'Giá trị cũ', 'Giá trị mới'];
 const VIEW_ROLES = ['viewer', 'view', 'xem', 'chỉ xem', 'chi xem'];
 
@@ -44,7 +51,7 @@ const COLS = {
   role:   ['quyền', 'vai trò', 'role'],
   active: ['trạng thái', 'kích hoạt', 'active'],
 };
-const INACTIVE = ['khóa', 'khoá', 'khoa', 'ngưng', 'inactive', 'locked', 'no', 'false', '0'];
+const INACTIVE = ['khóa', 'khoá', 'khoa', 'ngưng', 'inactive', 'locked', 'no', 'false', '0', 'chờ duyệt', 'cho duyet', 'pending'];
 const HASH_RE = /^[0-9a-f]{64}$/;
 
 /* ---------------- Điểm vào của API ---------------- */
@@ -55,6 +62,8 @@ function doPost(e) {
     const req = JSON.parse((e && e.postData && e.postData.contents) || '{}');
     switch (req.action) {
       case 'login':  out = login_(req.username, req.password); break;
+      case 'register': out = register_(req.username, req.password, req.name); break;
+      case 'password': out = changePassword_(req.token, req.old, req.password); break;
       case 'data':   out = getData_(req.token); break;
       case 'save':   out = save_(req.token, req.changes, req.ensure); break;
       case 'mine':   out = mine_(req.token, req.key, req.value); break;
@@ -97,7 +106,12 @@ function login_(username, password) {
   }
 
   const row = values.find((r, i) => i > 0 && norm_(r[idx.user]) === username);
-  const valid = row && isActive_(row, idx) && checkPass_(password, row[idx.pass]);
+  const passOk = row && checkPass_(password, row[idx.pass]);
+  if (passOk && !isActive_(row, idx)) {
+    const pending = idx.active >= 0 && ['chờ duyệt', 'cho duyet', 'pending'].includes(norm_(row[idx.active]));
+    return { ok: false, error: pending ? 'Tài khoản đang chờ duyệt. Vui lòng báo quản trị viên.' : 'Tài khoản đã bị khóa' };
+  }
+  const valid = passOk && isActive_(row, idx);
 
   if (!valid) {
     cache.put(failKey, String(fails + 1), CFG.LOCK_SEC);
@@ -149,6 +163,52 @@ function canEdit_(user) {
   return !!user && !VIEW_ROLES.includes(norm_(user.role));
 }
 
+/* ---------------- Tạo tài khoản / đổi mật khẩu ---------------- */
+
+// Ai có link trang web cũng tạo được tài khoản, nên: kiểm tra kỹ dữ liệu, giới hạn số lần mỗi giờ,
+// và mặc định phải chờ chủ Sheet duyệt mới đăng nhập được.
+function register_(username, password, name) {
+  username = String(username || '').trim();
+  password = String(password || '');
+  name = String(name || '').trim().replace(/[\u0000-\u001f]/g, '').slice(0, 60);
+  if (!/^[A-Za-z0-9._-]{3,30}$/.test(username)) return { ok: false, error: 'Tên đăng nhập 3–30 ký tự: chữ không dấu, số, dấu . _ -' };
+  if (password.length < 8) return { ok: false, error: 'Mật khẩu tối thiểu 8 ký tự' };
+  if (!name) return { ok: false, error: 'Vui lòng nhập họ tên' };
+  const cache = CacheService.getScriptCache(), hour = 'reg_' + Utilities.formatDate(new Date(), 'UTC', 'yyyyMMddHH');
+  if (Number(cache.get(hour) || 0) >= CFG.SIGNUP_PER_HOUR) return { ok: false, error: 'Quá nhiều tài khoản mới, vui lòng thử lại sau' };
+  const lock = LockService.getScriptLock();
+  if (!lock.tryLock(10000)) return { ok: false, error: 'Máy chủ bận, thử lại sau' };
+  try {
+    const sh = sheet_(CFG.SHEET_USERS), values = sh.getDataRange().getValues(), idx = headerIndex_(values[0]);
+    if (idx.user < 0 || idx.pass < 0) return { ok: false, error: 'Tab Tài khoản thiếu cột Tên đăng nhập hoặc Mật khẩu' };
+    if (values.some((r, i) => i > 0 && norm_(r[idx.user]) === norm_(username))) return { ok: false, error: 'Tên đăng nhập đã có người dùng' };
+    const row = new Array(values[0].length).fill('');
+    row[idx.user] = username;
+    row[idx.pass] = hash_(password);
+    if (idx.name >= 0) row[idx.name] = name;
+    if (idx.role >= 0) row[idx.role] = 'Member';
+    if (idx.active >= 0) row[idx.active] = CFG.SIGNUP_APPROVAL ? CFG.PENDING : '';
+    sh.getRange(sh.getLastRow() + 1, 1, 1, row.length).setValues([row.map(cellValue_)]);   // chữ giữ nguyên dạng chữ (vd tên đăng nhập toàn số)
+    cache.put(hour, String(Number(cache.get(hour) || 0) + 1), 3600);
+    const approval = CFG.SIGNUP_APPROVAL && idx.active >= 0;
+    return { ok: true, pending: approval, message: approval ? 'Đã tạo tài khoản. Vui lòng chờ quản trị viên duyệt rồi đăng nhập.' : 'Đã tạo tài khoản, mời đăng nhập.' };
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+function changePassword_(token, oldPass, newPass) {
+  const user = authFresh_(token);
+  if (!user) return { ok: false, expired: true, error: 'Phiên đăng nhập đã hết hạn' };
+  newPass = String(newPass || '');
+  if (newPass.length < 8) return { ok: false, error: 'Mật khẩu mới tối thiểu 8 ký tự' };
+  const sh = sheet_(CFG.SHEET_USERS), values = sh.getDataRange().getValues(), idx = headerIndex_(values[0]);
+  const i = values.findIndex((r, k) => k > 0 && norm_(r[idx.user]) === norm_(user.username));
+  if (i < 0 || !checkPass_(String(oldPass || ''), values[i][idx.pass])) { Utilities.sleep(400); return { ok: false, error: 'Mật khẩu hiện tại không đúng' }; }
+  sh.getRange(i + 1, idx.pass + 1).setValue(hash_(newPass));
+  return { ok: true };
+}
+
 /* ---------------- Dữ liệu ---------------- */
 
 // Trả về MỌI tab (trừ tab Tài khoản, Hướng dẫn, Lịch sử) trong một lần gọi:
@@ -164,12 +224,12 @@ function getData_(token) {
 function readAll_() {
   const ss = SpreadsheetApp.getActive();
   const tz = ss.getSpreadsheetTimeZone();
-  const skip = [norm_(CFG.SHEET_USERS), norm_('Hướng dẫn'), norm_(CFG.SHEET_HISTORY), norm_(CFG.SHEET_MINE)];
+  const read = READ_TABS.map(norm_);
   const tabs = {};
 
   ss.getSheets().forEach(sh => {
     const name = sh.getName().trim();
-    if (skip.includes(norm_(name)) || sh.getLastRow() < 1) return;
+    if (!read.includes(norm_(name)) || sh.getLastRow() < 1) return;
     const values = sh.getDataRange().getValues();
     const headers = (values.shift() || []).map(h => String(h).trim());
     const rows = values

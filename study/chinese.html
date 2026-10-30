@@ -1,0 +1,579 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Chinese Study</title>
+<style>
+:root{--lime:#E1E622;--lime-soft:#F4F6CC;--ink:#111111;--mut:#6B6B5E;--line:#E2E2DA;--bg:#F2F2EC;--surface:#FFFFFF;--ok:#2E7D32;--ok-s:#E3F4E4;--bad:#C00000;--bad-s:#FBE3E3;--red:#B71C1C;color-scheme:light}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;font-size:14px;line-height:1.45;padding:16px max(16px,env(safe-area-inset-right,0px)) 48px max(16px,env(safe-area-inset-left,0px))}
+.hz,.hz2,.front,#dIn,.ln .h{font-family:"Microsoft YaHei","PingFang SC","Noto Sans SC","SimHei",-apple-system,"Segoe UI",sans-serif}
+.wrap{max-width:1100px;margin:0 auto;display:flex;flex-direction:column;gap:14px}
+.banner{background:var(--lime);border-radius:18px;padding:14px 16px;display:flex;flex-direction:column;gap:12px;box-shadow:0 6px 20px rgba(120,125,0,.25)}
+.banner .top{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 20px}
+.banner .brand{display:flex;align-items:center;flex-wrap:wrap;gap:6px 14px}
+.banner .mark{height:34px;width:auto;display:block}
+.banner h1{margin:0;font-size:19px;font-weight:800;letter-spacing:.01em}
+.banner h1 span{font-family:"Microsoft YaHei","PingFang SC",sans-serif;color:var(--red);margin-left:6px}
+.banner .sub{font-size:12px;font-weight:600;color:#3A3A2A}
+.banner .home{color:var(--ink);font-weight:700;font-size:13px;text-decoration:none;background:rgba(255,255,255,.55);padding:7px 14px;border-radius:999px}
+.banner .home:hover{background:#fff}
+.bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.bar .sp{flex:1}
+.tabs{display:flex;gap:4px;background:rgba(255,255,255,.45);padding:4px;border-radius:999px;flex-wrap:wrap}
+.tabs button{border:0;background:none;font:inherit;font-weight:700;font-size:13px;padding:7px 13px;border-radius:999px;cursor:pointer;color:var(--ink)}
+.tabs button.on{background:#111;color:var(--lime)}.tabs button:not(.on):hover{background:rgba(255,255,255,.7)}
+.chips{display:flex;gap:6px;flex-wrap:wrap;font-size:12px;font-weight:600;color:#3A3A2A}
+.chips span{background:rgba(255,255,255,.55);border-radius:999px;padding:4px 10px}.chips b{color:var(--ink)}
+button{font:inherit;cursor:pointer}
+.pri,.sec,.ghost{border:0;border-radius:999px;padding:8px 16px;font-weight:700;font-size:13px}
+.pri{background:#111;color:var(--lime)}.pri:hover{filter:brightness(1.25)}
+.sec{background:var(--lime-soft);color:var(--ink)}.sec:hover{filter:brightness(.96)}
+.banner .sec{background:rgba(255,255,255,.55)}
+.ghost{background:none;color:var(--mut);padding:6px 10px}.ghost:hover{color:var(--ink);background:var(--lime-soft)}
+.bad-b{background:var(--bad-s);color:var(--bad)}.ok-b{background:var(--ok-s);color:var(--ok)}
+button:disabled{opacity:.45;cursor:not-allowed}
+#sv{font-size:12px;font-weight:600;color:#3A3A2A;cursor:pointer}#sv:hover{text-decoration:underline}#sv.er{color:var(--bad)}
+.card{background:var(--surface);border-radius:16px;padding:16px 18px;box-shadow:0 1px 2px rgba(60,62,0,.06),0 6px 18px rgba(60,62,0,.06)}
+.card h2{margin:0 0 10px;font-size:13px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--mut)}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.row.sp{justify-content:space-between}
+label{font-size:12.5px;font-weight:600;color:var(--mut);display:inline-flex;gap:6px;align-items:center}
+.banner label{color:#3A3A2A}
+select,input,textarea{font:inherit;color:inherit;border:1px solid var(--line);border-radius:10px;padding:7px 10px;background:#fff}
+select{max-width:220px}
+select:focus,input:focus,textarea:focus{outline:0;border-color:var(--ink);box-shadow:0 0 0 3px var(--lime)}
+input[type=range]{padding:0;accent-color:#111;width:110px}input[type=checkbox]{accent-color:#111;width:16px;height:16px;margin:0}
+.mut{color:var(--mut);font-size:12.5px}
+.vi{color:var(--mut);font-size:.9em;font-style:italic}
+.py{color:var(--red);font-size:.92em;font-weight:500}
+.en{color:#3A3A2A}
+body:not(.show-vi) .vi{display:none}
+body:not(.show-py) .py{display:none}
+.tab{display:none;flex-direction:column;gap:14px}.tab.on{display:flex}
+.hz{font-size:30px;font-weight:700;line-height:1.2}
+.hz2{font-size:18px;font-weight:600}
+.sent{display:flex;gap:8px;align-items:flex-start;background:var(--bg);border-radius:10px;padding:7px 10px;text-align:left}
+.sent>div{display:flex;flex-direction:column;gap:1px}
+.spk{border:0;background:#111;color:var(--lime);width:30px;height:30px;border-radius:50%;font-size:13px;vertical-align:middle;flex:none}
+.spk.sm{width:24px;height:24px;font-size:11px;background:var(--lime-soft);color:var(--ink)}
+/* dictation */
+.play{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:6px 0 12px}
+.bigplay{width:58px;height:58px;border-radius:50%;border:0;background:#111;color:var(--lime);font-size:22px;display:grid;place-items:center;box-shadow:0 6px 16px rgba(0,0,0,.2);flex:none}
+.bigplay:hover{transform:scale(1.05)}
+#dIn{width:100%;min-height:80px;font-size:18px;line-height:1.6;resize:vertical}
+.hint{font-size:15px;line-height:1.7;color:var(--mut);margin:8px 0 0;letter-spacing:.04em}
+.res{margin-top:12px;padding:12px 14px;border-radius:12px;background:var(--bg);font-size:18px;line-height:1.9}
+.res .ok{color:var(--ok);font-weight:600}.res .miss{color:var(--bad);font-weight:700;background:var(--bad-s);border-radius:4px;padding:0 3px}.res .x{color:var(--mut);text-decoration:line-through}
+.score{font-size:13px;font-weight:700;margin-bottom:4px}.score.perfect{color:var(--ok)}
+.legend{font-size:11.5px;color:var(--mut);margin-top:6px}
+details.card summary{cursor:pointer;font-weight:800;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--mut)}
+details.card[open] summary{margin-bottom:12px}
+textarea.my{width:100%;min-height:110px}
+/* flashcards */
+.stats{display:flex;gap:8px;flex-wrap:wrap}
+.stat{background:var(--bg);border-radius:12px;padding:8px 14px;min-width:92px}.stat b{display:block;font-size:20px;line-height:1.1}.stat span{font-size:11.5px;color:var(--mut);font-weight:600}
+.stat.hl{background:var(--lime-soft)}
+.flash{margin-top:14px;min-height:240px;border-radius:16px;background:linear-gradient(160deg,#FCFCF4,#F4F6CC);border:1px solid var(--line);padding:18px 20px;display:flex;flex-direction:column;gap:10px;align-items:center;justify-content:center;text-align:center}
+.fc-top{align-self:stretch;display:flex;justify-content:space-between;font-size:12px;color:var(--mut);font-weight:600}
+.front{font-size:44px;font-weight:700;line-height:1.2}
+.front.def{font-size:21px;font-weight:700;font-family:inherit}
+.pos{font-size:12px;color:var(--mut);font-weight:600;font-style:italic}
+.back{font-size:18px;font-weight:600}
+.fbtn{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:4px}.fbtn button{min-width:130px}
+.kb{font:11px ui-monospace,Menlo,Consolas,monospace;border:1px solid currentColor;border-radius:4px;padding:0 4px;opacity:.6;margin-left:4px}
+#fcIn{font-size:18px;text-align:center;width:min(420px,100%)}
+.verdict{font-weight:800;font-size:15px}.verdict.ok{color:var(--ok)}.verdict.bad{color:var(--bad)}
+.done{font-size:16px;font-weight:700}
+.tblw{overflow:auto;max-height:420px;border:1px solid var(--line);border-radius:12px;margin-top:10px}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{padding:7px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{position:sticky;top:0;background:var(--lime-soft);font-size:11.5px;text-transform:uppercase;letter-spacing:.05em}
+td.w{white-space:nowrap}td.w .hz2{font-size:17px}
+.lvl{display:inline-flex;gap:2px}.lvl i{width:7px;height:7px;border-radius:2px;background:var(--line)}.lvl i.f{background:#111}
+form.add input{flex:1;min-width:130px}
+/* side list + detail */
+.gwrap{display:grid;grid-template-columns:290px 1fr;gap:14px;align-items:start}
+.glist{display:flex;flex-direction:column;gap:6px}
+.gi{border:1px solid transparent;background:var(--surface);border-radius:12px;padding:10px 12px;text-align:left;display:flex;gap:8px;align-items:center;box-shadow:0 1px 2px rgba(60,62,0,.06);font-weight:600}
+.gi:hover{border-color:var(--line)}.gi.on{border-color:#111;box-shadow:0 0 0 3px var(--lime)}
+.gi small{display:block;font-weight:600;color:var(--mut);font-size:11.5px}
+.gi .ck{margin-left:auto;min-width:22px;height:22px;border-radius:999px;padding:0 6px;display:grid;place-items:center;font-size:11px;background:var(--bg);color:var(--mut);flex:none}
+.gi .ck.y{background:var(--ok);color:#fff}
+.gd h3{margin:0 0 4px;font-size:20px}
+.form{background:#111;color:var(--lime);border-radius:10px;padding:8px 12px;font:13px/1.6 ui-monospace,Menlo,Consolas,"Microsoft YaHei",monospace;white-space:pre-wrap;margin-top:8px}
+.gd ul{margin:8px 0;padding-left:20px}.gd li{margin:4px 0}
+.exs{display:flex;flex-direction:column;gap:6px;margin:10px 0}
+.qz{border-top:1px solid var(--line);margin-top:14px;padding-top:12px;display:flex;flex-direction:column;gap:12px}
+.qz .q{font-weight:600}.qz .opts{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+.qz .opts label{border:1px solid var(--line);border-radius:999px;padding:5px 12px;cursor:pointer;color:var(--ink);font-weight:600;font-family:"Microsoft YaHei","PingFang SC",-apple-system,"Segoe UI",sans-serif}
+.qz .opts label.r{border-color:var(--ok);background:var(--ok-s);color:var(--ok)}.qz .opts label.w{border-color:var(--bad);background:var(--bad-s);color:var(--bad)}
+.lvtag{font-size:11px;font-weight:700;border-radius:999px;padding:1px 8px;background:var(--lime-soft)}
+.lvtag.l2{background:#FFE9C7}.lvtag.l3{background:#FFD6D1}
+/* listening */
+.lplayer{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin:10px 0 6px}
+.lines{display:flex;flex-direction:column;gap:6px;margin-top:10px}
+.ln{display:flex;gap:10px;align-items:flex-start;padding:8px 10px;border-radius:12px;background:var(--bg);cursor:pointer;border:1px solid transparent}
+.ln:hover{border-color:var(--line)}.ln.cur{background:var(--lime-soft);border-color:#111}
+.ln .who{font-weight:800;font-size:12px;min-width:64px;padding-top:4px}.ln .who.b{color:var(--red)}
+.ln .tx{flex:1;display:flex;flex-direction:column;gap:1px}
+.ln .h{font-size:18px}
+.ln .tx.hide>*{color:transparent!important;text-shadow:0 0 8px rgba(17,17,17,.45);user-select:none}
+.ln .tx.hide .en,.ln .tx.hide .vi{display:none}
+/* today */
+.dhead{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.dhead h2{margin:0;font-size:22px;letter-spacing:-.01em;text-transform:none;color:var(--ink)}
+.dhead .dt{font-size:12.5px;color:var(--mut);font-weight:600;margin-top:2px}
+.nav{display:flex;gap:6px;align-items:center}.nav button{width:34px;height:34px;padding:0;border-radius:50%}
+.lgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px}
+.lc{background:var(--surface);border-radius:16px;padding:14px 16px;box-shadow:0 1px 2px rgba(60,62,0,.06),0 6px 18px rgba(60,62,0,.06);display:flex;flex-direction:column;gap:8px;border-top:5px solid var(--red)}
+.lc .k{font-size:11.5px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--mut)}
+.k+.vi{margin-top:-6px;font-size:12px}
+.lc .item+.item{border-top:1px dashed var(--line);padding-top:10px}
+.lc .item{display:flex;flex-direction:column;gap:4px}
+.tag{align-self:flex-start;font-size:11px;font-weight:700;background:var(--lime-soft);border-radius:999px;padding:1px 9px}
+.dfoot{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.tones{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px;margin-top:8px}
+.tones button{border:1px solid var(--line);background:#fff;border-radius:12px;padding:10px;text-align:center}
+.tones button:hover{border-color:#111}.tones b{display:block;font-size:22px;color:var(--red)}
+@media (max-width:760px){.gwrap{grid-template-columns:1fr}.front{font-size:36px}}
+body.embed{padding-top:12px}
+</style></head><body class="show-py show-vi">
+<div class="wrap">
+<div class="banner">
+ <div class="top"><div class="brand"><h1>CHINESE STUDY<span>中文学习</span></h1><span class="sub">Daily lesson · Listening · Dictation · Vocabulary · Phrases · Grammar</span></div></div>
+ <div class="bar">
+  <div class="tabs" id="tabs"><button data-t="today">📅 Today</button><button data-t="listen">🎧 Listening</button><button data-t="dict">✍️ Dictation</button><button data-t="vocab">📕 Vocabulary</button><button data-t="phr">💬 Phrases</button><button data-t="gram">🧩 Grammar</button></div>
+ </div>
+ <div class="bar">
+  <label>Voice <select id="voice"></select></label>
+  <label title="Second voice, used for the other person in dialogues">Voice 2 <select id="voice2"></select></label>
+  <label>Speed <input type="range" id="rate" min="0.5" max="1.2" step="0.05"></label>
+  <label><input type="checkbox" id="showPy"> Show pinyin</label>
+  <label><input type="checkbox" id="showVi"> Show Vietnamese</label>
+  <span class="sp"></span>
+  <button class="sec" id="rst" title="Clear your learning progress (your own words and sentences are kept)">↺ Reset</button>
+ </div>
+ <div class="bar"><div class="chips" id="chips"></div><span class="sp"></span><span id="sv" title="Click to connect / save again to qe_data.json in the data folder">…</span></div>
+</div>
+
+<section class="tab" id="t-today"></section>
+<section class="tab" id="t-listen"><div class="gwrap"><div class="glist" id="lList"></div><div class="card gd" id="lDet"></div></div></section>
+<section class="tab" id="t-dict">
+ <div class="card">
+  <div class="row sp"><h2 style="margin:0">Listen and write</h2>
+   <div class="row"><label>Level <select id="dLvl"><option value="0">All</option><option value="1">Easy</option><option value="2">Medium</option><option value="3">Hard</option><option value="today">Today's lesson</option><option value="listen">Current listening lesson</option><option value="my">My sentences</option></select></label><span class="mut" id="dStat"></span></div></div>
+  <div class="play"><button class="bigplay" id="dPlay" title="Play (Ctrl + Space)">▶</button><button class="sec" id="dSlow">🐢 Slow</button><button class="ghost" id="dHint">💡 Hint</button><span class="mut">Type in Chinese characters <b>or</b> pinyin (tones optional) · Ctrl+Space: play again · Enter: check · Enter again: next</span></div>
+  <textarea id="dIn" placeholder="汉字 or pinyin…" spellcheck="false"></textarea>
+  <div class="hint" id="dHintT" hidden></div>
+  <div class="row" style="margin-top:10px"><button class="pri" id="dChk">✓ Check</button><button class="sec" id="dShow">Show answer</button><button class="ghost" id="dNext">Next sentence →</button></div>
+  <div id="dRes"></div>
+ </div>
+ <details class="card"><summary>My sentences (paste Chinese text to practise)</summary>
+  <p class="mut" style="margin:0 0 8px">One sentence per line, in Chinese characters. Choose the level “My sentences” to practise them (check by characters).</p>
+  <textarea class="my" id="dMy" placeholder="例如：请把检验报告发给我。"></textarea>
+  <div class="row" style="margin-top:8px"><button class="pri" id="dMySave">Save list</button><span class="mut" id="dMyN"></span></div>
+ </details>
+</section>
+<section class="tab" id="t-vocab"></section>
+<section class="tab" id="t-phr"></section>
+<section class="tab" id="t-gram"><div class="gwrap"><div class="glist" id="gList"></div><div class="card gd" id="gDet"></div></div></section>
+</div>
+
+<script src="chinese-bank.js"></script>
+<script>
+/* Thiên Công Tông: inside the site (frame), extra lessons added by the team in the Google Sheet (tab Chinese)
+   join the bank, and progress is saved to the signed-in account instead of this browser / qe_data.json */
+(function(){try{var h=window.parent!==window&&window.parent.npdStudy;if(!h)return;var x=h.extra('zh');if(!x)return;
+ var B=window.ZH_BANK=window.ZH_BANK||{};Object.keys(x).forEach(function(k){var have={};(B[k]||[]).forEach(function(r){have[r[0]]=1});
+ B[k]=(B[k]||[]).concat((x[k]||[]).filter(function(r){return !have[r[0]]}))})}catch(e){}})();
+</script>
+<script>
+(function(){
+'use strict';
+if(/[?&]embed=1/.test(location.search))document.body.classList.add('embed');
+const $=id=>document.getElementById(id);
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]]}return a};
+const dayNum=(d=new Date())=>Math.floor((d.getTime()-d.getTimezoneOffset()*6e4)/864e5);
+const dayStr=(d=new Date())=>new Date(d.getTime()-d.getTimezoneOffset()*6e4).toISOString().slice(0,10);
+const viSpan=v=>v?`<div class="vi">${esc(v)}</div>`:'';
+const CJK=/[㐀-鿿]/;
+const hanOnly=s=>(s.match(/[㐀-鿿]/g)||[]);
+const pyKey=s=>s.normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase().replace(/[^a-z]/g,'');   /* pinyin without tones, spaces or punctuation */
+const pyWords=s=>(s.match(/[^\s,.!?;:，。！？；：、]+/g)||[]).map(pyKey).filter(Boolean);
+/* one sentence block: characters, pinyin, English, Vietnamese */
+const S4=(s,sm)=>`<div class="sent">${spk(s.h,sm!==false)}<div><span class="hz2">${esc(s.h)}</span><span class="py">${esc(s.p)}</span><span class="en">${esc(s.m)}</span>${viSpan(s.v)}</div></div>`;
+
+/* ================= content ================= */
+/* core words: [hanzi, pinyin, part of speech, English, Vietnamese] */
+const VOCAB=[
+ ['你好','nǐ hǎo','phr','hello','xin chào'],['谢谢','xièxie','v','thank you','cảm ơn'],['不客气','bú kèqi','phr','you\'re welcome','không có gì'],
+ ['对不起','duìbuqǐ','phr','sorry','xin lỗi'],['没关系','méi guānxi','phr','it doesn\'t matter','không sao'],['我','wǒ','pron','I, me','tôi'],['你','nǐ','pron','you','bạn'],
+ ['他','tā','pron','he, him','anh ấy'],['她','tā','pron','she, her','cô ấy'],['我们','wǒmen','pron','we, us','chúng tôi'],['是','shì','v','to be','là'],['不','bù','adv','not','không'],
+ ['有','yǒu','v','to have; there is','có'],['没有','méiyǒu','v','not have; there isn\'t','không có'],['什么','shénme','pron','what','cái gì'],['谁','shéi','pron','who','ai'],
+ ['哪里','nǎlǐ','pron','where','ở đâu'],['多少','duōshao','pron','how many, how much','bao nhiêu'],['几','jǐ','pron','how many (small numbers)','mấy'],
+ ['今天','jīntiān','n','today','hôm nay'],['明天','míngtiān','n','tomorrow','ngày mai'],['昨天','zuótiān','n','yesterday','hôm qua'],['现在','xiànzài','n','now','bây giờ'],
+ ['时间','shíjiān','n','time','thời gian'],['点','diǎn','m','o\'clock','giờ'],['工作','gōngzuò','n/v','work; to work','công việc; làm việc'],['公司','gōngsī','n','company','công ty'],
+ ['工厂','gōngchǎng','n','factory','nhà máy'],['同事','tóngshì','n','colleague','đồng nghiệp'],['经理','jīnglǐ','n','manager','quản lý'],['吃饭','chī fàn','v','to eat (a meal)','ăn cơm'],
+ ['喝','hē','v','to drink','uống'],['水','shuǐ','n','water','nước'],['茶','chá','n','tea','trà'],['看','kàn','v','to look, to read','xem, nhìn'],['听','tīng','v','to listen','nghe'],
+ ['说','shuō','v','to speak, to say','nói'],['中文','Zhōngwén','n','Chinese (language)','tiếng Trung'],['越南','Yuènán','n','Vietnam','Việt Nam'],['好','hǎo','adj','good','tốt']
+].map(([h,p,pos,m,v])=>({id:'v:'+h+p,h,p,pos,m,v}));
+
+const GRAM=[
+ {id:'g1',t:'A 是 B (to be)',tv:'Câu với 是 (là)',f:'Subject + 是 + noun\nSubject + 不是 + noun',
+  x:[['是 links two nouns: "A is B". The negative is 不是.','是 nối hai danh từ: "A là B". Phủ định là 不是.'],['Do not use 是 before adjectives: say 我很忙, not 我是忙.','Không dùng 是 trước tính từ: nói 我很忙, không nói 我是忙.']],
+  ex:[['我是工程师。','Wǒ shì gōngchéngshī.','I am an engineer.','Tôi là kỹ sư.'],['他不是经理。','Tā bú shì jīnglǐ.','He is not the manager.','Anh ấy không phải là quản lý.']],
+  q:[['我___越南人。',['是','很'],0],['今天我___忙。',['是','很'],1],['他___是客户。',['不','没'],0]]},
+ {id:'g2',t:'Questions: 吗 and question words',tv:'Câu hỏi: 吗 và từ để hỏi',f:'Statement + 吗？         → yes/no question\n什么 / 谁 / 哪里 / 几 …    → no 吗',
+  x:[['Add 吗 to the end of a statement to make a yes/no question.','Thêm 吗 vào cuối câu trần thuật để tạo câu hỏi có/không.'],['With a question word (什么, 谁, 哪里, 几), do not add 吗. The question word stays where the answer would be.','Khi có từ để hỏi (什么, 谁, 哪里, 几) thì không thêm 吗; từ để hỏi đứng ở vị trí của câu trả lời.']],
+  ex:[['你是经理吗？','Nǐ shì jīnglǐ ma?','Are you the manager?','Bạn là quản lý à?'],['你叫什么名字？','Nǐ jiào shénme míngzi?','What is your name?','Bạn tên là gì?']],
+  q:[['你忙___？',['吗','什么'],0],['这是___？',['什么吗','什么'],1],['你在___工作？',['哪里','吗'],0]]},
+ {id:'g3',t:'不 vs 没',tv:'不 và 没',f:'不 + verb / adjective   → now, future, habits\n没(有) + verb          → past (did not)\n没有                    → do not have',
+  x:[['不 negates the present, the future, habits and adjectives.','不 phủ định hiện tại, tương lai, thói quen và tính từ.'],['没 negates actions in the past and the verb 有.','没 phủ định hành động trong quá khứ và động từ 有.']],
+  ex:[['我不喝咖啡。','Wǒ bù hē kāfēi.','I don\'t drink coffee.','Tôi không uống cà phê.'],['我昨天没去工厂。','Wǒ zuótiān méi qù gōngchǎng.','I didn\'t go to the factory yesterday.','Hôm qua tôi không đến nhà máy.']],
+  q:[['我昨天___看邮件。',['不','没'],1],['我们___有样品。',['不','没'],1],['这个价格___贵。',['不','没'],0]]},
+ {id:'g4',t:'Completed actions with 了',tv:'Hành động đã hoàn thành với 了',f:'Verb + 了 (+ object)\nNegative: 没 + verb (no 了)',
+  x:[['了 after a verb shows that the action is completed.','了 sau động từ cho biết hành động đã hoàn thành.'],['In the negative, use 没 and drop 了.','Ở câu phủ định dùng 没 và bỏ 了.']],
+  ex:[['我发了邮件。','Wǒ fā le yóujiàn.','I sent the email.','Tôi đã gửi email.'],['货到了。','Huò dào le.','The goods have arrived.','Hàng đến rồi.']],
+  q:[['我已经检查___。',['了','吗'],0],['他还没___报告。',['发','发了'],0],['供应商昨天来___。',['了','的'],0]]},
+ {id:'g5',t:'Actions in progress: 在 / 正在',tv:'Hành động đang diễn ra: 在 / 正在',f:'Subject + (正)在 + verb',
+  x:[['在 or 正在 before a verb means the action is happening now.','在 hoặc 正在 trước động từ nghĩa là hành động đang diễn ra.']],
+  ex:[['我在开会。','Wǒ zài kāihuì.','I\'m in a meeting.','Tôi đang họp.'],['机器正在测试。','Jīqì zhèngzài cèshì.','The machine is being tested.','Máy đang được test.']],
+  q:[['他___打电话。',['正在','了'],0],['你___做什么？',['在','是'],0],['我们正在___。',['吃饭','吃饭了'],0]]},
+ {id:'g6',t:'Possession with 的',tv:'Sở hữu với 的',f:'A 的 B   → A\'s B',
+  x:[['A 的 B means "A\'s B" or "the B of A".','A 的 B nghĩa là "B của A".'],['With close relationships, 的 is often dropped: 我妈妈.','Với quan hệ thân thiết thường bỏ 的: 我妈妈.']],
+  ex:[['这是客户的要求。','Zhè shì kèhù de yāoqiú.','This is the customer\'s requirement.','Đây là yêu cầu của khách hàng.'],['我的同事是中国人。','Wǒ de tóngshì shì Zhōngguórén.','My colleague is Chinese.','Đồng nghiệp của tôi là người Trung Quốc.']],
+  q:[['这是我___电脑。',['的','了'],0],['公司___地址在哪里？',['的','是'],0],['他___同事很好。',['的','吗'],0]]},
+ {id:'g7',t:'Measure words',tv:'Lượng từ',f:'Number / 这 / 那 + measure word + noun\n个 general · 台 machines · 张 flat things · 批 batches',
+  x:[['A number (or 这 / 那) needs a measure word before the noun.','Số đếm (hoặc 这 / 那) cần có lượng từ trước danh từ.'],['个 is the general one; 台 is for machines, 张 for flat things like paper, 批 for batches.','个 là lượng từ chung; 台 cho máy móc, 张 cho vật phẳng như giấy, 批 cho lô hàng.']],
+  ex:[['三个问题','sān ge wèntí','three problems','ba vấn đề'],['两台机器','liǎng tái jīqì','two machines','hai cái máy'],['一批货','yì pī huò','a batch of goods','một lô hàng']],
+  q:[['两___机器',['台','张'],0],['一___图纸',['张','台'],0],['这___货',['批','位'],0]]},
+ {id:'g8',t:'Comparison with 比',tv:'So sánh với 比',f:'A 比 B + adjective\nA 比 B + adjective + 多了 / 得多   → much more',
+  x:[['A 比 B + adjective means "A is more … than B".','A 比 B + tính từ nghĩa là "A … hơn B".'],['Do not put 很 after 比. To say "much more", add 多了 or 得多.','Không dùng 很 sau 比. Muốn nói "hơn nhiều" thì thêm 多了 hoặc 得多.']],
+  ex:[['这个比那个便宜。','Zhège bǐ nàge piányi.','This one is cheaper than that one.','Cái này rẻ hơn cái kia.'],['今天比昨天忙多了。','Jīntiān bǐ zuótiān máng duō le.','Today is much busier than yesterday.','Hôm nay bận hơn hôm qua nhiều.']],
+  q:[['新机器___旧机器快。',['比','很'],0],['这个比那个___。',['很好','好'],1],['这个比那个贵___。',['多了','很'],0]]},
+ {id:'g9',t:'会 / 能 / 可以',tv:'会 / 能 / 可以',f:'会   → know how to (a learned skill)\n能   → be able to (ability, conditions)\n可以 → may, be allowed to',
+  x:[['会 is for skills you have learned, like languages or driving.','会 dùng cho kỹ năng học được, như ngoại ngữ, lái xe.'],['能 is about being able to in a situation; 可以 asks for or gives permission.','能 nói về khả năng trong hoàn cảnh cụ thể; 可以 dùng để xin phép hoặc cho phép.']],
+  ex:[['我会说一点中文。','Wǒ huì shuō yìdiǎn Zhōngwén.','I can speak a little Chinese.','Tôi biết nói một chút tiếng Trung.'],['明天你能来吗？','Míngtiān nǐ néng lái ma?','Can you come tomorrow?','Ngày mai bạn đến được không?'],['这里可以拍照吗？','Zhèlǐ kěyǐ pāizhào ma?','May I take photos here?','Ở đây có được chụp ảnh không?']],
+  q:[['我___开车。(a learned skill)',['会','可以'],0],['这里___抽烟吗？(is it allowed?)',['会','可以'],1],['我今天很忙，不___去。',['能','会'],0]]},
+ {id:'g10',t:'Word order: time before the verb',tv:'Trật tự từ: thời gian đứng trước động từ',f:'Subject + Time + Place + Verb + Object',
+  x:[['Time and place come before the verb, not at the end of the sentence as in English or Vietnamese.','Thời gian và địa điểm đứng trước động từ, không đứng cuối câu như tiếng Anh hay tiếng Việt.']],
+  ex:[['我明天在工厂开会。','Wǒ míngtiān zài gōngchǎng kāihuì.','I\'ll have a meeting at the factory tomorrow.','Ngày mai tôi họp ở nhà máy.'],['我们下午三点出发。','Wǒmen xiàwǔ sān diǎn chūfā.','We leave at three in the afternoon.','Chúng ta xuất phát lúc ba giờ chiều.']],
+  q:[['Which word order is correct?',['我明天去工厂。','我去工厂明天。'],0],['Which word order is correct?',['他工作在办公室。','他在办公室工作。'],1],['Which word order is correct?',['我们八点开会。','我们开会八点。'],0]]},
+ {id:'g11',t:'很 and 太…了',tv:'很 và 太…了',f:'Subject + 很 + adjective     → neutral "very"\n太 + adjective + 了           → too, so',
+  x:[['Adjectives usually need 很 in front of them, even when you don\'t mean "very".','Tính từ thường cần 很 phía trước, kể cả khi không mang nghĩa "rất".'],['太 + adjective + 了 means "too" or "so", often a complaint.','太 + tính từ + 了 nghĩa là "quá", thường để phàn nàn.']],
+  ex:[['价格太高了。','Jiàgé tài gāo le.','The price is too high.','Giá cao quá.'],['这个工厂很大。','Zhège gōngchǎng hěn dà.','This factory is big.','Nhà máy này rất lớn.']],
+  q:[['太贵___！',['了','的'],0],['他___忙。',['很','是'],0],['今天___热了。',['太','很'],0]]},
+ {id:'g12',t:'因为…所以…',tv:'因为…所以… (vì… nên…)',f:'因为 + reason，所以 + result',
+  x:[['因为 introduces the reason and 所以 the result. Unlike English, both are used together.','因为 nêu nguyên nhân, 所以 nêu kết quả. Khác tiếng Anh, có thể dùng cả hai cùng lúc.']],
+  ex:[['因为机器坏了，所以生产线停了。','Yīnwèi jīqì huài le, suǒyǐ shēngchǎnxiàn tíng le.','Because the machine broke down, the line stopped.','Vì máy hỏng nên dây chuyền dừng.'],['因为下雨，所以他迟到了。','Yīnwèi xià yǔ, suǒyǐ tā chídào le.','Because it rained, he was late.','Vì trời mưa nên anh ấy đến muộn.']],
+  q:[['___零件不够，所以不能出货。',['因为','所以'],0],['因为很忙，___我没吃饭。',['所以','因为'],0],['___他生病了，所以没来。',['因为','但是'],0]]},
+ {id:'g13',t:'The 把 sentence',tv:'Câu chữ 把',f:'Subject + 把 + object + verb + something more\n(给我 / 好 / 完 / 在… / 一下)',
+  x:[['把 moves the object before the verb to show what is done to it.','把 đưa tân ngữ lên trước động từ để nhấn mạnh việc xử lý tân ngữ đó.'],['The verb cannot stand alone: add a result or direction after it (给我, 好, 完, 一下).','Động từ không đứng một mình: phải thêm kết quả hoặc bổ ngữ phía sau (给我, 好, 完, 一下).']],
+  ex:[['请把报告发给我。','Qǐng bǎ bàogào fā gěi wǒ.','Please send me the report.','Vui lòng gửi báo cáo cho tôi.'],['我把样品放在桌子上了。','Wǒ bǎ yàngpǐn fàng zài zhuōzi shang le.','I put the samples on the table.','Tôi đã để mẫu lên bàn.']],
+  q:[['请___数据发给我。',['把','被'],0],['我把报告写___了。',['完','吗'],0],['他把门___。',['关上了','关'],0]]}
+];
+
+/* listening: lines [speaker, hanzi, pinyin, English, Vietnamese]; questions [English, Vietnamese, options, answer] */
+const LISTEN=[
+ {id:'z1',t:'Introducing yourself',tv:'Giới thiệu bản thân',lv:1,k:'Dialogue',lines:[
+  ['王明','你好！我叫王明，是质量经理。','Nǐ hǎo! Wǒ jiào Wáng Míng, shì zhìliàng jīnglǐ.','Hello! My name is Wang Ming. I\'m the quality manager.','Xin chào! Tôi tên Vương Minh, là quản lý chất lượng.'],
+  ['阿兰','你好，王经理。我叫阿兰，我是越南工厂的工程师。','Nǐ hǎo, Wáng jīnglǐ. Wǒ jiào Ālán, wǒ shì Yuènán gōngchǎng de gōngchéngshī.','Hello, Manager Wang. My name is Lan. I\'m an engineer from the Vietnam factory.','Chào quản lý Vương. Tôi tên Lan, là kỹ sư của nhà máy Việt Nam.'],
+  ['王明','很高兴认识你。你的中文很好！','Hěn gāoxìng rènshi nǐ. Nǐ de Zhōngwén hěn hǎo!','Nice to meet you. Your Chinese is very good!','Rất vui được gặp bạn. Tiếng Trung của bạn rất tốt!'],
+  ['阿兰','谢谢，我学了一年中文。','Xièxie, wǒ xué le yì nián Zhōngwén.','Thanks. I have studied Chinese for one year.','Cảm ơn, tôi đã học tiếng Trung một năm.'],
+  ['王明','你第一次来东莞吗？','Nǐ dì yī cì lái Dōngguǎn ma?','Is this your first time in Dongguan?','Đây là lần đầu bạn đến Đông Quản à?'],
+  ['阿兰','是的，我很喜欢这里。','Shì de, wǒ hěn xǐhuan zhèlǐ.','Yes, I like it here very much.','Vâng, tôi rất thích nơi này.']],
+  q:[['What is Wang Ming\'s job?','Vương Minh làm nghề gì?',['Quality manager','Engineer','Buyer'],0],['How long has Lan studied Chinese?','Lan đã học tiếng Trung bao lâu?',['One month','One year','Ten years'],1],['Which city is Lan in now?','Lan đang ở thành phố nào?',['Hanoi','Dongguan','Shanghai'],1]]},
+ {id:'z2',t:'Setting a meeting time',tv:'Hẹn giờ họp',lv:1,k:'Dialogue',lines:[
+  ['小李','阿兰，明天上午你有时间吗？','Ālán, míngtiān shàngwǔ nǐ yǒu shíjiān ma?','Lan, are you free tomorrow morning?','Lan, sáng mai bạn có rảnh không?'],
+  ['阿兰','上午我要开会，下午可以。','Shàngwǔ wǒ yào kāihuì, xiàwǔ kěyǐ.','I have a meeting in the morning, but the afternoon is OK.','Buổi sáng tôi phải họp, buổi chiều thì được.'],
+  ['小李','那下午两点怎么样？','Nà xiàwǔ liǎng diǎn zěnmeyàng?','Then how about two in the afternoon?','Vậy hai giờ chiều thì sao?'],
+  ['阿兰','好的，在哪里见面？','Hǎo de, zài nǎlǐ jiànmiàn?','OK. Where shall we meet?','Được, gặp nhau ở đâu?'],
+  ['小李','在三楼的会议室。','Zài sān lóu de huìyìshì.','In the meeting room on the third floor.','Ở phòng họp tầng ba.'],
+  ['阿兰','没问题，明天见！','Méi wèntí, míngtiān jiàn!','No problem. See you tomorrow!','Không vấn đề, mai gặp!']],
+  q:[['Why can\'t Lan meet in the morning?','Vì sao Lan không gặp được buổi sáng?',['She has a meeting','She is sick','She is traveling'],0],['What time will they meet?','Họ gặp nhau lúc mấy giờ?',['10 a.m.','2 p.m.','3 p.m.'],1],['Where will they meet?','Họ gặp nhau ở đâu?',['In the canteen','In the meeting room on the third floor','On the production line'],1]]},
+ {id:'z3',t:'At the restaurant',tv:'Ở nhà hàng',lv:1,k:'Dialogue',lines:[
+  ['服务员','你们好，几位？','Nǐmen hǎo, jǐ wèi?','Hello, how many people?','Chào quý khách, mấy người ạ?'],
+  ['客人','三位。有菜单吗？','Sān wèi. Yǒu càidān ma?','Three. Do you have a menu?','Ba người. Có thực đơn không?'],
+  ['服务员','有，请坐。你们想喝什么？','Yǒu, qǐng zuò. Nǐmen xiǎng hē shénme?','Yes, please sit down. What would you like to drink?','Có ạ, mời ngồi. Quý khách muốn uống gì?'],
+  ['客人','我们要一壶茶。这个菜辣吗？','Wǒmen yào yì hú chá. Zhège cài là ma?','We\'d like a pot of tea. Is this dish spicy?','Cho chúng tôi một ấm trà. Món này có cay không?'],
+  ['服务员','有一点辣。','Yǒu yìdiǎn là.','It\'s a little spicy.','Hơi cay một chút.'],
+  ['客人','没关系，我们要这个，还要三碗米饭。','Méi guānxi, wǒmen yào zhège, hái yào sān wǎn mǐfàn.','That\'s fine. We\'ll have this one, and three bowls of rice.','Không sao, chúng tôi lấy món này, thêm ba bát cơm.']],
+  q:[['How many people are there?','Có bao nhiêu người?',['Two','Three','Four'],1],['What do they order to drink?','Họ gọi đồ uống gì?',['Coffee','Tea','Beer'],1],['Is the dish spicy?','Món ăn có cay không?',['Not at all','A little','Very'],1]]},
+ {id:'z4',t:'A supplier delay',tv:'Nhà cung cấp giao trễ',lv:2,k:'Phone call',lines:[
+  ['阿兰','喂，陈先生，我是阿兰。我们的零件什么时候到？','Wéi, Chén xiānsheng, wǒ shì Ālán. Wǒmen de língjiàn shénme shíhou dào?','Hello, Mr. Chen, this is Lan. When will our parts arrive?','Alo, anh Trần, tôi là Lan. Khi nào linh kiện của chúng tôi đến?'],
+  ['陈先生','不好意思，我们的一台机器坏了，可能要晚两天。','Bù hǎoyìsi, wǒmen de yì tái jīqì huài le, kěnéng yào wǎn liǎng tiān.','Sorry, one of our machines broke down. They may be two days late.','Xin lỗi, một máy của chúng tôi bị hỏng, có thể trễ hai ngày.'],
+  ['阿兰','两天太晚了，我们的生产线周四就需要。','Liǎng tiān tài wǎn le, wǒmen de shēngchǎnxiàn zhōusì jiù xūyào.','Two days is too late. Our line needs them on Thursday.','Hai ngày thì trễ quá, thứ Năm dây chuyền của chúng tôi đã cần rồi.'],
+  ['陈先生','我们先送一半，周三到，可以吗？','Wǒmen xiān sòng yíbàn, zhōusān dào, kěyǐ ma?','We\'ll send half first, arriving on Wednesday. Is that OK?','Chúng tôi giao trước một nửa, thứ Tư đến, được không?'],
+  ['阿兰','可以。请把检验报告一起发过来。','Kěyǐ. Qǐng bǎ jiǎnyàn bàogào yìqǐ fā guòlái.','OK. Please send the inspection report with it.','Được. Vui lòng gửi kèm báo cáo kiểm tra.'],
+  ['陈先生','好的，没问题。','Hǎo de, méi wèntí.','OK, no problem.','Được, không vấn đề.']],
+  q:[['Why are the parts late?','Vì sao linh kiện bị trễ?',['A machine broke down','Bad weather','No material'],0],['When does Lan\'s line need the parts?','Dây chuyền của Lan cần linh kiện khi nào?',['Wednesday','Thursday','Friday'],1],['What does Lan ask for?','Lan yêu cầu gì?',['A lower price','The inspection report','New samples'],1]]},
+ {id:'z5',t:'A problem on the line',tv:'Sự cố trên dây chuyền',lv:2,k:'Dialogue',lines:[
+  ['组长','阿兰，三号线发现了五个不良品。','Ālán, sān hào xiàn fāxiàn le wǔ ge bùliángpǐn.','Lan, line 3 found five defective products.','Lan, line 3 phát hiện năm sản phẩm lỗi.'],
+  ['阿兰','是什么问题？','Shì shénme wèntí?','What is the problem?','Là vấn đề gì?'],
+  ['组长','外壳上有划伤，都在同一个位置。','Wàiké shang yǒu huáshāng, dōu zài tóng yí ge wèizhì.','There are scratches on the housings, all in the same place.','Trên vỏ có vết xước, đều ở cùng một vị trí.'],
+  ['阿兰','先把这些不良品隔离，我马上过去看。','Xiān bǎ zhèxiē bùliángpǐn gélí, wǒ mǎshàng guòqù kàn.','First isolate these defective products. I\'ll come and look right away.','Trước tiên cách ly các sản phẩm lỗi này, tôi qua xem ngay.'],
+  ['组长','好的。要不要停线？','Hǎo de. Yào bu yào tíng xiàn?','OK. Should we stop the line?','Được. Có cần dừng line không?'],
+  ['阿兰','先不用，每个产品都检查一下外壳。','Xiān bú yòng, měi ge chǎnpǐn dōu jiǎnchá yíxià wàiké.','Not for now. Check the housing of every product.','Tạm thời chưa cần, kiểm tra vỏ của từng sản phẩm.']],
+  q:[['How many defective products were found?','Phát hiện bao nhiêu sản phẩm lỗi?',['Three','Five','Fifteen'],1],['What is the defect?','Lỗi là gì?',['Scratches on the housing','A missing screw','A wrong label'],0],['Do they stop the line?','Họ có dừng line không?',['Yes, immediately','Not for now','Only tomorrow'],1]]},
+ {id:'z6',t:'A customer visit',tv:'Khách hàng đến thăm',lv:2,k:'Dialogue',lines:[
+  ['阿兰','欢迎来我们工厂！路上辛苦了。','Huānyíng lái wǒmen gōngchǎng! Lùshang xīnkǔ le.','Welcome to our factory! You must be tired from the trip.','Chào mừng đến nhà máy! Đi đường vất vả rồi.'],
+  ['张先生','谢谢！今天的安排是什么？','Xièxie! Jīntiān de ānpái shì shénme?','Thank you! What is today\'s schedule?','Cảm ơn! Lịch trình hôm nay là gì?'],
+  ['阿兰','上午我们先参观生产线，然后开会。','Shàngwǔ wǒmen xiān cānguān shēngchǎnxiàn, ránhòu kāihuì.','In the morning we\'ll visit the production line first, then have a meeting.','Buổi sáng chúng ta tham quan dây chuyền trước, sau đó họp.'],
+  ['张先生','好。下午呢？','Hǎo. Xiàwǔ ne?','Good. And the afternoon?','Được. Còn buổi chiều?'],
+  ['阿兰','下午看测试实验室，四点结束。','Xiàwǔ kàn cèshì shíyànshì, sì diǎn jiéshù.','In the afternoon we\'ll see the test lab, and we finish at four.','Buổi chiều xem phòng thí nghiệm, bốn giờ kết thúc.'],
+  ['张先生','很好，我也想看一下你们的包装区。','Hěn hǎo, wǒ yě xiǎng kàn yíxià nǐmen de bāozhuāng qū.','Very good. I\'d also like to see your packing area.','Rất tốt, tôi cũng muốn xem khu đóng gói của các bạn.']],
+  q:[['What will they do first?','Họ sẽ làm gì trước tiên?',['Have a meeting','Visit the production line','See the lab'],1],['When does the visit end?','Chuyến thăm kết thúc lúc mấy giờ?',['At two','At four','At six'],1],['What else does Mr. Zhang want to see?','Ông Trương còn muốn xem gì?',['The warehouse','The packing area','The canteen'],1]]},
+ {id:'z7',t:'Calling in sick',tv:'Gọi điện xin nghỉ ốm',lv:2,k:'Phone call',lines:[
+  ['阿兰','喂，经理，我是阿兰。我今天不舒服，想请一天假。','Wéi, jīnglǐ, wǒ shì Ālán. Wǒ jīntiān bù shūfu, xiǎng qǐng yì tiān jià.','Hello, this is Lan. I don\'t feel well today and would like to take a day off.','Alo, sếp, em là Lan. Hôm nay em không khoẻ, muốn xin nghỉ một ngày.'],
+  ['经理','怎么了？发烧了吗？','Zěnme le? Fāshāo le ma?','What\'s wrong? Do you have a fever?','Sao vậy? Bị sốt à?'],
+  ['阿兰','有一点发烧，头也很疼。','Yǒu yìdiǎn fāshāo, tóu yě hěn téng.','I have a slight fever, and I have a bad headache too.','Hơi sốt, đầu cũng rất đau.'],
+  ['经理','那你好好休息。今天的会议我来参加。','Nà nǐ hǎohāo xiūxi. Jīntiān de huìyì wǒ lái cānjiā.','Then get some good rest. I\'ll attend today\'s meeting.','Vậy em nghỉ ngơi cho khoẻ. Cuộc họp hôm nay để anh tham gia.'],
+  ['阿兰','谢谢经理。报告我明天发给您。','Xièxie jīnglǐ. Bàogào wǒ míngtiān fā gěi nín.','Thank you. I\'ll send you the report tomorrow.','Cảm ơn sếp. Báo cáo mai em gửi anh.']],
+  q:[['Why does Lan call?','Vì sao Lan gọi điện?',['She is late','She is sick','She wants a meeting'],1],['Who will attend today\'s meeting?','Ai sẽ tham dự cuộc họp hôm nay?',['Lan','The manager','Nobody'],1],['When will Lan send the report?','Khi nào Lan gửi báo cáo?',['Today','Tomorrow','Next week'],1]]},
+ {id:'z8',t:'Discussing an improvement',tv:'Thảo luận cải tiến',lv:3,k:'Meeting',lines:[
+  ['王经理','上个月的不良率是百分之三，太高了。','Shàng ge yuè de bùliánglǜ shì bǎi fēn zhī sān, tài gāo le.','Last month\'s defect rate was three percent. That\'s too high.','Tỉ lệ lỗi tháng trước là ba phần trăm, cao quá.'],
+  ['阿兰','主要是螺丝没打紧，我们已经找到了原因。','Zhǔyào shì luósī méi dǎ jǐn, wǒmen yǐjīng zhǎodào le yuányīn.','It was mainly loose screws. We have already found the cause.','Chủ yếu là vít bắt không chặt, chúng tôi đã tìm ra nguyên nhân.'],
+  ['王经理','是什么原因？','Shì shénme yuányīn?','What is the cause?','Nguyên nhân là gì?'],
+  ['阿兰','电批的扭力不稳定。我们换了新的电批，还增加了一个检查。','Diànpī de niǔlì bù wěndìng. Wǒmen huàn le xīn de diànpī, hái zēngjiā le yí ge jiǎnchá.','The torque of the electric screwdriver was unstable. We replaced it and added a check.','Lực siết của tô vít điện không ổn định. Chúng tôi đã thay tô vít mới và thêm một bước kiểm tra.'],
+  ['王经理','效果怎么样？','Xiàoguǒ zěnmeyàng?','How well does it work?','Hiệu quả thế nào?'],
+  ['阿兰','这周的不良率降到了百分之零点五。','Zhè zhōu de bùliánglǜ jiàng dào le bǎi fēn zhī líng diǎn wǔ.','This week the defect rate dropped to zero point five percent.','Tuần này tỉ lệ lỗi giảm xuống còn 0,5%.'],
+  ['王经理','很好，继续保持！','Hěn hǎo, jìxù bǎochí!','Very good. Keep it up!','Rất tốt, tiếp tục duy trì nhé!']],
+  q:[['What was last month\'s defect rate?','Tỉ lệ lỗi tháng trước là bao nhiêu?',['0.5%','3%','30%'],1],['What was the main problem?','Vấn đề chính là gì?',['Loose screws','Scratches','Wrong labels'],0],['What did they replace?','Họ đã thay cái gì?',['The supplier','The electric screwdriver','The operator'],1],['What is the defect rate this week?','Tỉ lệ lỗi tuần này là bao nhiêu?',['0.5%','3%','5%'],0]]}
+];
+const LVN={1:'Easy',2:'Medium',3:'Hard'};
+const TONES=[['mā','1st · high, flat','妈 mother'],['má','2nd · rising','麻 hemp'],['mǎ','3rd · low, dipping','马 horse'],['mà','4th · falling','骂 to scold'],['ma','neutral · light','吗 question']];
+
+/* ================= state & storage (qe_data.json › zh) ================= */
+const KEY='zh.v1',INT=[0,1,2,4,7,15],NEW_MAX=10;
+const DEF=()=>({v:1,savedAt:0,start:0,done:{},srs:{},gram:{},listen:{},custom:{vocab:[],phr:[],dict:''},stats:{days:{},dOk:0,dAll:0},opts:{tab:'today',lvl:'0',rate:.8,voice:'',voice2:'',py:true,vi:true,lsel:'z1',dir:{vocab:'en',phr:'en'}}});
+function fill(d){const b=DEF();if(!d||typeof d!=='object')return b;const o=d.opts||{};
+ return Object.assign(b,d,{done:d.done||{},srs:d.srs||{},gram:d.gram||{},listen:d.listen||{},custom:Object.assign(b.custom,d.custom||{}),stats:Object.assign(b.stats,d.stats||{}),opts:Object.assign(b.opts,o,{dir:Object.assign(b.opts.dir,o.dir||{})})})}
+const HOST=(()=>{try{return window.parent!==window&&window.parent.npdStudy||null}catch(e){return null}})();   /* the site: progress per account */
+let S;try{S=fill(HOST?HOST.load('zh'):JSON.parse(localStorage.getItem(KEY)||'null'))}catch(e){S=DEF()}
+if(!S.start)S.start=dayNum();   /* day 1 of the daily lessons = the first day this app was opened */
+const QE_FILE='qe_data.json',QE_OLD='bom_auto_data.json';
+const qeDir=()=>new Promise(ok=>{try{const q=indexedDB.open('bom_auto',1);q.onupgradeneeded=()=>q.result.createObjectStore('d');q.onerror=()=>ok(null);
+ q.onsuccess=()=>{try{const g=q.result.transaction('d').objectStore('d').get('dir');g.onsuccess=()=>ok(g.result||null);g.onerror=()=>ok(null)}catch(e){ok(null)}}}catch(e){ok(null)}});
+async function qeRead(h){let fh=null;try{fh=await h.getFileHandle(QE_FILE)}catch(e){if(e.name!=='NotFoundError')throw e}
+ if(fh)return JSON.parse(await (await fh.getFile()).text());                       /* a broken file throws, so nothing gets overwritten */
+ try{const o=await h.getFileHandle(QE_OLD);return{ser:JSON.parse(await (await o.getFile()).text())}}catch(e){return null}}
+async function qeWrite(h,key,val){const j=(await qeRead(h))||{};j.app='QE Dashboard';j.version=1;j.savedAt=new Date().toISOString();j[key]=val;   /* rewrite only this section */
+ const w=await (await h.getFileHandle(QE_FILE,{create:true})).createWritable();await w.write(JSON.stringify(j));await w.close()}
+async function qeHandle(ask){if(!window.indexedDB)return null;const h=await qeDir();if(!h)return null;let p=await h.queryPermission({mode:'readwrite'});if(p!=='granted'&&ask)p=await h.requestPermission({mode:'readwrite'});return p==='granted'?h:null}
+function svSet(t,c){const e=$('sv');e.textContent=t;e.className=c||''}
+async function fileSave(ask){if(HOST){svSet('✓ Saved to your account');return}try{const h=await qeHandle(ask);if(!h){svSet('Saved in this browser · click to connect qe_data.json');return}
+ await qeWrite(h,'zh',S);svSet('Saved · qe_data.json')}catch(e){svSet('⚠ Could not save qe_data.json: '+(e.message||e),'er')}}
+let st=0;function save(){clearTimeout(st);svSet('Saving…');st=setTimeout(()=>{S.savedAt=Date.now();if(HOST)HOST.save('zh',S);else try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}fileSave(false)},500)}
+function bump(){const k=dayStr();S.stats.days[k]=(S.stats.days[k]||0)+1}
+function streak(){const D=S.stats.days;let d=new Date(),n=0;if(!D[dayStr(d)])d.setDate(d.getDate()-1);while(D[dayStr(d)]){n++;d.setDate(d.getDate()-1)}return n}
+
+/* ================= daily lessons (Chinese_Daily_Bank.js): 2 words + 1 phrase per day ================= */
+const BK=Object.assign({words:[],phrases:[]},window.ZH_BANK||{});
+const BW=BK.words.map(([h,p,pos,m,v,eh,ep,em,ev])=>({id:'b:'+h,h,p,pos,m,v,e:eh?{h:eh,p:ep,m:em,v:ev}:null})),
+ BS=BK.phrases.map(([h,p,m,v,c])=>({id:'bs:'+h,h,p,pos:'phrase',m,v,c}));
+const todayIdx=()=>Math.max(0,dayNum()-S.start);
+const pick=(arr,per,i)=>{const o=[];if(arr.length)for(let j=0;j<per;j++)o.push(arr[(i*per+j)%arr.length]);return o};
+const unlocked=(arr,per)=>arr.slice(0,Math.min(arr.length,(todayIdx()+1)*per));
+const lesson=i=>({w:pick(BW,2,i),s:pick(BS,1,i)[0],g:GRAM[i%GRAM.length],l:LISTEN[i%LISTEN.length]});
+const lessonSentences=i=>{const L=lesson(i);return[...L.w.map(x=>x.e),L.s&&{h:L.s.h,p:L.s.p,m:L.s.m,v:L.s.v}].filter(Boolean)};
+
+/* ================= speech ================= */
+let VO=[];
+function voiceOpts(sel,want,fallback){sel.innerHTML=VO.length?VO.map(v=>`<option value="${esc(v.name)}">${esc(v.name.replace(/^(Microsoft|Google)\s+/,'').replace(/\s*Online.*$/,''))} · ${esc(v.lang)}</option>`).join(''):'<option value="">(no Chinese voice installed)</option>';
+ if(want&&VO.some(v=>v.name===want))sel.value=want;else if(fallback)sel.value=fallback.name}
+function loadVoices(){VO=speechSynthesis.getVoices().filter(v=>/^zh|^cmn/i.test(v.lang));
+ const d1=VO.find(v=>/zh-CN|cmn/i.test(v.lang))||VO[0],d2=VO.find(v=>v!==d1&&v.lang===(d1||{}).lang)||VO.find(v=>v!==d1)||d1;
+ voiceOpts($('voice'),S.opts.voice,d1);voiceOpts($('voice2'),S.opts.voice2,d2)}
+function utter(t,who,r){const u=new SpeechSynthesisUtterance(t);const v=VO.find(x=>x.name===$(who==='B'?'voice2':'voice').value);if(v){u.voice=v;u.lang=v.lang}else u.lang='zh-CN';u.rate=r||S.opts.rate;return u}
+function say(t,r){if(!window.speechSynthesis){alert('This browser cannot read text aloud.');return}speechSynthesis.cancel();lHl(-1);speechSynthesis.speak(utter(t,'A',r))}
+if(window.speechSynthesis){loadVoices();speechSynthesis.onvoiceschanged=loadVoices}else{$('voice').innerHTML=$('voice2').innerHTML='<option>(not supported)</option>'}
+$('voice').onchange=e=>{S.opts.voice=e.target.value;save()};$('voice2').onchange=e=>{S.opts.voice2=e.target.value;save()};
+$('rate').value=S.opts.rate;$('rate').oninput=e=>{S.opts.rate=+e.target.value;save()};
+const applyShow=()=>{document.body.classList.toggle('show-vi',!!S.opts.vi);document.body.classList.toggle('show-py',!!S.opts.py);$('showVi').checked=!!S.opts.vi;$('showPy').checked=!!S.opts.py};applyShow();
+$('showVi').onchange=e=>{S.opts.vi=e.target.checked;applyShow();save()};$('showPy').onchange=e=>{S.opts.py=e.target.checked;applyShow();save()};
+document.addEventListener('click',e=>{const b=e.target.closest('[data-say]');if(b)say(b.dataset.say)});
+const spk=(t,sm)=>`<button class="spk${sm?' sm':''}" data-say="${esc(t)}" title="Listen">🔊</button>`;
+
+/* ================= header chips & tabs ================= */
+function decks(d){return d==='vocab'?VOCAB.concat(unlocked(BW,2),S.custom.vocab):unlocked(BS,1).concat(S.custom.phr)}   /* lesson items join the decks on the day they are taught */
+function dueCount(d){const t=dayNum();return decks(d).filter(it=>S.srs[it.id]&&S.srs[it.id].due<=t).length}
+function chips(){const g=GRAM.filter(x=>S.gram[x.id]).length,ls=LISTEN.filter(x=>S.listen[x.id]).length,acc=S.stats.dAll?Math.round(S.stats.dOk/S.stats.dAll*100):0,sk=streak();
+ $('chips').innerHTML=`<span>🔥 Streak <b>${sk}</b> day${sk===1?'':'s'}</span><span>Lesson #${todayIdx()+1} <b>${S.done[todayIdx()]?'✓ done':'to learn'}</b></span><span>Today <b>${S.stats.days[dayStr()]||0}</b> activities</span><span>To review <b>${dueCount('vocab')}</b> words · <b>${dueCount('phr')}</b> phrases</span><span>Listening <b>${ls}</b>/${LISTEN.length}</span><span>Dictation <b>${S.stats.dOk}</b>/${S.stats.dAll} perfect${S.stats.dAll?` (${acc}%)`:''}</span><span>Grammar <b>${g}</b>/${GRAM.length}</span>`}
+function tab(t,quiet){S.opts.tab=t;document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.t===t));document.querySelectorAll('.tab').forEach(s=>s.classList.toggle('on',s.id==='t-'+t));
+ if(t==='vocab'||t==='phr')deckRender(t);if(t==='gram')gramRender();if(t==='today')todayRender();if(t==='listen')listenRender();if(!quiet)save()}
+$('tabs').onclick=e=>{const b=e.target.closest('[data-t]');if(b)tab(b.dataset.t)};
+
+/* ================= dictation: check by characters, or by pinyin without tones ================= */
+let DC=null,dChecked=false,dLast='';
+const ALLS=()=>{const a=[];VOCAB.concat(BW).forEach(x=>x.e&&a.push(x.e));BS.forEach(x=>a.push({h:x.h,p:x.p,m:x.m,v:x.v}));LISTEN.forEach(L=>L.lines.forEach(l=>a.push({h:l[1],p:l[2],m:l[3],v:l[4]})));GRAM.forEach(g=>g.ex.forEach(e=>a.push({h:e[0],p:e[1],m:e[2],v:e[3]})));return a};
+const lvOf=s=>{const n=hanOnly(s.h).length;return n<=7?1:n<=13?2:3};
+function myDict(){return S.custom.dict.split('\n').map(s=>s.trim()).filter(Boolean).map(h=>({h,p:'',m:'',v:''}))}
+function dPool(){const l=S.opts.lvl;if(l==='my')return myDict();if(l==='today')return lessonSentences(tView);
+ if(l==='listen'){const L=LISTEN.find(x=>x.id===S.opts.lsel)||LISTEN[0];return L.lines.map(l=>({h:l[1],p:l[2],m:l[3],v:l[4]}))}
+ const a=ALLS();return l==='0'?a:a.filter(s=>String(lvOf(s))===l)}
+function dNext(){const p=dPool();if(!p.length){DC=null;$('dRes').innerHTML='<p class="mut">No sentences yet. Add some under “My sentences” below.</p>';return}
+ let c;do{c=p[Math.random()*p.length|0]}while(p.length>1&&c.h===dLast);DC=c;dLast=c.h;dChecked=false;$('dIn').value='';$('dRes').innerHTML='';$('dHintT').hidden=true;
+ $('dStat').textContent=`${p.length} sentence${p.length===1?'':'s'} at this level`;setTimeout(()=>say(DC.h),150);$('dIn').focus()}
+function lcs(a,b){const m=a.length,k=b.length,L=Array.from({length:m+1},()=>new Uint16Array(k+1));
+ for(let i=m-1;i>=0;i--)for(let j=k-1;j>=0;j--)L[i][j]=a[i]===b[j]?L[i+1][j+1]+1:Math.max(L[i+1][j],L[i][j+1]);
+ const out=[];let i=0,j=0,ok=0,extra=0;
+ while(i<m||j<k){if(i<m&&j<k&&a[i]===b[j]){out.push(['ok',i,'t']);ok++;i++;j++}else if(j<k&&(i>=m||L[i][j+1]>=L[i+1][j])){out.push(['x',j,'u']);extra++;j++}else{out.push(['miss',i,'t']);i++}}
+ return{out,ok,total:m,extra}}
+function dCheck(){if(!DC)return;const v=$('dIn').value.trim();if(!v){$('dIn').focus();return}
+ let r,html,mode;
+ if(CJK.test(v)||!DC.p){mode='hz';const T=hanOnly(DC.h),U=hanOnly(v);r=lcs(T,U);html=r.out.map(([c,i,s])=>`<span class="${c}">${esc(s==='t'?T[i]:U[i])}</span>`).join('')}
+ else{mode='py';const Tw=(DC.p.match(/[^\s,.!?;:，。！？]+/g)||[]),T=Tw.map(pyKey),U0=(v.match(/\S+/g)||[]),U=U0.map(pyKey);
+  if(pyKey(DC.p)===pyKey(v)){r={out:T.map((_,i)=>['ok',i,'t']),ok:T.length,total:T.length,extra:0}}else r=lcs(T,U);
+  html=r.out.map(([c,i,s])=>`<span class="${c}">${esc(s==='t'?Tw[i]:U0[i])}</span>`).join(' ')}
+ const pct=r.total?Math.round(r.ok/r.total*100):0,perfect=r.ok===r.total&&!r.extra;
+ if(!dChecked){S.stats.dAll++;if(perfect)S.stats.dOk++;bump();save();chips()}dChecked=true;
+ $('dRes').innerHTML=`<div class="res"><div class="score ${perfect?'perfect':''}">${perfect?'🎉 100% correct!':`${r.ok}/${r.total} ${mode==='hz'?'characters':'syllables'} correct (${pct}%)`}</div>${html}
+  <div class="legend"><span style="color:var(--ok)">green</span> = correct · <span style="color:var(--bad)">red</span> = missing or wrong (the right answer) · <s>struck out</s> = extra or wrong input${mode==='py'?' · tones are not checked':''}</div>
+  <div style="margin-top:8px">${S4(DC,false)}</div></div>`}
+$('dPlay').onclick=()=>DC?say(DC.h):dNext();$('dSlow').onclick=()=>DC&&say(DC.h,Math.max(.4,S.opts.rate-.3));
+$('dHint').onclick=()=>{if(!DC)return;const h=$('dHintT');h.hidden=false;h.textContent=DC.p?DC.p.split(/\s+/).map(w=>w.replace(/[a-zA-Zāáǎàēéěèīíǐìōóǒòūúǔùǖǘǚǜü]/g,(c,i)=>i===0?c:'_')).join('  '):hanOnly(DC.h).map((c,i)=>i?'＿':c).join(' ')};
+$('dChk').onclick=dCheck;$('dNext').onclick=dNext;
+$('dShow').onclick=()=>{if(!DC)return;dChecked=true;$('dRes').innerHTML=`<div class="res"><div class="score">Answer</div>${S4(DC,false)}</div>`};
+$('dIn').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey&&!e.isComposing){e.preventDefault();dChecked?dNext():dCheck()}});
+$('dLvl').value=S.opts.lvl;$('dLvl').onchange=e=>{S.opts.lvl=e.target.value;save();dNext()};
+$('dMy').value=S.custom.dict;const myN=()=>$('dMyN').textContent=myDict().length+' sentences';myN();
+$('dMySave').onclick=()=>{S.custom.dict=$('dMy').value;save();myN();if(S.opts.lvl==='my')dNext()};
+
+/* ================= flashcards (vocabulary & phrases, spaced repetition) ================= */
+const DL={vocab:{name:'Vocabulary',word:'Word'},phr:{name:'Phrases',word:'Phrase'}};
+const Q={vocab:null,phr:null};
+['vocab','phr'].forEach(d=>{const L=DL[d];$('t-'+d).innerHTML=`
+ <div class="card"><div class="row sp"><div class="stats" id="${d}-st"></div>
+  <div class="row"><label>Mode <select id="${d}-dir"><option value="en">Chinese → meaning (flip)</option><option value="vi">Meaning → Chinese (type pinyin or characters)</option></select></label><button class="pri" id="${d}-go">▶ Start review</button></div></div>
+  <div class="flash" id="${d}-fc"></div></div>
+ ${d==='vocab'?`<details class="card"><summary>Pinyin tones</summary><p class="mut" style="margin:0">Mandarin has four tones plus a neutral tone. The same syllable with a different tone is a different word. Click to listen.</p><div class="tones">${TONES.map(([p,t,c])=>`<button data-say="${esc(c.split(' ')[0])}"><b>${p}</b>${esc(t)}<div class="mut">${esc(c)}</div></button>`).join('')}</div></details>`:''}
+ <details class="card"><summary>List & add ${L.name.toLowerCase()}</summary>
+  <form class="row add" id="${d}-add"><input name="h" placeholder="${L.word} in characters" required><input name="p" placeholder="Pinyin"><input name="m" placeholder="Meaning" required><button class="pri">+ Add</button></form>
+  <div class="row" style="margin-top:10px"><input id="${d}-q" placeholder="Search characters, pinyin or meaning…" style="flex:1;min-width:160px"><span class="mut" id="${d}-cnt"></span></div>
+  <div class="tblw"><table><thead><tr><th>${L.word}</th><th>Meaning</th>${d==='vocab'?'<th>Example</th>':''}<th>Level</th><th></th></tr></thead><tbody id="${d}-tb"></tbody></table></div></details>`;
+ $(d+'-dir').value=S.opts.dir[d];$(d+'-dir').onchange=e=>{S.opts.dir[d]=e.target.value;save();if(Q[d])flash(d)};
+ $(d+'-go').onclick=()=>start(d);
+ $(d+'-q').oninput=()=>listRender(d);
+ $(d+'-add').onsubmit=e=>{e.preventDefault();const f=e.target,h=f.h.value.trim(),m=f.m.value.trim();if(!h||!m)return;
+  S.custom[d].push({id:'c'+d[0]+':'+Date.now().toString(36)+Math.random().toString(36).slice(2,5),h,p:f.p.value.trim(),pos:'',m,my:1});f.reset();f.h.focus();save();deckRender(d)};
+ $(d+'-tb').onclick=e=>{const b=e.target.closest('[data-del]');if(!b)return;if(!confirm('Delete this item?'))return;S.custom[d]=S.custom[d].filter(x=>x.id!==b.dataset.del);delete S.srs[b.dataset.del];save();deckRender(d)};
+ $(d+'-fc').addEventListener('click',e=>{const a=e.target.closest('[data-a]');if(a)act(d,a.dataset.a)});
+});
+function deckStats(d){const t=dayNum(),all=decks(d);let nw=0,lr=0,ms=0,due=0;all.forEach(it=>{const s=S.srs[it.id];if(!s)nw++;else{if(s.b>=4)ms++;else lr++;if(s.due<=t)due++}});return{all:all.length,nw,lr,ms,due}}
+function deckRender(d){const s=deckStats(d);
+ $(d+'-st').innerHTML=`<div class="stat hl"><b>${s.due}</b><span>Due today</span></div><div class="stat"><b>${s.nw}</b><span>New</span></div><div class="stat"><b>${s.lr}</b><span>Learning</span></div><div class="stat"><b>${s.ms}</b><span>Mastered</span></div>`;
+ if(!Q[d])$(d+'-fc').innerHTML=s.all?`<div class="done">${s.due?`<b>${s.due}</b> card${s.due===1?'':'s'} due`:'No cards due'}${s.nw?` and <b>${Math.min(NEW_MAX,s.nw)}</b> new card${Math.min(NEW_MAX,s.nw)===1?'':'s'}`:''}.</div><div class="mut">Click <b>▶ Start review</b>. “Got it” brings a card back after 1, 2, 4, 7 and 15 days; “Again” repeats it in this session.</div>`
+  :`<div class="done">No phrases yet.</div><div class="mut">A new phrase is added every day from the Today lesson. You can also add your own below.</div>`;
+ listRender(d);chips()}
+function listRender(d){const q=$(d+'-q').value.trim().toLowerCase(),qk=pyKey(q),all=decks(d).filter(it=>!q||(it.h+' '+it.m+' '+(it.v||'')).toLowerCase().includes(q)||(qk&&pyKey(it.p||'').includes(qk)));$(d+'-cnt').textContent=all.length+' items';
+ $(d+'-tb').innerHTML=all.map(it=>{const b=(S.srs[it.id]||{}).b||0;return`<tr><td class="w">${spk(it.h,1)} <span class="hz2">${esc(it.h)}</span><div class="py">${esc(it.p||'')}</div></td><td>${esc(it.m)}${it.pos&&it.pos!=='phrase'?` <span class="pos">${esc(it.pos)}</span>`:''}${viSpan(it.v)}</td>${d==='vocab'?`<td>${it.e?`<span class="hz2" style="font-size:14px">${esc(it.e.h)}</span><div class="py">${esc(it.e.p)}</div><div class="en">${esc(it.e.m)}</div>${viSpan(it.e.v)}`:''}</td>`:''}<td><span class="lvl" title="Level ${b}/5">${[1,2,3,4,5].map(i=>`<i class="${i<=b?'f':''}"></i>`).join('')}</span></td><td>${it.my?`<button class="ghost" data-del="${esc(it.id)}" title="Delete">✕</button>`:''}</td></tr>`}).join('')}
+function start(d){const t=dayNum(),all=decks(d),due=shuffle(all.filter(it=>S.srs[it.id]&&S.srs[it.id].due<=t)),nw=shuffle(all.filter(it=>!S.srs[it.id])).slice(0,NEW_MAX);
+ Q[d]={list:due.concat(nw),i:0,shown:false,res:null,ok:0,n:due.length+nw.length};if(!Q[d].list.length){Q[d]=null;deckRender(d);return}flash(d)}
+function flash(d){const q=Q[d],el=$(d+'-fc');if(!q)return deckRender(d);
+ if(q.i>=q.list.length){Q[d]=null;deckRender(d);el.innerHTML=`<div class="done">🎉 Session complete: ${q.ok}/${q.n} cards remembered the first time.</div><div class="mut">Come back tomorrow to review the cards that are due.</div>`;return}
+ const it=q.list[q.i],s=S.srs[it.id],dir=S.opts.dir[d],top=`<div class="fc-top"><span>${q.i+1} / ${q.list.length}</span><span>${s?'Level '+s.b+'/5':'New card'}</span></div>`;
+ const big=`<div class="front" style="${d==='phr'?'font-size:28px':''}">${esc(it.h)} ${spk(it.h)}</div>`;
+ const meaning=`<div class="back">${esc(it.m)}</div>${viSpan(it.v)}`,ex=it.e?`<div style="max-width:640px">${S4(it.e)}</div>`:'';
+ if(dir==='en'){el.innerHTML=top+big+(q.shown?`<div style="display:block">${it.p?`<div style="color:var(--red);font-size:18px">${esc(it.p)}</div>`:''}</div>`+meaning+ex+`<div class="fbtn"><button class="sec bad-b" data-a="no">✗ Again<span class="kb">1</span></button><button class="sec ok-b" data-a="yes">✓ Got it<span class="kb">2</span></button></div>`
+   :`<div class="fbtn"><button class="pri" data-a="show">Show meaning<span class="kb">Space</span></button></div>`)}
+ else{const clue=`<div class="front def">${esc(it.m)}</div>${viSpan(it.v)}`;
+  if(!q.res){el.innerHTML=top+clue+`<input id="fcIn" autocomplete="off" spellcheck="false" placeholder="Type pinyin (no tones needed) or characters…"><div class="fbtn"><button class="pri" data-a="chk">Check<span class="kb">Enter</span></button><button class="ghost" data-a="giveup">I don't know</button></div>`;
+   const inp=$('fcIn');inp.focus();inp.onkeydown=e=>{if(e.key==='Enter'&&!e.isComposing){e.preventDefault();act(d,'chk')}}}
+  else{el.innerHTML=top+clue+`<div class="verdict ${q.res.ok?'ok':'bad'}">${q.res.ok?'✓ Correct':'✗ Not quite'}${q.res.v&&!q.res.ok?` · you typed: “${esc(q.res.v)}”`:''}</div>${big}${it.p?`<div style="color:var(--red);font-size:18px">${esc(it.p)}</div>`:''}${ex}<div class="fbtn"><button class="pri" data-a="next">Next<span class="kb">Enter</span></button></div>`}}}
+function grade(d,good){const q=Q[d],it=q.list[q.i],t=dayNum(),s=S.srs[it.id]||{b:0,due:t};
+ if(good){s.b=Math.min(5,s.b+1);s.due=t+INT[s.b];if(!q.miss||!q.miss[it.id])q.ok++}
+ else{s.b=1;s.due=t;q.miss=q.miss||{};q.miss[it.id]=1;q.list.splice(Math.min(q.list.length,q.i+4),0,it)}   /* missed: comes back a few cards later */
+ S.srs[it.id]=s;bump();save()}
+function act(d,a){const q=Q[d];if(!q)return;const it=q.list[q.i];
+ if(a==='show'){q.shown=true;say(it.h);flash(d)}
+ else if(a==='yes'||a==='no'){grade(d,a==='yes');q.i++;q.shown=false;flash(d);chips()}
+ else if(a==='chk'||a==='giveup'){const v=a==='giveup'?'':($('fcIn')||{}).value||'';if(a==='chk'&&!v.trim())return;
+  const ok=a==='chk'&&(CJK.test(v)?hanOnly(v).join('')===hanOnly(it.h).join(''):!!it.p&&pyKey(v)===pyKey(it.p));q.res={ok,v:v.trim()};grade(d,ok);say(it.h);flash(d);chips()}
+ else if(a==='next'){q.res=null;q.i++;flash(d)}}
+document.addEventListener('keydown',e=>{const t=S.opts.tab;if(t!=='vocab'&&t!=='phr')return;const q=Q[t];if(!q)return;const typing=/INPUT|TEXTAREA|SELECT/.test(e.target.tagName);
+ if(S.opts.dir[t]==='en'&&!typing){if(e.code==='Space'&&!q.shown){e.preventDefault();act(t,'show')}else if(q.shown&&e.key==='1')act(t,'no');else if(q.shown&&e.key==='2')act(t,'yes')}
+ else if(S.opts.dir[t]==='vi'&&q.res&&e.key==='Enter'){e.preventDefault();act(t,'next')}});
+document.addEventListener('keydown',e=>{if(S.opts.tab==='dict'&&e.ctrlKey&&e.code==='Space'){e.preventDefault();DC?say(DC.h):dNext()}});
+
+/* ================= listening ================= */
+let lShow=false;
+function lHl(i){document.querySelectorAll('#lDet .ln').forEach((el,k)=>el.classList.toggle('cur',k===i))}
+function lPlay(L,from,only,rate){if(!window.speechSynthesis){alert('This browser cannot read text aloud.');return}speechSynthesis.cancel();
+ const who=[...new Set(L.lines.map(l=>l[0]))],seq=only?[from]:L.lines.map((_,k)=>k).slice(from);
+ seq.forEach((k,n)=>{const u=utter(L.lines[k][1],who.indexOf(L.lines[k][0])===1?'B':'A',rate);u.onstart=()=>lHl(k);if(n===seq.length-1)u.onend=()=>lHl(-1);speechSynthesis.speak(u)})}
+function listenRender(){const L=LISTEN.find(x=>x.id===S.opts.lsel)||LISTEN[0],who=[...new Set(L.lines.map(l=>l[0]))],r=S.listen[L.id];
+ $('lList').innerHTML=LISTEN.map((x,i)=>{const s=S.listen[x.id];return`<button class="gi ${x.id===L.id?'on':''}" data-l="${x.id}"><span>${i+1}. ${esc(x.t)}<small><span class="lvtag l${x.lv}">${LVN[x.lv]}</span> ${esc(x.k)}</small></span><span class="ck ${s&&s.best===100?'y':''}">${s?s.best+'%':''}</span></button>`}).join('');
+ $('lDet').innerHTML=`<h3>${esc(L.t)}</h3>${viSpan(L.tv)}<div class="row"><span class="lvtag l${L.lv}">${LVN[L.lv]}</span><span class="mut">${esc(L.k)} · ${L.lines.length} lines · ${who.map(esc).join(' & ')}</span></div>
+  <div class="lplayer"><button class="bigplay" id="lAll" title="Play the whole lesson">▶</button><button class="sec" id="lStop">■ Stop</button><button class="sec" id="lSlow">🐢 Slow</button>
+   <label><input type="checkbox" id="lTr" ${lShow?'checked':''}> Show transcript</label></div>
+  <p class="mut" style="margin:0">Listen first without the transcript, then answer the questions. Click any line to hear it again.</p>
+  <div class="lines">${L.lines.map(([w,h,p,m,v],k)=>`<div class="ln" data-k="${k}"><span class="who ${who.indexOf(w)===1?'b':''}">${esc(w)}</span><div class="tx ${lShow?'':'hide'}"><span class="h">${esc(h)}</span><span class="py">${esc(p)}</span><span class="en">${esc(m)}</span>${viSpan(v)}</div></div>`).join('')}</div>
+  <div class="qz" id="lQz"><h2 style="margin:0">Questions</h2>${L.q.map(([q,qv,o],i)=>`<div><div class="q">${i+1}. ${esc(q)}</div>${viSpan(qv)}<div class="opts">${o.map((x,j)=>`<label><input type="radio" name="lq${i}" value="${j}">${esc(x)}</label>`).join('')}</div></div>`).join('')}
+  <div class="row"><button class="pri" id="lChk">✓ Check answers</button><button class="ghost" id="lDict">✍️ Practise dictation with this lesson →</button><span id="lMsg" class="mut">${r?`Best score: ${r.best}%`:''}</span></div></div>`;
+ $('lAll').onclick=()=>lPlay(L,0);$('lStop').onclick=()=>{if(window.speechSynthesis)speechSynthesis.cancel();lHl(-1)};
+ $('lSlow').onclick=()=>lPlay(L,0,false,Math.max(.4,S.opts.rate-.25));
+ $('lTr').onchange=e=>{lShow=e.target.checked;document.querySelectorAll('#lDet .tx').forEach(x=>x.classList.toggle('hide',!lShow))};
+ document.querySelectorAll('#lDet .ln').forEach(el=>el.onclick=()=>lPlay(L,+el.dataset.k,true));
+ $('lDict').onclick=()=>{S.opts.lvl='listen';$('dLvl').value='listen';tab('dict');dNext()};
+ $('lChk').onclick=()=>{let right=0;L.q.forEach(([,,o,a],i)=>{document.querySelectorAll(`#lQz input[name=lq${i}]`).forEach(x=>{const l=x.parentNode;l.classList.remove('r','w');if(+x.value===a)l.classList.add('r');else if(x.checked)l.classList.add('w')});
+   const c=document.querySelector(`#lQz input[name=lq${i}]:checked`);if(c&&+c.value===a)right++});
+  const pct=Math.round(right/L.q.length*100),prev=S.listen[L.id];S.listen[L.id]={best:Math.max(pct,prev?prev.best:0),last:pct,at:dayStr()};bump();save();chips();
+  $('lMsg').textContent=pct===100?'🎉 All correct!':`${right}/${L.q.length} correct. The right answers are in green; turn on the transcript to check.`;
+  const ck=document.querySelector(`.gi[data-l="${L.id}"] .ck`);if(ck){ck.textContent=S.listen[L.id].best+'%';ck.classList.toggle('y',S.listen[L.id].best===100)}}}
+$('lList').onclick=e=>{const b=e.target.closest('[data-l]');if(!b)return;if(window.speechSynthesis)speechSynthesis.cancel();S.opts.lsel=b.dataset.l;lShow=false;save();listenRender();$('lDet').scrollIntoView({block:'nearest',behavior:'smooth'})};
+
+/* ================= today's lesson ================= */
+let tView=todayIdx();
+function todayRender(){const n=todayIdx();tView=Math.min(Math.max(0,tView),n);const i=tView,L=lesson(i),dt=new Date();dt.setDate(dt.getDate()-(n-i));
+ if(!BW.length){$('t-today').innerHTML='<div class="card">Could not load chinese-bank.js. Keep it in the same folder as chinese.html.</div>';return}
+ const round=Math.floor(i*2/BW.length)+1,done=!!S.done[i],K=(en,vi)=>`<span class="k">${en}</span>${viSpan(vi)}`;
+ const word=x=>`<div class="item"><div class="hz">${esc(x.h)} ${spk(x.h)}</div><span class="py" style="font-size:17px">${esc(x.p)}</span><div><b>${esc(x.m)}</b> <span class="pos">${esc(x.pos)}</span></div>${viSpan(x.v)}${x.e?S4(x.e):''}</div>`;
+ $('t-today').innerHTML=`<div class="card"><div class="dhead"><div><h2>${i===n?'Today\'s lesson':'Lesson #'+(i+1)}</h2>${viSpan(i===n?'Bài học hôm nay':'Bài học ngày #'+(i+1))}
+   <div class="dt">Day ${i+1} · ${dt.toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long',year:'numeric'})}${round>1?` · Round ${round} (review)`:''}</div></div>
+   <div class="nav"><button class="sec" data-nav="-1" ${i===0?'disabled':''} title="Previous lesson">◀</button><button class="sec" data-nav="0" ${i===n?'disabled':''} title="Back to today">●</button><button class="sec" data-nav="1" ${i===n?'disabled':''} title="Next lesson">▶</button></div></div></div>
+  <div class="lgrid">
+   <div class="lc">${K('📕 New words','Từ mới')}${L.w.map(word).join('')}</div>
+   <div class="lc">${K('💬 Useful phrase','Mẫu câu hữu ích')}${L.s?`<span class="tag">${esc(L.s.c)}</span><div class="hz" style="font-size:24px">${esc(L.s.h)} ${spk(L.s.h)}</div><span class="py" style="font-size:16px">${esc(L.s.p)}</span><div><b>${esc(L.s.m)}</b></div>${viSpan(L.s.v)}`:''}</div>
+   <div class="lc">${K('🧩 Grammar point','Ngữ pháp')}<div style="font-weight:700;font-size:16px">${esc(L.g.t)}</div>${viSpan(L.g.tv)}<div class="form">${esc(L.g.f)}</div>${S4({h:L.g.ex[0][0],p:L.g.ex[0][1],m:L.g.ex[0][2],v:L.g.ex[0][3]})}<button class="sec" id="tGram" style="align-self:flex-start">Practise this grammar →</button></div>
+   <div class="lc">${K('✍️ Dictation for this lesson','Chép chính tả theo bài')}<div>${lessonSentences(i).length} sentences from this lesson.</div>${viSpan(lessonSentences(i).length+' câu lấy từ bài học này.')}<button class="pri" id="tDict" style="align-self:flex-start">Practise dictation →</button>
+    <span class="k" style="margin-top:6px">🎧 Listening</span>${viSpan('Luyện nghe')}<div>Suggested: <b>${esc(L.l.t)}</b> (${LVN[L.l.lv]})</div>${viSpan(L.l.tv)}<button class="sec" id="tListen" style="align-self:flex-start">Open listening →</button></div>
+  </div>
+  <div class="card dfoot"><button class="${done?'sec ok-b':'pri'}" id="tDone">${done?'✓ Lesson completed':'✓ Mark lesson as done'}</button>
+   <span class="mut">The words and phrase from this lesson are added to your review cards in Vocabulary / Phrases. A new lesson opens every day (${BW.length/2} days per round).${viSpan('Từ và mẫu câu của bài được thêm vào thẻ ôn ở tab Vocabulary / Phrases. Mỗi ngày mở một bài mới ('+BW.length/2+' ngày mỗi vòng).')}</span></div>`}
+$('t-today').addEventListener('click',e=>{const nv=e.target.closest('[data-nav]');
+ if(nv){const v=+nv.dataset.nav;tView=v===0?todayIdx():tView+v;todayRender();return}
+ if(e.target.id==='tDict'){S.opts.lvl='today';$('dLvl').value='today';tab('dict');dNext();return}
+ if(e.target.id==='tListen'){S.opts.lsel=lesson(tView).l.id;lShow=false;tab('listen');return}
+ if(e.target.id==='tGram'){gSel=lesson(tView).g.id;tab('gram');return}
+ if(e.target.id==='tDone'){if(S.done[tView])delete S.done[tView];else{S.done[tView]=true;bump()}save();chips();todayRender()}});
+
+/* ================= grammar ================= */
+let gSel=null;
+function gramRender(){if(!gSel)gSel=(GRAM.find(g=>!S.gram[g.id])||GRAM[0]).id;
+ $('gList').innerHTML=GRAM.map((g,i)=>`<button class="gi ${g.id===gSel?'on':''}" data-g="${g.id}"><span>${i+1}. ${esc(g.t)}</span><span class="ck ${S.gram[g.id]?'y':''}">${S.gram[g.id]?'✓':''}</span></button>`).join('');
+ const g=GRAM.find(x=>x.id===gSel);
+ $('gDet').innerHTML=`<h3>${esc(g.t)}</h3>${viSpan(g.tv)}<div class="form">${esc(g.f)}</div><ul>${g.x.map(([en,vi])=>`<li>${esc(en)}${viSpan(vi)}</li>`).join('')}</ul>
+  <div class="exs">${g.ex.map(([h,p,m,v])=>S4({h,p,m,v})).join('')}</div>
+  <div class="qz" id="gQz"><h2 style="margin:0">Practice</h2>${g.q.map(([q,o],i)=>`<div><div class="q">${i+1}. ${esc(q)}</div><div class="opts">${o.map((x,j)=>`<label><input type="radio" name="q${i}" value="${j}">${esc(x)}</label>`).join('')}</div></div>`).join('')}
+  <div class="row"><button class="pri" id="gChk">✓ Check</button><span id="gMsg" class="mut">${S.gram[g.id]?'✓ You have completed this topic.':'Get all answers right to complete this topic.'}</span></div></div>`;
+ $('gChk').onclick=()=>{let right=0;g.q.forEach(([,o,a],i)=>{document.querySelectorAll(`#gQz input[name=q${i}]`).forEach(r=>{const l=r.parentNode;l.classList.remove('r','w');if(+r.value===a)l.classList.add('r');else if(r.checked)l.classList.add('w')});
+   const c=document.querySelector(`#gQz input[name=q${i}]:checked`);if(c&&+c.value===a)right++});
+  bump();const all=right===g.q.length;if(all)S.gram[g.id]=true;save();chips();
+  $('gMsg').textContent=all?'🎉 All correct! Topic completed.':`${right}/${g.q.length} correct. The right answers are in green.`;
+  const ck=document.querySelector(`.gi[data-g="${g.id}"] .ck`);if(all&&ck){ck.className='ck y';ck.textContent='✓'}}}
+$('gList').onclick=e=>{const b=e.target.closest('[data-g]');if(b){gSel=b.dataset.g;gramRender();$('gDet').scrollIntoView({block:'nearest',behavior:'smooth'})}};
+
+/* ================= reset ================= */
+$('rst').onclick=()=>{if(!confirm('Reset all learning progress?\n\nThis clears: card levels, dictation and listening results, completed grammar topics, daily lessons and your streak.\nThis keeps: the words, phrases and sentences you added; your voice and display settings.'))return;
+ const keep={custom:S.custom,opts:S.opts};S=Object.assign(DEF(),keep,{start:dayNum()});tView=0;Q.vocab=Q.phr=null;gSel=null;save();chips();tab(S.opts.tab);
+ if(S.opts.tab!=='vocab')deckRender('vocab');if(S.opts.tab!=='phr')deckRender('phr');$('dRes').innerHTML=''};
+
+/* ================= init ================= */
+function renderAll(){chips();deckRender('vocab');deckRender('phr');tab(S.opts.tab||'today',true)}   /* no save on load, so an older browser copy never outruns qe_data.json */
+renderAll();
+(async()=>{if(HOST){svSet('✓ Progress saved to your account');return}try{const h=await qeHandle(false);if(!h){svSet('Saved in this browser · click to connect qe_data.json');return}
+ const j=await qeRead(h),d=j&&j.zh;
+ if(d&&(d.savedAt||0)>(S.savedAt||0)){S=fill(d);if(!S.start)S.start=dayNum();tView=todayIdx();try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}$('dLvl').value=S.opts.lvl;$('rate').value=S.opts.rate;$('dMy').value=S.custom.dict;myN();applyShow();
+  ['vocab','phr'].forEach(k=>$(k+'-dir').value=S.opts.dir[k]);if(VO.length)loadVoices();renderAll();svSet('Loaded from qe_data.json')}
+ else if(!d||(S.savedAt||0)>(d.savedAt||0))await fileSave(false);else svSet('Saved · qe_data.json')}catch(e){svSet('⚠ qe_data.json has an error, not overwritten: '+(e.message||e),'er')}})();
+$('sv').onclick=()=>fileSave(true);
+})();
+</script></body></html>
