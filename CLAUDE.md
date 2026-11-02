@@ -29,13 +29,9 @@ Ngôn ngữ giao diện: tiếng Anh / tiếng Việt; trao đổi với chủ d
   window.NPD: refresh(), logout(), user(), call(action, payload), apply(kết quả), expired(), menu()
 - `sheets-bridge.js` – Sheet → S (settingsOf, libraryOf, studyOf); thay saveFile() bằng lưu vào Sheet (TABS: Cài đặt,
   Thư viện; makePlan() so với BASE lúc tải; tab/cột thiếu → máy chủ tự tạo); dữ liệu cá nhân (npdPersonal → "mine")
-- Cảnh 3D Home: `<script id="tc3d">` = JSON {css, body, map:{module: data-URL base64}, img}. Sửa module tc/*.js:
-  giải mã base64 → sửa → mã hóa lại. tc/fairy.js: Ngọc Nhi bay tự do (đứng yên khi trang gửi "tc-fy-hold");
-  tc/environment.js: rừng trúc (trúc 3D instanced + lớp trúc xa vẽ canvas), hồ nước xanh ngọc (phản chiếu = bản sao
-  lật ngược của nhóm "near" dưới mặt nước trong suốt), tranh cuộn cong vẽ lầu vàng, lầu gác, tia nắng – dựng bằng code.
-  Ngọc Nhi: 4 ảnh webp img["assets/fairy/fairy_{front,back,right,left}.webp"] cắt từ bảng thiết kế nhân vật (left = right lật).
-  tc/beasts.js: thú nhỏ chơi trên bục đá (config SLAB, BEAST_SCALE); tc/main.js: nhúng thì camera cố định, gửi vị trí
-  tiên nữ {tc:"info", fy:[x,y,h]} và {tc:"fairy"} khi bấm
+- Home (2D): ảnh nền rừng trúc + Ngọc Nhi = ảnh trong `<script id="home-img">` (JSON: bg, fy, tranh điện p_*, lv*).
+  Ngọc Nhi: fairyStart / fairyPlace (ảnh bên phải, thẻ tên "Ngọc Nhi · trợ lý", bong bóng nhắc việc / chào theo tài khoản).
+  Cảnh 3D (Three.js, thánh thú) đã gỡ – còn trong lịch sử Git.
 - `apps-script/Code.gs` – bản gốc code Apps Script. Sau khi sửa: chủ dự án copy sang
   Apps Script rồi Deploy → Manage deployments → Edit → New version (link API giữ nguyên)
 
