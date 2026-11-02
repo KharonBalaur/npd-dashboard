@@ -5,7 +5,7 @@ Web nội bộ cho team QE: **Training** (lộ trình tu luyện + thư viện k
 
 | File / thư mục | Vai trò |
 |---|---|
-| `JLTN_WEBSITE.html` | App chính (một file: giao diện, Training, Tools, Cave, cảnh 3D Home) |
+| `JLTN_WEBSITE.html` | App chính (một file: giao diện, Training, Tools, Cave, Home với ảnh nền + Ngọc Nhi) |
 | `index.html` | Trang gốc của GitHub Pages, tự chuyển sang `JLTN_WEBSITE` |
 | `NPD_BuildStatus.html` | Địa chỉ cũ, tự chuyển sang `JLTN_WEBSITE` |
 | `study/` | App học tiếng Anh / tiếng Trung và ngân hàng bài học mỗi ngày |
