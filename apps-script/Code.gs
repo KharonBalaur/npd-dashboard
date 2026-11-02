@@ -11,6 +11,8 @@
  * Sửa dữ liệu chung (action "save"): mọi tài khoản đã đăng nhập, trừ Quyền = Viewer.
  * Dữ liệu cá nhân (Động Phủ, Training, sổ OT, lời nhắc) lưu ở tab "Cá nhân", mỗi người chỉ đọc/ghi phần của mình.
  * Ảnh sản phẩm lưu trong một thư mục Drive riêng tư, chỉ trả về khi có token hợp lệ.
+ * Tu luyện (Training): bài thực hành / xin đột phá ghi vào tab "Tu luyện" (action "practice"); chỉ Quyền = Admin
+ * được duyệt (action "review"). Mỗi người chỉ thấy dòng của mình, Admin thấy tất cả.
  * Mỗi ô được sửa ghi một dòng vào tab "Lịch sử". Trước khi ghi, máy chủ so
  * giá trị hiện tại trong Sheet với giá trị người sửa đã thấy lúc tải trang:
  * nếu người khác đã sửa ô đó trong lúc đó → không ghi gì, báo xung đột.
@@ -31,6 +33,9 @@ const CFG = {
   SIGNUP_APPROVAL: true,   // tài khoản tự tạo phải được chủ Sheet duyệt (xóa "Chờ duyệt" ở cột Trạng thái)
   SIGNUP_PER_HOUR: 20,     // tối đa số tài khoản tạo mới mỗi giờ (chống spam)
   PENDING: 'Chờ duyệt',
+  SHEET_PRACTICE: 'Tu luyện',
+  PRACTICE_MAX: 4000,      // ký tự / bài thực hành
+  PRACTICE_SEND: 400,      // Admin: số dòng mới nhất gửi về (dòng Chờ duyệt luôn được gửi)
 };
 
 // Tab gửi về trình duyệt (các tab khác trong Sheet, vd dữ liệu NPD cũ, không bao giờ gửi đi)
@@ -42,6 +47,9 @@ const MINE_HEAD = ['Tên đăng nhập', 'Khóa', 'Dữ liệu', 'Cập nhật']
 const MINE_KEYS = ['npdCave', 'npdLib', 'npdOT', 'npdFairy', 'npdEng', 'npdZh'];
 const HISTORY_HEAD = ['Thời gian', 'Người sửa', 'Tab', 'TTi model', 'Dòng', 'Cột', 'Giá trị cũ', 'Giá trị mới'];
 const VIEW_ROLES = ['viewer', 'view', 'xem', 'chỉ xem', 'chi xem'];
+const ADMIN_ROLES = ['admin', 'administrator', 'quản trị', 'quan tri', 'quản trị viên', 'quan tri vien'];
+const PRACTICE_HEAD = ['Thời gian', 'Tên đăng nhập', 'Họ tên', 'Cảnh giới', 'Bí kíp', 'Bài làm', 'Trạng thái', 'Người duyệt', 'Nhận xét', 'Cập nhật'];
+const PRACTICE_ST = { wait: 'Chờ duyệt', ok: 'Đã duyệt', back: 'Trả lại' };
 
 // Tên cột được chấp nhận ở dòng 1 của tab "Tài khoản" (không phân biệt hoa/thường)
 const COLS = {
@@ -67,6 +75,8 @@ function doPost(e) {
       case 'data':   out = getData_(req.token); break;
       case 'save':   out = save_(req.token, req.changes, req.ensure); break;
       case 'mine':   out = mine_(req.token, req.key, req.value); break;
+      case 'practice': out = practice_(req.token, req.realm, req.topic, req.text); break;
+      case 'review': out = review_(req.token, req.user, req.realm, req.topic, req.status, req.note); break;
       case 'img_put': out = imgPut_(req.token, req.name, req.data); break;
       case 'img_get': out = imgGet_(req.token, req.ids); break;
       case 'presence': out = presence_(req.token, req.model, req.active); break;
@@ -218,7 +228,7 @@ function changePassword_(token, oldPass, newPass) {
 function getData_(token) {
   const user = authFresh_(token);
   if (!user) return { ok: false, expired: true, error: 'Phiên đăng nhập đã hết hạn' };
-  return Object.assign({ ok: true, user, mine: readMine_(user.username) }, readAll_());
+  return Object.assign({ ok: true, user, mine: readMine_(user.username), practice: readPractice_(user) }, readAll_());
 }
 
 function readAll_() {
@@ -610,6 +620,86 @@ function mineSheet_() {
   return sh;
 }
 
+/* ---------------- Tu luyện: bài thực hành và duyệt đột phá ---------------- */
+
+// Một dòng / (người, cảnh giới, bí kíp). Bí kíp "*" = xin Admin duyệt Đại Viên Mãn của cả cảnh giới.
+// Người học chỉ nộp được bài của chính mình (tên lấy từ token, không tin trình duyệt) và không tự duyệt được.
+function isAdmin_(user) {
+  return !!user && ADMIN_ROLES.includes(norm_(user.role));
+}
+
+function practiceSheet_() {
+  const ss = SpreadsheetApp.getActive();
+  let sh = ss.getSheetByName(CFG.SHEET_PRACTICE);
+  if (!sh) {
+    sh = ss.insertSheet(CFG.SHEET_PRACTICE);
+    sh.getRange(1, 1, 1, PRACTICE_HEAD.length).setValues([PRACTICE_HEAD]).setFontWeight('bold');
+    sh.setFrozenRows(1);
+  }
+  return sh;
+}
+
+function practiceRows_() {
+  const sh = SpreadsheetApp.getActive().getSheetByName(CFG.SHEET_PRACTICE);
+  if (!sh || sh.getLastRow() < 2) return [];
+  const tz = SpreadsheetApp.getActive().getSpreadsheetTimeZone();
+  const d = v => v instanceof Date ? Utilities.formatDate(v, tz, "yyyy-MM-dd'T'HH:mm") : String(v || '');
+  return sh.getRange(2, 1, sh.getLastRow() - 1, PRACTICE_HEAD.length).getValues().map((r, i) => ({
+    row: i + 2, t: d(r[0]), user: String(r[1]), name: String(r[2]), realm: String(r[3]), topic: String(r[4]), text: String(r[5]),
+    status: String(r[6]), by: String(r[7]), note: String(r[8]), at: d(r[9]),
+  }));
+}
+
+// Người học: các dòng của mình. Admin: mọi dòng Chờ duyệt + các dòng mới nhất.
+function readPractice_(user) {
+  const all = practiceRows_().map(p => { const o = Object.assign({}, p); delete o.row; return o; });
+  if (!isAdmin_(user)) return all.filter(p => norm_(p.user) === norm_(user.username));
+  const recent = all.slice(-CFG.PRACTICE_SEND);
+  return all.filter(p => p.status === PRACTICE_ST.wait && recent.indexOf(p) < 0).concat(recent);
+}
+
+function practice_(token, realm, topic, text) {
+  const user = authFresh_(token);
+  if (!user) return { ok: false, expired: true, error: 'Phiên đăng nhập đã hết hạn' };
+  realm = String(realm || ''); topic = String(topic || ''); text = String(text == null ? '' : text).trim();
+  if (!/^[a-z0-9-]{2,24}$/.test(realm) || !/^(\*|[a-z0-9-]{1,32})$/.test(topic)) return { ok: false, error: 'Cảnh giới / bí kíp không hợp lệ' };
+  if (topic !== '*' && !text) return { ok: false, error: 'Bài làm đang trống' };
+  if (text.length > CFG.PRACTICE_MAX) return { ok: false, error: 'Bài làm quá dài (tối đa ' + CFG.PRACTICE_MAX + ' ký tự)' };
+  const lock = LockService.getScriptLock();
+  if (!lock.tryLock(10000)) return { ok: false, error: 'Máy chủ bận, thử lại sau' };
+  try {
+    const sh = practiceSheet_();
+    const old = practiceRows_().find(p => norm_(p.user) === norm_(user.username) && p.realm === realm && p.topic === topic);
+    if (old && old.status === PRACTICE_ST.ok && topic === '*') return { ok: false, error: 'Cảnh giới này đã được duyệt' };
+    const row = [new Date(), user.username, user.name || user.username, realm, topic, cellValue_(text), PRACTICE_ST.wait, '', '', new Date()];
+    if (old) sh.getRange(old.row, 1, 1, row.length).setValues([row]);    // nộp lại: về Chờ duyệt
+    else sh.getRange(sh.getLastRow() + 1, 1, 1, row.length).setValues([row]);
+    return { ok: true, practice: readPractice_(user) };
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+function review_(token, who, realm, topic, status, note) {
+  const user = authFresh_(token);
+  if (!user) return { ok: false, expired: true, error: 'Phiên đăng nhập đã hết hạn' };
+  if (!isAdmin_(user)) return { ok: false, error: 'Chỉ tài khoản Quyền = Admin mới được duyệt' };
+  const st = status === 'ok' ? PRACTICE_ST.ok : status === 'back' ? PRACTICE_ST.back : '';
+  if (!st) return { ok: false, error: 'Trạng thái không hợp lệ' };
+  note = String(note == null ? '' : note).trim().slice(0, 500);
+  const lock = LockService.getScriptLock();
+  if (!lock.tryLock(10000)) return { ok: false, error: 'Máy chủ bận, thử lại sau' };
+  try {
+    const p = practiceRows_().find(r => norm_(r.user) === norm_(who) && r.realm === String(realm) && r.topic === String(topic));
+    if (!p) return { ok: false, error: 'Không tìm thấy bài này (có thể đã bị xóa)' };
+    const sh = practiceSheet_();
+    sh.getRange(p.row, 7, 1, 4).setValues([[st, user.name || user.username, cellValue_(note), new Date()]]);
+    return { ok: true, practice: readPractice_(user) };
+  } finally {
+    lock.releaseLock();
+  }
+}
+
 /* ---------------- Ảnh sản phẩm (thư mục Drive riêng tư) ---------------- */
 
 function imgFolder_() {
@@ -655,6 +745,6 @@ function imgGet_(token, ids) {
 
 // Chạy 1 lần trong trình soạn Apps Script (chọn hàm setup → Run) để cấp quyền Drive và tạo sẵn các tab
 function setup() {
-  imgFolder_(); mineSheet_(); historySheet_();
+  imgFolder_(); mineSheet_(); historySheet_(); practiceSheet_();
   ensureColumns_({ 'Cài đặt': ['Khóa', 'Giá trị'] });
 }
