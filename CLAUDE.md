@@ -13,8 +13,18 @@ Ngôn ngữ giao diện: tiếng Anh / tiếng Việt; trao đổi với chủ d
 - `JLTN_WEBSITE.html` – app chính (1 file, JS thuần). Trang: home, lib (Training), eng, zh, tool, cave; showTab(t).
   Biến toàn cục: S (dữ liệu chung: links, address, library, study, history), tabNow. Thẻ `<script id="board-data">`
   PHẢI luôn rỗng: {"version":1,"projects":[],"history":[]}
-  - Training: LIB_STAGES (kiến thức lộ trình, viết sẵn trong file) + Thư viện (S.library, tab "Thư viện" của Sheet,
-    sửa trên web: renderBooks / bookAct; định dạng nội dung mdLite, câu hỏi quizOf). Tu vi = npdLib (cá nhân).
+  - Training (Tàng Kinh Các): lộ trình = `realms.js` (window.REALMS: 14 cảnh giới + Vị Tế, 3 giới Nhân / Linh / Tiên,
+    mỗi cảnh giới {id, order, name, gioi, hex, que, meaning, icon, gate?, topics:[{id, name, short, P?, Q?, task?}]}).
+    Bài cũ (LIB_CUR, 20 bí kíp) gắn vào bí kíp mới qua LIB_OLD2NEW (Kanban + JIT → jit-kanban); topicOf(id) = nội dung.
+    Bí kíp chưa có P / Q / task = "Đang biên soạn": không chặn tiểu cảnh giới, không tính là đã đạt.
+    Tiểu cảnh giới (realmState): Sơ kỳ = đọc hết trang mọi bí kíp · Trung kỳ = qua quiz mọi bí kíp (5 câu, ≥ 80 %; trượt =
+    đọc lại) · Hậu kỳ = đã nộp bài thực hành (topic.task) · Đại Viên Mãn = Admin duyệt (dòng bí kíp "*" trong tab Tu luyện).
+    Đột phá: libAdvance → BreakthroughFX.play(id, {icon}) (breakthrough-fx.js, không sửa). Cửa ải: gate "binh-canh" (Kết Đan)
+    và "thien-kiep" (Độ Kiếp, phi thăng) = thi 10 câu trộn bí kíp của giới, cần 8. Vị Tế: tái chứng nhận hằng năm.
+    Tiến độ npdLib v2 {v:2, realm, read:{bí kíp:[trang]}, quiz, fails, log, gates, pass, mig, recert, books, v1};
+    libMigrate chuyển bản cũ {stage, read, fails, log} 1 lần (giữ bản cũ trong v1; người đã tu luyện đứng ở cảnh giới đầu
+    tiên còn bí kíp cũ chưa đạt). Admin (Quyền = Admin): tab "Duyệt" trong Training (renderReview).
+    Thư viện (S.library, tab "Thư viện" của Sheet, sửa trên web: renderBooks / bookAct; mdLite, quizOf).
   - Cave: hồ sơ / CV (cave(): profile, skills, exp, edu, cert, lang, proj), việc cần làm, lời nhắc. cavePdf: CV chuẩn
     Harvard (1 cột, serif đen trắng; bỏ mục / dòng trống; tiêu đề EN hoặc VI theo nội dung; tự co 82–112% cho vừa trang).
   - Tools: danh sách bên trái (tìm kiếm, phím /) + vùng làm việc; TOOLS / TOOL_RUN; link thẳng #tool/<key> (toolHash).
@@ -43,6 +53,10 @@ Ngôn ngữ giao diện: tiếng Anh / tiếng Việt; trao đổi với chủ d
   Chỉ gửi các tab trong READ_TABS (Cài đặt, Thư viện, English, Chinese)
 - {action:"save", token, changes:[{tab, op, match, set, old}], ensure:{tab:[cột]}} → {ok, saved, ...như "data"} hoặc
   {ok:false, conflict:true, conflicts:[...]}. Mọi tài khoản trừ Quyền = Viewer; chỉ EDIT_TABS (Cài đặt, Thư viện)
+- {action:"practice", token, realm, topic, text} – nộp bài thực hành (topic = id bí kíp) hoặc xin duyệt Đại Viên Mãn
+  (topic = "*"); ghi tab Tu luyện, Trạng thái = Chờ duyệt → {ok, practice:[…]}
+- {action:"review", token, user, realm, topic, status:"ok"|"back", note} – chỉ Quyền = Admin → {ok, practice}
+- "data" trả thêm practice: dòng Tu luyện của chính mình (Admin: mọi dòng Chờ duyệt + 400 dòng mới nhất)
 - {action:"mine", token, key, value} – dữ liệu cá nhân (npdCave, npdLib, npdOT, npdFairy, npdEng, npdZh) của chính mình
 - img_put / img_get / presence – còn trong Code.gs, hiện trang không dùng
 - {action:"logout", token}
@@ -52,6 +66,8 @@ Ngôn ngữ giao diện: tiếng Anh / tiếng Việt; trao đổi với chủ d
   Trạng thái (Khóa / Chờ duyệt = chặn) → KHÔNG bao giờ gửi tab này về trình duyệt
 - Lịch sử (tự tạo): Thời gian | Người sửa | Tab | TTi model | Dòng | Cột | Giá trị cũ | Giá trị mới
 - Cá nhân (tự tạo, chỉ chủ tài khoản đọc được): Tên đăng nhập | Khóa | Dữ liệu (JSON) | Cập nhật
+- Tu luyện (tự tạo): Thời gian | Tên đăng nhập | Họ tên | Cảnh giới | Bí kíp | Bài làm | Trạng thái (Chờ duyệt / Đã duyệt /
+  Trả lại) | Người duyệt | Nhận xét | Cập nhật – chỉ máy chủ ghi; người học không tự duyệt được
 - Cài đặt: Khóa | Giá trị (address; links dạng JSON)
 - Thư viện: ID | Chủ đề | Tiêu đề | Tóm tắt | Nội dung | Câu hỏi | Tác giả | Cập nhật
   (Nội dung: "## tiêu đề", "- ý", "1. bước", "**đậm**"; Câu hỏi: câu hỏi, "- sai", "* đúng", cách nhau 1 dòng trống)

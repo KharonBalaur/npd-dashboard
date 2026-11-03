@@ -211,7 +211,7 @@
     const tabs = Object.fromEntries(Object.entries(data.tabs || {})
       .map(([name, t]) => [name, toRecords(t.headers, t.rows)]));
     // sheets: dữ liệu thô (headers + rows) để phần lưu biết tên cột / giá trị gốc; history: tab Lịch sử
-    const payload = { tabs, sheets: data.tabs || {}, history: data.history || [], mine: data.mine || null, fetchedAt: data.fetchedAt, user };
+    const payload = { tabs, sheets: data.tabs || {}, history: data.history || [], mine: data.mine || null, practice: data.practice || null, fetchedAt: data.fetchedAt, user };
     if (typeof window.renderDashboard === 'function') window.renderDashboard(payload);
     else console.warn('Chưa có window.renderDashboard – dữ liệu:', payload);
     document.dispatchEvent(new CustomEvent('npd:data', { detail: payload }));
@@ -254,7 +254,7 @@
     userMenu();
     const data = { tabs: r.tabs, history: r.history, fetchedAt: r.fetchedAt };
     store.set(DATA_KEY, { token: s.token, data }, !!s.remember);                      // dữ liệu cá nhân không giữ trong bản tạm
-    render(Object.assign({ mine: r.mine }, data), s.user);
+    render(Object.assign({ mine: r.mine, practice: r.practice }, data), s.user);
   }
 
   async function logout(reload = true) {

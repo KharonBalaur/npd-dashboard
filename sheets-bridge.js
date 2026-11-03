@@ -221,9 +221,10 @@
   const histOf = H => (H || []).map(h => ({ t: h.t, user: h.user, model: h.model, area: h.tab, field: [h.row, h.col].filter(Boolean).join(' · '), from: h.from, to: h.to }));
   const verOf = o => { let h = 7; const s = JSON.stringify(o); for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) >>> 0; return h.toString(36); };
 
-  window.renderDashboard = function ({ tabs, sheets, history, fetchedAt, mine }) {
+  window.renderDashboard = function ({ tabs, sheets, history, fetchedAt, mine, practice }) {
     document.body.classList.toggle('npd-edit', canEdit());
     applyMine(mine);
+    if (practice) window.npdPractice = practice;                           // bài thực hành / xin đột phá (tab Tu luyện): của mình, Admin thấy tất cả
     if (dirty && SH && S) {                                                // vd đăng nhập lại sau khi hết phiên: giữ phần đang sửa dở
       S.history = histOf(history);
       setSaveSt('dirty', 'Your unsaved changes are kept: click to save them');
