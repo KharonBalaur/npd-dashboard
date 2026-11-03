@@ -19,6 +19,8 @@ Ngôn ngữ giao diện: tiếng Anh / tiếng Việt; trao đổi với chủ d
     Bí kíp chưa có P / Q / task = "Đang biên soạn": không chặn tiểu cảnh giới, không tính là đã đạt.
     Tiểu cảnh giới (realmState): Sơ kỳ = đọc hết trang mọi bí kíp · Trung kỳ = qua quiz mọi bí kíp (5 câu, ≥ 80 %; trượt =
     đọc lại) · Hậu kỳ = đã nộp bài thực hành (topic.task) · Đại Viên Mãn = tự động khi xong Hậu kỳ (không cần Admin duyệt).
+    Bài đọc: `lessons-nhan-gioi.js` (window.LESSONS {idBíKíp: {P, terms:[[EN, VI, 中文]], task, src:[[tên, link https]], Q}}),
+    topicOf ghép bài cũ + LESSONS + trang "Thuật ngữ & nguồn" (dòng "@ tên | link" = link nguồn). Linh / Tiên Giới: chưa có bài.
     Câu hỏi: `quiz-bank.js` (window.QUIZ_BANK {idBíKíp: [[câu, [đúng, sai, sai, sai], 0, giải thích]]}) cộng với Q cũ.
     Đột phá: libAdvance → BreakthroughFX.play(id, {icon, verse: lời chúc LIB_WISH của cảnh giới}) (breakthrough-fx.js, không sửa). Cửa ải: gate "binh-canh" (Kết Đan)
     và "thien-kiep" (Độ Kiếp, phi thăng) = thi 10 câu trộn bí kíp của giới, cần 8. Vị Tế: tái chứng nhận hằng năm.
