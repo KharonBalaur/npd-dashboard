@@ -17,6 +17,7 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,Bl
 .bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 .bar .sp{flex:1}
 .tabs{display:flex;gap:4px;background:rgba(255,255,255,.45);padding:4px;border-radius:999px;flex-wrap:wrap}
+@media (max-width:700px){.tabs{flex-wrap:nowrap;overflow-x:auto;border-radius:14px;scrollbar-width:none}.tabs::-webkit-scrollbar{display:none}.tabs button{flex:none;white-space:nowrap}}
 .tabs button{border:0;background:none;font:inherit;font-weight:700;font-size:13px;padding:7px 13px;border-radius:999px;cursor:pointer;color:var(--ink)}
 .tabs button.on{background:#111;color:var(--lime)}
 .tabs button:not(.on):hover{background:rgba(255,255,255,.7)}

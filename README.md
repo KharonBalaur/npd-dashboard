@@ -10,6 +10,7 @@ Web nội bộ cho team QE: **Training** (lộ trình tu luyện + thư viện k
 | `NPD_BuildStatus.html` | Địa chỉ cũ, tự chuyển sang `JLTN_WEBSITE` |
 | `study/` | App học tiếng Anh / tiếng Trung và ngân hàng bài học mỗi ngày |
 | `realms.js` | Lộ trình Training: 14 cảnh giới + Vị Tế, 3 giới, các bí kíp (window.REALMS) |
+| `quiz-bank.js` | Ngân hàng câu hỏi quiz cho các bí kíp (window.QUIZ_BANK) |
 | `breakthrough-fx.js`, `img/realms/` | Hiệu ứng đột phá riêng từng cảnh giới và 15 icon cảnh giới |
 | `sheets-auth.js`, `sheets-bridge.js` | Đăng nhập / tạo tài khoản, đọc và lưu dữ liệu Google Sheet |
 | `apps-script/Code.gs` | Mã Apps Script (dán vào Google Sheet → Extensions → Apps Script) |

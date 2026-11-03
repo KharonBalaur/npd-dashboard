@@ -18,14 +18,15 @@ Ngôn ngữ giao diện: tiếng Anh / tiếng Việt; trao đổi với chủ d
     Bài cũ (LIB_CUR, 20 bí kíp) gắn vào bí kíp mới qua LIB_OLD2NEW (Kanban + JIT → jit-kanban); topicOf(id) = nội dung.
     Bí kíp chưa có P / Q / task = "Đang biên soạn": không chặn tiểu cảnh giới, không tính là đã đạt.
     Tiểu cảnh giới (realmState): Sơ kỳ = đọc hết trang mọi bí kíp · Trung kỳ = qua quiz mọi bí kíp (5 câu, ≥ 80 %; trượt =
-    đọc lại) · Hậu kỳ = đã nộp bài thực hành (topic.task) · Đại Viên Mãn = Admin duyệt (dòng bí kíp "*" trong tab Tu luyện).
-    Đột phá: libAdvance → BreakthroughFX.play(id, {icon}) (breakthrough-fx.js, không sửa). Cửa ải: gate "binh-canh" (Kết Đan)
+    đọc lại) · Hậu kỳ = đã nộp bài thực hành (topic.task) · Đại Viên Mãn = tự động khi xong Hậu kỳ (không cần Admin duyệt).
+    Câu hỏi: `quiz-bank.js` (window.QUIZ_BANK {idBíKíp: [[câu, [đúng, sai, sai, sai], 0, giải thích]]}) cộng với Q cũ.
+    Đột phá: libAdvance → BreakthroughFX.play(id, {icon, verse: lời chúc LIB_WISH của cảnh giới}) (breakthrough-fx.js, không sửa). Cửa ải: gate "binh-canh" (Kết Đan)
     và "thien-kiep" (Độ Kiếp, phi thăng) = thi 10 câu trộn bí kíp của giới, cần 8. Vị Tế: tái chứng nhận hằng năm.
     Tiến độ npdLib v3 {v:3, rid (id cảnh giới), ord, read:{bí kíp:[pageKey]}, quiz, done:{bí kíp:ngày đạt}, seen, fails, log,
     gates, pass, mig, recert, books, lives, past, since, old, prev, v1}; libUpgrade nâng v1 → v2 (libMigrate) → v3.
     Nút "☯ Binh Giải" (libRebirth): tu luyện lại từ Phàm Nhân, kiếp cũ ghi vào past, bí kíp đã đạt vào seen, bài nộp cũ
     (L.old) không tính nữa. Nút "🪷 Chiêm nghiệm nhân sinh" (libMuse): đọc lại / ôn quiz kiến thức đã qua, không ghi tiến độ.
-    Admin (Quyền = Admin): tab "Duyệt" trong Training (renderReview).
+    Admin (Quyền = Admin): tab "Duyệt" trong Training (renderReview) – chỉ duyệt bài thực hành.
     Thư viện (S.library, tab "Thư viện" của Sheet, sửa trên web: renderBooks / bookAct; mdLite, quizOf).
   - Cave: hồ sơ / CV (cave(): profile, skills, exp, edu, cert, lang, proj), việc cần làm, lời nhắc. cavePdf: CV chuẩn
     Harvard (1 cột, serif đen trắng; bỏ mục / dòng trống; tiêu đề EN hoặc VI theo nội dung; tự co 82–112% cho vừa trang).
