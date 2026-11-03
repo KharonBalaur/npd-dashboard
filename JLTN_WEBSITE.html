@@ -534,7 +534,8 @@ table.np tr.gs td{border-top:2px solid #d9d0f0}
 .lsn-a button:hover:not(:disabled){border-color:var(--navy);background:#f5f8fd} .lsn-a button:disabled{opacity:1;cursor:default;color:var(--ink2)}
 .lsn-a button.right{background:var(--ok-bg);border-color:var(--ok);color:var(--ok);font-weight:700} .lsn-a button.wrong{background:var(--late-bg);border-color:var(--late);color:var(--late)}
 .lsn-ok,.lsn-no{margin-top:10px;padding:8px 12px;border-radius:6px;font-weight:600} .lsn-ok{background:var(--ok-bg);color:var(--ok)} .lsn-no{background:var(--late-bg);color:var(--late)}
-.lsn-ok small,.lsn-no small{display:block;margin-top:3px;font-weight:400;color:var(--ink2);font-family:Consolas,monospace;font-size:12.5px}
+.lsn-ok small,.lsn-no small{display:block;margin-top:3px;font-weight:400;color:var(--ink2);font-size:13px;line-height:1.45}
+.lsn-a button{white-space:normal;overflow-wrap:anywhere;min-width:0;height:auto}           /* long answers wrap instead of running off the button */
 #libEx.lx{position:fixed;inset:0;z-index:1200;display:flex;align-items:center;justify-content:center;padding:20px;background:rgba(20,33,61,.55)}
 .lx-b{width:min(720px,100%);padding:18px 20px;border-radius:10px;background:#fff;border:1px solid var(--line);box-shadow:0 20px 50px rgba(20,33,61,.3)}
 .lx-h{display:flex;justify-content:space-between;align-items:baseline;gap:10px;font-weight:700;font-size:16px;color:var(--navy)} .lx-h span{font-weight:600;font-size:12.5px;color:var(--muted)}
