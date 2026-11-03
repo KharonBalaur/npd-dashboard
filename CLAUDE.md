@@ -28,6 +28,8 @@ Ngôn ngữ giao diện: tiếng Anh / tiếng Việt; trao đổi với chủ d
     gates, pass, mig, recert, books, lives, past, since, old, prev, v1}; libUpgrade nâng v1 → v2 (libMigrate) → v3.
     Nút "☯ Binh Giải" (libRebirth): tu luyện lại từ Phàm Nhân, kiếp cũ ghi vào past, bí kíp đã đạt vào seen, bài nộp cũ
     (L.old) không tính nữa. Nút "🪷 Chiêm nghiệm nhân sinh" (libMuse): đọc lại / ôn quiz kiến thức đã qua, không ghi tiến độ.
+    Phong Thần Bảng (tab "rank", renderRank): bảng tu vi (cảnh giới → bí kíp đạt → ít tẩu hỏa) + bảng tư chất
+    (điểm = 8 × fails + % câu sai; danh hiệu trêu vui LIB_TC, huy hiệu libBadges); npdLib có thêm wrong / answered.
     Admin (Quyền = Admin): tab "Duyệt" trong Training (renderReview) – chỉ duyệt bài thực hành.
     Thư viện (S.library, tab "Thư viện" của Sheet, sửa trên web: renderBooks / bookAct; mdLite, quizOf).
   - Cave: hồ sơ / CV (cave(): profile, skills, exp, edu, cert, lang, proj), việc cần làm, lời nhắc. cavePdf: CV chuẩn
@@ -61,6 +63,8 @@ Ngôn ngữ giao diện: tiếng Anh / tiếng Việt; trao đổi với chủ d
 - {action:"practice", token, realm, topic, text} – nộp bài thực hành (topic = id bí kíp) hoặc xin duyệt Đại Viên Mãn
   (topic = "*"); ghi tab Tu luyện, Trạng thái = Chờ duyệt → {ok, practice:[…]}
 - {action:"review", token, user, realm, topic, status:"ok"|"back", note} – chỉ Quyền = Admin → {ok, practice}
+- {action:"rank", token} → {ok, rank:[{name, dh, rid, ord, done, fails, wrong, answered, lives, started, me}]} – tóm tắt tu
+  luyện mọi tài khoản đang hoạt động (không tên đăng nhập, không dữ liệu cá nhân khác), cache 1 phút
 - "data" trả thêm practice: dòng Tu luyện của chính mình (Admin: mọi dòng Chờ duyệt + 400 dòng mới nhất)
 - {action:"mine", token, key, value} – dữ liệu cá nhân (npdCave, npdLib, npdOT, npdFairy, npdEng, npdZh) của chính mình
 - img_put / img_get / presence – còn trong Code.gs, hiện trang không dùng
