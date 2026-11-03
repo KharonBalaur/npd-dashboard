@@ -509,6 +509,14 @@ table.np tr.gs td{border-top:2px solid #d9d0f0}
 .lt-soon{padding:40px 20px;text-align:center;color:var(--ink2);font-size:15px} .lt-soon small{color:var(--muted)}
 .lib-vite{text-align:center;padding:26px} .lib-vite img{width:120px;height:120px;border-radius:24px} .lib-vite h3{font-size:22px;color:var(--navy)} .lib-vite p.ok{color:var(--ok);font-weight:600}
 #libEx.win .lx-b{border-top:4px solid var(--ok)} #libEx.win .lx-h{color:var(--ok)}
+.rl-c .rl-bg{color:#8a3b12;border-color:#efc9b4;background:#fff7f2} .rl-c .rl-bg:hover{background:#ffeadd;border-color:#d99a78}
+.lib-read.muse{border-top:3px solid #c98bb8} .lib-read.muse .lrd-h .k{color:#9b4f86}
+.lib-muse{padding:14px 16px} .mu-h{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:10px}
+.mu-h h3{margin:0;font-size:17px;color:var(--navy)} .mu-h p{margin:4px 0 0;font-size:13px;color:var(--ink2)}
+.mu-r{display:grid;grid-template-columns:40px minmax(0,1fr);gap:10px;padding:8px 0;border-top:1px solid #f0f2f5} .mu-r img{width:40px;height:40px;border-radius:9px;object-fit:cover}
+.mu-r b{font-size:13.5px;color:var(--navy)} .mu-t{display:flex;flex-wrap:wrap;gap:6px;margin-top:5px}
+.mu-t button{display:flex;flex-direction:column;align-items:flex-start;padding:5px 10px;border-radius:8px;font-size:12.5px;color:var(--navy);white-space:normal;text-align:left}
+.mu-t button small{font-size:10.5px;color:var(--muted)} .mu-t button:hover{border-color:#c98bb8;background:#fdf6fb}
 .lib-rv{padding:14px 16px} .lib-rv h3{margin:4px 0 10px;font-size:15px;color:var(--navy)} .lib-rv h3 small{margin-left:4px;padding:0 7px;border-radius:99px;background:#eef1f5;font-size:12px}
 .rv{padding:10px 12px;margin-bottom:8px;border:1px solid var(--bd);border-radius:8px;background:#fff} .rv.req{border-left:4px solid #e7c66d}
 .rv-h{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap} .rv-h b{color:var(--navy)} .rv-h small{color:var(--muted)} .rv-w{margin:2px 0 6px;font-size:13px;color:var(--ink2)}
@@ -2588,36 +2596,76 @@ function libMigrate(o) {                                                  // ch�
   }
   return L;
 }
+// ===== Nâng cấp dữ liệu tu luyện cũ (BẮT BUỘC giữ khi sửa web) =====
+// Tiến độ lưu theo id cố định, không theo vị trí: cảnh giới = id (rid), trang đã đọc = mã của tiêu đề trang (pageKey),
+// bí kíp đã đạt = done[id] (giữ mãi, kể cả khi bí kíp được thêm trang / quiz / đề thực hành sau này).
+// Đổi định dạng → tăng LIB_VER và thêm một bước trong libUpgrade (bản trước giữ ở L.prev, bản đầu tiên ở L.v1).
+// Đổi id cảnh giới / bí kíp → ghi id cũ → id mới vào LIB_ALIAS. Xóa cảnh giới → người đang ở đó lùi về cảnh giới gần nhất phía trước.
+const LIB_VER = 3;
+const LIB_ALIAS = { realm:{}, topic:{} };
+const pageKey = pg => { const t = String(pg && pg[0] || ""); let h = 5381; for (let i = 0; i < t.length; i++) h = ((h * 33) ^ t.charCodeAt(i)) >>> 0; return h.toString(36); };
+const libClone = o => JSON.parse(JSON.stringify(o));
+function libUpgrade(L) {
+  if (!L || typeof L !== "object") L = {};
+  if (!L.v) L = libMigrate(L);                                            // v1 (20 bí kíp, theo số thứ tự) → v2
+  if (L.v === 2) {                                                        // v2 → v3: cảnh giới theo id, trang theo tiêu đề, ghi bí kíp đã đạt
+    const prev = libClone(L); delete prev.v1;
+    const R = REALMS[Math.max(0, Math.min(+L.realm || 0, REALMS.length - 1))];
+    L.rid = R.id; L.ord = R.order; delete L.realm;
+    Object.keys(L.read || {}).forEach(id => { const T = topicOf(id); if (!T) return;
+      L.read[id] = [...new Set((L.read[id] || []).map(k => typeof k === "number" ? (T.P[k] ? pageKey(T.P[k]) : "") : k).filter(Boolean))]; });
+    L.done = L.done || {}; Object.keys(L.mig || {}).forEach(id => (L.done[id] = L.done[id] || "lộ trình cũ"));
+    L.prev = prev; L.v = 3;
+  }
+  return L;
+}
+const libRen = (o, map) => { if (!o) return o; Object.keys(map).forEach(k => { if (k in o) { if (!(map[k] in o)) o[map[k]] = o[k]; delete o[k]; } }); return o; };
 const libLoad = () => {
-  let L = lsGet(uKey("npdLib"), {});
-  if (L.v !== 2) { L = libMigrate(L); lsSet(uKey("npdLib"), L); }
-  L.realm = Math.max(0, Math.min(+L.realm || 0, REALMS.length - 1)); L.fails = +L.fails || 0; L.log = L.log || [];
-  ["read", "quiz", "gates", "pass", "mig", "recert", "books"].forEach(k => (L[k] = L[k] || {}));
+  const raw = lsGet(uKey("npdLib"), {}), ver = raw.v;
+  const L = libUpgrade(raw);
+  ["read", "quiz", "gates", "pass", "mig", "recert", "books", "done", "seen"].forEach(k => (L[k] = L[k] && typeof L[k] === "object" ? L[k] : {}));
+  ["read", "quiz", "done", "seen", "mig"].forEach(k => libRen(L[k], LIB_ALIAS.topic)); libRen(L.pass, LIB_ALIAS.realm);
+  const rid = LIB_ALIAS.realm[L.rid] || L.rid;
+  let ri = REALMS.findIndex(r => r.id === rid);
+  if (ri < 0) ri = REALMS.reduce((a, r, i) => (r.order <= (+L.ord || 1) ? i : a), 0);   // cảnh giới đã bị bỏ: lùi về cảnh giới gần nhất phía trước
+  L.realm = ri; L.fails = +L.fails || 0; L.log = Array.isArray(L.log) ? L.log : []; L.past = Array.isArray(L.past) ? L.past : [];
+  if (ver !== L.v) libSave(L);
   return L;
 };
-const libSave = L => lsSet(uKey("npdLib"), L);
+const libSave = L => { const R = REALMS[L.realm], o = Object.assign({}, L); if (R) { o.rid = R.id; o.ord = R.order; } delete o.realm; lsSet(uKey("npdLib"), o); };
 const libNeed = n => Math.ceil(n * 0.8);
-// bài thực hành / xin duyệt của chính mình (window.npdPractice: dữ liệu tab "Tu luyện" do máy chủ gửi)
-const libPr = (rid, tid) => { const u = sheetUser(); if (!u) return null;
-  return (window.npdPractice || []).find(p => String(p.user).toLowerCase() === String(u.username).toLowerCase() && p.realm === rid && p.topic === tid) || null; };
+const libNow = () => { const d = new Date(); return todayISO() + "T" + pad(d.getHours()) + ":" + pad(d.getMinutes()); };
+// bài thực hành / xin duyệt của chính mình (window.npdPractice: dữ liệu tab "Tu luyện" do máy chủ gửi).
+// Sau Binh Giải: bài đã có lúc Binh Giải (L.old: "cảnh giới|bí kíp" → thời gian nộp) không tính; nộp lại thì thời gian đổi → tính.
+const libMine = () => { const u = sheetUser(); return u ? (window.npdPractice || []).filter(p => String(p.user).toLowerCase() === String(u.username).toLowerCase()) : []; };
+const libPr = (L, rid, tid) => libMine().find(p => p.realm === rid && p.topic === tid && !(L.old && L.old[rid + "|" + tid] === String(p.t))) || null;
 const libAdmin = () => { const u = sheetUser(); return !!u && ["admin", "administrator", "quản trị", "quan tri", "quản trị viên", "quan tri vien"].includes(String(u.role || "").trim().toLowerCase()); };
 function topicState(L, T) {
-  const nRead = new Set(L.read[T.id] || []).size, read = !T.P.length || nRead >= T.P.length;
-  const q = L.quiz[T.id], quiz = !T.Q.length || !!(q && q.pass);
-  const pr = libPr(REALMS[T.ri].id, T.id), prac = !T.task || !!(pr && pr.status !== LIB_BACK);
+  const rd = new Set(L.read[T.id] || []), nRead = T.P.filter(p => rd.has(pageKey(p))).length, was = !!L.done[T.id];
+  const read = was || !T.P.length || nRead >= T.P.length;
+  const q = L.quiz[T.id], quiz = was || !T.Q.length || !!(q && q.pass);
+  const pr = libPr(L, REALMS[T.ri].id, T.id), prac = was || !T.task || !!(pr && pr.status !== LIB_BACK);
   const empty = !T.P.length && !T.Q.length && !T.task;
-  return { nRead, read, quiz, q, pr, prac, empty, done:!!L.mig[T.id] || (!empty && read && quiz && prac) };
+  return { nRead, read, quiz, q, pr, prac, empty, was, done:was || (!empty && read && quiz && prac) };
+}
+// bí kíp vừa đạt đủ (đọc + quiz + thực hành) → ghi done (giữ mãi) và seen (để Chiêm nghiệm nhân sinh)
+function libSync(L) {
+  let ch = false;
+  LIB_TOPICS.forEach(t => { if (t.ri > L.realm || L.done[t.id]) return; const s = topicState(L, topicOf(t.id));
+    if (s.done && !s.empty) { L.done[t.id] = todayISO(); L.seen[t.id] = 1; ch = true; } });
+  if (ch) libSave(L);
+  return L;
 }
 function realmState(L, ri) {
   const R = REALMS[ri], S = R.topics.map(t => topicState(L, topicOf(t.id)));
   const s1 = S.every(x => x.read), s2 = s1 && S.every(x => x.quiz), s3 = s2 && S.every(x => x.prac);
-  const req = libPr(R.id, "*"), ok = !!L.pass[R.id] || !!(req && req.status === LIB_OK), s4 = s3 && ok;
+  const req = libPr(L, R.id, "*"), ok = !!L.pass[R.id] || !!(req && req.status === LIB_OK), s4 = s3 && ok;
   return { R, S, s1, s2, s3, s4, req, lv:s4 ? 4 : s3 ? 3 : s2 ? 2 : s1 ? 1 : 0, gate:R.gate && !L.gates[R.gate] ? R.gate : "" };
 }
 const libLvName = st => st.lv ? LIB_SUB[st.lv - 1] : "Nhập môn";
 const libRealmLabel = () => { const L = libLoad(), st = realmState(L, L.realm); return st.R.name + (st.R.topics.length ? " · " + libLvName(st) : ""); };
 const libNo = R => R.order > 14 ? "∞" : R.order;
-let libPage = 0, libRoad = false, libTopic = "", LX = null;              // trang đang mở, lộ trình mở, bí kíp đang đọc, bài thi
+let libPage = 0, libRoad = false, libTopic = "", libMuse = false, LX = null;   // trang đang mở, lộ trình mở, bí kíp đang đọc, chiêm nghiệm, bài thi
 
 function libRoadHtml(L) {
   return `<div class="st-panel lib-road">${LIB_GIOI.map(g => `<section class="lrg" style="--c:${LIB_GIOI_COL[g] || "#14213d"}"><h4>${esc(g)}</h4>
@@ -2629,11 +2677,13 @@ function libRoadHtml(L) {
       ${r.gate ? `<div class="lrgate ${L.gates[r.gate] ? "ok" : ""}">${r.gate === "binh-canh" ? "⛰ Bình cảnh: thi tổng hợp Nhân Giới" : "⚡ Thiên kiếp: vượt qua thì phi thăng lên Tiên Giới"}${L.gates[r.gate] ? " · đã vượt ✓" : ""}</div>` : ""}`).join("")}</section>`).join("")}</div>`;
 }
 function libReader(L, T) {
-  const cur = T.ri === L.realm, pg = T.P[libPage], last = libPage === T.P.length - 1, s = topicState(L, T), read = new Set(L.read[T.id] || []), R = REALMS[T.ri];
-  const quiz = T.Q.length ? `<div class="lt-box ${s.quiz ? "ok" : ""}"><div><b>📝 Quiz · ${Math.min(5, T.Q.length)} câu, cần đúng ${libNeed(Math.min(5, T.Q.length))}</b>
-      <span>${s.q && s.q.pass ? (s.q.n ? `Đã đạt ${s.q.ok}/${s.q.n} · ${dMy(s.q.at)}` : "Đã đạt ở lộ trình cũ") : s.read ? "Đã đọc hết bài: làm quiz để lên Trung kỳ. Trượt phải đọc lại." : "Đọc hết các trang để mở quiz."}</span></div>
-      <button class="${s.quiz ? "" : "pri"}" data-x="libQuiz" data-k="${esc(T.id)}" ${s.read ? "" : "disabled"}>${s.quiz ? "Làm lại" : "Làm quiz"}</button></div>` : "";
-  const pr = s.pr, task = T.task ? `<div class="lt-box prac ${pr && pr.status === LIB_OK ? "ok" : ""}"><div><b>✍ Bài thực hành</b><p>${esc(T.task)}</p>
+  const muse = libMuse, cur = !muse && T.ri === L.realm, pg = T.P[libPage], last = libPage === T.P.length - 1, s = topicState(L, T), R = REALMS[T.ri];
+  const rd = new Set(L.read[T.id] || []), read = new Set(muse ? T.P.map((_, k) => k) : T.P.map((p, k) => (rd.has(pageKey(p)) || s.was ? k : -1)).filter(k => k >= 0));
+  const n5 = Math.min(5, T.Q.length), rev = muse || s.was;                // đã đạt / chiêm nghiệm: quiz chỉ để ôn, không tính
+  const quiz = T.Q.length ? `<div class="lt-box ${s.quiz ? "ok" : ""}"><div><b>📝 Quiz · ${n5} câu${rev ? " · ôn tập, không tính điểm" : `, cần đúng ${libNeed(n5)}`}</b>
+      <span>${s.q && s.q.pass ? (s.q.n ? `Đã đạt ${s.q.ok}/${s.q.n} · ${dMy(s.q.at)}` : "Đã đạt ở lộ trình cũ") : s.was ? "Bí kíp đã đạt." : muse ? "Ôn lại kiến thức cũ." : s.read ? "Đã đọc hết bài: làm quiz để lên Trung kỳ. Trượt phải đọc lại." : "Đọc hết các trang để mở quiz."}</span></div>
+      <button class="${s.quiz || rev ? "" : "pri"}" data-x="libQuiz" data-k="${esc(T.id)}" ${s.read || rev ? "" : "disabled"}>${rev ? "Ôn quiz" : s.quiz ? "Làm lại" : "Làm quiz"}</button></div>` : "";
+  const pr = s.pr, task = T.task && !muse ? `<div class="lt-box prac ${pr && pr.status === LIB_OK ? "ok" : ""}"><div><b>✍ Bài thực hành</b><p>${esc(T.task)}</p>
       ${pr ? `<span class="pr-st ${pr.status === LIB_OK ? "ok" : pr.status === LIB_BACK ? "bad" : "wait"}">${esc(pr.status)}${pr.by ? " · " + esc(pr.by) : ""}${pr.note ? ": " + esc(pr.note) : ""}</span>` : ""}
       ${cur ? `<textarea id="libPracTx" rows="4" maxlength="4000" placeholder="Bài làm của bạn: mô tả việc đã làm, kết quả, link file (nếu có)…">${esc(pr ? pr.text : "")}</textarea>` : ""}</div>
       ${cur ? `<button class="pri" data-x="libPrac" data-k="${esc(T.id)}">${pr ? "Nộp lại" : "Nộp bài"}</button>` : ""}</div>` : "";
@@ -2641,10 +2691,33 @@ function libReader(L, T) {
         <article class="lrd-pg"><div class="lrd-n">Trang ${libPage + 1} / ${T.P.length}</div><h2>${libTerms(esc(pg[0]))}</h2>${libPageHtml(pg)}</article></div>
       <div class="lrd-f"><button data-x="libGo" data-k="${libPage - 1}" ${libPage ? "" : "disabled"}>← Trang trước</button>
         <div class="lrd-dots">${T.P.map((_, k) => `<i class="${k === libPage ? "on" : read.has(k) ? "rd" : ""}"></i>`).join("")}</div>
-        ${last ? `<button class="pri" data-x="libTopicX">Xong bí kíp ✓</button>` : `<button class="pri" id="libNext" data-x="libGo" data-k="${libPage + 1}">Trang sau →</button>`}</div>`
+        ${last ? `<button class="pri" data-x="libTopicX">${muse ? "← Chiêm nghiệm" : "Xong bí kíp ✓"}</button>` : `<button class="pri" id="libNext" data-x="libGo" data-k="${libPage + 1}">Trang sau →</button>`}</div>`
     : `<div class="lt-soon">📜 Bí kíp <b>${esc(T.name)}</b> đang được biên soạn.<br><small>${esc(T.short || "")}</small></div>`;
-  return `<div class="st-panel lib-read"><div class="lrd-h"><div><div class="k">${esc(R.name)} · bí kíp</div><h3>${esc(T.t)}</h3></div><button data-x="libTopicX">← Các bí kíp</button></div>
+  return `<div class="st-panel lib-read${muse ? " muse" : ""}"><div class="lrd-h"><div><div class="k">${muse ? "🪷 Chiêm nghiệm nhân sinh · " : ""}${esc(R.name)} · bí kíp</div><h3>${esc(T.t)}</h3></div>
+    <button data-x="libTopicX">${muse ? "← Chiêm nghiệm" : "← Các bí kíp"}</button></div>
     ${body}${quiz || task ? `<div class="lt-boxes">${quiz}${task}</div>` : ""}</div>`;
+}
+// Chiêm nghiệm nhân sinh: chọn đọc lại / ôn quiz mọi kiến thức đã qua (cảnh giới đã vượt, bí kíp đã đạt, cả ở các kiếp trước
+// Binh Giải). Không ghi tiến độ.
+const libKnown = L => LIB_TOPICS.filter(t => { const T = topicOf(t.id); return (T.P.length || T.Q.length) && (L.done[t.id] || L.seen[t.id] || t.ri < L.realm); });
+function libMuseHtml(L) {
+  const K = new Set(libKnown(L).map(t => t.id));
+  const body = REALMS.map(r => { const ts = r.topics.filter(t => K.has(t.id)); if (!ts.length) return "";
+    return `<div class="mu-r"><img src="${esc(r.icon)}" alt="" loading="lazy"><div><b>${libNo(r)}. ${esc(r.name)}</b><div class="mu-t">${ts.map(t => { const T = topicOf(t.id);
+      return `<button data-x="libMuseT" data-k="${esc(t.id)}" title="${esc(t.short || "")}">${esc(t.name)}<small>${T.P.length ? T.P.length + " trang" : ""}${T.Q.length ? " · " + T.Q.length + " câu" : ""}</small></button>`; }).join("")}</div></div></div>`; }).join("");
+  return `<div class="st-panel lib-muse"><div class="mu-h"><div><h3>🪷 Chiêm nghiệm nhân sinh</h3><p>Chọn một bí kíp đã qua để đọc lại hoặc ôn quiz. Không ảnh hưởng tiến độ tu luyện.${L.past.length ? ` Gồm cả kiến thức của ${L.past.length} kiếp trước.` : ""}</p></div>
+    <button data-x="libMuse">← Về tu luyện</button></div>${body || `<p class="muted">Chưa có kiến thức nào đã qua. Hãy tu luyện bí kíp đầu tiên!</p>`}</div>`;
+}
+// Binh Giải: bỏ thân cũ, tu luyện lại từ Phàm Nhân. Kiếp trước được ghi lại (past), kiến thức đã qua vẫn chiêm nghiệm được.
+function libRebirth() {
+  const L = libLoad(), R = REALMS[L.realm], done = Object.keys(L.done);
+  done.forEach(t => (L.seen[t] = 1));
+  L.past.push({ at:todayISO(), rid:R.id, done:done.length, fails:L.fails });
+  L.log.push({ r:R.id, t:"binh-giai", ok:1, at:todayISO() });
+  const old = {}; libMine().forEach(p => (old[p.realm + "|" + p.topic] = String(p.t)));
+  Object.assign(L, { realm:0, read:{}, quiz:{}, done:{}, gates:{}, pass:{}, mig:{}, fails:0, since:libNow(), old, lives:(+L.lives || 0) + 1 });
+  libSave(L); libTopic = ""; libPage = 0; libMuse = false; renderLib();
+  if (window.BreakthroughFX) BreakthroughFX.play("pham-nhan", { icon:REALMS[0].icon, title:"Binh Giải · Trùng Tu", verse:"Bỏ thân cũ, giữ đạo tâm – bước lại từ Khai Mông." }).catch(() => {});
 }
 function libRealmPanel(L, st) {
   const R = st.R, last = L.realm === REALMS.length - 1, nx = REALMS[L.realm + 1];
@@ -2675,24 +2748,27 @@ function renderLib() {
   if (!curUser()) { $("#lib").innerHTML = `<div class="st-head"><h2><span class="hi">📘</span>Training · Tàng Kinh Các</h2></div>${authView("Tàng Kinh Các")}`; return auFocus(); }
   if (libMode === "books") return renderBooks();
   if (libMode === "review") { if (libAdmin()) return renderReview(); libMode = "road"; }
-  const L = libLoad(), st = realmState(L, L.realm), R = st.R;
+  const L = libSync(libLoad()), st = realmState(L, L.realm), R = st.R;
   let T = libTopic ? topicOf(libTopic) : null;
-  if (T && T.ri > L.realm) T = null, libTopic = "";
+  if (T && (libMuse ? !libKnown(L).some(t => t.id === T.id) : T.ri > L.realm)) T = null, libTopic = "";
   if (T && T.P.length) {
     libPage = Math.max(0, Math.min(libPage, T.P.length - 1));
-    if (!(L.read[T.id] || []).includes(libPage)) { L.read[T.id] = [...(L.read[T.id] || []), libPage]; libSave(L); }   // một trang tính là đã đọc khi mở ra
+    const key = pageKey(T.P[libPage]);                                   // một trang tính là đã đọc khi mở ra (chiêm nghiệm thì không ghi)
+    if (!libMuse && !(L.read[T.id] || []).includes(key)) { L.read[T.id] = [...(L.read[T.id] || []), key]; libSave(L); }
   }
   const N = LIB_TOPICS.length, got = LIB_TOPICS.filter(t => topicState(L, topicOf(t.id)).done).length, col = LIB_GIOI_COL[R.gioi] || "#14213d";
   $("#lib").innerHTML = `<div class="st-head"><h2><span class="hi">📘</span>Training · Tàng Kinh Các</h2>${libTabs()}<span class="sp"></span>${auChip()}
+      <button data-x="libMuse" class="${libMuse ? "on" : ""}" title="Chọn xem lại các kiến thức đã qua">🪷 Chiêm nghiệm nhân sinh</button>
       <button data-x="libRoad" class="${libRoad ? "on" : ""}">${libRoad ? "Ẩn lộ trình ▴" : "Lộ trình ▾"}</button></div>
     <div class="rl-card" style="--rc:${col}"><img class="rl-ic" src="${esc(R.icon)}" alt="">
-      <div class="rl-a"><div class="k">${L.realm === REALMS.length - 1 ? "Cảnh giới tối thượng" : "Cảnh giới đang tu luyện"} · ${esc(R.gioi)}</div><h3>${esc(R.name)}</h3>
+      <div class="rl-a"><div class="k">${L.realm === REALMS.length - 1 ? "Cảnh giới tối thượng" : "Cảnh giới đang tu luyện"} · ${esc(R.gioi)}${L.lives ? ` · kiếp thứ ${L.lives + 1}` : ""}</div><h3>${esc(R.name)}</h3>
         <div class="rl-q"><span class="hx">${R.hex}</span>Quẻ ${esc(R.que)} · ${esc(R.meaning)}</div>
         ${R.topics.length ? `<div class="rl-sub">${LIB_SUB.map((n, k) => `<span class="${st.lv > k ? "ok" : st.lv === k ? "cur" : ""}">${st.lv > k ? "✓ " : ""}${n}</span>`).join("")}</div>` : ""}</div>
       <div class="rl-c"><div><b>${got}</b><span>/ ${N} bí kíp</span></div><div><b>${libNo(R)}</b><span>/ 14 cảnh giới</span></div><div><b>${L.fails}</b><span>lần trượt</span></div>
-        <button data-x="libFxPlay" title="Xem lại hiệu ứng đột phá của cảnh giới này">✨ Xem lại hiệu ứng</button></div></div>
-    ${libRoad ? libRoadHtml(L) : ""}
-    ${T ? libReader(L, T) : libRealmPanel(L, st)}`;
+        <button data-x="libFxPlay" title="Xem lại hiệu ứng đột phá của cảnh giới này">✨ Xem lại hiệu ứng</button>
+        <button class="rl-bg" data-x="libRebirth" title="Tu luyện lại từ đầu (Phàm Nhân)">☯ Binh Giải</button></div></div>
+    ${libRoad && !libMuse ? libRoadHtml(L) : ""}
+    ${T ? libReader(L, T) : libMuse ? libMuseHtml(L) : libRealmPanel(L, st)}`;
 }
 // Admin: duyệt bài thực hành và yêu cầu đột phá (Đại Viên Mãn). Ghi vào tab "Tu luyện" qua máy chủ (action "review").
 function renderReview() {
@@ -2787,7 +2863,7 @@ function bookAct(x, k, b) {
       document.querySelectorAll(`#bkQz input[name=bq${i}]`).forEach(r => { const l = r.parentNode; l.classList.toggle("r", q.o[+r.value].ok); l.classList.toggle("w", r.checked && !q.o[+r.value].ok); });
       if (c && q.o[+c.value].ok) right++; });
     const all = right === qz.length, m = $("#bkMsg");
-    if (all) { const L = libLoad(); L.books = L.books || {}; L.books[k] = { at:todayISO(), n:qz.length }; lsSet(uKey("npdLib"), L); }
+    if (all) { const L = libLoad(); L.books = L.books || {}; L.books[k] = { at:todayISO(), n:qz.length }; libSave(L); }
     if (m) m.textContent = all ? "🎉 Chính xác hết! Đã ghi vào tu vi của bạn." : `${right}/${qz.length} câu đúng. Đáp án đúng tô xanh, đọc lại rồi thử lại nhé.`;
     return;
   }
@@ -2822,7 +2898,8 @@ function libExam(mode, tid) {
     return alert("Chưa có câu hỏi cho phần này.");
   }
   const qs = shuf(pool).slice(0, n).map(q => { const Q = libQ(q), o = shuf(Q.a.map((a, k) => [a, k])); return { q:Q.q, a:o.map(x => x[0]), c:o.findIndex(x => x[1] === Q.c), e:Q.e }; });
-  LX = { mode, tid, ri:L.realm, title, qs, k:0, ok:0, pick:null, need:libNeed(n), end:false };
+  const rev = mode === "topic" && (libMuse || !!L.done[tid]);            // ôn tập (chiêm nghiệm / bí kíp đã đạt): không ghi tiến độ
+  LX = { mode, tid, ri:L.realm, title:(rev ? "Ôn tập · " : "") + title, qs, k:0, ok:0, pick:null, need:libNeed(n), end:false, rev };
   libExamDraw();
 }
 function libExamDraw() {
@@ -2831,11 +2908,11 @@ function libExamDraw() {
   if (X.end) {
     const win = X.ok >= X.need;
     if (win && X.mode === "gate") { m.remove(); LX = null; return libAdvance(); }
-    m.className = "lx " + (win ? "win" : "lose");
-    m.innerHTML = `<div class="lx-b"><div class="lx-h">${win ? "Đạt" : "Chưa đạt"} · ${esc(X.title)}<span>${X.ok}/${X.qs.length} đúng · cần ${X.need}</span></div>
-      <p>${win ? (X.mode === "recert" ? "Tái chứng nhận thành công. Hẹn gặp lại năm sau!" : "Qua quiz bí kíp này. Tiếp tục các bí kíp còn lại để lên Trung kỳ.")
+    m.className = "lx " + (win || X.rev ? "win" : "lose");
+    m.innerHTML = `<div class="lx-b"><div class="lx-h">${X.rev ? "Kết quả" : win ? "Đạt" : "Chưa đạt"} · ${esc(X.title)}<span>${X.ok}/${X.qs.length} đúng · cần ${X.need}</span></div>
+      <p>${X.rev ? `Ôn tập: đúng ${X.ok}/${X.qs.length}. Kết quả ôn tập không ảnh hưởng tiến độ.` : win ? (X.mode === "recert" ? "Tái chứng nhận thành công. Hẹn gặp lại năm sau!" : "Qua quiz bí kíp này. Tiếp tục các bí kíp còn lại để lên Trung kỳ.")
         : X.mode === "topic" ? "Tẩu hỏa nhập ma: phải đọc lại các trang của bí kíp này rồi làm lại quiz." : "Chưa vượt qua. Ôn lại các bí kíp rồi thi lại."}</p>
-      <button class="pri" data-x="libExClose">${win ? "Tiếp tục" : X.mode === "topic" ? "Quay về đọc lại" : "Đóng"}</button></div>`;
+      <button class="pri" data-x="libExClose">${win || X.rev ? "Tiếp tục" : X.mode === "topic" ? "Quay về đọc lại" : "Đóng"}</button></div>`;
     return;
   }
   const Q = X.qs[X.k], p = X.pick;
@@ -2849,6 +2926,7 @@ function libExamDraw() {
 function libExamEnd() {                                                   // ghi kết quả bài thi vào tiến độ
   const X = LX, L = libLoad(), R = REALMS[X.ri], win = X.ok >= X.need, at = todayISO();
   X.end = true;
+  if (X.rev) return;
   L.log.push({ r:R.id, t:X.mode === "topic" ? X.tid : X.mode, ok:win ? 1 : 0, at });
   if (X.mode === "topic") { if (win) L.quiz[X.tid] = { pass:1, ok:X.ok, n:X.qs.length, at }; else { L.read[X.tid] = []; L.fails++; } }
   else if (X.mode === "gate") { if (win) L.gates[R.gate] = at; else L.fails++; }
@@ -3707,8 +3785,13 @@ document.addEventListener("click", e => {                                // butt
   if (x === "auOut") return auLogout();
   // Tàng Kinh Các
   if (x === "libRoad") { libRoad = !libRoad; return renderLib(); }
-  if (x === "libTopic") { libTopic = k; libPage = 0; renderLib(); return window.scrollTo({ top:0 }); }
+  if (x === "libTopic") { libTopic = k; libPage = 0; libMuse = false; renderLib(); return window.scrollTo({ top:0 }); }
   if (x === "libTopicX") { libTopic = ""; libPage = 0; return renderLib(); }
+  if (x === "libMuse") { libMuse = !libMuse; libTopic = ""; libPage = 0; return renderLib(); }
+  if (x === "libMuseT") { libMuse = true; libTopic = k; libPage = 0; renderLib(); return window.scrollTo({ top:0 }); }
+  if (x === "libRebirth") return askConfirm("☯ Binh Giải – tu luyện lại từ đầu?",
+      "Cảnh giới, tiểu cảnh giới, bài đã đọc, quiz, cửa ải và lần trượt của kiếp này về 0; bắt đầu lại từ Phàm Nhân, bài thực hành và yêu cầu đột phá phải nộp lại. Kiếp này vẫn được ghi lại, kiến thức đã qua xem lại được ở “Chiêm nghiệm nhân sinh”. Không hoàn tác được.",
+      ["Hủy", "Binh Giải"]).then(ok => ok && libRebirth());
   if (x === "libGo") { libPage = +k; renderLib(); return window.scrollTo({ top:0 }); }
   if (x === "libQuiz") return libExam("topic", k);
   if (x === "libBrk") { const L = libLoad(), st = realmState(L, L.realm); if (!st.s4) return renderLib(); return st.gate ? libExam("gate") : libAdvance(); }
@@ -3722,7 +3805,7 @@ document.addEventListener("click", e => {                                // butt
   if (x === "libRvLoad") return window.NPD && NPD.refresh();
   if (x === "libExAns") { if (LX.pick === null) { LX.pick = +k; if (+k === LX.qs[LX.k].c) LX.ok++; } return libExamDraw(); }
   if (x === "libExNext") { LX.k++; LX.pick = null; if (LX.k >= LX.qs.length) libExamEnd(); return libExamDraw(); }
-  if (x === "libExClose") { const m = $("#libEx"); if (m) m.remove(); const X = LX; LX = null; if (X && X.mode === "topic" && X.ok < X.need) libPage = 0; return renderLib(); }
+  if (x === "libExClose") { const m = $("#libEx"); if (m) m.remove(); const X = LX; LX = null; if (X && X.mode === "topic" && !X.rev && X.ok < X.need) libPage = 0; return renderLib(); }
   if (x === "tool") { toolSel = k; try { sessionStorage.setItem("npdTool", k); } catch (e) {} toolHash(k); renderTools(); const m = $(".tl-main"); if (m && innerWidth < 900) m.scrollIntoView({ block:"start", behavior:"smooth" }); return; }
   if (x === "toolBack") { toolSel = ""; try { sessionStorage.removeItem("npdTool"); } catch (e) {} toolHash(""); return renderTools(); }
   if (x === "toolLink") { const u = location.href.split("#")[0] + "#tool/" + toolSel;

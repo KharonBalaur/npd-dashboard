@@ -643,7 +643,7 @@ function practiceRows_() {
   const sh = SpreadsheetApp.getActive().getSheetByName(CFG.SHEET_PRACTICE);
   if (!sh || sh.getLastRow() < 2) return [];
   const tz = SpreadsheetApp.getActive().getSpreadsheetTimeZone();
-  const d = v => v instanceof Date ? Utilities.formatDate(v, tz, "yyyy-MM-dd'T'HH:mm") : String(v || '');
+  const d = v => v instanceof Date ? Utilities.formatDate(v, tz, "yyyy-MM-dd'T'HH:mm:ss") : String(v || '');
   return sh.getRange(2, 1, sh.getLastRow() - 1, PRACTICE_HEAD.length).getValues().map((r, i) => ({
     row: i + 2, t: d(r[0]), user: String(r[1]), name: String(r[2]), realm: String(r[3]), topic: String(r[4]), text: String(r[5]),
     status: String(r[6]), by: String(r[7]), note: String(r[8]), at: d(r[9]),
@@ -670,9 +670,8 @@ function practice_(token, realm, topic, text) {
   try {
     const sh = practiceSheet_();
     const old = practiceRows_().find(p => norm_(p.user) === norm_(user.username) && p.realm === realm && p.topic === topic);
-    if (old && old.status === PRACTICE_ST.ok && topic === '*') return { ok: false, error: 'Cảnh giới này đã được duyệt' };
     const row = [new Date(), user.username, user.name || user.username, realm, topic, cellValue_(text), PRACTICE_ST.wait, '', '', new Date()];
-    if (old) sh.getRange(old.row, 1, 1, row.length).setValues([row]);    // nộp lại: về Chờ duyệt
+    if (old) sh.getRange(old.row, 1, 1, row.length).setValues([row]);    // nộp lại (cả sau Binh Giải): về Chờ duyệt, Admin duyệt lại
     else sh.getRange(sh.getLastRow() + 1, 1, 1, row.length).setValues([row]);
     return { ok: true, practice: readPractice_(user) };
   } finally {

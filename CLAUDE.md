@@ -21,9 +21,11 @@ Ngôn ngữ giao diện: tiếng Anh / tiếng Việt; trao đổi với chủ d
     đọc lại) · Hậu kỳ = đã nộp bài thực hành (topic.task) · Đại Viên Mãn = Admin duyệt (dòng bí kíp "*" trong tab Tu luyện).
     Đột phá: libAdvance → BreakthroughFX.play(id, {icon}) (breakthrough-fx.js, không sửa). Cửa ải: gate "binh-canh" (Kết Đan)
     và "thien-kiep" (Độ Kiếp, phi thăng) = thi 10 câu trộn bí kíp của giới, cần 8. Vị Tế: tái chứng nhận hằng năm.
-    Tiến độ npdLib v2 {v:2, realm, read:{bí kíp:[trang]}, quiz, fails, log, gates, pass, mig, recert, books, v1};
-    libMigrate chuyển bản cũ {stage, read, fails, log} 1 lần (giữ bản cũ trong v1; người đã tu luyện đứng ở cảnh giới đầu
-    tiên còn bí kíp cũ chưa đạt). Admin (Quyền = Admin): tab "Duyệt" trong Training (renderReview).
+    Tiến độ npdLib v3 {v:3, rid (id cảnh giới), ord, read:{bí kíp:[pageKey]}, quiz, done:{bí kíp:ngày đạt}, seen, fails, log,
+    gates, pass, mig, recert, books, lives, past, since, old, prev, v1}; libUpgrade nâng v1 → v2 (libMigrate) → v3.
+    Nút "☯ Binh Giải" (libRebirth): tu luyện lại từ Phàm Nhân, kiếp cũ ghi vào past, bí kíp đã đạt vào seen, bài nộp cũ
+    (L.old) không tính nữa. Nút "🪷 Chiêm nghiệm nhân sinh" (libMuse): đọc lại / ôn quiz kiến thức đã qua, không ghi tiến độ.
+    Admin (Quyền = Admin): tab "Duyệt" trong Training (renderReview).
     Thư viện (S.library, tab "Thư viện" của Sheet, sửa trên web: renderBooks / bookAct; mdLite, quizOf).
   - Cave: hồ sơ / CV (cave(): profile, skills, exp, edu, cert, lang, proj), việc cần làm, lời nhắc. cavePdf: CV chuẩn
     Harvard (1 cột, serif đen trắng; bỏ mục / dòng trống; tiêu đề EN hoặc VI theo nội dung; tự co 82–112% cho vừa trang).
@@ -76,6 +78,16 @@ Ngôn ngữ giao diện: tiếng Anh / tiếng Việt; trao đổi với chủ d
 - Chinese: Loại (word/phrase) | Chữ Hán | Pinyin | Từ loại | Nghĩa (EN) | Tiếng Việt | Ví dụ (Hán) | Ví dụ pinyin |
   Ví dụ EN | Ví dụ VI | Ngữ cảnh
 - Các tab NPD cũ (Model, Timeline, SER…) có thể còn trong Sheet nhưng không còn được gửi về trình duyệt
+
+## Giữ dữ liệu cũ của thành viên khi sửa web (bắt buộc)
+Chủ dự án sửa web thường xuyên; tiến độ tu luyện, hồ sơ… của thành viên (tab "Cá nhân", localStorage) KHÔNG được mất.
+- Lưu theo id cố định, không theo vị trí: cảnh giới / bí kíp theo id trong realms.js, trang đã đọc theo pageKey (mã tiêu đề
+  trang). Thêm / bớt / đổi thứ tự trang, bí kíp, cảnh giới không được làm lệch tiến độ.
+- Không đổi id cảnh giới / bí kíp đã phát hành. Bắt buộc phải đổi → thêm id cũ → id mới vào LIB_ALIAS.
+- Bí kíp đã đạt (done) giữ mãi, kể cả khi bí kíp được thêm trang / quiz / đề thực hành; cảnh giới chỉ tiến, không tự lùi.
+- Đổi định dạng dữ liệu cá nhân → tăng LIB_VER, thêm một bước nâng cấp trong libUpgrade (giữ bản trước ở L.prev, không bỏ
+  trường lạ), và test nâng cấp từ dữ liệu của mọi phiên bản cũ (v1, v2, …) trước khi tạo PR.
+- Dữ liệu cá nhân khác (npdCave, npdOT, npdFairy, npdEng, npdZh) cũng vậy: chỉ thêm trường, đổi cấu trúc thì viết hàm nâng cấp.
 
 ## Quy tắc bảo mật (bắt buộc)
 - Không đưa dữ liệu thật, mật khẩu, email, link Sheet vào repo (repo public)
