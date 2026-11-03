@@ -13,6 +13,8 @@
  * Ảnh sản phẩm lưu trong một thư mục Drive riêng tư, chỉ trả về khi có token hợp lệ.
  * Tu luyện (Training): bài thực hành / xin đột phá ghi vào tab "Tu luyện" (action "practice"); chỉ Quyền = Admin
  * được duyệt (action "review"). Mỗi người chỉ thấy dòng của mình, Admin thấy tất cả.
+ * Phong Thần Bảng (action "rank"): chỉ trả số liệu tóm tắt tu luyện của các tài khoản đang hoạt động – không tên đăng nhập,
+ * không dữ liệu cá nhân khác.
  * Mỗi ô được sửa ghi một dòng vào tab "Lịch sử". Trước khi ghi, máy chủ so
  * giá trị hiện tại trong Sheet với giá trị người sửa đã thấy lúc tải trang:
  * nếu người khác đã sửa ô đó trong lúc đó → không ghi gì, báo xung đột.
@@ -77,6 +79,7 @@ function doPost(e) {
       case 'mine':   out = mine_(req.token, req.key, req.value); break;
       case 'practice': out = practice_(req.token, req.realm, req.topic, req.text); break;
       case 'review': out = review_(req.token, req.user, req.realm, req.topic, req.status, req.note); break;
+      case 'rank':   out = rank_(req.token); break;
       case 'img_put': out = imgPut_(req.token, req.name, req.data); break;
       case 'img_get': out = imgGet_(req.token, req.ids); break;
       case 'presence': out = presence_(req.token, req.model, req.active); break;
@@ -697,6 +700,39 @@ function review_(token, who, realm, topic, status, note) {
   } finally {
     lock.releaseLock();
   }
+}
+
+/* ---------------- Phong Thần Bảng (xếp hạng tu luyện) ---------------- */
+
+// Mọi tài khoản đăng nhập đều xem được. Chỉ gửi: họ tên, đạo hiệu, cảnh giới, số bí kíp đã đạt, số lần tẩu hỏa nhập ma,
+// số câu sai / đã trả lời, số kiếp (Binh Giải). Không gửi tên đăng nhập; dòng của người xem được đánh dấu me = true.
+function rank_(token) {
+  const user = auth_(token);
+  if (!user) return { ok: false, expired: true, error: 'Phiên đăng nhập đã hết hạn' };
+  const cache = CacheService.getScriptCache();
+  let rows = null;
+  const hit = cache.get('rank_v1');
+  if (hit) rows = JSON.parse(hit);
+  else {
+    const values = sheet_(CFG.SHEET_USERS).getDataRange().getValues(), idx = headerIndex_(values[0]), people = {};
+    values.slice(1).forEach(r => { const u = norm_(r[idx.user]); if (u && isActive_(r, idx)) people[u] = { name: idx.name >= 0 ? String(r[idx.name] || '') : '' }; });
+    const sh = SpreadsheetApp.getActive().getSheetByName(CFG.SHEET_MINE);
+    if (sh && sh.getLastRow() > 1) sh.getRange(2, 1, sh.getLastRow() - 1, 3).getValues().forEach(r => {
+      const p = people[norm_(r[0])]; if (!p) return;
+      let v = null; try { v = JSON.parse(r[2]); } catch (e) { return; }
+      if (r[1] === 'npdLib') p.lib = v;
+      else if (r[1] === 'npdCave' && v && v.profile) p.dh = String(v.profile.dh || '').slice(0, 60);
+    });
+    rows = Object.keys(people).map(u => {
+      const p = people[u], L = p.lib || {}, n = x => Math.max(0, Math.floor(+x || 0));
+      return { u, name: p.name.slice(0, 60), dh: p.dh || '', rid: String(L.rid || ''), ord: n(L.ord || (L.v === 2 ? (+L.realm || 0) + 1 : 0)),
+        done: L.done && typeof L.done === 'object' ? Object.keys(L.done).length : 0, fails: n(L.fails), wrong: n(L.wrong), answered: n(L.answered),
+        lives: n(L.lives), started: !!p.lib };
+    });
+    cache.put('rank_v1', JSON.stringify(rows), 60);                      // 1 phút: đỡ đọc Sheet khi nhiều người mở cùng lúc
+  }
+  const me = norm_(user.username);
+  return { ok: true, rank: rows.map(r => { const o = Object.assign({}, r, { me: r.u === me }); delete o.u; return o; }), at: new Date().toISOString() };
 }
 
 /* ---------------- Ảnh sản phẩm (thư mục Drive riêng tư) ---------------- */

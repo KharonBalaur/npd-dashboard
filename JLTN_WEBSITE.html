@@ -518,6 +518,24 @@ table.np tr.gs td{border-top:2px solid #d9d0f0}
 .mu-r b{font-size:13.5px;color:var(--navy)} .mu-t{display:flex;flex-wrap:wrap;gap:6px;margin-top:5px}
 .mu-t button{display:flex;flex-direction:column;align-items:flex-start;padding:5px 10px;border-radius:8px;font-size:12.5px;color:var(--navy);white-space:normal;text-align:left}
 .mu-t button small{font-size:10.5px;color:var(--muted)} .mu-t button:hover{border-color:#c98bb8;background:#fdf6fb}
+/* Phong Thần Bảng */
+.pt-hero{margin-bottom:12px;padding:16px 20px;border-radius:14px;color:#fff7df;background:linear-gradient(120deg,#3b1d0e,#7a3f12 45%,#c98b2a);box-shadow:0 6px 20px rgba(122,63,18,.25)}
+.pt-hero h3{margin:0;font-family:"Noto Serif",Georgia,serif;font-size:24px;letter-spacing:.5px} .pt-hero p{margin:4px 0 0;font-size:13px;color:#ffe9c2}
+.pt-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;align-items:start}
+.pt-b{padding:12px 14px} .pt-b h4{margin:2px 0 8px;font-size:15px;color:var(--navy)} .pt-b h4 small{margin-left:6px;font-weight:400;font-size:11.5px;color:var(--muted)}
+.pt-l{margin:0;padding:0;list-style:none}
+.pt-l li{display:grid;grid-template-columns:34px minmax(0,1fr) minmax(0,1.25fr);gap:4px 10px;align-items:center;padding:8px 6px;border-bottom:1px solid #f0f2f5}
+.pt-l li.me{background:#fff8e6;border-radius:8px} .pt-l li.off{opacity:.65}
+.pt-k{font-size:20px;text-align:center} .pt-k i{font-style:normal;font-size:14px;font-weight:700;color:var(--muted)}
+.pt-l li>.pt-av{display:none}
+.pt-n{display:flex;flex-direction:column;min-width:0} .pt-n b{font-size:13.5px;color:var(--navy);overflow-wrap:anywhere} .pt-n b em{font-style:normal;font-weight:600;color:#b7791f} .pt-n small{font-size:11px;color:var(--muted);overflow-wrap:anywhere}
+.pt-r{display:flex;align-items:center;gap:8px;min-width:0} .pt-r img{width:34px;height:34px;border-radius:8px;object-fit:cover;flex:none} .pt-r>span:last-child{display:flex;flex-direction:column;min-width:0}
+.pt-r b{font-size:13px;color:var(--navy)} .pt-r small{font-size:11.5px;color:var(--ink2);line-height:1.35} .pt-ic{flex:none;font-size:24px}
+.pt-s,.pt-bd,.pt-tag{grid-column:2/-1;font-size:11.5px;color:var(--ink2)} .pt-s b{color:var(--navy)}
+.pt-bd{display:flex;flex-wrap:wrap;gap:4px} .pt-bd i{font-style:normal;padding:1px 8px;border-radius:99px;background:#fdf0e6;color:#8a3b12}
+.pt-tag{color:#6b7383;font-style:italic} .pt-tag.gold{color:#9a6b2e;font-weight:600;font-style:normal}
+.pt-note{margin:8px 0 0;font-size:11.5px;color:var(--muted)} .pt-wait{padding:30px;text-align:center;color:var(--ink2)}
+@media (max-width:900px){.pt-grid{grid-template-columns:1fr} .pt-l li{grid-template-columns:30px minmax(0,1fr)} .pt-r{grid-column:2/-1}}
 .lib-rv{padding:14px 16px} .lib-rv h3{margin:4px 0 10px;font-size:15px;color:var(--navy)} .lib-rv h3 small{margin-left:4px;padding:0 7px;border-radius:99px;background:#eef1f5;font-size:12px}
 .rv{padding:10px 12px;margin-bottom:8px;border:1px solid var(--bd);border-radius:8px;background:#fff} .rv.req{border-left:4px solid #e7c66d}
 .rv-h{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap} .rv-h b{color:var(--navy)} .rv-h small{color:var(--muted)} .rv-w{margin:2px 0 6px;font-size:13px;color:var(--ink2)}
@@ -1465,7 +1483,9 @@ a.lk:hover{border-color:#d9ad55;box-shadow:0 4px 14px rgba(20,33,61,.1)} .lk .lk
 /* Training header on phones: one compact row of controls */
 @media (max-width:640px){#lib .st-head{gap:6px} #lib .st-head .au-me small,#lib .st-head [data-x="auOut"]{display:none}
   #lib .st-head>button,#lib .st-head .au-me+button{padding:5px 10px;font-size:12.5px} #lib .st-head .sp{display:none}
-  #lib .st-head [data-x="libMuse"] .lbl{display:none}}
+  #lib .st-head [data-x="libMuse"] .lbl{display:none}
+  #lib .lib-tabs{max-width:100%;overflow-x:auto;flex-wrap:nowrap;scrollbar-width:none} #lib .lib-tabs::-webkit-scrollbar{display:none}
+  #lib .lib-tabs button{flex:none} #lib .lib-tabs .lbl{display:none}}
 #home{--gold:#c9a85a;--gold2:#f6e7b8;--jade:#2f8f86;--jade-d:#1d6863;--rose:#f2a7b9;background:#cdeeed}
 #home .hm-title .sect{background:linear-gradient(180deg,rgba(47,143,134,.94),rgba(29,104,99,.94));
   box-shadow:inset 0 0 0 2px rgba(29,104,99,.9),inset 0 0 0 3px rgba(246,231,184,.55),0 8px 22px rgba(10,60,58,.28)}
@@ -2767,6 +2787,7 @@ function renderLib() {
   if (!curUser()) { $("#lib").innerHTML = `<div class="st-head"><h2><span class="hi">📘</span>Training · Tàng Kinh Các</h2></div>${authView("Tàng Kinh Các")}`; return auFocus(); }
   if (libMode === "books") return renderBooks();
   if (libMode === "review") { if (libAdmin()) return renderReview(); libMode = "road"; }
+  if (libMode === "rank") return renderRank();
   const L = libSync(libLoad()), st = realmState(L, L.realm), R = st.R;
   let T = libTopic ? topicOf(libTopic) : null;
   if (T && (libMuse ? !libKnown(L).some(t => t.id === T.id) : T.ri > L.realm)) T = null, libTopic = "";
@@ -2789,6 +2810,69 @@ function renderLib() {
     ${libRoad && !libMuse ? libRoadHtml(L) : ""}
     ${T ? libReader(L, T) : libMuse ? libMuseHtml(L) : libRealmPanel(L, st)}`;
 }
+// ---- Phong Thần Bảng: bảng tu vi (cảnh giới → bí kíp đã đạt → ít tẩu hỏa) và bảng tư chất (ít tẩu hỏa nhập ma, ít câu sai).
+// Số liệu tóm tắt do máy chủ gửi (action "rank", cập nhật mỗi phút); danh hiệu tư chất mang tính trêu vui trong tông môn.
+let RANK = null, RANK_AT = 0, RANK_BUSY = false;
+const LIB_TC = [                                                         // [điểm tối đa (thấp = tốt), biểu tượng, danh hiệu, lời phê]
+  [5, "👑", "Thiên Linh Căn", "Trăm năm có một – thi như ăn kẹo, đề nào cũng trúng tủ."],
+  [15, "💎", "Địa Linh Căn", "Con nhà người ta – phụ huynh cả tông môn hay nhắc tên."],
+  [30, "🌿", "Song Linh Căn", "Học đâu nhớ đó… nhớ được chừng một nửa."],
+  [50, "🐟", "Tạp Linh Căn", "Trí nhớ cá vàng 7 giây – đọc xong trang 2 là quên trang 1."],
+  [80, "🥔", "Ngụy Linh Căn", "Chọn đáp án bằng phong thủy, đúng sai do trời định."],
+  [Infinity, "💀", "Phế Linh Căn", "Đại sư tẩu hỏa nhập ma – đan điền thủng như cái rổ, vẫn kiên trì đáng nể."],
+];
+function libTuChat(r) {
+  const rate = r.answered ? r.wrong / r.answered : 0;
+  if (!r.answered && !r.fails) return { ic:"🥚", t:"Linh Căn Chưa Thức Tỉnh", d:"Chưa thi lần nào – tư chất bí ẩn như hộp quà chưa bóc.", s:Infinity, rate:null };
+  const sc = r.fails * 8 + rate * 100, T = LIB_TC.find(x => sc < x[0]);
+  return { ic:T[1], t:T[2], d:T[3], s:sc, rate };
+}
+function libBadges(r, tc) {
+  const b = [];
+  if (r.fails >= 10) b.push("🚑 VIP Tẩu Hỏa Đường – có thẻ thành viên"); else if (r.fails >= 5) b.push("🔥 Khách quen Tẩu Hỏa Đường");
+  if (r.wrong >= 30) b.push("🎲 Thánh khoanh bừa");
+  if (tc.rate !== null && r.answered >= 20 && tc.rate < 0.05) b.push("🎯 Thần xạ đáp án");
+  if (r.lives) b.push(`☯ Binh Giải ${r.lives} lần – thích làm lại từ đầu`);
+  if (r.started && !r.answered && !r.fails) b.push("😴 Chỉ đọc không thi");
+  return b;
+}
+async function rankLoad(force) {
+  if (RANK_BUSY || (!force && RANK && Date.now() - RANK_AT < 60000)) return;
+  RANK_BUSY = true;
+  const r = window.NPD ? await NPD.call("rank", {}).catch(e => ({ ok:false, error:e.message })) : { ok:false, error:"Chưa kết nối máy chủ" };
+  RANK_BUSY = false;
+  if (r && r.ok) { RANK = r.rank || []; RANK_AT = Date.now(); } else if (r && r.expired) return NPD.expired(); else RANK = RANK || { err:(r && r.error) || "Lỗi kết nối" };
+  if (tabNow === "lib" && libMode === "rank") renderRank();
+}
+function renderRank() {
+  const head = `<div class="st-head"><h2><span class="hi">📘</span>Training · Tàng Kinh Các</h2>${libTabs()}<span class="sp"></span>${auChip()}<button data-x="rankLoad">⟳ Cập nhật</button></div>`;
+  if (!RANK || RANK.err) { $("#lib").innerHTML = `${head}<div class="st-panel pt-wait">${RANK && RANK.err ? `Không tải được Phong Thần Bảng: ${esc(RANK.err)}` : "⏳ Đang triệu hồi Phong Thần Bảng…"}</div>`; return rankLoad(); }
+  const R = RANK.map(r => Object.assign({}, r, { R:REALMS.find(x => x.id === r.rid) || REALMS.find(x => x.order === r.ord) || null }));
+  const nm = r => `<span class="pt-av">${esc(String(r.name || "?").trim().split(/\s+/).slice(-2).map(w => w[0]).join("").toUpperCase())}</span><span class="pt-n"><b>${esc(r.name || "Ẩn danh")}${r.me ? " <em>(bạn)</em>" : ""}</b>${r.dh ? `<small>${esc(r.dh)}</small>` : ""}</span>`;
+  const md = i => ["🥇", "🥈", "🥉"][i] || `<i>${i + 1}</i>`;
+  const tv = R.filter(r => r.R && r.started).sort((a, b) => (b.R.order - a.R.order) || (b.done - a.done) || (a.fails - b.fails));
+  const tvRest = R.filter(r => !(r.R && r.started));
+  const tvHtml = tv.map((r, i) => `<li class="${r.me ? "me" : ""}"><span class="pt-k">${md(i)}</span>${nm(r)}
+      <span class="pt-r"><img src="${esc(r.R.icon)}" alt="" loading="lazy"><span><b>${esc(r.R.name)}</b><small>${esc(r.R.gioi)} · ${r.done} bí kíp${r.lives ? ` · kiếp ${r.lives + 1}` : ""}</small></span></span>
+      ${i === tv.length - 1 && tv.length > 2 ? `<span class="pt-tag">🐢 Rùa Thần – chậm mà chắc (chắc là chậm)</span>` : i === 0 ? `<span class="pt-tag gold">Đệ nhất cao thủ tông môn</span>` : ""}</li>`).join("")
+    + tvRest.map(r => `<li class="off ${r.me ? "me" : ""}"><span class="pt-k">–</span>${nm(r)}<span class="pt-r"><span><b>Phàm nhân chưa nhập môn</b><small>Chưa bước vào Tàng Kinh Các</small></span></span></li>`).join("");
+  const T = R.map(r => Object.assign(r, { tc:libTuChat(r) }));
+  const tc = T.filter(r => r.tc.s !== Infinity).sort((a, b) => (a.tc.s - b.tc.s) || (b.answered - a.answered)), tcRest = T.filter(r => r.tc.s === Infinity);
+  const tcRow = (r, i) => { const bd = libBadges(r, r.tc);
+    return `<li class="${r.me ? "me" : ""}${i < 0 ? " off" : ""}"><span class="pt-k">${i < 0 ? "–" : md(i)}</span>${nm(r)}
+      <span class="pt-r"><span class="pt-ic">${r.tc.ic}</span><span><b>${esc(r.tc.t)}</b><small>${esc(r.tc.d)}</small></span></span>
+      <span class="pt-s"><b>${r.fails}</b> lần tẩu hỏa · <b>${r.wrong}</b>/${r.answered} câu sai${r.tc.rate !== null ? ` (${Math.round(r.tc.rate * 100)} %)` : ""}</span>
+      ${bd.length ? `<span class="pt-bd">${bd.map(x => `<i>${esc(x)}</i>`).join("")}</span>` : ""}</li>`; };
+  $("#lib").innerHTML = `${head}
+    <div class="pt-hero"><h3>🏆 Phong Thần Bảng</h3><p>Bảng vàng của Thiên Công Tông – ai tu vi cao nhất, ai tư chất "đặc biệt" nhất. Cập nhật mỗi phút${RANK_AT ? ` · ${new Date(RANK_AT).toLocaleTimeString("vi-VN", { hour:"2-digit", minute:"2-digit" })}` : ""}.</p></div>
+    <div class="pt-grid">
+      <section class="st-panel pt-b"><h4>⚡ Bảng Tu Vi <small>cảnh giới → bí kíp đã đạt → ít tẩu hỏa</small></h4><ol class="pt-l">${tvHtml || `<p class="muted">Chưa có ai tu luyện.</p>`}</ol></section>
+      <section class="st-panel pt-b"><h4>🧬 Bảng Tư Chất <small>ít tẩu hỏa nhập ma, ít câu sai</small></h4><ol class="pt-l">${tc.map(tcRow).join("") + tcRest.map(r => tcRow(r, -1)).join("") || `<p class="muted">Chưa có ai đi thi.</p>`}</ol>
+        <p class="pt-note">Điểm tư chất = 8 × số lần tẩu hỏa + % câu sai (càng thấp càng tốt). Câu sai được đếm từ phiên bản này; chế độ ôn tập không tính. Danh hiệu chỉ để trêu vui – đừng giận nhau nha 😄</p></section>
+    </div>`;
+  rankLoad();
+}
+
 // Admin: duyệt bài thực hành và yêu cầu đột phá (Đại Viên Mãn). Ghi vào tab "Tu luyện" qua máy chủ (action "review").
 function renderReview() {
   const P = window.npdPractice || [], idx = p => P.indexOf(p);
@@ -2812,6 +2896,7 @@ let libMode = (() => { try { return sessionStorage.getItem("npdLibMode") || "roa
 let bookSel = "", bookQ = "", bookTopic = "", bookEdit = null;
 const libTabs = () => `<div class="lib-tabs" role="tablist"><button data-x="libMode" data-k="road" class="${libMode === "road" ? "on" : ""}">🛤 Lộ trình tu luyện</button>
   <button data-x="libMode" data-k="books" class="${libMode === "books" ? "on" : ""}">📚 Thư viện <small>${(S.library || []).length}</small></button>
+  <button data-x="libMode" data-k="rank" class="${libMode === "rank" ? "on" : ""}">🏆 Phong Thần<span class="lbl"> Bảng</span></button>
   ${libAdmin() ? `<button data-x="libMode" data-k="review" class="${libMode === "review" ? "on" : ""}">🛡 Duyệt <small>${(window.npdPractice || []).filter(p => p.status === LIB_WAIT).length}</small></button>` : ""}</div>`;
 const mdLite = t => {                                                     // the small text format of the library → HTML (escaped first)
   const inl = s => esc(s).replace(/\*\*(.+?)\*\*/g, "<b>$1</b>").replace(/`(.+?)`/g, "<code>$1</code>");
@@ -2947,6 +3032,7 @@ function libExamEnd() {                                                   // ghi
   X.end = true;
   if (X.rev) return;
   L.log.push({ r:R.id, t:X.mode === "topic" ? X.tid : X.mode, ok:win ? 1 : 0, at });
+  L.wrong = (+L.wrong || 0) + (X.qs.length - X.ok); L.answered = (+L.answered || 0) + X.qs.length;   // cho Phong Thần Bảng (tư chất)
   if (X.mode === "topic") { if (win) L.quiz[X.tid] = { pass:1, ok:X.ok, n:X.qs.length, at }; else { L.read[X.tid] = []; L.fails++; } }
   else if (X.mode === "gate") { if (win) L.gates[R.gate] = at; else L.fails++; }
   else if (win) L.recert[String(new Date().getFullYear())] = at;
@@ -3860,6 +3946,7 @@ document.addEventListener("click", e => {                                // butt
   if (x === "libRv") { const [st, i] = k.split(":"), p = (window.npdPractice || [])[+i], n = $("#rvN" + i); if (!p) return;
     return libSend("review", { user:p.user, realm:p.realm, topic:p.topic, status:st, note:n ? n.value : "" }, b); }
   if (x === "libRvLoad") return window.NPD && NPD.refresh();
+  if (x === "rankLoad") { RANK_AT = 0; return rankLoad(true); }
   if (x === "libExAns") { if (LX.pick === null) { LX.pick = +k; if (+k === LX.qs[LX.k].c) LX.ok++; } return libExamDraw(); }
   if (x === "libExNext") { LX.k++; LX.pick = null; if (LX.k >= LX.qs.length) libExamEnd(); return libExamDraw(); }
   if (x === "libExClose") { const m = $("#libEx"); if (m) m.remove(); const X = LX; LX = null; if (X && X.mode === "topic" && !X.rev && X.ok < X.need) libPage = 0; return renderLib(); }
