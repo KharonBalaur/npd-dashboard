@@ -3,8 +3,8 @@
  * window.REALMS = [{ id, order, name, gioi, hex, que, meaning, icon, gate?, topics:[{ id, name, short }] }]
  *  - Thứ tự trong mảng = thứ tự tu luyện. order: 1…14, Vị Tế = 15 (hiển thị "∞").
  *  - gate: cửa ải phải vượt khi đột phá khỏi cảnh giới này ("binh-canh" sau Kết Đan, "thien-kiep" sau Độ Kiếp → phi thăng).
- *  - Nội dung bài (trang, quiz, bài thực hành) có thể thêm vào từng topic: P:[[tiêu đề, [dòng…]]], Q:[[câu hỏi, [4 đáp án], đúng, giải thích]],
- *    task:"đề bài thực hành". Topic chưa có nội dung thì trang web hiện "Đang biên soạn".
+ *  - Nội dung bài (trang, quiz) có thể thêm vào từng topic: P:[[tiêu đề, [dòng…]]], Q:[[câu hỏi, [4 đáp án], đúng, giải thích]]
+ *    (thường để ở lessons-*.js / quiz-bank.js). Topic chưa có nội dung thì trang web hiện "Đang biên soạn".
  * Hiệu ứng đột phá: breakthrough-fx.js (BreakthroughFX.play(id, { icon })).
  */
 window.REALMS = [
