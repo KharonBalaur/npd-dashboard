@@ -1,7 +1,7 @@
 # Thiên Công Tông · QE Workspace
 
 Web nội bộ cho team QE (nhà máy TTI VN): Training (lộ trình tu luyện + thư viện kiến thức), học tiếng Anh,
-học tiếng Trung, Tools, Cave (hồ sơ cá nhân / CV). Dashboard NPD, SER Tracking, Data Entry đã gỡ (còn trong lịch sử Git).
+học tiếng Trung, Tools, Cave (hồ sơ cá nhân / CV), Relax (Tiêu Dao Các – thư giãn). Dashboard NPD, SER Tracking, Data Entry đã gỡ (còn trong lịch sử Git).
 Ngôn ngữ giao diện: tiếng Anh / tiếng Việt; trao đổi với chủ dự án: tiếng Việt.
 
 ## Kiến trúc
@@ -10,7 +10,7 @@ Ngôn ngữ giao diện: tiếng Anh / tiếng Việt; trao đổi với chủ d
 
 ## Files
 - `index.html` – chuyển hướng sang JLTN_WEBSITE; `NPD_BuildStatus.html` – chuyển hướng (giữ link cũ)
-- `JLTN_WEBSITE.html` – app chính (1 file, JS thuần). Trang: home, lib (Training), eng, zh, tool, cave; showTab(t).
+- `JLTN_WEBSITE.html` – app chính (1 file, JS thuần). Trang: home, lib (Training), eng, zh, tool, cave, fun (Relax); showTab(t).
   Biến toàn cục: S (dữ liệu chung: links, address, library, study, history), tabNow. Thẻ `<script id="board-data">`
   PHẢI luôn rỗng: {"version":1,"projects":[],"history":[]}
   - Training (Tàng Kinh Các): lộ trình = `realms.js` (window.REALMS: 14 cảnh giới + Vị Tế, 3 giới Nhân / Linh / Tiên,
@@ -50,6 +50,9 @@ Ngôn ngữ giao diện: tiếng Anh / tiếng Việt; trao đổi với chủ d
     Ô nhập / nút / tab dạng segmented dùng chung CSS "#tool .tl-main …".
     Cpk và Gage R&R có nút "Xuất báo cáo PDF" (tlReport: A4, thông tin rp_* tùy chọn, kết quả, biểu đồ SVG, số liệu, phương pháp, ô ký).
   - English / 中文: khung iframe tới study/*.html; window.npdStudy {load, save, extra, user} nối tiến độ theo tài khoản.
+- `fun.js` – Tiêu Dao Các (tab "fun", nút Relax): trò chơi nhỏ tự thiết kế (Soi Lỗi, Phản Xạ, Luyện Đan, Tính Nhẩm),
+  Tĩnh Tâm (thở hộp 4-4-4-4), Gieo Quẻ 5 Phút (việc nhỏ / câu đố / chuyện cười QE). window.renderFun, funStop (rời tab dừng
+  đồng hồ). Nút dùng data-f (không qua data-x). Kỷ lục: npdFun {best:{spot, react, memo, math}, plays, calm} theo tài khoản.
 - `study/english.html`, `study/chinese.html` – app học (do chủ dự án viết); `study/*-bank.js` – bài học mỗi ngày
   (window.ENG_BANK / ZH_BANK). Chạy riêng thì lưu localStorage; trong web thì lưu theo tài khoản + nhận thêm dữ liệu
   từ tab English / Chinese của Sheet.
@@ -78,7 +81,7 @@ Ngôn ngữ giao diện: tiếng Anh / tiếng Việt; trao đổi với chủ d
 - {action:"rank", token} → {ok, rank:[{name, dh, rid, ord, done, fails, wrong, answered, lives, started, lc, stones, pills, me}]} – tóm tắt tu
   luyện mọi tài khoản đang hoạt động (không tên đăng nhập, không dữ liệu cá nhân khác), cache 1 phút
 - "data" trả thêm practice: dòng Tu luyện của chính mình (Admin: mọi dòng Chờ duyệt + 400 dòng mới nhất)
-- {action:"mine", token, key, value} – dữ liệu cá nhân (npdCave, npdLib, npdOT, npdFairy, npdEng, npdZh) của chính mình
+- {action:"mine", token, key, value} – dữ liệu cá nhân (npdCave, npdLib, npdOT, npdFairy, npdEng, npdZh, npdFun) của chính mình
 - img_put / img_get / presence – còn trong Code.gs, hiện trang không dùng
 - {action:"logout", token}
 
@@ -106,7 +109,7 @@ Chủ dự án sửa web thường xuyên; tiến độ tu luyện, hồ sơ… 
 - Bí kíp đã đạt (done) giữ mãi, kể cả khi bí kíp được thêm trang / quiz / đề thực hành; cảnh giới chỉ tiến, không tự lùi.
 - Đổi định dạng dữ liệu cá nhân → tăng LIB_VER, thêm một bước nâng cấp trong libUpgrade (giữ bản trước ở L.prev, không bỏ
   trường lạ), và test nâng cấp từ dữ liệu của mọi phiên bản cũ (v1, v2, …) trước khi tạo PR.
-- Dữ liệu cá nhân khác (npdCave, npdOT, npdFairy, npdEng, npdZh) cũng vậy: chỉ thêm trường, đổi cấu trúc thì viết hàm nâng cấp.
+- Dữ liệu cá nhân khác (npdCave, npdOT, npdFairy, npdEng, npdZh, npdFun) cũng vậy: chỉ thêm trường, đổi cấu trúc thì viết hàm nâng cấp.
 
 ## Quy tắc bảo mật (bắt buộc)
 - Không đưa dữ liệu thật, mật khẩu, email, link Sheet vào repo (repo public)

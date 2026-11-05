@@ -194,7 +194,7 @@
   window.addEventListener('beforeunload', e => { if (dirty && canEdit()) { e.preventDefault(); e.returnValue = ''; } });
 
   /* ---------- Dữ liệu cá nhân (Động Phủ, Training, sổ OT, lời nhắc, học Anh / Trung): theo tài khoản, lưu ở tab "Cá nhân" ---------- */
-  const MINE = ['npdCave', 'npdLib', 'npdOT', 'npdFairy', 'npdEng', 'npdZh'], mineT = {};
+  const MINE = ['npdCave', 'npdLib', 'npdOT', 'npdFairy', 'npdEng', 'npdZh', 'npdFun'], mineT = {};
   let mineFor = '';                                                        // tài khoản đã nhận bản từ máy chủ: trước đó chỉ ghi trên máy, không gửi
   const me = () => (window.NPD && NPD.user() || {}).username || '';
   const readLocal = base => { try { return JSON.parse(localStorage.getItem(base + '@' + me())); } catch (e) { return null; } };
