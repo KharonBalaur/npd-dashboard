@@ -705,13 +705,13 @@ function review_(token, who, realm, topic, status, note) {
 /* ---------------- Phong Thần Bảng (xếp hạng tu luyện) ---------------- */
 
 // Mọi tài khoản đăng nhập đều xem được. Chỉ gửi: họ tên, đạo hiệu, cảnh giới, số bí kíp đã đạt, số lần tẩu hỏa nhập ma,
-// số câu sai / đã trả lời, số kiếp (Binh Giải). Không gửi tên đăng nhập; dòng của người xem được đánh dấu me = true.
+// số câu sai / đã trả lời, số kiếp (Binh Giải), kỷ lục trò chơi Tiêu Dao Các (fun). Không gửi tên đăng nhập; dòng của người xem: me = true.
 function rank_(token) {
   const user = auth_(token);
   if (!user) return { ok: false, expired: true, error: 'Phiên đăng nhập đã hết hạn' };
   const cache = CacheService.getScriptCache();
   let rows = null;
-  const hit = cache.get('rank_v2');
+  const hit = cache.get('rank_v3');
   if (hit) rows = JSON.parse(hit);
   else {
     const values = sheet_(CFG.SHEET_USERS).getDataRange().getValues(), idx = headerIndex_(values[0]), people = {};
@@ -722,17 +722,27 @@ function rank_(token) {
       let v = null; try { v = JSON.parse(r[2]); } catch (e) { return; }
       if (r[1] === 'npdLib') p.lib = v;
       else if (r[1] === 'npdCave' && v && v.profile) p.dh = String(v.profile.dh || '').slice(0, 60);
+      else if (r[1] === 'npdFun' && v && typeof v === 'object') p.fun = funBest_(v);
     });
     rows = Object.keys(people).map(u => {
       const p = people[u], L = p.lib || {}, n = x => Math.max(0, Math.floor(+x || 0));
       return { u, name: p.name.slice(0, 60), dh: p.dh || '', rid: String(L.rid || ''), ord: n(L.ord || (L.v === 2 ? (+L.realm || 0) + 1 : 0)),
         done: L.done && typeof L.done === 'object' ? Object.keys(L.done).length : 0, fails: n(L.fails), wrong: n(L.wrong), answered: n(L.answered),
-        lives: n(L.lives), started: !!p.lib, lc: Math.min(5, n(L.lc)), stones: n(L.stones), pills: n(L.pills) };
+        lives: n(L.lives), started: !!p.lib, lc: Math.min(5, n(L.lc)), stones: n(L.stones), pills: n(L.pills), fun: p.fun || null };
     });
-    cache.put('rank_v2', JSON.stringify(rows), 60);                      // 1 phút: đỡ đọc Sheet khi nhiều người mở cùng lúc
+    cache.put('rank_v3', JSON.stringify(rows), 60);                      // 1 phút: đỡ đọc Sheet khi nhiều người mở cùng lúc
   }
   const me = norm_(user.username);
   return { ok: true, rank: rows.map(r => { const o = Object.assign({}, r, { me: r.u === me }); delete o.u; return o; }), at: new Date().toISOString() };
+}
+
+// kỷ lục trò chơi (npdFun.best + phút tĩnh tâm): dữ liệu do trình duyệt ghi nên chỉ nhận giá trị trong khoảng hợp lý
+function funBest_(v) {
+  const b = v.best && typeof v.best === 'object' ? v.best : {}, out = {};
+  const ok = (k, lo, hi) => { const x = Math.round(+b[k]); if (isFinite(x) && x >= lo && x <= hi) out[k] = x; };
+  ok('spot', 1, 300); ok('react', 100, 3000); ok('memo', 8, 999); ok('math', 1, 300);
+  const c = Math.round((+v.calm || 0) * 10) / 10; if (c > 0 && c <= 100000) out.calm = c;
+  return Object.keys(out).length ? out : null;
 }
 
 /* ---------------- Ảnh sản phẩm (thư mục Drive riêng tư) ---------------- */

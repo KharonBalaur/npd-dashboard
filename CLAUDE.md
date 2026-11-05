@@ -53,6 +53,8 @@ Ngôn ngữ giao diện: tiếng Anh / tiếng Việt; trao đổi với chủ d
 - `fun.js` – Tiêu Dao Các (tab "fun", nút Relax): trò chơi nhỏ tự thiết kế (Soi Lỗi, Phản Xạ, Luyện Đan, Tính Nhẩm),
   Tĩnh Tâm (thở hộp 4-4-4-4), Gieo Quẻ 5 Phút (việc nhỏ / câu đố / chuyện cười QE). window.renderFun, funStop (rời tab dừng
   đồng hồ). Nút dùng data-f (không qua data-x). Kỷ lục: npdFun {best:{spot, react, memo, math}, plays, calm} theo tài khoản.
+  Bảng Xếp Hạng (mục "top"): kỷ lục mọi tài khoản từ action "rank" (row.fun do Code.gs funBest_ lọc giá trị hợp lý),
+  dòng của mình dùng kỷ lục trên máy; top 10 mỗi trò + dòng của mình nếu ngoài top.
 - `study/english.html`, `study/chinese.html` – app học (do chủ dự án viết); `study/*-bank.js` – bài học mỗi ngày
   (window.ENG_BANK / ZH_BANK). Chạy riêng thì lưu localStorage; trong web thì lưu theo tài khoản + nhận thêm dữ liệu
   từ tab English / Chinese của Sheet.
@@ -78,7 +80,7 @@ Ngôn ngữ giao diện: tiếng Anh / tiếng Việt; trao đổi với chủ d
 - {action:"practice", token, realm, topic, text} – nộp bài thực hành (topic = id bí kíp) hoặc xin duyệt Đại Viên Mãn
   (topic = "*"); ghi tab Tu luyện, Trạng thái = Chờ duyệt → {ok, practice:[…]}
 - {action:"review", token, user, realm, topic, status:"ok"|"back", note} – chỉ Quyền = Admin → {ok, practice}
-- {action:"rank", token} → {ok, rank:[{name, dh, rid, ord, done, fails, wrong, answered, lives, started, lc, stones, pills, me}]} – tóm tắt tu
+- {action:"rank", token} → {ok, rank:[{name, dh, rid, ord, done, fails, wrong, answered, lives, started, lc, stones, pills, fun:{spot, react, memo, math, calm}|null, me}]} – tóm tắt tu
   luyện mọi tài khoản đang hoạt động (không tên đăng nhập, không dữ liệu cá nhân khác), cache 1 phút
 - "data" trả thêm practice: dòng Tu luyện của chính mình (Admin: mọi dòng Chờ duyệt + 400 dòng mới nhất)
 - {action:"mine", token, key, value} – dữ liệu cá nhân (npdCave, npdLib, npdOT, npdFairy, npdEng, npdZh, npdFun) của chính mình
