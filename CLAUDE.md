@@ -55,6 +55,9 @@ Ngôn ngữ giao diện: tiếng Anh / tiếng Việt; trao đổi với chủ d
   đồng hồ). Nút dùng data-f (không qua data-x). Kỷ lục: npdFun {best:{spot, react, memo, math}, plays, calm} theo tài khoản.
   Bảng Xếp Hạng (mục "top"): kỷ lục mọi tài khoản từ action "rank" (row.fun do Code.gs funBest_ lọc giá trị hợp lý),
   dòng của mình dùng kỷ lục trên máy; top 10 mỗi trò + dòng của mình nếu ngoài top.
+- Điện thoại (≤ 760 px, ưu tiên iPhone 15 Plus 430 × 932): menu #nav thành thanh tab cố định dưới đáy (body chừa
+  60px + safe-area), viewport-fit=cover + env(safe-area-inset-*) cho tai thỏ / thanh Home, ô nhập 16px (iOS không tự
+  phóng to), nút trong trang ≥ 40px. Khối CSS cuối thẻ <style> ("Điện thoại (ưu tiên iPhone 15 Plus…)").
 - `study/english.html`, `study/chinese.html` – app học (do chủ dự án viết); `study/*-bank.js` – bài học mỗi ngày
   (window.ENG_BANK / ZH_BANK). Chạy riêng thì lưu localStorage; trong web thì lưu theo tài khoản + nhận thêm dữ liệu
   từ tab English / Chinese của Sheet.
