@@ -14,23 +14,32 @@ Ngôn ngữ giao diện: tiếng Anh / tiếng Việt; trao đổi với chủ d
   Biến toàn cục: S (dữ liệu chung: links, address, library, study, history), tabNow. Thẻ `<script id="board-data">`
   PHẢI luôn rỗng: {"version":1,"projects":[],"history":[]}
   - Training (Tàng Kinh Các): lộ trình = `realms.js` (window.REALMS: 14 cảnh giới + Vị Tế, 3 giới Nhân / Linh / Tiên,
-    mỗi cảnh giới {id, order, name, gioi, hex, que, meaning, icon, gate?, topics:[{id, name, short, P?, Q?, task?}]}).
+    mỗi cảnh giới {id, order, name, gioi, hex, que, meaning, icon, gate?, topics:[{id, name, short, P?, Q?}]}).
     Bài cũ (LIB_CUR, 20 bí kíp) gắn vào bí kíp mới qua LIB_OLD2NEW (Kanban + JIT → jit-kanban); topicOf(id) = nội dung.
-    Bí kíp chưa có P / Q / task = "Đang biên soạn": không chặn tiểu cảnh giới, không tính là đã đạt.
-    Tiểu cảnh giới (realmState): Sơ kỳ = đọc hết trang mọi bí kíp · Trung kỳ = qua quiz mọi bí kíp (5 câu, ≥ 80 %; trượt =
-    đọc lại) · Hậu kỳ = đã nộp bài thực hành (topic.task) · Đại Viên Mãn = tự động khi xong Hậu kỳ (không cần Admin duyệt).
-    Bài đọc: `lessons-nhan-gioi.js` (window.LESSONS {idBíKíp: {P, terms:[[EN, VI, 中文]], task, src:[[tên, link https]], Q}}),
-    topicOf ghép bài cũ + LESSONS + trang "Thuật ngữ & nguồn" (dòng "@ tên | link" = link nguồn). Linh / Tiên Giới: chưa có bài.
+    Bí kíp chưa có P lẫn Q = "Đang biên soạn": không chặn tiểu cảnh giới, không tính là đã đạt. Không còn bài thực hành.
+    Bí kíp đạt = đọc hết trang + qua quiz (5 câu, phải đúng hết; sai 1 câu = tẩu hỏa, fails++, thi lại từ đầu với đề mới).
+    Trang cuối có nút "Thi quiz ngay". Qua trang: libScrollRead đưa bài đọc lên dưới thanh tiêu đề (không nhảy về đầu web).
+    Tiểu cảnh giới (realmState, libLvOf theo số bí kíp đạt d / n): Sơ kỳ ≥ 1 · Trung kỳ > n/3 · Hậu kỳ > 2n/3 ·
+    Đại Viên Mãn = đạt hết → đột phá. Đã đọc hết bài cũ (T.P0) hoặc đã qua quiz cũng tính là đã đọc.
+    Bài đọc (viết lại dễ hiểu, ~5 trang: Hiểu nhanh → Vì sao → Từng bước → Ví dụ số liệu → Lỗi hay gặp & nhớ nhanh):
+    `lessons-nhan-gioi.js`, `lessons-linh-gioi.js`, `lessons-tien-gioi.js` (window.LESSONS {idBíKíp: {P, terms:[[EN, VI, 中文]],
+    src:[[tên, link https]], Q?}}) – đủ 50 bí kíp. topicOf: có LESSONS.P → bài mới + trang "Thực tế TTI" (LIB_TTI, libTtiP) +
+    trang "Thuật ngữ & nguồn" (dòng "@ tên | link" = link nguồn); chưa có → bài cũ LIB_CUR. Chỗ chưa chắc ghi [CẦN KIỂM TRA].
     Câu hỏi: `quiz-bank.js` (window.QUIZ_BANK {idBíKíp: [[câu, [đúng, sai, sai, sai], 0, giải thích]]}) cộng với Q cũ.
+    Túi càn khôn (libBagHtml): L.stones linh thạch (lần thi đầu của mỗi bài – L.qa[key] / libTried, theo cả log cũ – mỗi câu
+    đúng +10), L.pills Tẩy Tủy Đan (qua ngay lần đầu +1), L.lc linh căn 0–5 (LIB_LC: Phế → Thiên; nâng bậc tốn 1, 2, 4, 8, 16 đan).
+    Trợ giúp khi thi (LIB_HELP, libHelp, trừ linh thạch, mỗi loại 1 lần / câu): Chưởng môn 100 = chỉ đáp án đúng; Trưởng lão 50
+    = câu lý thuyết chỉ đúng, câu tính toán (Q là hàm sinh số) đúng / sai 50-50; Sư huynh / sư tỷ 10 = gạch 2 đáp án sai.
+    Ôn tập (bí kíp đã đạt, Chiêm nghiệm) không thưởng, không trợ giúp, không ghi tiến độ. Binh Giải giữ túi càn khôn và L.qa.
     Đột phá: libAdvance → BreakthroughFX.play(id, {icon, verse: lời chúc LIB_WISH của cảnh giới}) (breakthrough-fx.js, không sửa). Cửa ải: gate "binh-canh" (Kết Đan)
     và "thien-kiep" (Độ Kiếp, phi thăng) = thi 10 câu trộn bí kíp của giới, cần 8. Vị Tế: tái chứng nhận hằng năm.
     Tiến độ npdLib v3 {v:3, rid (id cảnh giới), ord, read:{bí kíp:[pageKey]}, quiz, done:{bí kíp:ngày đạt}, seen, fails, log,
-    gates, pass, mig, recert, books, lives, past, since, old, prev, v1}; libUpgrade nâng v1 → v2 (libMigrate) → v3.
+    gates, pass, mig, recert, books, lives, past, since, old, prev, v1, wrong, answered, stones, pills, lc, qa, spent}; libUpgrade nâng v1 → v2 (libMigrate) → v3.
     Nút "☯ Binh Giải" (libRebirth): tu luyện lại từ Phàm Nhân, kiếp cũ ghi vào past, bí kíp đã đạt vào seen, bài nộp cũ
     (L.old) không tính nữa. Nút "🪷 Chiêm nghiệm nhân sinh" (libMuse): đọc lại / ôn quiz kiến thức đã qua, không ghi tiến độ.
     Phong Thần Bảng (tab "rank", renderRank): bảng tu vi (cảnh giới → bí kíp đạt → ít tẩu hỏa) + bảng tư chất
-    (điểm = 8 × fails + % câu sai; danh hiệu trêu vui LIB_TC, huy hiệu libBadges); npdLib có thêm wrong / answered.
-    Admin (Quyền = Admin): tab "Duyệt" trong Training (renderReview) – chỉ duyệt bài thực hành.
+    (linh căn lc → điểm = 8 × fails + % câu sai; danh hiệu = linh căn, lời phê trêu vui LIB_TC, huy hiệu libBadges).
+    Tab "Duyệt" / bài thực hành đã bỏ (action practice / review và tab "Tu luyện" vẫn còn trong Code.gs, trang không dùng).
     Thư viện (S.library, tab "Thư viện" của Sheet, sửa trên web: renderBooks / bookAct; mdLite, quizOf).
   - Cave: hồ sơ / CV (cave(): profile, skills, exp, edu, cert, lang, proj), việc cần làm, lời nhắc. cavePdf: CV chuẩn
     Harvard (1 cột, serif đen trắng; bỏ mục / dòng trống; tiêu đề EN hoặc VI theo nội dung; tự co 82–112% cho vừa trang).
@@ -63,7 +72,7 @@ Ngôn ngữ giao diện: tiếng Anh / tiếng Việt; trao đổi với chủ d
 - {action:"practice", token, realm, topic, text} – nộp bài thực hành (topic = id bí kíp) hoặc xin duyệt Đại Viên Mãn
   (topic = "*"); ghi tab Tu luyện, Trạng thái = Chờ duyệt → {ok, practice:[…]}
 - {action:"review", token, user, realm, topic, status:"ok"|"back", note} – chỉ Quyền = Admin → {ok, practice}
-- {action:"rank", token} → {ok, rank:[{name, dh, rid, ord, done, fails, wrong, answered, lives, started, me}]} – tóm tắt tu
+- {action:"rank", token} → {ok, rank:[{name, dh, rid, ord, done, fails, wrong, answered, lives, started, lc, stones, pills, me}]} – tóm tắt tu
   luyện mọi tài khoản đang hoạt động (không tên đăng nhập, không dữ liệu cá nhân khác), cache 1 phút
 - "data" trả thêm practice: dòng Tu luyện của chính mình (Admin: mọi dòng Chờ duyệt + 400 dòng mới nhất)
 - {action:"mine", token, key, value} – dữ liệu cá nhân (npdCave, npdLib, npdOT, npdFairy, npdEng, npdZh) của chính mình

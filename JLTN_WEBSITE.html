@@ -553,7 +553,22 @@ table.np tr.gs td{border-top:2px solid #d9d0f0}
 .lsn-a button.right{background:var(--ok-bg);border-color:var(--ok);color:var(--ok);font-weight:700} .lsn-a button.wrong{background:var(--late-bg);border-color:var(--late);color:var(--late)}
 .lsn-ok,.lsn-no{margin-top:10px;padding:8px 12px;border-radius:6px;font-weight:600} .lsn-ok{background:var(--ok-bg);color:var(--ok)} .lsn-no{background:var(--late-bg);color:var(--late)}
 .lsn-ok small,.lsn-no small{display:block;margin-top:3px;font-weight:400;color:var(--ink2);font-size:13px;line-height:1.45}
-.lsn-a button{white-space:normal;overflow-wrap:anywhere;min-width:0;height:auto}           /* long answers wrap instead of running off the button */
+.lsn-a button{white-space:normal;overflow-wrap:anywhere;min-width:0;height:auto}
+#libEx.lx{overflow-y:auto} #libEx .lx-b{margin:auto;max-height:none}
+.lsn-a button.hint{border:2px solid #c9971a;background:#fff8e6} .lsn-a button.cut{opacity:.4;text-decoration:line-through}
+.lx-say{margin:10px 0 0;padding:8px 12px;border-radius:8px;background:#fff8e6;border:1px solid #f0d89a;color:#6b4e0a;font-size:13.5px}
+.lx-help{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:12px;padding-top:10px;border-top:1px dashed var(--line)} .lx-help>span{font-size:12.5px;color:var(--muted);flex:1 0 100%}
+.lx-help button{display:flex;flex-direction:column;align-items:flex-start;gap:1px;padding:6px 10px;font-size:13px;text-align:left;white-space:normal;height:auto}
+.lx-help button small{font-size:11px;color:var(--muted);font-weight:400} .lx-help button:disabled{opacity:.45}
+.lx-fail{margin-top:10px;padding:10px 12px;border-radius:8px;background:var(--late-bg);color:var(--late);font-size:13.5px} .lx-fail .lx-rw{color:var(--ink2)}
+.lx-acts{display:flex;justify-content:flex-end;gap:8px;margin-top:12px;flex-wrap:wrap} .lx-rw{margin:8px 0 0;font-size:13px;color:#6b4e0a}
+.lt-rw{display:block;margin-top:3px;color:#8a6410!important}
+.lib-bag{display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px;margin:0 0 14px;padding:10px 14px;border-radius:12px;border:1px solid #f0d89a;background:linear-gradient(90deg,#fffaf0,#fff);transition:box-shadow .3s}
+.lib-bag.up{box-shadow:0 0 0 3px #f3d27a,0 0 24px #f3d27a}
+.bg-i{display:flex;align-items:baseline;gap:6px} .bg-i span{font-size:18px} .bg-i b{font-size:20px;color:var(--navy)} .bg-i small,.bg-lc small{font-size:11.5px;color:var(--muted)}
+.bg-lc{display:flex;align-items:center;gap:8px;flex-wrap:wrap} .bg-lc>span{font-size:22px} .bg-lc b{display:block;color:var(--navy)} .bg-lc button{font-size:12.5px} .bg-lc em{font-size:12.5px;color:#8a6410}
+.bg-n{flex:1 1 100%;margin:0;font-size:12px;color:var(--ink2)}
+#lib .lrd-pg,#lib .lib-read{scroll-margin-top:70px}           /* long answers wrap instead of running off the button */
 #libEx.lx{position:fixed;inset:0;z-index:1200;display:flex;align-items:center;justify-content:center;padding:20px;background:rgba(20,33,61,.55)}
 .lx-b{width:min(720px,100%);padding:18px 20px;border-radius:10px;background:#fff;border:1px solid var(--line);box-shadow:0 20px 50px rgba(20,33,61,.3)}
 .lx-h{display:flex;justify-content:space-between;align-items:baseline;gap:10px;font-weight:700;font-size:16px;color:var(--navy)} .lx-h span{font-weight:600;font-size:12.5px;color:var(--muted)}
@@ -1583,6 +1598,8 @@ section.study{padding:0!important}
 <script src="realms.js"></script>
 <script src="quiz-bank.js"></script>
 <script src="lessons-nhan-gioi.js"></script>
+<script src="lessons-linh-gioi.js"></script>
+<script src="lessons-tien-gioi.js"></script>
 <script src="breakthrough-fx.js"></script>
 <script id="board-data" type="application/json">
 {"version":1,"projects":[],"history":[]}
@@ -2382,15 +2399,14 @@ const LIB_TERMS = {
   "GE":["General Electric – công ty phổ biến Six Sigma cùng Motorola.", "General Electric"], "DNA":["Giá trị cốt lõi.", "DNA"],
 };
 // ---- Lộ trình 14 cảnh giới + Vị Tế (realms.js → window.REALMS), chia 3 giới. Mỗi cảnh giới có các bí kíp (topics).
-// Tiểu cảnh giới (tính tự động cho cảnh giới đang tu luyện): Sơ kỳ = đọc hết bài các bí kíp · Trung kỳ = qua quiz mọi bí kíp
-// (≥ 80 %) · Hậu kỳ = đã nộp bài thực hành · Đại Viên Mãn = Admin duyệt (tab "Tu luyện" của Sheet) → được đột phá.
+// Một bí kíp đạt = đọc hết các trang + qua quiz (5 câu, sai 1 câu là thi lại từ đầu). Không còn bài thực hành.
+// Tiểu cảnh giới theo số bí kíp đã đạt của cảnh giới (libLvOf): Sơ kỳ ≥ 1 · Trung kỳ > 1/3 · Hậu kỳ > 2/3 · Đại Viên Mãn = đạt hết → đột phá.
 // Kết Đan → Nguyên Anh phải qua Bình cảnh (thi tổng hợp Nhân Giới), Độ Kiếp → Chân Tiên phải qua Thiên kiếp (phi thăng).
-// Bí kíp chưa có bài / quiz / đề thực hành ("Đang biên soạn") không chặn tiểu cảnh giới, nhưng không được tính là đã đạt.
+// Bí kíp chưa có bài lẫn quiz ("Đang biên soạn") không chặn tiểu cảnh giới, nhưng không được tính là đã đạt.
 const REALMS = window.REALMS || [];
 const LIB_GIOI = [...new Set(REALMS.map(r => r.gioi))];
 const LIB_GIOI_COL = { "Nhân Giới":"#3c8fe0", "Linh Giới":"#8e6ad8", "Tiên Giới":"#c9971a" };
 const LIB_SUB = ["Sơ kỳ", "Trung kỳ", "Hậu kỳ", "Đại Viên Mãn"];
-const LIB_WAIT = "Chờ duyệt", LIB_OK = "Đã duyệt", LIB_BACK = "Trả lại";
 // bài của lộ trình 20 bí kíp cũ, gắn vào bí kíp mới (Kanban + JIT → jit-kanban: trang của Kanban trước, JIT sau)
 const LIB_OLD2NEW = { "5S":"5s", "7 QC Tools":"7qc", "Kaizen":"kaizen", "Standard Work":"standard-work", "Poka-Yoke":"poka-yoke", "Andon":"visual-andon",
   "Kanban":"jit-kanban", "JIT":"jit-kanban", "OEE":"oee", "VSM":"vsm", "QCP":"qcp", "DFMEA":"dfmea", "PFMEA":"pfmea", "SPC":"spc", "Cp · Cpk":"cpk",
@@ -2399,14 +2415,16 @@ const LIB_TOPIC = {};
 LIB_CUR.forEach(s => { const id = LIB_OLD2NEW[s.k]; if (!id) return;
   const T = LIB_TOPIC[id] || (LIB_TOPIC[id] = { t:"", P:[], Q:[] }); T.t = T.t ? T.t + " · " + s.t : s.t; T.P.push(...s.P); T.Q.push(...(s.Q || [])); });
 const LIB_TOPICS = REALMS.flatMap((r, ri) => r.topics.map(t => Object.assign({ ri }, t)));
-// nội dung một bí kíp = realms.js (nếu có) hoặc bài cũ (LIB_CUR) + bài mới (lessons-*.js → window.LESSONS) + trang "Thuật ngữ & nguồn"
-// + câu hỏi (bài cũ, quiz-bank.js, câu thêm trong LESSONS)
+// nội dung một bí kíp = realms.js (nếu có), hoặc bài viết lại (lessons-*.js → window.LESSONS) + trang "Thực tế TTI" của bài cũ
+// (bí kíp chưa có bài viết lại: dùng bài cũ LIB_CUR) + trang "Thuật ngữ & nguồn"; câu hỏi = bài cũ + quiz-bank.js + câu thêm trong LESSONS.
+// P0 = các trang của bài cũ (LIB_CUR): để nâng cấp dữ liệu v2 và để ai đã đọc hết bài cũ vẫn được tính là đã đọc.
 const libRef = x => { if (!x || (!(x.terms || []).length && !(x.src || []).length)) return [];
   return [["Thuật ngữ & nguồn tham khảo", [...((x.terms || []).length ? ["## Thuật ngữ Anh – Việt – 中文", ...x.terms.map(r => "• " + r.join(" – "))] : []),
     ...((x.src || []).length ? ["## Nguồn tham khảo", ...x.src.map(([n, u]) => "@ " + n + " | " + u)] : [])]]]; };
+const libTtiP = id => Object.entries(LIB_TTI).filter(([k]) => LIB_OLD2NEW[k] === id).flatMap(([, v]) => v.P);
 const topicOf = id => { const t = LIB_TOPICS.find(x => x.id === id); if (!t) return null; const c = LIB_TOPIC[id] || {}, x = (window.LESSONS || {})[id] || {};
-  return Object.assign({}, t, { t:t.t || c.t || t.name, P:t.P || [...(c.P || []), ...(x.P || []), ...libRef(x)],
-    Q:t.Q || [...(c.Q || []), ...((window.QUIZ_BANK || {})[id] || []), ...(x.Q || [])], task:t.task || x.task || "" }); };
+  return Object.assign({}, t, { t:t.t || (x.P ? t.name : c.t) || t.name, P:t.P || (x.P ? [...x.P, ...libTtiP(id), ...libRef(x)] : [...(c.P || []), ...libRef(x)]),
+    Q:t.Q || [...(c.Q || []), ...((window.QUIZ_BANK || {})[id] || []), ...(x.Q || [])], P0:c.P || [] }); };
 const libQ = q => typeof q === "function" ? q() : { q:q[0], a:q[1], c:q[2], e:q[3] || "" };
 const shuf = a => a.map(v => [Math.random(), v]).sort((x, y) => x[0] - y[0]).map(v => v[1]);
 const nf = (v, d = 2) => v.toFixed(d).replace(".", ",");                  // Vietnamese decimal comma
@@ -2655,8 +2673,8 @@ function libUpgrade(L) {
     const prev = libClone(L); delete prev.v1;
     const R = REALMS[Math.max(0, Math.min(+L.realm || 0, REALMS.length - 1))];
     L.rid = R.id; L.ord = R.order; delete L.realm;
-    Object.keys(L.read || {}).forEach(id => { const T = topicOf(id); if (!T) return;
-      L.read[id] = [...new Set((L.read[id] || []).map(k => typeof k === "number" ? (T.P[k] ? pageKey(T.P[k]) : "") : k).filter(Boolean))]; });
+    Object.keys(L.read || {}).forEach(id => { const T = topicOf(id); if (!T) return; const P = T.P0.length ? T.P0 : T.P;   // số trang v2 = vị trí trong bài cũ
+      L.read[id] = [...new Set((L.read[id] || []).map(k => typeof k === "number" ? (P[k] ? pageKey(P[k]) : "") : k).filter(Boolean))]; });
     L.done = L.done || {}; Object.keys(L.mig || {}).forEach(id => (L.done[id] = L.done[id] || "lộ trình cũ"));
     L.prev = prev; L.v = 3;
   }
@@ -2666,7 +2684,9 @@ const libRen = (o, map) => { if (!o) return o; Object.keys(map).forEach(k => { i
 const libLoad = () => {
   const raw = lsGet(uKey("npdLib"), {}), ver = raw.v;
   const L = libUpgrade(raw);
-  ["read", "quiz", "gates", "pass", "mig", "recert", "books", "done", "seen"].forEach(k => (L[k] = L[k] && typeof L[k] === "object" ? L[k] : {}));
+  ["read", "quiz", "gates", "pass", "mig", "recert", "books", "done", "seen", "qa"].forEach(k => (L[k] = L[k] && typeof L[k] === "object" ? L[k] : {}));
+  ["stones", "pills", "wrong", "answered"].forEach(k => (L[k] = Math.max(0, Math.floor(+L[k] || 0))));   // túi càn khôn (thêm từ bản này, không đổi định dạng)
+  L.lc = Math.max(0, Math.min(LIB_LC.length - 1, Math.floor(+L.lc || 0)));
   ["read", "quiz", "done", "seen", "mig"].forEach(k => libRen(L[k], LIB_ALIAS.topic)); libRen(L.pass, LIB_ALIAS.realm);
   const rid = LIB_ALIAS.realm[L.rid] || L.rid;
   let ri = REALMS.findIndex(r => r.id === rid);
@@ -2676,22 +2696,27 @@ const libLoad = () => {
   return L;
 };
 const libSave = L => { const R = REALMS[L.realm], o = Object.assign({}, L); if (R) { o.rid = R.id; o.ord = R.order; } delete o.realm; lsSet(uKey("npdLib"), o); };
-const libNeed = n => Math.ceil(n * 0.8);
+const libNeed = n => Math.ceil(n * 0.8);                                 // cửa ải / tái chứng nhận: 8 / 10
+// Túi càn khôn: linh thạch (mỗi câu đúng ở lần thi đầu tiên của một bài: +10), Tẩy Tủy Đan (qua ngay lần thi đầu: +1),
+// linh căn 6 bậc, nâng một bậc tốn 1 → 2 → 4 → 8 → 16 viên đan. Linh thạch dùng mời cao nhân trợ giúp khi thi (LIB_HELP).
+const LIB_LC = [["Phế Linh Căn", "🪨"], ["Ngụy Linh Căn", "🌾"], ["Tạp Linh Căn", "🍂"], ["Song Linh Căn", "🌿"], ["Địa Linh Căn", "💎"], ["Thiên Linh Căn", "👑"]];
+const libLcCost = lc => 2 ** lc;
+const LIB_STONE = 10;
+const LIB_HELP = [["cm", "🧙", "Chưởng môn", 100, "chỉ thẳng đáp án đúng"], ["tl", "👴", "Trưởng lão", 50, "lý thuyết: chắc đúng · tính toán: hên xui"], ["sh", "🧑‍🎓", "Sư huynh / sư tỷ", 10, "loại bỏ 2 đáp án sai"]];
+// lần thi của mỗi bài (L.qa): bí kíp = id; cửa ải = "gate:<id>"; tái chứng nhận = "recert:<năm>". Đã từng thi (cả trước bản này, theo log) = thi lại.
+const libTryKey = (mode, tid, R) => mode === "topic" ? tid : mode === "gate" ? "gate:" + R.gate : "recert:" + new Date().getFullYear();
+const libTried = (L, key) => (+L.qa[key] || 0) > 0 || L.log.some(x => key.startsWith("gate:") ? x.t === "gate" && REALMS.some(r => r.id === x.r && "gate:" + r.gate === key) : x.t === key);
 const libNow = () => { const d = new Date(); return todayISO() + "T" + pad(d.getHours()) + ":" + pad(d.getMinutes()); };
-// bài thực hành / xin duyệt của chính mình (window.npdPractice: dữ liệu tab "Tu luyện" do máy chủ gửi).
-// Sau Binh Giải: bài đã có lúc Binh Giải (L.old: "cảnh giới|bí kíp" → thời gian nộp) không tính; nộp lại thì thời gian đổi → tính.
-const libMine = () => { const u = sheetUser(); return u ? (window.npdPractice || []).filter(p => String(p.user).toLowerCase() === String(u.username).toLowerCase()) : []; };
-const libPr = (L, rid, tid) => libMine().find(p => p.realm === rid && p.topic === tid && !(L.old && L.old[rid + "|" + tid] === String(p.t))) || null;
-const libAdmin = () => { const u = sheetUser(); return !!u && ["admin", "administrator", "quản trị", "quan tri", "quản trị viên", "quan tri vien"].includes(String(u.role || "").trim().toLowerCase()); };
 function topicState(L, T) {
   const rd = new Set(L.read[T.id] || []), nRead = T.P.filter(p => rd.has(pageKey(p))).length, was = !!L.done[T.id];
-  const read = was || !T.P.length || nRead >= T.P.length;
-  const q = L.quiz[T.id], quiz = was || !T.Q.length || !!(q && q.pass);
-  const pr = libPr(L, REALMS[T.ri].id, T.id), prac = was || !T.task || !!(pr && pr.status !== LIB_BACK);
-  const empty = !T.P.length && !T.Q.length && !T.task;
-  return { nRead, read, quiz, q, pr, prac, empty, was, done:was || (!empty && read && quiz && prac) };
+  const q = L.quiz[T.id], passed = !!(q && q.pass);
+  const old = T.P0.length > 0 && T.P0.every(p => rd.has(pageKey(p)));   // đã đọc hết bài cũ (trước khi viết lại) = đã đọc
+  const read = was || passed || old || !T.P.length || nRead >= T.P.length;
+  const quiz = was || !T.Q.length || passed;
+  const empty = !T.P.length && !T.Q.length;
+  return { nRead, read, quiz, q, empty, was, done:was || (!empty && read && quiz) };
 }
-// bí kíp vừa đạt đủ (đọc + quiz + thực hành) → ghi done (giữ mãi) và seen (để Chiêm nghiệm nhân sinh)
+// bí kíp vừa đạt đủ (đọc + quiz) → ghi done (giữ mãi) và seen (để Chiêm nghiệm nhân sinh)
 function libSync(L) {
   let ch = false;
   LIB_TOPICS.forEach(t => { if (t.ri > L.realm || L.done[t.id]) return; const s = topicState(L, topicOf(t.id));
@@ -2699,11 +2724,13 @@ function libSync(L) {
   if (ch) libSave(L);
   return L;
 }
+// tiểu cảnh giới theo số bí kíp đã đạt d / n: 0 = Nhập môn, 1 Sơ kỳ, 2 Trung kỳ, 3 Hậu kỳ, 4 Đại Viên Mãn (đạt hết → được đột phá)
+const libLvOf = (d, n) => !n ? 4 : d >= n ? 4 : Math.min(3, Math.ceil(d * 3 / n));
+const libLvNeed = (n, k) => k >= 4 ? n : Math.min(n, Math.floor((k - 1) * n / 3) + 1);   // số bí kíp cần đạt để lên bậc k
 function realmState(L, ri) {
-  const R = REALMS[ri], S = R.topics.map(t => topicState(L, topicOf(t.id)));
-  const s1 = S.every(x => x.read), s2 = s1 && S.every(x => x.quiz), s3 = s2 && S.every(x => x.prac);
-  const s4 = s3;                                                          // Đại Viên Mãn: tự động khi viên mãn Hậu kỳ (không cần Admin duyệt)
-  return { R, S, s1, s2, s3, s4, lv:s4 ? 4 : s3 ? 3 : s2 ? 2 : s1 ? 1 : 0, gate:R.gate && !L.gates[R.gate] ? R.gate : "" };
+  const R = REALMS[ri], S = R.topics.map(t => topicState(L, topicOf(t.id))), real = S.filter(x => !x.empty);
+  const n = real.length, d = real.filter(x => x.done).length, lv = libLvOf(d, n);
+  return { R, S, n, d, s1:lv >= 1, s2:lv >= 2, s3:lv >= 3, s4:lv >= 4, lv, gate:R.gate && !L.gates[R.gate] ? R.gate : "" };
 }
 const libLvName = st => st.lv ? LIB_SUB[st.lv - 1] : "Nhập môn";
 const libRealmLabel = () => { const L = libLoad(), st = realmState(L, L.realm); return st.R.name + (st.R.topics.length ? " · " + libLvName(st) : ""); };
@@ -2720,25 +2747,30 @@ function libRoadHtml(L) {
       ${r.gate ? `<div class="lrgate ${L.gates[r.gate] ? "ok" : ""}">${r.gate === "binh-canh" ? "⛰ Bình cảnh: thi tổng hợp Nhân Giới" : "⚡ Thiên kiếp: vượt qua thì phi thăng lên Tiên Giới"}${L.gates[r.gate] ? " · đã vượt ✓" : ""}</div>` : ""}`).join("")}</section>`).join("")}</div>`;
 }
 function libReader(L, T) {
-  const muse = libMuse, cur = !muse && T.ri === L.realm, pg = T.P[libPage], last = libPage === T.P.length - 1, s = topicState(L, T), R = REALMS[T.ri];
+  const muse = libMuse, pg = T.P[libPage], last = libPage === T.P.length - 1, s = topicState(L, T), R = REALMS[T.ri];
   const rd = new Set(L.read[T.id] || []), read = new Set(muse ? T.P.map((_, k) => k) : T.P.map((p, k) => (rd.has(pageKey(p)) || s.was ? k : -1)).filter(k => k >= 0));
-  const n5 = Math.min(5, T.Q.length), rev = muse || s.was;                // đã đạt / chiêm nghiệm: quiz chỉ để ôn, không tính
-  const quiz = T.Q.length ? `<div class="lt-box ${s.quiz ? "ok" : ""}"><div><b>📝 Quiz · ${n5} câu${rev ? " · ôn tập, không tính điểm" : `, cần đúng ${libNeed(n5)}`}</b>
-      <span>${s.q && s.q.pass ? (s.q.n ? `Đã đạt ${s.q.ok}/${s.q.n} · ${dMy(s.q.at)}` : "Đã đạt ở lộ trình cũ") : s.was ? "Bí kíp đã đạt." : muse ? "Ôn lại kiến thức cũ." : s.read ? "Đã đọc hết bài: làm quiz để lên Trung kỳ. Trượt phải đọc lại." : "Đọc hết các trang để mở quiz."}</span></div>
-      <button class="${s.quiz || rev ? "" : "pri"}" data-x="libQuiz" data-k="${esc(T.id)}" ${s.read || rev ? "" : "disabled"}>${rev ? "Ôn quiz" : s.quiz ? "Làm lại" : "Làm quiz"}</button></div>` : "";
-  const pr = s.pr, task = T.task && !muse ? `<div class="lt-box prac ${pr && pr.status === LIB_OK ? "ok" : ""}"><div><b>✍ Bài thực hành</b><p>${esc(T.task)}</p>
-      ${pr ? `<span class="pr-st ${pr.status === LIB_OK ? "ok" : pr.status === LIB_BACK ? "bad" : "wait"}">${esc(pr.status)}${pr.by ? " · " + esc(pr.by) : ""}${pr.note ? ": " + esc(pr.note) : ""}</span>` : ""}
-      ${cur ? `<textarea id="libPracTx" rows="4" maxlength="4000" placeholder="Bài làm của bạn: mô tả việc đã làm, kết quả, link file (nếu có)…">${esc(pr ? pr.text : "")}</textarea>` : ""}</div>
-      ${cur ? `<button class="pri" data-x="libPrac" data-k="${esc(T.id)}">${pr ? "Nộp lại" : "Nộp bài"}</button>` : ""}</div>` : "";
+  const n5 = Math.min(5, T.Q.length), rev = muse || s.was, first = !rev && !libTried(L, T.id);   // đã đạt / chiêm nghiệm: quiz chỉ để ôn
+  const quiz = T.Q.length ? `<div class="lt-box ${s.quiz ? "ok" : ""}"><div><b>📝 Quiz · ${n5} câu${rev ? " · ôn tập, không tính điểm" : " · phải đúng cả " + n5 + " câu"}</b>
+      <span>${s.q && s.q.pass ? (s.q.n ? `Đã đạt ${s.q.ok}/${s.q.n} · ${dMy(s.q.at)}` : "Đã đạt ở lộ trình cũ") : s.was ? "Bí kíp đã đạt." : muse ? "Ôn lại kiến thức cũ." : s.read ? "Đã đọc hết bài: thi ngay! Sai 1 câu là tẩu hỏa, phải thi lại từ đầu với đề mới." : "Đọc hết các trang là thi được ngay."}</span>
+      ${rev ? "" : `<span class="lt-rw">${first ? `🎁 Lần thi đầu: mỗi câu đúng +${LIB_STONE} 💠 linh thạch · qua ngay lần đầu +1 💊 Tẩy Tủy Đan` : "Thi lại: không còn linh thạch, nhưng vẫn đạt bí kíp khi qua."}</span>`}</div>
+      <button class="${s.quiz || rev ? "" : "pri"}" data-x="libQuiz" data-k="${esc(T.id)}" ${s.read || rev ? "" : "disabled"}>${rev ? "Ôn quiz" : s.quiz ? "Làm lại" : "Thi quiz"}</button></div>` : "";
   const body = T.P.length ? `<div class="lrd-b"><nav class="lrd-toc">${T.P.map((p, k) => `<button data-x="libGo" data-k="${k}" class="${k === libPage ? "on" : ""} ${read.has(k) ? "rd" : ""}" ${k > 0 && !read.has(k - 1) && !read.has(k) ? "disabled" : ""}><span>${read.has(k) ? "✓" : k + 1}</span>${esc(p[0])}</button>`).join("")}</nav>
         <article class="lrd-pg"><div class="lrd-n">Trang ${libPage + 1} / ${T.P.length}</div><h2>${libTerms(esc(pg[0]))}</h2>${libPageHtml(pg)}</article></div>
       <div class="lrd-f"><button data-x="libGo" data-k="${libPage - 1}" ${libPage ? "" : "disabled"}>← Trang trước</button>
         <div class="lrd-dots">${T.P.map((_, k) => `<i class="${k === libPage ? "on" : read.has(k) ? "rd" : ""}"></i>`).join("")}</div>
-        ${last ? `<button class="pri" data-x="libTopicX">${muse ? "← Chiêm nghiệm" : "Xong bí kíp ✓"}</button>` : `<button class="pri" id="libNext" data-x="libGo" data-k="${libPage + 1}">Trang sau →</button>`}</div>`
+        ${!last ? `<button class="pri" id="libNext" data-x="libGo" data-k="${libPage + 1}">Trang sau →</button>`
+          : !muse && T.Q.length && !s.quiz ? `<button class="pri" data-x="libQuiz" data-k="${esc(T.id)}">📝 Thi quiz ngay</button>`
+          : `<button class="pri" data-x="libTopicX">${muse ? "← Chiêm nghiệm" : "Xong bí kíp ✓"}</button>`}</div>`
     : `<div class="lt-soon">📜 Bài đọc của bí kíp <b>${esc(T.name)}</b> đang được biên soạn.<br><small>${esc(T.short || "")}</small>${T.Q.length ? `<br><small>Đã có ${T.Q.length} câu hỏi: làm quiz bên dưới để đạt bí kíp.</small>` : ""}</div>`;
   return `<div class="st-panel lib-read${muse ? " muse" : ""}"><div class="lrd-h"><div><div class="k">${muse ? "🪷 Chiêm nghiệm nhân sinh · " : ""}${esc(R.name)} · bí kíp</div><h3>${esc(T.t)}</h3></div>
     <button data-x="libTopicX">${muse ? "← Chiêm nghiệm" : "← Các bí kíp"}</button></div>
-    ${body}${quiz || task ? `<div class="lt-boxes">${quiz}${task}</div>` : ""}</div>`;
+    ${body}${quiz ? `<div class="lt-boxes">${quiz}</div>` : ""}</div>`;
+}
+// qua trang / mở bí kíp: đưa khung bài đọc lên ngay dưới thanh tiêu đề (không nhảy về đầu trang web)
+function libScrollRead() {
+  const a = $("#lib .lrd-pg") || $("#lib .lib-read") || $("#lib .lib-muse"); if (!a) return;
+  const top = a.getBoundingClientRect().top, bar = ($("#bar") || { offsetHeight:0 }).offsetHeight + 10;
+  if (top < bar || top > innerHeight * .45) window.scrollTo({ top:Math.max(0, scrollY + top - bar) });
 }
 // Chiêm nghiệm nhân sinh: chọn đọc lại / ôn quiz mọi kiến thức đã qua (cảnh giới đã vượt, bí kíp đã đạt, cả ở các kiếp trước
 // Binh Giải). Không ghi tiến độ.
@@ -2757,8 +2789,7 @@ function libRebirth() {
   done.forEach(t => (L.seen[t] = 1));
   L.past.push({ at:todayISO(), rid:R.id, done:done.length, fails:L.fails });
   L.log.push({ r:R.id, t:"binh-giai", ok:1, at:todayISO() });
-  const old = {}; libMine().forEach(p => (old[p.realm + "|" + p.topic] = String(p.t)));
-  Object.assign(L, { realm:0, read:{}, quiz:{}, done:{}, gates:{}, pass:{}, mig:{}, fails:0, since:libNow(), old, lives:(+L.lives || 0) + 1 });
+  Object.assign(L, { realm:0, read:{}, quiz:{}, done:{}, gates:{}, pass:{}, mig:{}, fails:0, since:libNow(), lives:(+L.lives || 0) + 1 });   // túi càn khôn và L.qa giữ nguyên
   libSave(L); libTopic = ""; libPage = 0; libMuse = false; renderLib();
   if (window.BreakthroughFX) BreakthroughFX.play("pham-nhan", { icon:REALMS[0].icon, title:"Binh Giải · Trùng Tu", verse:"Bỏ thân cũ, giữ đạo tâm – bước lại từ Khai Mông." }).catch(() => {});
 }
@@ -2773,8 +2804,8 @@ function libRealmPanel(L, st) {
   const card = (t, k) => { const T = topicOf(t.id), s = st.S[k];
     return `<button class="lt-card${s.done ? " ok" : ""}${s.empty ? " soon" : ""}" data-x="libTopic" data-k="${esc(t.id)}"><b>${s.done ? "✓ " : ""}${esc(t.name)}</b><small>${esc(t.short || "")}</small>
       <span class="lt-st">${s.empty ? `<i class="soon">Đang biên soạn</i>` : `<i class="${s.read ? "ok" : ""}">📖 ${T.P.length ? `${Math.min(s.nRead, T.P.length)}/${T.P.length}` : "–"}</i>
-        <i class="${s.quiz ? "ok" : ""}">📝 ${T.Q.length ? (s.quiz ? "đạt" : "chưa") : "–"}</i><i class="${s.prac && T.task ? "ok" : ""}">✍ ${T.task ? (s.pr ? esc(s.pr.status) : "chưa nộp") : "–"}</i>`}</span></button>`; };
-  const steps = [["Sơ kỳ", "Đọc hết bài các bí kíp", st.s1], ["Trung kỳ", "Qua quiz mọi bí kíp (≥ 80 %)", st.s2], ["Hậu kỳ", "Nộp bài thực hành", st.s3], ["Đại Viên Mãn", "Tự động khi đủ 3 tầng trên", st.s4]];
+        <i class="${s.quiz ? "ok" : ""}">📝 ${T.Q.length ? (s.quiz ? "đạt" : "chưa") : "–"}</i>`}</span></button>`; };
+  const steps = LIB_SUB.map((nm, k) => [nm, k < 3 ? `Đạt ${libLvNeed(st.n, k + 1)}/${st.n} bí kíp` : `Đạt cả ${st.n}/${st.n} bí kíp → đột phá`, st.lv > k]);
   let act;
   if (st.s4) act = `<div class="rl-go"><div><b>${st.gate ? (st.gate === "binh-canh" ? "⛰ Bình cảnh trước mặt" : "⚡ Thiên kiếp giáng xuống") : "Đại Viên Mãn – sẵn sàng đột phá"}</b>
       <span><i class="rl-wish">${esc(libWish(R.id, "dvm"))}</i>${st.gate ? `Thi 10 câu tổng hợp ${esc(R.gioi)}, cần đúng 8. ${st.gate === "thien-kiep" ? "Vượt qua thì phi thăng lên Tiên Giới." : "Vượt qua thì bước vào Linh Giới."} Trượt: ôn lại rồi thi lại.` : "Đột phá lên " + esc(nx.name) + "."}</span></div>
@@ -2786,7 +2817,7 @@ function libRealmPanel(L, st) {
 function renderLib() {
   if (!curUser()) { $("#lib").innerHTML = `<div class="st-head"><h2><span class="hi">📘</span>Training · Tàng Kinh Các</h2></div>${authView("Tàng Kinh Các")}`; return auFocus(); }
   if (libMode === "books") return renderBooks();
-  if (libMode === "review") { if (libAdmin()) return renderReview(); libMode = "road"; }
+  if (libMode === "review") libMode = "road";                             // tab Duyệt (bài thực hành) đã bỏ
   if (libMode === "rank") return renderRank();
   const L = libSync(libLoad()), st = realmState(L, L.realm), R = st.R;
   let T = libTopic ? topicOf(libTopic) : null;
@@ -2807,8 +2838,17 @@ function renderLib() {
       <div class="rl-c"><div><b>${got}</b><span>/ ${N} bí kíp</span></div><div><b>${libNo(R)}</b><span>/ 14 cảnh giới</span></div><div><b>${L.fails}</b><span>lần trượt</span></div>
         <button data-x="libFxPlay" title="Xem lại hiệu ứng đột phá của cảnh giới này">✨ Xem lại hiệu ứng</button>
         <button class="rl-bg" data-x="libRebirth" title="Tu luyện lại từ đầu (Phàm Nhân)">☯ Binh Giải</button></div></div>
+    ${libBagHtml(L)}
     ${libRoad && !libMuse ? libRoadHtml(L) : ""}
     ${T ? libReader(L, T) : libMuse ? libMuseHtml(L) : libRealmPanel(L, st)}`;
+}
+function libBagHtml(L) {
+  const lc = L.lc, nx = LIB_LC[lc + 1], cost = libLcCost(lc);
+  return `<div class="lib-bag"><div class="bg-i" title="Linh thạch: mời cao nhân trợ giúp khi thi"><span>💠</span><b>${L.stones}</b><small>linh thạch</small></div>
+    <div class="bg-i" title="Tẩy Tủy Đan: nâng linh căn"><span>💊</span><b>${L.pills}</b><small>Tẩy Tủy Đan</small></div>
+    <div class="bg-lc"><span>${LIB_LC[lc][1]}</span><div><b>${esc(LIB_LC[lc][0])}</b><small>Linh căn bậc ${lc + 1}/${LIB_LC.length}</small></div>
+      ${nx ? `<button data-x="libLc" ${L.pills >= cost ? "" : "disabled"} title="Mỗi lần nâng cần gấp đôi lần trước">💊 Uống ${cost} viên → ${esc(nx[0])}</button>` : `<em>Linh căn tối thượng</em>`}</div>
+    <p class="bg-n">Thi một bài lần đầu: mỗi câu đúng +${LIB_STONE} 💠, qua ngay lần đầu +1 💊. Thi lại không có thưởng. Linh thạch dùng mời Chưởng môn / Trưởng lão / Sư huynh giúp khi gặp câu khó.</p></div>`;
 }
 // ---- Phong Thần Bảng: bảng tu vi (cảnh giới → bí kíp đã đạt → ít tẩu hỏa) và bảng tư chất (ít tẩu hỏa nhập ma, ít câu sai).
 // Số liệu tóm tắt do máy chủ gửi (action "rank", cập nhật mỗi phút); danh hiệu tư chất mang tính trêu vui trong tông môn.
@@ -2821,11 +2861,12 @@ const LIB_TC = [                                                         // [đi
   [80, "🥔", "Ngụy Linh Căn", "Chọn đáp án bằng phong thủy, đúng sai do trời định."],
   [Infinity, "💀", "Phế Linh Căn", "Đại sư tẩu hỏa nhập ma – đan điền thủng như cái rổ, vẫn kiên trì đáng nể."],
 ];
+// linh căn thật (L.lc, nâng bằng Tẩy Tủy Đan) làm danh hiệu; máy chủ cũ chưa gửi lc → danh hiệu theo điểm như trước
 function libTuChat(r) {
-  const rate = r.answered ? r.wrong / r.answered : 0;
-  if (!r.answered && !r.fails) return { ic:"🥚", t:"Linh Căn Chưa Thức Tỉnh", d:"Chưa thi lần nào – tư chất bí ẩn như hộp quà chưa bóc.", s:Infinity, rate:null };
+  const rate = r.answered ? r.wrong / r.answered : 0, has = r.lc !== undefined && r.lc !== null, lc = has ? Math.max(0, Math.min(LIB_LC.length - 1, +r.lc || 0)) : 0;
+  if (!r.answered && !r.fails && !lc) return { ic:"🥚", t:"Linh Căn Chưa Thức Tỉnh", d:"Chưa thi lần nào – tư chất bí ẩn như hộp quà chưa bóc.", s:Infinity, rate:null, lc };
   const sc = r.fails * 8 + rate * 100, T = LIB_TC.find(x => sc < x[0]);
-  return { ic:T[1], t:T[2], d:T[3], s:sc, rate };
+  return has ? { ic:LIB_LC[lc][1], t:LIB_LC[lc][0], d:T[3], s:sc, rate:r.answered ? rate : null, lc } : { ic:T[1], t:T[2], d:T[3], s:sc, rate, lc };
 }
 function libBadges(r, tc) {
   const b = [];
@@ -2834,6 +2875,8 @@ function libBadges(r, tc) {
   if (tc.rate !== null && r.answered >= 20 && tc.rate < 0.05) b.push("🎯 Thần xạ đáp án");
   if (r.lives) b.push(`☯ Binh Giải ${r.lives} lần – thích làm lại từ đầu`);
   if (r.started && !r.answered && !r.fails) b.push("😴 Chỉ đọc không thi");
+  if (r.stones >= 500) b.push("💰 Đại gia linh thạch – tiền nhiều để làm gì?");
+  if (r.pills >= 3) b.push("💊 Ôm đan không uống – để dành làm của hồi môn");
   return b;
 }
 async function rankLoad(force) {
@@ -2857,37 +2900,22 @@ function renderRank() {
       ${i === tv.length - 1 && tv.length > 2 ? `<span class="pt-tag">🐢 Rùa Thần – chậm mà chắc (chắc là chậm)</span>` : i === 0 ? `<span class="pt-tag gold">Đệ nhất cao thủ tông môn</span>` : ""}</li>`).join("")
     + tvRest.map(r => `<li class="off ${r.me ? "me" : ""}"><span class="pt-k">–</span>${nm(r)}<span class="pt-r"><span><b>Phàm nhân chưa nhập môn</b><small>Chưa bước vào Tàng Kinh Các</small></span></span></li>`).join("");
   const T = R.map(r => Object.assign(r, { tc:libTuChat(r) }));
-  const tc = T.filter(r => r.tc.s !== Infinity).sort((a, b) => (a.tc.s - b.tc.s) || (b.answered - a.answered)), tcRest = T.filter(r => r.tc.s === Infinity);
+  const tc = T.filter(r => r.tc.s !== Infinity).sort((a, b) => (b.tc.lc - a.tc.lc) || (a.tc.s - b.tc.s) || (b.answered - a.answered)), tcRest = T.filter(r => r.tc.s === Infinity);
   const tcRow = (r, i) => { const bd = libBadges(r, r.tc);
     return `<li class="${r.me ? "me" : ""}${i < 0 ? " off" : ""}"><span class="pt-k">${i < 0 ? "–" : md(i)}</span>${nm(r)}
       <span class="pt-r"><span class="pt-ic">${r.tc.ic}</span><span><b>${esc(r.tc.t)}</b><small>${esc(r.tc.d)}</small></span></span>
-      <span class="pt-s"><b>${r.fails}</b> lần tẩu hỏa · <b>${r.wrong}</b>/${r.answered} câu sai${r.tc.rate !== null ? ` (${Math.round(r.tc.rate * 100)} %)` : ""}</span>
+      <span class="pt-s"><b>${r.fails}</b> lần tẩu hỏa · <b>${r.wrong}</b>/${r.answered} câu sai${r.tc.rate !== null ? ` (${Math.round(r.tc.rate * 100)} %)` : ""}${r.stones !== undefined ? ` · 💠 <b>${r.stones}</b>` : ""}</span>
       ${bd.length ? `<span class="pt-bd">${bd.map(x => `<i>${esc(x)}</i>`).join("")}</span>` : ""}</li>`; };
   $("#lib").innerHTML = `${head}
     <div class="pt-hero"><h3>🏆 Phong Thần Bảng</h3><p>Bảng vàng của Thiên Công Tông – ai tu vi cao nhất, ai tư chất "đặc biệt" nhất. Cập nhật mỗi phút${RANK_AT ? ` · ${new Date(RANK_AT).toLocaleTimeString("vi-VN", { hour:"2-digit", minute:"2-digit" })}` : ""}.</p></div>
     <div class="pt-grid">
       <section class="st-panel pt-b"><h4>⚡ Bảng Tu Vi <small>cảnh giới → bí kíp đã đạt → ít tẩu hỏa</small></h4><ol class="pt-l">${tvHtml || `<p class="muted">Chưa có ai tu luyện.</p>`}</ol></section>
-      <section class="st-panel pt-b"><h4>🧬 Bảng Tư Chất <small>ít tẩu hỏa nhập ma, ít câu sai</small></h4><ol class="pt-l">${tc.map(tcRow).join("") + tcRest.map(r => tcRow(r, -1)).join("") || `<p class="muted">Chưa có ai đi thi.</p>`}</ol>
-        <p class="pt-note">Điểm tư chất = 8 × số lần tẩu hỏa + % câu sai (càng thấp càng tốt). Câu sai được đếm từ phiên bản này; chế độ ôn tập không tính. Danh hiệu chỉ để trêu vui – đừng giận nhau nha 😄</p></section>
+      <section class="st-panel pt-b"><h4>🧬 Bảng Tư Chất <small>linh căn → ít tẩu hỏa nhập ma, ít câu sai</small></h4><ol class="pt-l">${tc.map(tcRow).join("") + tcRest.map(r => tcRow(r, -1)).join("") || `<p class="muted">Chưa có ai đi thi.</p>`}</ol>
+        <p class="pt-note">Xếp theo linh căn (nâng bằng Tẩy Tủy Đan), rồi điểm tư chất = 8 × số lần tẩu hỏa + % câu sai (càng thấp càng tốt). Câu sai được đếm từ phiên bản này; chế độ ôn tập không tính. Danh hiệu chỉ để trêu vui – đừng giận nhau nha 😄</p></section>
     </div>`;
   rankLoad();
 }
 
-// Admin: duyệt bài thực hành và yêu cầu đột phá (Đại Viên Mãn). Ghi vào tab "Tu luyện" qua máy chủ (action "review").
-function renderReview() {
-  const P = window.npdPractice || [], idx = p => P.indexOf(p);
-  const wait = P.filter(p => p.status === LIB_WAIT), done = P.filter(p => p.status !== LIB_WAIT).slice(-30).reverse();
-  const what = p => { const R = REALMS.find(r => r.id === p.realm), T = p.topic === "*" ? null : topicOf(p.topic);
-    return `${esc(R ? R.name : p.realm)} · ${p.topic === "*" ? "<b>Xin duyệt Đại Viên Mãn → đột phá</b>" : esc(T ? T.name : p.topic)}`; };
-  const card = p => `<div class="rv ${p.topic === "*" ? "req" : ""}"><div class="rv-h"><b>${esc(p.name || p.user)}</b><small>@${esc(p.user)} · ${esc(p.t)}</small></div>
-    <div class="rv-w">${what(p)}</div>${p.text ? `<div class="rv-t">${esc(p.text)}</div>` : ""}
-    ${p.status === LIB_WAIT ? `<div class="rv-a"><input id="rvN${idx(p)}" placeholder="Nhận xét (tùy chọn)" maxlength="500"><button class="pri" data-x="libRv" data-k="ok:${idx(p)}">✓ Duyệt</button><button data-x="libRv" data-k="back:${idx(p)}">↩ Trả lại</button></div>`
-      : `<div class="rv-s ${p.status === LIB_OK ? "ok" : "bad"}">${esc(p.status)}${p.by ? " · " + esc(p.by) : ""}${p.note ? ": " + esc(p.note) : ""}${p.at ? " · " + esc(p.at) : ""}</div>`}</div>`;
-  $("#lib").innerHTML = `<div class="st-head"><h2><span class="hi">📘</span>Training · Tàng Kinh Các</h2>${libTabs()}<span class="sp"></span>${auChip()}<button data-x="libRvLoad">⟳ Tải lại</button></div>
-    <div class="st-panel lib-rv"><h3>Chờ duyệt <small>${wait.length}</small></h3>${wait.length ? wait.map(card).join("") : `<p class="muted">Không có bài nào đang chờ duyệt.</p>`}
-      ${done.length ? `<h3>Đã xử lý gần đây</h3>${done.map(card).join("")}` : ""}
-      <p class="muted">Dữ liệu ở tab “Tu luyện” của Google Sheet. Chỉ tài khoản Quyền = Admin mới duyệt được.</p></div>`;
-}
 // ---- Thư viện kiến thức: articles kept in the Google Sheet (tab "Thư viện"), readable by everyone, written by any member
 // (not Viewer) right here. Each article can end with a quiz; passing it is kept in the reader's Training progress (npdLib).
 // Content format (also typed straight into the Sheet): "## Heading", "- bullet", "1. step", "**bold**", blank line = new paragraph.
@@ -2897,7 +2925,7 @@ let bookSel = "", bookQ = "", bookTopic = "", bookEdit = null;
 const libTabs = () => `<div class="lib-tabs" role="tablist"><button data-x="libMode" data-k="road" class="${libMode === "road" ? "on" : ""}">🛤 Lộ trình tu luyện</button>
   <button data-x="libMode" data-k="books" class="${libMode === "books" ? "on" : ""}">📚 Thư viện <small>${(S.library || []).length}</small></button>
   <button data-x="libMode" data-k="rank" class="${libMode === "rank" ? "on" : ""}">🏆 Phong Thần<span class="lbl"> Bảng</span></button>
-  ${libAdmin() ? `<button data-x="libMode" data-k="review" class="${libMode === "review" ? "on" : ""}">🛡 Duyệt <small>${(window.npdPractice || []).filter(p => p.status === LIB_WAIT).length}</small></button>` : ""}</div>`;
+</div>`;
 const mdLite = t => {                                                     // the small text format of the library → HTML (escaped first)
   const inl = s => esc(s).replace(/\*\*(.+?)\*\*/g, "<b>$1</b>").replace(/`(.+?)`/g, "<code>$1</code>");
   let out = "", list = "";
@@ -2984,10 +3012,13 @@ document.addEventListener("submit", e => {
   bookSel = id; bookEdit = null; markDirty(); renderBooks(); saveFile();
 });
 document.addEventListener("input", e => { if (e.target.id === "bkQ") { bookQ = e.target.value; renderBooks(); const x = $("#bkQ"); x.focus(); x.setSelectionRange(x.value.length, x.value.length); } });
-// Thi (mỗi lần một câu, hiện đáp án đúng sau mỗi câu):
-//  topic  = quiz một bí kíp: 5 câu ngẫu nhiên, cần 80 %; trượt = tẩu hỏa nhập ma, phải đọc lại bí kíp
+// Thi (mỗi lần một câu, hiện đáp án đúng + giải thích sau mỗi câu):
+//  topic  = quiz một bí kíp: 5 câu ngẫu nhiên, phải đúng hết; sai 1 câu = tẩu hỏa nhập ma, thi lại từ đầu với đề mới
 //  gate   = Bình cảnh / Thiên kiếp: 10 câu trộn các bí kíp của giới hiện tại, cần 8; qua = đột phá ngay
 //  recert = Vị Tế: tái chứng nhận năm, 10 câu trộn mọi bí kíp, cần 8
+// Phần thưởng (không áp dụng khi ôn tập): lần thi đầu của mỗi bài, mỗi câu đúng +10 linh thạch; qua ngay lần đầu +1 Tẩy Tủy Đan.
+// Trợ giúp (trừ linh thạch, mỗi loại một lần mỗi câu): Chưởng môn 100 – chỉ đáp án đúng; Trưởng lão 50 – câu lý thuyết chỉ đúng,
+// câu tính toán (đề sinh số mới) đúng hay sai là 50 / 50; Sư huynh / sư tỷ 10 – loại 2 đáp án sai.
 function libExam(mode, tid) {
   const L = libLoad(), R = REALMS[L.realm];
   let pool, n, title;
@@ -3001,39 +3032,73 @@ function libExam(mode, tid) {
     if (mode === "gate") { L.gates[R.gate] = todayISO(); libSave(L); return libAdvance(); }
     return alert("Chưa có câu hỏi cho phần này.");
   }
-  const qs = shuf(pool).slice(0, n).map(q => { const Q = libQ(q), o = shuf(Q.a.map((a, k) => [a, k])); return { q:Q.q, a:o.map(x => x[0]), c:o.findIndex(x => x[1] === Q.c), e:Q.e }; });
-  const rev = mode === "topic" && (libMuse || !!L.done[tid]);            // ôn tập (chiêm nghiệm / bí kíp đã đạt): không ghi tiến độ
-  LX = { mode, tid, ri:L.realm, title:(rev ? "Ôn tập · " : "") + title, qs, k:0, ok:0, pick:null, need:libNeed(n), end:false, rev };
+  const qs = shuf(pool).slice(0, n).map(q => { const Q = libQ(q), o = shuf(Q.a.map((a, k) => [a, k]));
+    return { q:Q.q, a:o.map(x => x[0]), c:o.findIndex(x => x[1] === Q.c), e:Q.e, calc:typeof q === "function", cut:[], hint:-1, say:"", help:{}, earn:0 }; });
+  const rev = mode === "topic" && (libMuse || !!L.done[tid]);            // ôn tập (chiêm nghiệm / bí kíp đã đạt): không ghi tiến độ, không thưởng
+  const key = libTryKey(mode, tid, R), first = !rev && !libTried(L, key);
+  if (!rev) { L.qa[key] = (+L.qa[key] || 0) + 1; libSave(L); }          // ghi lần thi ngay khi bắt đầu (bỏ dở rồi thi lại = thi lại)
+  const strict = mode === "topic" && !rev;
+  LX = { mode, tid, ri:L.realm, title:(rev ? "Ôn tập · " : "") + title, qs, k:0, ok:0, pick:null, need:strict ? n : libNeed(n), end:false, rev, strict, first, fail:false, earn:0, pill:0 };
   libExamDraw();
 }
 function libExamDraw() {
   let m = $("#libEx"); if (!m) { m = document.createElement("div"); m.id = "libEx"; document.body.appendChild(m); }
-  const X = LX;
-  if (X.end) {
+  const X = LX, L = libLoad();
+  const rw = () => X.rev ? "" : `<p class="lx-rw">${X.earn || X.pill ? `🎁 Phần thưởng: ${X.earn ? `+${X.earn} 💠 linh thạch` : ""}${X.earn && X.pill ? " · " : ""}${X.pill ? "+1 💊 Tẩy Tủy Đan (qua ngay lần đầu)" : ""}`
+    : X.first ? "Lần thi đầu nhưng chưa có câu đúng nào – không có linh thạch." : "Thi lại: không có linh thạch."}</p>`;
+  if (X.end && !X.fail) {
     const win = X.ok >= X.need;
-    if (win && X.mode === "gate") { m.remove(); LX = null; return libAdvance(); }
+    if (win && X.mode === "gate" && !X.pill) { m.remove(); LX = null; return libAdvance(); }
     m.className = "lx " + (win || X.rev ? "win" : "lose");
     m.innerHTML = `<div class="lx-b"><div class="lx-h">${X.rev ? "Kết quả" : win ? "Đạt" : "Chưa đạt"} · ${esc(X.title)}<span>${X.ok}/${X.qs.length} đúng · cần ${X.need}</span></div>
-      <p>${X.rev ? `Ôn tập: đúng ${X.ok}/${X.qs.length}. Kết quả ôn tập không ảnh hưởng tiến độ.` : win ? (X.mode === "recert" ? "Tái chứng nhận thành công. Hẹn gặp lại năm sau!" : "Qua quiz bí kíp này. Tiếp tục các bí kíp còn lại để lên Trung kỳ.")
-        : X.mode === "topic" ? "Tẩu hỏa nhập ma: phải đọc lại các trang của bí kíp này rồi làm lại quiz." : "Chưa vượt qua. Ôn lại các bí kíp rồi thi lại."}</p>
-      <button class="pri" data-x="libExClose">${win || X.rev ? "Tiếp tục" : X.mode === "topic" ? "Quay về đọc lại" : "Đóng"}</button></div>`;
+      <p>${X.rev ? `Ôn tập: đúng ${X.ok}/${X.qs.length}. Kết quả ôn tập không ảnh hưởng tiến độ.` : win ? (X.mode === "recert" ? "Tái chứng nhận thành công. Hẹn gặp lại năm sau!" : X.mode === "gate" ? "Vượt cửa ải! Chuẩn bị đột phá…" : "Qua quiz – bí kíp đã đạt!")
+        : "Chưa vượt qua. Ôn lại các bí kíp rồi thi lại."}</p>${rw()}
+      <button class="pri" data-x="libExClose">${win && X.mode === "gate" ? "Đột phá ⚡" : win || X.rev ? "Tiếp tục" : "Đóng"}</button></div>`;
     return;
   }
-  const Q = X.qs[X.k], p = X.pick;
-  m.className = "lx";
-  m.innerHTML = `<div class="lx-b"><div class="lx-h">${esc(X.title)}<span>Câu ${X.k + 1}/${X.qs.length} · đúng ${X.ok}</span></div>
+  const Q = X.qs[X.k], p = X.pick, help = !X.rev && p === null;
+  m.className = "lx" + (X.fail ? " lose" : "");
+  m.innerHTML = `<div class="lx-b"><div class="lx-h">${esc(X.title)}<span>Câu ${X.k + 1}/${X.qs.length} · đúng ${X.ok}${X.rev ? "" : ` · 💠 ${L.stones}`}</span></div>
     <div class="lx-bar"><i style="width:${X.k / X.qs.length * 100}%"></i></div><p class="lx-q">${libTerms(esc(Q.q))}</p>
-    <div class="lsn-a">${Q.a.map((a, k) => `<button data-x="libExAns" data-k="${k}" class="${p === null ? "" : k === Q.c ? "right" : k === p ? "wrong" : ""}" ${p !== null ? "disabled" : ""}>${"ABCD"[k]}. ${libTerms(esc(a)).replace(/ tabindex="0"/g, "")}</button>`).join("")}</div>
-    ${p === null ? "" : `<div class="${p === Q.c ? "lsn-ok" : "lsn-no"}">${p === Q.c ? "✓ Chính xác" : "✗ Sai · đáp án đúng: " + esc(Q.a[Q.c])}${Q.e ? `<small>${esc(Q.e)}</small>` : ""}</div>
-      <button class="pri lx-next" data-x="libExNext">${X.k + 1 < X.qs.length ? "Câu tiếp →" : "Xem kết quả"}</button>`}</div>`;
+    <div class="lsn-a">${Q.a.map((a, k) => { const cut = Q.cut.includes(k);
+      return `<button data-x="libExAns" data-k="${k}" class="${p === null ? (k === Q.hint ? "hint" : "") + (cut ? " cut" : "") : k === Q.c ? "right" : k === p ? "wrong" : cut ? "cut" : ""}" ${p !== null || cut ? "disabled" : ""}>${"ABCD"[k]}. ${libTerms(esc(a)).replace(/ tabindex="0"/g, "")}</button>`; }).join("")}</div>
+    ${Q.say ? `<div class="lx-say">${esc(Q.say)}</div>` : ""}
+    ${help ? `<div class="lx-help"><span>Gặp câu khó? Mời cao nhân:</span>${LIB_HELP.map(([id, ic, nm, cost, d]) => `<button data-x="libHelp" data-k="${id}" ${Q.help[id] || L.stones < cost ? "disabled" : ""} title="${esc(d)}">${ic} ${esc(nm)}<small>${cost} 💠 · ${esc(d)}</small></button>`).join("")}</div>` : ""}
+    ${p === null ? "" : `<div class="${p === Q.c ? "lsn-ok" : "lsn-no"}">${p === Q.c ? "✓ Chính xác" + (Q.earn ? ` · +${Q.earn} 💠` : "") : "✗ Sai · đáp án đúng: " + esc(Q.a[Q.c])}${Q.e ? `<small>${esc(Q.e)}</small>` : ""}</div>
+      ${X.fail ? `<div class="lx-fail"><b>🔥 Tẩu hỏa nhập ma!</b> Sai 1 câu là phải thi lại từ đầu (đề mới).${rw()}</div>
+        <div class="lx-acts"><button data-x="libExClose">📖 Đọc lại bài</button><button class="pri" data-x="libExRetry">↻ Thi lại từ đầu</button></div>`
+      : `<button class="pri lx-next" data-x="libExNext">${X.k + 1 < X.qs.length ? "Câu tiếp →" : "Xem kết quả"}</button>`}`}</div>`;
+}
+function libExamPick(k) {                                                 // chọn đáp án
+  const X = LX, Q = X && X.qs[X.k]; if (!Q || X.pick !== null || Q.cut.includes(k)) return;
+  X.pick = k;
+  if (k === Q.c) {
+    X.ok++;
+    if (X.first) { const L = libLoad(); L.stones += LIB_STONE; libSave(L); Q.earn = LIB_STONE; X.earn += LIB_STONE; }
+  } else if (X.strict) { X.fail = true; libExamEnd(); }
+  libExamDraw();
+}
+function libHelp(id) {                                                    // mời cao nhân trợ giúp (trừ linh thạch)
+  const X = LX, Q = X && X.qs[X.k], H = LIB_HELP.find(h => h[0] === id); if (!Q || !H || X.rev || X.pick !== null || Q.help[id]) return;
+  const L = libLoad(); if (L.stones < H[3]) return;
+  L.stones -= H[3]; L.spent = (+L.spent || 0) + H[3]; libSave(L); Q.help[id] = 1;
+  const wrong = Q.a.map((_, k) => k).filter(k => k !== Q.c && !Q.cut.includes(k)), L4 = k => "ABCD"[k];
+  if (id === "cm") { Q.hint = Q.c; Q.say = `🧙 Chưởng môn phán: “Đáp án là ${L4(Q.c)}. Bổn tọa không bao giờ sai.”`; }
+  else if (id === "tl") {
+    const k = Q.calc && Math.random() < .5 ? wrong[Math.floor(Math.random() * wrong.length)] : Q.c; Q.hint = k;
+    Q.say = Q.calc ? `👴 Trưởng lão bấm đốt ngón tay: “Lão phu tính nhẩm ra ${L4(k)}… mắt kém rồi, đúng hay sai tùy duyên.”` : `👴 Trưởng lão vuốt râu: “Lý thuyết này lão phu thuộc lòng – chọn ${L4(k)}.”`;
+  } else { shuf(wrong).slice(0, 2).forEach(k => Q.cut.push(k)); if (Q.cut.includes(Q.hint)) Q.hint = -1; Q.say = "🧑‍🎓 Sư huynh / sư tỷ thì thầm: “Hai đáp án bị gạch chắc chắn sai đó.”"; }
+  libExamDraw();
 }
 function libExamEnd() {                                                   // ghi kết quả bài thi vào tiến độ
-  const X = LX, L = libLoad(), R = REALMS[X.ri], win = X.ok >= X.need, at = todayISO();
+  const X = LX, L = libLoad(), R = REALMS[X.ri], win = !X.fail && X.ok >= X.need, at = todayISO();
   X.end = true;
   if (X.rev) return;
   L.log.push({ r:R.id, t:X.mode === "topic" ? X.tid : X.mode, ok:win ? 1 : 0, at });
-  L.wrong = (+L.wrong || 0) + (X.qs.length - X.ok); L.answered = (+L.answered || 0) + X.qs.length;   // cho Phong Thần Bảng (tư chất)
-  if (X.mode === "topic") { if (win) L.quiz[X.tid] = { pass:1, ok:X.ok, n:X.qs.length, at }; else { L.read[X.tid] = []; L.fails++; } }
+  const asked = X.fail ? X.k + 1 : X.qs.length;
+  L.wrong += asked - X.ok; L.answered += asked;                           // cho Phong Thần Bảng (tư chất)
+  if (win && X.first) { L.pills++; X.pill = 1; }
+  if (X.mode === "topic") { if (win) L.quiz[X.tid] = { pass:1, ok:X.ok, n:X.qs.length, at }; else L.fails++; }
   else if (X.mode === "gate") { if (win) L.gates[R.gate] = at; else L.fails++; }
   else if (win) L.recert[String(new Date().getFullYear())] = at;
   libSave(L);
@@ -3087,17 +3152,6 @@ function libFx(R, newGioi) {
   const u = curUser();
   BreakthroughFX.play(R.id, { icon:R.icon, title:newGioi && R.gioi === "Tiên Giới" ? "Phi Thăng · " + R.name : undefined,
     verse:(u && u.dh ? "Chúc mừng " + u.dh + "! " : "") + libWish(R.id) }).catch(() => {});
-}
-// nộp bài thực hành / xin duyệt Đại Viên Mãn (máy chủ ghi tab "Tu luyện", trạng thái Chờ duyệt)
-async function libSend(action, payload, btn) {
-  if (!window.NPD) return alert("Chưa kết nối máy chủ.");
-  if (btn) { btn.disabled = true; btn.dataset.t = btn.textContent; btn.textContent = "Đang gửi…"; }
-  const r = await NPD.call(action, payload).catch(e => ({ ok:false, error:e.message }));
-  if (btn && btn.isConnected) { btn.disabled = false; btn.textContent = btn.dataset.t; }
-  if (!r || !r.ok) { if (r && r.expired) return NPD.expired(); return alert("Không gửi được: " + ((r && r.error) || "lỗi kết nối")); }
-  if (r.practice) window.npdPractice = r.practice;
-  renderLib();
-  return r;
 }
 
 // ---- Vạn Pháp Điện: support tools ----
@@ -3929,27 +3983,30 @@ document.addEventListener("click", e => {                                // butt
   if (x === "auOut") return auLogout();
   // Tàng Kinh Các
   if (x === "libRoad") { libRoad = !libRoad; return renderLib(); }
-  if (x === "libTopic") { libTopic = k; libPage = 0; libMuse = false; renderLib(); return window.scrollTo({ top:0 }); }
+  if (x === "libTopic") { libTopic = k; libPage = 0; libMuse = false; renderLib(); return libScrollRead(); }
   if (x === "libTopicX") { libTopic = ""; libPage = 0; return renderLib(); }
   if (x === "libMuse") { libMuse = !libMuse; libTopic = ""; libPage = 0; return renderLib(); }
-  if (x === "libMuseT") { libMuse = true; libTopic = k; libPage = 0; renderLib(); return window.scrollTo({ top:0 }); }
+  if (x === "libMuseT") { libMuse = true; libTopic = k; libPage = 0; renderLib(); return libScrollRead(); }
   if (x === "libRebirth") return askConfirm("☯ Binh Giải – tu luyện lại từ đầu?",
-      "Cảnh giới, tiểu cảnh giới, bài đã đọc, quiz, cửa ải và lần trượt của kiếp này về 0; bắt đầu lại từ Phàm Nhân, bài thực hành và yêu cầu đột phá phải nộp lại. Kiếp này vẫn được ghi lại, kiến thức đã qua xem lại được ở “Chiêm nghiệm nhân sinh”. Không hoàn tác được.",
+      "Cảnh giới, tiểu cảnh giới, bài đã đọc, quiz, cửa ải và lần trượt của kiếp này về 0; bắt đầu lại từ Phàm Nhân. Linh thạch, Tẩy Tủy Đan và linh căn được giữ nguyên (thi lại các bài cũ không có thưởng). Kiếp này vẫn được ghi lại, kiến thức đã qua xem lại được ở “Chiêm nghiệm nhân sinh”. Không hoàn tác được.",
       ["Hủy", "Binh Giải"]).then(ok => ok && libRebirth());
-  if (x === "libGo") { libPage = +k; renderLib(); return window.scrollTo({ top:0 }); }
+  if (x === "libGo") { libPage = +k; renderLib(); return libScrollRead(); }
   if (x === "libQuiz") return libExam("topic", k);
   if (x === "libBrk") { const L = libLoad(), st = realmState(L, L.realm); if (!st.s4) return renderLib(); return st.gate ? libExam("gate") : libAdvance(); }
   if (x === "libRecert") return libExam("recert");
   if (x === "libFxPlay") return libFx(REALMS[libLoad().realm], false);
-  if (x === "libPrac") { const t = $("#libPracTx"), v = t ? t.value.trim() : "", T = topicOf(k); if (!v || !T) { if (t) t.focus(); return; }
-    return libSend("practice", { realm:REALMS[T.ri].id, topic:k, text:v }, b); }
-  if (x === "libRv") { const [st, i] = k.split(":"), p = (window.npdPractice || [])[+i], n = $("#rvN" + i); if (!p) return;
-    return libSend("review", { user:p.user, realm:p.realm, topic:p.topic, status:st, note:n ? n.value : "" }, b); }
-  if (x === "libRvLoad") return window.NPD && NPD.refresh();
   if (x === "rankLoad") { RANK_AT = 0; return rankLoad(true); }
-  if (x === "libExAns") { if (LX.pick === null) { LX.pick = +k; if (+k === LX.qs[LX.k].c) LX.ok++; } return libExamDraw(); }
+  if (x === "libExAns") return LX && libExamPick(+k);
+  if (x === "libHelp") return LX && libHelp(k);
+  if (x === "libExRetry") { const X = LX, m = $("#libEx"); if (m) m.remove(); LX = null; renderLib(); return X && libExam(X.mode, X.tid); }
+  if (x === "libLc") { const L = libLoad(), c = libLcCost(L.lc); if (L.lc >= LIB_LC.length - 1 || L.pills < c) return;
+    L.pills -= c; L.lc++; L.log.push({ r:REALMS[L.realm].id, t:"linh-can", ok:1, at:todayISO() }); libSave(L); renderLib();
+    const b2 = $(".lib-bag"); if (b2) { b2.classList.add("up"); setTimeout(() => b2.classList.remove("up"), 1600); } return; }
   if (x === "libExNext") { LX.k++; LX.pick = null; if (LX.k >= LX.qs.length) libExamEnd(); return libExamDraw(); }
-  if (x === "libExClose") { const m = $("#libEx"); if (m) m.remove(); const X = LX; LX = null; if (X && X.mode === "topic" && !X.rev && X.ok < X.need) libPage = 0; return renderLib(); }
+  if (x === "libExClose") { const m = $("#libEx"); if (m) m.remove(); const X = LX; LX = null;
+    if (X && X.mode === "gate" && X.end && !X.fail && X.ok >= X.need) return libAdvance();   // vượt cửa ải (đã xem phần thưởng) → đột phá
+    if (X && X.mode === "topic" && X.fail) libPage = 0;                   // "Đọc lại bài": mở lại trang đầu của bí kíp
+    renderLib(); return X && X.mode === "topic" ? libScrollRead() : undefined; }
   if (x === "tool") { toolSel = k; try { sessionStorage.setItem("npdTool", k); } catch (e) {} toolHash(k); renderTools(); const m = $(".tl-main"); if (m && innerWidth < 900) m.scrollIntoView({ block:"start", behavior:"smooth" }); return; }
   if (x === "toolBack") { toolSel = ""; try { sessionStorage.removeItem("npdTool"); } catch (e) {} toolHash(""); return renderTools(); }
   if (x === "toolLink") { const u = location.href.split("#")[0] + "#tool/" + toolSel;

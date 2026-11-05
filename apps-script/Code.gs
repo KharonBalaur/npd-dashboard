@@ -711,7 +711,7 @@ function rank_(token) {
   if (!user) return { ok: false, expired: true, error: 'Phiên đăng nhập đã hết hạn' };
   const cache = CacheService.getScriptCache();
   let rows = null;
-  const hit = cache.get('rank_v1');
+  const hit = cache.get('rank_v2');
   if (hit) rows = JSON.parse(hit);
   else {
     const values = sheet_(CFG.SHEET_USERS).getDataRange().getValues(), idx = headerIndex_(values[0]), people = {};
@@ -727,9 +727,9 @@ function rank_(token) {
       const p = people[u], L = p.lib || {}, n = x => Math.max(0, Math.floor(+x || 0));
       return { u, name: p.name.slice(0, 60), dh: p.dh || '', rid: String(L.rid || ''), ord: n(L.ord || (L.v === 2 ? (+L.realm || 0) + 1 : 0)),
         done: L.done && typeof L.done === 'object' ? Object.keys(L.done).length : 0, fails: n(L.fails), wrong: n(L.wrong), answered: n(L.answered),
-        lives: n(L.lives), started: !!p.lib };
+        lives: n(L.lives), started: !!p.lib, lc: Math.min(5, n(L.lc)), stones: n(L.stones), pills: n(L.pills) };
     });
-    cache.put('rank_v1', JSON.stringify(rows), 60);                      // 1 phút: đỡ đọc Sheet khi nhiều người mở cùng lúc
+    cache.put('rank_v2', JSON.stringify(rows), 60);                      // 1 phút: đỡ đọc Sheet khi nhiều người mở cùng lúc
   }
   const me = norm_(user.username);
   return { ok: true, rank: rows.map(r => { const o = Object.assign({}, r, { me: r.u === me }); delete o.u; return o; }), at: new Date().toISOString() };
