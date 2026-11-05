@@ -1,6 +1,6 @@
 # Thiên Công Tông · QE Workspace
 
-Web nội bộ cho team QE: **Training** (lộ trình tu luyện + thư viện kiến thức), **English**, **中文**, **Tools**, **Cave** (hồ sơ cá nhân, xuất CV).
+Web nội bộ cho team QE: **Training** (lộ trình tu luyện + thư viện kiến thức), **English**, **中文**, **Tools**, **Cave** (hồ sơ cá nhân, xuất CV), **Relax** (trò chơi nhỏ, bài thở, gợi ý việc vui 5 phút).
 Đăng nhập bằng tài khoản trong Google Sheet; dữ liệu chung và dữ liệu cá nhân lưu trên Google Sheet qua Apps Script.
 
 | File / thư mục | Vai trò |
@@ -10,6 +10,7 @@ Web nội bộ cho team QE: **Training** (lộ trình tu luyện + thư viện k
 | `NPD_BuildStatus.html` | Địa chỉ cũ, tự chuyển sang `JLTN_WEBSITE` |
 | `study/` | App học tiếng Anh / tiếng Trung và ngân hàng bài học mỗi ngày |
 | `realms.js` | Lộ trình Training: 14 cảnh giới + Vị Tế, 3 giới, các bí kíp (window.REALMS) |
+| `fun.js` | Tiêu Dao Các (Relax): trò chơi nhỏ, bài thở Tĩnh Tâm, Gieo Quẻ 5 Phút |
 | `quiz-bank.js` | Ngân hàng câu hỏi quiz cho các bí kíp (window.QUIZ_BANK) |
 | `lessons-nhan-gioi.js`, `lessons-linh-gioi.js`, `lessons-tien-gioi.js` | Bài đọc dễ hiểu, thuật ngữ Anh – Việt – Trung, nguồn cho 50 bí kíp của Nhân / Linh / Tiên Giới (window.LESSONS) |
 | `breakthrough-fx.js`, `img/realms/` | Hiệu ứng đột phá riêng từng cảnh giới và 15 icon cảnh giới |

@@ -46,7 +46,7 @@ const READ_TABS = ['Cài đặt', 'Thư viện', 'English', 'Chinese'];
 // Tab được phép sửa từ web (tab chưa có thì tự tạo, cột chưa có thì tự thêm vào cuối)
 const EDIT_TABS = ['Cài đặt', 'Thư viện'];
 const MINE_HEAD = ['Tên đăng nhập', 'Khóa', 'Dữ liệu', 'Cập nhật'];
-const MINE_KEYS = ['npdCave', 'npdLib', 'npdOT', 'npdFairy', 'npdEng', 'npdZh'];
+const MINE_KEYS = ['npdCave', 'npdLib', 'npdOT', 'npdFairy', 'npdEng', 'npdZh', 'npdFun'];
 const HISTORY_HEAD = ['Thời gian', 'Người sửa', 'Tab', 'TTi model', 'Dòng', 'Cột', 'Giá trị cũ', 'Giá trị mới'];
 const VIEW_ROLES = ['viewer', 'view', 'xem', 'chỉ xem', 'chi xem'];
 const ADMIN_ROLES = ['admin', 'administrator', 'quản trị', 'quan tri', 'quản trị viên', 'quan tri vien'];
