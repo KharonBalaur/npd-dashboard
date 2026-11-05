@@ -30,11 +30,14 @@ Ngôn ngữ giao diện: tiếng Anh / tiếng Việt; trao đổi với chủ d
     đúng +10), L.pills Tẩy Tủy Đan (qua ngay lần đầu +1), L.lc linh căn 0–5 (LIB_LC: Phế → Thiên; nâng bậc tốn 1, 2, 4, 8, 16 đan).
     Trợ giúp khi thi (LIB_HELP, libHelp, trừ linh thạch, mỗi loại 1 lần / câu): Chưởng môn 100 = chỉ đáp án đúng; Trưởng lão 50
     = câu lý thuyết chỉ đúng, câu tính toán (Q là hàm sinh số) đúng / sai 50-50; Sư huynh / sư tỷ 10 = gạch 2 đáp án sai.
+    Bù thưởng 1 lần (libBackPay, cờ L.rw0 {at, stones, pills, n, seen}): bài đã vượt trước khi có thưởng (done / seen / quiz đạt,
+    cửa ải, tái chứng nhận; không có trong L.qa) → +10 linh thạch / câu đúng (quiz cũ có ok thì dùng, không thì 5 câu / 8 câu cửa ải)
+    + 1 đan nếu lần thi đầu trong log là đạt (không có log = đạt). Thông báo trong túi càn khôn, bấm ✕ (libRw0) để ẩn.
     Ôn tập (bí kíp đã đạt, Chiêm nghiệm) không thưởng, không trợ giúp, không ghi tiến độ. Binh Giải giữ túi càn khôn và L.qa.
     Đột phá: libAdvance → BreakthroughFX.play(id, {icon, verse: lời chúc LIB_WISH của cảnh giới}) (breakthrough-fx.js, không sửa). Cửa ải: gate "binh-canh" (Kết Đan)
     và "thien-kiep" (Độ Kiếp, phi thăng) = thi 10 câu trộn bí kíp của giới, cần 8. Vị Tế: tái chứng nhận hằng năm.
     Tiến độ npdLib v3 {v:3, rid (id cảnh giới), ord, read:{bí kíp:[pageKey]}, quiz, done:{bí kíp:ngày đạt}, seen, fails, log,
-    gates, pass, mig, recert, books, lives, past, since, old, prev, v1, wrong, answered, stones, pills, lc, qa, spent}; libUpgrade nâng v1 → v2 (libMigrate) → v3.
+    gates, pass, mig, recert, books, lives, past, since, old, prev, v1, wrong, answered, stones, pills, lc, qa, spent, rw0}; libUpgrade nâng v1 → v2 (libMigrate) → v3.
     Nút "☯ Binh Giải" (libRebirth): tu luyện lại từ Phàm Nhân, kiếp cũ ghi vào past, bí kíp đã đạt vào seen, bài nộp cũ
     (L.old) không tính nữa. Nút "🪷 Chiêm nghiệm nhân sinh" (libMuse): đọc lại / ôn quiz kiến thức đã qua, không ghi tiến độ.
     Phong Thần Bảng (tab "rank", renderRank): bảng tu vi (cảnh giới → bí kíp đạt → ít tẩu hỏa) + bảng tư chất
