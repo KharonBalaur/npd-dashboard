@@ -1,6 +1,7 @@
 /**
  * Thiên Công Tông · Tiêu Dao Các (tab "fun") – góc thư giãn khi rảnh: trò chơi nhỏ tự thiết kế + bài thở + gợi ý việc vui 5 phút.
  * Dùng các hàm chung của JLTN_WEBSITE.html: $, esc, lsGet, lsSet, uKey, pgHead. Nút dùng thuộc tính data-f (không đụng data-x của trang chính).
+ * Bảng Xếp Hạng (mục "top"): kỷ lục mọi người, lấy từ action "rank" (row.fun, Code.gs funBest_).
  * Kỷ lục lưu theo tài khoản: npdFun@user = { best:{spot, react, memo, math}, plays:{trò:số lần}, calm:số phút đã thở }
  * (chỉ thêm trường; đồng bộ lên tab "Cá nhân" qua sheets-bridge như các dữ liệu cá nhân khác).
  */
@@ -12,6 +13,7 @@
     ['math', '🧮', 'Tính Nhẩm', '60 giây tính nhẩm nhanh: cộng, trừ, nhân, phần trăm.'],
     ['calm', '🌬', 'Tĩnh Tâm', 'Thở hộp 4 – 4 – 4 – 4 theo vòng tròn, 1 đến 5 phút cho đầu óc nhẹ nhõm.'],
     ['idea', '🎲', 'Gieo Quẻ 5 Phút', 'Không biết làm gì? Gieo một quẻ: việc nhỏ, câu đố hoặc chuyện cười QE.'],
+    ['top', '🏆', 'Bảng Xếp Hạng', 'Ai mắt tinh, tay nhanh, nhớ giỏi, nhẩm siêu nhất tông môn? Xem kỷ lục của mọi người.'],
   ];
   const IDEAS = [
     ['Việc nhỏ', 'Đứng dậy vươn vai, xoay cổ tay và cổ chân 10 vòng mỗi bên.'],
@@ -55,7 +57,7 @@
     const d = fs(), g = FUN.find(x => x[0] === cur);
     sec.innerHTML = `${pgHead('🍃', 'Tiêu Dao Các', 'Relax', 'Rảnh rỗi thì ghé đây: vài trò chơi nhỏ, một bài thở và gợi ý việc vui 5 phút cho đầu óc thảnh thơi.')}
       <div class="fn-grid">${FUN.map(([k, ic, n, desc]) => `<button class="fn-tile${k === cur ? ' on' : ''}" data-f="open" data-k="${k}"><span class="fn-ic">${ic}</span>
-        <span class="fn-tx"><b>${esc(n)}</b><small>${esc(desc)}</small><em>${k === 'calm' ? `Đã tĩnh tâm ${Math.round(d.calm)} phút` : k === 'idea' ? 'Gieo bao nhiêu cũng được' : esc(bestTxt(k))}${d.plays[k] ? ` · chơi ${d.plays[k]} lần` : ''}</em></span></button>`).join('')}</div>
+        <span class="fn-tx"><b>${esc(n)}</b><small>${esc(desc)}</small><em>${k === 'calm' ? `Đã tĩnh tâm ${Math.round(d.calm)} phút` : k === 'idea' ? 'Gieo bao nhiêu cũng được' : k === 'top' ? 'Cập nhật mỗi phút' : esc(bestTxt(k))}${d.plays[k] ? ` · chơi ${d.plays[k]} lần` : ''}</em></span></button>`).join('')}</div>
       ${g ? `<div class="pg-card fn-box" id="fnBox"><div class="fn-h"><h3>${g[1]} ${esc(g[2])}</h3><button data-f="close" title="Đóng">✕ Đóng</button></div><div id="fnStage"></div></div>` : ''}`;
     if (g) VIEW[cur]();
   }
@@ -67,7 +69,7 @@
   VIEW.spot = () => { if (!T || T.k !== 'spot') return stage(`<p class="fn-p">Lưới linh kiện có một ô <b>khác màu</b>. Bấm trúng để qua màn, bấm nhầm bị trừ 3 giây. Có 30 giây.</p>
       <div class="fn-c"><button class="pri" data-f="spotGo">▶ Bắt đầu</button><span class="fn-m">${esc(bestTxt('spot'))}</span></div>`);
     if (T.end) return stage(`<div class="fn-res"><b>Hết giờ!</b> Qua ${T.lv} màn${T.rec ? ' · 🏆 kỷ lục mới!' : ''}<p>${T.lv >= 20 ? 'Mắt thần soi lỗi – kiểm ngoại quan nhờ cả vào bạn!' : T.lv >= 10 ? 'Mắt tinh lắm, xứng làm QC trưởng.' : 'Khởi động thôi, thử lại nào!'}</p></div>
-      <div class="fn-c"><button class="pri" data-f="spotGo">↻ Chơi lại</button></div>`);
+      <div class="fn-c"><button class="pri" data-f="spotGo">↻ Chơi lại</button><button data-f="open" data-k="top">🏆 Bảng xếp hạng</button></div>`);
     const n = Math.min(8, 3 + Math.floor(T.lv / 3)), dl = Math.max(4, 22 - T.lv * 1.1);
     const col = l => `hsl(${T.h} 62% ${l}%)`;
     stage(`<div class="fn-bar"><span>Màn <b>${T.lv + 1}</b></span><span>⏱ <b id="fnT">${Math.ceil(T.left)}</b> s</span></div>
@@ -87,7 +89,7 @@
       <div class="fn-c"><button class="pri" data-f="reactGo">▶ Bắt đầu</button><span class="fn-m">${esc(bestTxt('react'))}</span></div>`);
     if (T.end) { const avg = Math.round(T.ms.reduce((a, b) => a + b, 0) / T.ms.length);
       return stage(`<div class="fn-res"><b>Trung bình ${avg} ms</b>${T.rec ? ' · 🏆 kỷ lục mới!' : ''}<p>Các lượt: ${T.ms.join(' · ')} ms. ${avg < 250 ? 'Phản xạ như kiếm tiên!' : avg < 350 ? 'Nhanh nhẹn, andon kêu là có mặt.' : 'Hơi chậm một nhịp – uống ngụm nước rồi thử lại nhé.'}</p></div>
-        <div class="fn-c"><button class="pri" data-f="reactGo">↻ Chơi lại</button></div>`); }
+        <div class="fn-c"><button class="pri" data-f="reactGo">↻ Chơi lại</button><button data-f="open" data-k="top">🏆 Bảng xếp hạng</button></div>`); }
     stage(`<div class="fn-bar"><span>Lượt <b>${T.ms.length + 1}</b> / 5</span><span>${T.ms.length ? 'Vừa rồi: ' + T.ms[T.ms.length - 1] + ' ms' : ''}</span></div>
       <button class="fn-react ${T.st}" data-f="reactHit">${T.st === 'go' ? 'BẤM!' : T.st === 'early' ? 'Nóng vội! Bấm để thử lại lượt này' : 'Chờ đèn xanh…'}</button>`);
   };
@@ -109,7 +111,7 @@
       <div class="fn-memo">${T.cards.map((c, i) => { const open = T.got.has(c) || T.open.includes(i);
         return `<button data-f="memoHit" data-k="${i}" class="${open ? 'up' : ''}${T.got.has(c) ? ' got' : ''}" ${open ? 'disabled' : ''} aria-label="thẻ ${i + 1}">${open ? c : '☯'}</button>`; }).join('')}</div>
       ${done ? `<div class="fn-res"><b>💊 Đan thành! ${T.moves} lượt</b>${T.rec ? ' · 🏆 kỷ lục mới!' : ''}<p>${T.moves <= 12 ? 'Trí nhớ như đan sư cửu phẩm!' : T.moves <= 18 ? 'Hỏa hầu vừa chuẩn, đan dược thượng hạng.' : 'Đan hơi khét, nhưng vẫn uống được 😄'}</p></div>
-        <div class="fn-c"><button class="pri" data-f="memoGo">↻ Luyện mẻ mới</button></div>` : ''}`);
+        <div class="fn-c"><button class="pri" data-f="memoGo">↻ Luyện mẻ mới</button><button data-f="open" data-k="top">🏆 Bảng xếp hạng</button></div>` : ''}`);
   };
   ACT.memoGo = () => { stop(); T = { k:'memo', cards:shuffle([...HERBS, ...HERBS]), open:[], got:new Set(), moves:0, lock:false }; played('memo'); VIEW.memo(); };
   ACT.memoHit = k => { if (!T || T.k !== 'memo' || T.lock) return; const i = +k; if (T.open.includes(i) || T.got.has(T.cards[i])) return;
@@ -130,7 +132,7 @@
     if (!T || T.k !== 'math') return stage(`<p class="fn-p">60 giây, trả lời càng nhiều càng tốt. Gõ đáp án rồi nhấn Enter (sai thì sang câu khác, không trừ điểm).</p>
       <div class="fn-c"><button class="pri" data-f="mathGo">▶ Bắt đầu</button><span class="fn-m">${esc(bestTxt('math'))}</span></div>`);
     if (T.end) return stage(`<div class="fn-res"><b>Đúng ${T.ok} / ${T.n} câu</b>${T.rec ? ' · 🏆 kỷ lục mới!' : ''}<p>${T.ok >= 25 ? 'Bàn tính sống của tông môn!' : T.ok >= 15 ? 'Nhẩm nhanh, tính Cpk chắc không cần máy.' : 'Não đang khởi động – thử thêm lượt nữa!'}</p></div>
-      <div class="fn-c"><button class="pri" data-f="mathGo">↻ Chơi lại</button></div>`);
+      <div class="fn-c"><button class="pri" data-f="mathGo">↻ Chơi lại</button><button data-f="open" data-k="top">🏆 Bảng xếp hạng</button></div>`);
     stage(`<div class="fn-bar"><span>Đúng <b>${T.ok}</b></span><span>⏱ <b id="fnT">${Math.ceil(T.left)}</b> s</span></div>
       <div class="fn-math"><div class="fn-q">${esc(T.cur.q)} = ?</div><input id="fnAns" inputmode="decimal" autocomplete="off" aria-label="Đáp án">
       <div class="fn-fb ${T.fb || ''}">${T.fb === 'ok' ? '✓ Đúng' : T.fb === 'no' ? '✗ Đáp án: ' + esc(T.last) : '&nbsp;'}</div></div>`);
@@ -164,6 +166,42 @@
       if (T.left <= 0) { stop(); const d = fs(); d.calm += T.min; fsave(d); T.end = true; VIEW.calm(); } }, 1000); };
   ACT.calmStop = () => { stop(); if (T && T.k === 'calm') { const used = (T.min * 60 - T.left) / 60; if (used >= .5) { const d = fs(); d.calm += Math.round(used * 10) / 10; fsave(d); } } T = null; render(); };
   ACT.calmReset = () => { T = null; VIEW.calm(); };
+
+  // ---------- Bảng Xếp Hạng: kỷ lục mọi tài khoản (máy chủ gửi kèm action "rank": row.fun) ----------
+  // Dòng của chính mình lấy kỷ lục trên máy (mới nhất, máy chủ cache 1 phút). Không gửi tên đăng nhập, chỉ họ tên.
+  const BOARDS = [['spot', '🔍', 'Soi Lỗi', 'màn', false], ['react', '⚡', 'Phản Xạ', 'ms', true], ['memo', '💊', 'Luyện Đan', 'lượt', true],
+    ['math', '🧮', 'Tính Nhẩm', 'câu', false], ['calm', '🌬', 'Tĩnh Tâm', 'phút', false]];
+  const TOP_TAG = { spot:'Hỏa Nhãn Kim Tinh', react:'Kiếm Tiên Phản Xạ', memo:'Đan Sư Cửu Phẩm', math:'Bàn Tính Sống', calm:'Tâm Như Chỉ Thủy' };
+  let RK = null, RK_AT = 0, RK_BUSY = false;
+  const loadTop = async force => {
+    if (RK_BUSY || (!force && RK && !RK.err && Date.now() - RK_AT < 60000)) return;
+    if (!window.NPD || !NPD.user()) { RK = { err:'login' }; return VIEW.top(); }
+    RK_BUSY = true;
+    const r = await NPD.call('rank', {}).catch(e => ({ ok:false, error:e.message }));
+    RK_BUSY = false;
+    if (r && r.ok) { RK = r.rank || []; RK_AT = Date.now(); } else if (r && r.expired) return NPD.expired(); else RK = { err:(r && r.error) || 'Lỗi kết nối' };
+    if (cur === 'top') VIEW.top();
+  };
+  VIEW.top = () => {
+    if (!RK) { stage('<p class="fn-p">⏳ Đang mở bảng vàng…</p>'); return loadTop(); }
+    if (RK.err) return stage(`<p class="fn-p">${RK.err === 'login' ? 'Đăng nhập (ở Training hoặc Cave) để xem bảng xếp hạng của tông môn.' : 'Không tải được bảng xếp hạng: ' + esc(RK.err)}</p>
+      <div class="fn-c"><button data-f="topLoad">⟳ Thử lại</button></div>`);
+    const mine = fs(), old = !RK.some(r => 'fun' in r);                            // máy chủ chưa cập nhật Code.gs: chưa có row.fun
+    const rows = RK.map(r => { const f = Object.assign({}, r.fun || {});
+      if (r.me) { Object.assign(f, mine.best); if (mine.calm) f.calm = Math.round(mine.calm * 10) / 10; }   // kỷ lục mới nhất của mình
+      return { name:r.name || 'Ẩn danh', me:!!r.me, f }; });
+    const med = i => ['🥇', '🥈', '🥉'][i] || `<i>${i + 1}</i>`;
+    const board = ([k, ic, n, unit, low]) => {
+      const L = rows.filter(r => typeof r.f[k] === 'number').sort((a, b) => low ? a.f[k] - b.f[k] : b.f[k] - a.f[k]);
+      const top = L.slice(0, 10), mi = L.findIndex(r => r.me);
+      const li = (r, i) => `<li class="${r.me ? 'me' : ''}"><span class="fr-k">${med(i)}</span><span class="fr-n">${esc(r.name)}${r.me ? ' <em>(bạn)</em>' : ''}${i === 0 ? `<small>${TOP_TAG[k]}</small>` : ''}</span><b>${r.f[k].toLocaleString('vi-VN')} <small>${unit}</small></b></li>`;
+      return `<section class="fr-b"><h4>${ic} ${esc(n)}<small>${low ? 'càng nhỏ càng giỏi' : 'càng lớn càng giỏi'}</small></h4>
+        <ol>${top.map(li).join('') || '<p class="fn-m">Chưa có ai lập kỷ lục – cơ hội làm đệ nhất!</p>'}${mi >= 10 ? '<li class="fr-gap">…</li>' + li(L[mi], mi) : ''}</ol></section>`; };
+    stage(`${old ? '<p class="fn-p">⚠ Máy chủ chưa cập nhật bản Apps Script mới nên mới thấy kỷ lục của bạn. Nhờ chủ dự án deploy lại Code.gs.</p>' : ''}
+      <div class="fr-grid">${BOARDS.map(board).join('')}</div>
+      <div class="fn-c"><button data-f="topLoad">⟳ Cập nhật</button><span class="fn-m">${RK_AT ? 'Lúc ' + new Date(RK_AT).toLocaleTimeString('vi-VN', { hour:'2-digit', minute:'2-digit' }) + ' · ' : ''}kỷ lục mới lên bảng sau khoảng 1 phút</span></div>`);
+  };
+  ACT.topLoad = () => { RK_AT = 0; stage('<p class="fn-p">⏳ Đang mở bảng vàng…</p>'); loadTop(true); };
 
   // ---------- Gieo Quẻ 5 Phút ----------
   VIEW.idea = () => { const it = T && T.k === 'idea' ? T.it : null;
