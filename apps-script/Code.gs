@@ -728,7 +728,7 @@ function rank_(token) {
       const p = people[u], L = p.lib || {}, n = x => Math.max(0, Math.floor(+x || 0));
       return { u, name: p.name.slice(0, 60), dh: p.dh || '', rid: String(L.rid || ''), ord: n(L.ord || (L.v === 2 ? (+L.realm || 0) + 1 : 0)),
         done: L.done && typeof L.done === 'object' ? Object.keys(L.done).length : 0, fails: n(L.fails), wrong: n(L.wrong), answered: n(L.answered),
-        lives: n(L.lives), started: !!p.lib, lc: Math.min(5, n(L.lc)), stones: n(L.stones), pills: n(L.pills), fun: p.fun || null };
+        lives: n(L.lives), started: !!p.lib, lc: Math.min(8, n(L.lc)), stones: n(L.stones), pills: n(L.pills), fun: p.fun || null };
     });
     cache.put('rank_v3', JSON.stringify(rows), 60);                      // 1 phút: đỡ đọc Sheet khi nhiều người mở cùng lúc
   }

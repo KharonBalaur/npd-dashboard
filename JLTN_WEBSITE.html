@@ -10,7 +10,7 @@
 <meta name="format-detection" content="telephone=no">
 <title>JLTN Web</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,600;0,700;1,400&amp;family=Inter:wght@300;400;500;600;700;800&amp;display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,600;0,700;1,400&amp;family=Patrick+Hand&amp;family=Inter:wght@300;400;500;600;700;800&amp;display=swap">
 <style>
 :root{
   --navy:#14213d; --navy2:#1f2f52; --lime:#c8d400; --ink:#1b2333; --muted:#6b7385; --line:#dde2ea;
@@ -393,6 +393,38 @@ table.np tr.gs td{border-top:2px solid #d9d0f0}
 .pg-card h3{margin:0 0 10px;font-size:15px;color:var(--navy)} .pg-card h3 small{margin-left:6px;font-weight:400;color:var(--muted);font-size:12px}
 .pg-card .k{font-size:11px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:var(--muted)}
 .pg-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
+/* Sổ tay thống kê (notebook.js): giấy kẻ dòng, lề đỏ, ghi chú dán */
+.nb-wrap{display:grid;grid-template-columns:240px minmax(0,1fr);gap:18px;align-items:start}
+.nb-toc{position:sticky;top:76px;display:flex;flex-direction:column;gap:6px;padding:14px;border-radius:14px;background:#2b3a55;color:#e9e2d4;box-shadow:0 8px 20px rgba(20,33,61,.18)}
+.nb-cover{font-family:"Patrick Hand","Noto Serif",Georgia,serif;font-size:24px;color:#f3d58c;line-height:1.1;margin-bottom:6px} .nb-cover small{font-size:14px;color:#e9e2d4}
+.nb-toc button{text-align:left;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:#fff;border-radius:10px;padding:8px 10px;white-space:normal;height:auto}
+.nb-toc button.on{background:#f3d58c;color:#14213d;border-color:#f3d58c;font-weight:700} .nb-toc i{font-style:normal;color:#7fd39b} .nb-toc button.on i{color:#1e6b3f} .nb-toc .nb-small{color:#c9d1e3}
+.nb-page{position:relative;min-width:0;padding:22px 26px 30px 64px;border-radius:6px 14px 14px 6px;color:#1f2633;font-size:15px;line-height:28px;
+  background:linear-gradient(90deg,transparent 46px,#f2a7a7 46px,#f2a7a7 48px,transparent 48px),repeating-linear-gradient(180deg,#fffef8 0,#fffef8 27px,#dbe7f3 27px,#dbe7f3 28px);
+  box-shadow:0 1px 0 #e6dcc6,0 10px 24px rgba(20,33,61,.12);border:1px solid #ece4cf}
+.nb-page h3{margin:0 0 6px;font-family:"Patrick Hand","Noto Serif",Georgia,serif;font-size:28px;color:#14213d;line-height:1.3}
+.nb-page h4{margin:18px 0 4px;font-family:"Patrick Hand","Noto Serif",Georgia,serif;font-size:21px;color:#7a2a1c;line-height:1.3}
+.nb-page p{margin:0 0 6px} .nb-page ul{margin:0 0 6px;padding-left:20px} .nb-page mark{background:linear-gradient(180deg,transparent 45%,#fff07a 45%);padding:0 2px}
+.nb-small{font-size:12.5px;color:#5b6475;line-height:1.5}
+.nb-eq{display:inline-block;margin:4px 0;padding:2px 10px;border-radius:6px;background:rgba(20,33,61,.06);font-family:ui-monospace,Consolas,monospace;font-size:13.5px;line-height:1.7;max-width:100%;overflow-x:auto;white-space:nowrap} .nb-eq+.nb-eq{display:block;width:max-content}
+.nb-step{display:flex;gap:12px;margin:12px 0} .nb-step>div>b:first-child{display:block} .nb-step>div{flex:1;min-width:0} .nb-no{flex:none;width:30px;height:30px;border-radius:50%;background:#14213d;color:#f3d58c;display:flex;align-items:center;justify-content:center;font-weight:700;margin-top:-1px}
+.nb-tw{overflow-x:auto;margin:6px 0} .nb-t{border-collapse:collapse;background:#fff;font-size:13px;line-height:1.4} .nb-t th{background:#eef3fa;color:#14213d;padding:5px 8px;border:1px solid #d5deea;font-weight:600;white-space:nowrap}
+.nb-t td{padding:4px 8px;border:1px solid #e1e7ef;text-align:right;white-space:nowrap} .nb-t td:first-child{text-align:center} .nb-t.tx td{text-align:left;white-space:normal} .nb-t td small{color:#7a8496}
+.nb-note{margin:12px 0;padding:10px 14px;border-radius:4px;background:#fff59d;box-shadow:2px 3px 8px rgba(0,0,0,.12);transform:rotate(-.4deg);line-height:1.55;font-size:14px}
+.nb-note.warn{background:#ffe0b2} .nb-note.pin{background:#d7f5dd;transform:rotate(.4deg)}
+.nb-ch{display:block;width:100%;max-width:560px;height:auto;margin:6px 0;background:#fff;border:1px solid #e1e7ef;border-radius:8px}
+.nb-det summary{cursor:pointer;color:#14213d;font-weight:600}
+.nb-ex{margin-top:20px;padding:14px 16px;border:2px dashed #7a2a1c;border-radius:12px;background:rgba(255,255,255,.85);line-height:1.5}
+.nb-ex h4{margin-top:0} .nb-ok{font-family:Inter,sans-serif;font-size:12.5px;color:#1e6b3f;margin-left:6px}
+.nb-in{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:8px;margin:8px 0}
+.nb-in label{display:flex;flex-direction:column;gap:3px;font-size:13px;font-weight:600;color:#14213d;position:relative}
+.nb-in input{padding:7px 30px 7px 10px;border:1px solid #c9d3e3;border-radius:8px;font-size:15px;background:#fff}
+.nb-in i{position:absolute;right:9px;bottom:8px;font-style:normal;font-weight:800} .nb-in i.ok{color:#1e8e4f} .nb-in i.no{color:#c0392b}
+.nb-act{display:flex;flex-wrap:wrap;gap:8px} .nb-res{margin:8px 0 0;padding:8px 12px;border-radius:8px;background:#fdecea;color:#a0281c} .nb-res.ok{background:#e7f6ec;color:#1e6b3f}
+.nb-sol{margin-top:10px;padding:10px 12px;border-radius:10px;background:#f3f6fb;border:1px solid #d5deea}
+@media (max-width:600px){.nb-cover{font-size:17px!important} .nb-cover br{display:none} .nb-cover small{margin-left:6px}}
+@media (max-width:900px){.nb-wrap{grid-template-columns:1fr} .nb-toc{position:static;flex-direction:row;flex-wrap:wrap} .nb-cover{flex:1 1 100%;font-size:20px} .nb-toc button{flex:1 1 calc(50% - 6px)} .nb-toc .nb-small{display:none}}
+@media (max-width:600px){.nb-page{padding:16px 12px 22px 30px;background:linear-gradient(90deg,transparent 20px,#f2a7a7 20px,#f2a7a7 22px,transparent 22px),repeating-linear-gradient(180deg,#fffef8 0,#fffef8 27px,#dbe7f3 27px,#dbe7f3 28px)} .nb-page h3{font-size:24px} .nb-step{gap:8px} .nb-no{width:26px;height:26px}}
 /* Tiêu Dao Các (fun.js) */
 .fn-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;margin-bottom:16px}
 .fn-tile{display:flex;align-items:flex-start;gap:12px;padding:14px 16px;text-align:left;background:#fff;border:1px solid var(--line);border-radius:14px;cursor:pointer;white-space:normal;height:auto;transition:transform .15s,box-shadow .15s,border-color .15s}
@@ -607,6 +639,10 @@ table.np tr.gs td{border-top:2px solid #d9d0f0}
 .bg-lc{display:flex;align-items:center;gap:8px;flex-wrap:wrap} .bg-lc>span{font-size:22px} .bg-lc b{display:block;color:var(--navy)} .bg-lc button{font-size:12.5px} .bg-lc em{font-size:12.5px;color:#8a6410}
 .bg-bu{flex:1 1 100%;display:flex;align-items:center;gap:8px;margin:0;padding:6px 10px;border-radius:8px;background:#fff1c9;color:#6b4e0a;font-size:13px;font-weight:600}
 .bg-bu button{margin-left:auto;padding:2px 8px;font-size:12px}
+.bg-tab{font-size:12.5px} .bg-why{flex:1 1 100%;margin:0;font-size:12.5px;color:#8a3b12}
+.lc-tab{flex:1 1 100%;overflow-x:auto} .lc-tab table{width:100%;border-collapse:collapse;font-size:13px;min-width:640px} .lc-tab th{text-align:left;font-size:11.5px;color:var(--muted);border-bottom:1px solid #f0d89a;padding:5px 6px}
+.lc-tab td{padding:6px;border-bottom:1px solid #f6e7c4;vertical-align:top} .lc-tab tr.me td{background:#fff1c9} .lc-tab tr.ok td{color:var(--ink2)} .lc-tab em{font-style:normal;font-size:11px;color:#8a6410}
+.lc-ic{font-size:18px} .lc-tab p{margin:8px 0 0;font-size:12.5px;color:var(--ink2)} .lc-tab .lc-me{font-weight:600;color:#6b4e0a}
 .bg-n{flex:1 1 100%;margin:0;font-size:12px;color:var(--ink2)}
 #lib .lrd-pg,#lib .lib-read{scroll-margin-top:70px}           /* long answers wrap instead of running off the button */
 #libEx.lx{position:fixed;inset:0;z-index:1200;display:flex;align-items:center;justify-content:center;padding:20px;background:rgba(20,33,61,.55)}
@@ -1674,6 +1710,7 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%} body{-webkit-tap-highl
 <script src="lessons-tien-gioi.js"></script>
 <script src="breakthrough-fx.js"></script>
 <script src="fun.js"></script>
+<script src="notebook.js"></script>
 <script id="board-data" type="application/json">
 {"version":1,"projects":[],"history":[]}
 </script>
@@ -2793,8 +2830,36 @@ const libSave = L => { const R = REALMS[L.realm], o = Object.assign({}, L); if (
 const libNeed = n => Math.ceil(n * 0.8);                                 // cửa ải / tái chứng nhận: 8 / 10
 // Túi càn khôn: linh thạch (mỗi câu đúng ở lần thi đầu tiên của một bài: +10), Tẩy Tủy Đan (qua ngay lần thi đầu: +1),
 // linh căn 6 bậc, nâng một bậc tốn 1 → 2 → 4 → 8 → 16 viên đan. Linh thạch dùng mời cao nhân trợ giúp khi thi (LIB_HELP).
-const LIB_LC = [["Phế Linh Căn", "🪨"], ["Ngụy Linh Căn", "🌾"], ["Tạp Linh Căn", "🍂"], ["Song Linh Căn", "🌿"], ["Địa Linh Căn", "💎"], ["Thiên Linh Căn", "👑"]];
-const libLcCost = lc => 2 ** lc;
+// Linh căn 9 bậc: [tên, biểu tượng, mô tả, tối đa lần tẩu hỏa (mọi kiếp), tối đa tỉ lệ câu sai] – 2 số cuối là điều kiện để LÊN bậc đó.
+// Giá nâng (LIB_LC_COST[bậc hiện tại]): 1 → 2 → 4 → 8 → 16 (tới Thiên Linh Căn, tổng 31 viên), rồi 8 → 6 → 5 (tổng 50 viên).
+// Đan chỉ có khi qua NGAY lần đầu: tối đa 52 viên (50 bí kíp + 2 cửa ải) + 1 viên mỗi năm tái chứng nhận. Muốn tới Hỗn Độn
+// Linh Căn (50 viên) chỉ được trượt lần đầu tối đa khoảng 2 bài, kèm điều kiện ít tẩu hỏa và tỉ lệ sai thấp → ai sai nhiều sẽ không với tới.
+const LIB_LC = [
+  ["Phế Linh Căn", "🪨", "Linh căn hỏng – linh khí vào bao nhiêu rò bấy nhiêu, như thùng hàng thủng đáy. Ai cũng khởi đầu từ đây, chăm chỉ là đổi đời."],
+  ["Ngụy Linh Căn", "🌾", "Linh căn giả – lúc hấp thụ được linh khí, lúc không, như thước đo chưa hiệu chuẩn: khi đúng khi sai."],
+  ["Tạp Linh Căn", "🍂", "Năm hệ lẫn lộn – học gì cũng được một chút, đa năng nhưng chưa tinh. Cần chọn một hướng mà đào sâu."],
+  ["Song Linh Căn", "🌿", "Hai hệ tương sinh – học một hiểu hai, bắt đầu có phong thái kỹ sư thực thụ."],
+  ["Địa Linh Căn", "💎", "Linh căn đất mẹ – nền móng vững như 5S chuẩn chỉnh, trưởng lão tông môn bắt đầu để mắt tới."],
+  ["Thiên Linh Căn", "👑", "Đơn linh căn thuần khiết trăm năm có một – tu luyện nhanh gấp bội, đề nào cũng như đã gặp."],
+  ["Lôi Linh Căn · Biến Dị", "⚡", "Thiên linh căn được lôi kiếp tôi luyện mà biến dị – phản xạ như andon, bất thường vừa nhú đã bị phát hiện.", 8, .15],
+  ["Thánh Linh Căn", "🌟", "Thánh thể giáng thế – liếc qua là thấy gốc rễ vấn đề, cả tông môn xếp hàng xin thỉnh giáo.", 4, .08],
+  ["Hỗn Độn Linh Căn", "☯", "Truyền thuyết khai thiên lập địa – vạn pháp quy tông, Cpk vô cực. Chỉ dành cho người gần như chưa từng sai.", 2, .03],
+];
+const LIB_LC_COST = [1, 2, 4, 8, 16, 8, 6, 5];
+const LIB_PILL_MAX = 52;                                                  // 50 bí kíp + 2 cửa ải qua ngay lần đầu (chưa tính tái chứng nhận)
+const libLcCost = lc => LIB_LC_COST[lc] || Infinity;
+const libFailsAll = L => (+L.fails || 0) + (L.past || []).reduce((a, p) => a + (+p.fails || 0), 0);
+// điều kiện tư chất để lên bậc lc + 1 (chỉ các bậc trên Thiên Linh Căn có): ít tẩu hỏa (cộng mọi kiếp) và tỉ lệ câu sai thấp
+function libLcCheck(L, lc) {
+  const T = LIB_LC[lc + 1]; if (!T) return { ok:false, why:"Đã là linh căn tối thượng" };
+  if (T[3] === undefined) return { ok:true, why:"" };
+  const f = libFailsAll(L), rate = L.answered ? L.wrong / L.answered : null, why = [];
+  if (f > T[3]) why.push(`tẩu hỏa ${f} lần (tối đa ${T[3]})`);
+  if (rate === null || L.answered < 30) why.push(`cần trả lời ít nhất 30 câu để xét tỉ lệ sai (mới ${L.answered || 0})`);
+  else if (rate > T[4]) why.push(`tỉ lệ sai ${Math.round(rate * 100)} % (tối đa ${Math.round(T[4] * 100)} %)`);
+  return { ok:!why.length, why:why.join(" · ") };
+}
+let libLcTab = false;
 const LIB_STONE = 10;
 const LIB_HELP = [["cm", "🧙", "Chưởng môn", 100, "chỉ thẳng đáp án đúng"], ["tl", "👴", "Trưởng lão", 50, "lý thuyết: chắc đúng · tính toán: hên xui"], ["sh", "🧑‍🎓", "Sư huynh / sư tỷ", 10, "loại bỏ 2 đáp án sai"]];
 // lần thi của mỗi bài (L.qa): bí kíp = id; cửa ải = "gate:<id>"; tái chứng nhận = "recert:<năm>". Đã từng thi (cả trước bản này, theo log) = thi lại.
@@ -2913,6 +2978,7 @@ function renderLib() {
   if (libMode === "books") return renderBooks();
   if (libMode === "review") libMode = "road";                             // tab Duyệt (bài thực hành) đã bỏ
   if (libMode === "rank") return renderRank();
+  if (libMode === "note" && window.renderNote) return renderNote();
   const L = libSync(libLoad()), st = realmState(L, L.realm), R = st.R;
   let T = libTopic ? topicOf(libTopic) : null;
   if (T && (libMuse ? !libKnown(L).some(t => t.id === T.id) : T.ri > L.realm)) T = null, libTopic = "";
@@ -2937,13 +3003,26 @@ function renderLib() {
     ${T ? libReader(L, T) : libMuse ? libMuseHtml(L) : libRealmPanel(L, st)}`;
 }
 function libBagHtml(L) {
-  const lc = L.lc, nx = LIB_LC[lc + 1], cost = libLcCost(lc);
+  const lc = L.lc, nx = LIB_LC[lc + 1], cost = libLcCost(lc), ck = libLcCheck(L, lc);
   return `<div class="lib-bag"><div class="bg-i" title="Linh thạch: mời cao nhân trợ giúp khi thi"><span>💠</span><b>${L.stones}</b><small>linh thạch</small></div>
     <div class="bg-i" title="Tẩy Tủy Đan: nâng linh căn"><span>💊</span><b>${L.pills}</b><small>Tẩy Tủy Đan</small></div>
     <div class="bg-lc"><span>${LIB_LC[lc][1]}</span><div><b>${esc(LIB_LC[lc][0])}</b><small>Linh căn bậc ${lc + 1}/${LIB_LC.length}</small></div>
-      ${nx ? `<button data-x="libLc" ${L.pills >= cost ? "" : "disabled"} title="Mỗi lần nâng cần gấp đôi lần trước">💊 Uống ${cost} viên → ${esc(nx[0])}</button>` : `<em>Linh căn tối thượng</em>`}</div>
+      ${nx ? `<button data-x="libLc" ${L.pills >= cost && ck.ok ? "" : "disabled"} title="${esc(ck.ok ? "Uống đan nâng linh căn" : "Chưa đủ tư chất: " + ck.why)}">💊 Uống ${cost} viên → ${esc(nx[0])}</button>` : `<em>Linh căn tối thượng</em>`}
+      <button class="bg-tab" data-x="libLcTab">${libLcTab ? "Ẩn bảng linh căn ▴" : "📜 Bảng linh căn ▾"}</button></div>
+    ${nx && !ck.ok ? `<p class="bg-why">🔒 Chưa đủ tư chất để lên ${esc(nx[0])}: ${esc(ck.why)}</p>` : ""}
+    ${libLcTab ? libLcTable(L) : ""}
     ${L.rw0 && (L.rw0.stones || L.rw0.pills) && !L.rw0.seen ? `<p class="bg-bu">🎁 Tông môn bù thưởng cho ${L.rw0.n} bài đã vượt trước đây: +${L.rw0.stones} 💠 linh thạch · +${L.rw0.pills} 💊 Tẩy Tủy Đan <button data-x="libRw0" title="Đã nhận">✕</button></p>` : ""}
     <p class="bg-n">Thi một bài lần đầu: mỗi câu đúng +${LIB_STONE} 💠, qua ngay lần đầu +1 💊. Thi lại không có thưởng. Linh thạch dùng mời Chưởng môn / Trưởng lão / Sư huynh giúp khi gặp câu khó.</p></div>`;
+}
+function libLcTable(L) {
+  let sum = 0; const f = libFailsAll(L), rate = L.answered ? Math.round(L.wrong / L.answered * 100) + " %" : "–";
+  return `<div class="lc-tab"><table><thead><tr><th>Bậc</th><th>Linh căn</th><th>Mô tả</th><th>Đan để lên</th><th>Tổng đan</th><th>Điều kiện tư chất</th></tr></thead><tbody>
+    ${LIB_LC.map(([n, ic, d, mf, mr], k) => { const c = k ? LIB_LC_COST[k - 1] : 0; sum += c;
+      return `<tr class="${k === L.lc ? "me" : k < L.lc ? "ok" : ""}"><td>${k + 1}</td><td><span class="lc-ic">${ic}</span> <b>${esc(n)}</b>${k === L.lc ? " <em>(bạn)</em>" : ""}</td><td>${esc(d)}</td>
+        <td>${k ? c + " 💊" : "khởi đầu"}</td><td>${sum}</td><td>${mf === undefined ? "–" : `≤ ${mf} lần tẩu hỏa · sai ≤ ${Math.round(mr * 100)} %`}</td></tr>`; }).join("")}</tbody></table>
+    <p>Tẩy Tủy Đan chỉ có khi qua bài thi <b>ngay lần đầu</b>: tối đa <b>${LIB_PILL_MAX}</b> viên cho cả lộ trình (50 bí kíp + 2 cửa ải), thêm 1 viên mỗi năm tái chứng nhận ở Vị Tế.
+      Lên tới Hỗn Độn Linh Căn cần 50 viên, nghĩa là chỉ được trượt lần đầu khoảng 2 bài. Ba bậc trên Thiên Linh Căn còn xét tư chất: số lần tẩu hỏa (cộng cả các kiếp Binh Giải) và tỉ lệ câu sai.</p>
+    <p class="lc-me">Của bạn: 💊 ${L.pills} viên · tẩu hỏa ${f} lần · tỉ lệ sai ${rate} (${L.answered || 0} câu đã trả lời).</p></div>`;
 }
 // ---- Phong Thần Bảng: bảng tu vi (cảnh giới → bí kíp đã đạt → ít tẩu hỏa) và bảng tư chất (ít tẩu hỏa nhập ma, ít câu sai).
 // Số liệu tóm tắt do máy chủ gửi (action "rank", cập nhật mỗi phút); danh hiệu tư chất mang tính trêu vui trong tông môn.
@@ -2972,6 +3051,7 @@ function libBadges(r, tc) {
   if (r.started && !r.answered && !r.fails) b.push("😴 Chỉ đọc không thi");
   if (r.stones >= 500) b.push("💰 Đại gia linh thạch – tiền nhiều để làm gì?");
   if (r.pills >= 3) b.push("💊 Ôm đan không uống – để dành làm của hồi môn");
+  if (r.lc >= 8) b.push("☯ Hỗn Độn chi thể – truyền thuyết sống của tông môn"); else if (r.lc >= 6) b.push("⚡ Vượt Thiên Linh Căn – hàng hiếm");
   return b;
 }
 async function rankLoad(force) {
@@ -3019,6 +3099,7 @@ let libMode = (() => { try { return sessionStorage.getItem("npdLibMode") || "roa
 let bookSel = "", bookQ = "", bookTopic = "", bookEdit = null;
 const libTabs = () => `<div class="lib-tabs" role="tablist"><button data-x="libMode" data-k="road" class="${libMode === "road" ? "on" : ""}">🛤 Lộ trình tu luyện</button>
   <button data-x="libMode" data-k="books" class="${libMode === "books" ? "on" : ""}">📚 Thư viện <small>${(S.library || []).length}</small></button>
+  <button data-x="libMode" data-k="note" class="${libMode === "note" ? "on" : ""}">📓 Sổ tay<span class="lbl"> SPC</span></button>
   <button data-x="libMode" data-k="rank" class="${libMode === "rank" ? "on" : ""}">🏆 Phong Thần<span class="lbl"> Bảng</span></button>
 </div>`;
 const mdLite = t => {                                                     // the small text format of the library → HTML (escaped first)
@@ -4095,7 +4176,8 @@ document.addEventListener("click", e => {                                // butt
   if (x === "libHelp") return LX && libHelp(k);
   if (x === "libExRetry") { const X = LX, m = $("#libEx"); if (m) m.remove(); LX = null; renderLib(); return X && libExam(X.mode, X.tid); }
   if (x === "libRw0") { const L = libLoad(); if (L.rw0) { L.rw0.seen = 1; libSave(L); } return renderLib(); }
-  if (x === "libLc") { const L = libLoad(), c = libLcCost(L.lc); if (L.lc >= LIB_LC.length - 1 || L.pills < c) return;
+  if (x === "libLcTab") { libLcTab = !libLcTab; return renderLib(); }
+  if (x === "libLc") { const L = libLoad(), c = libLcCost(L.lc); if (L.lc >= LIB_LC.length - 1 || L.pills < c || !libLcCheck(L, L.lc).ok) return;
     L.pills -= c; L.lc++; L.log.push({ r:REALMS[L.realm].id, t:"linh-can", ok:1, at:todayISO() }); libSave(L); renderLib();
     const b2 = $(".lib-bag"); if (b2) { b2.classList.add("up"); setTimeout(() => b2.classList.remove("up"), 1600); } return; }
   if (x === "libExNext") { LX.k++; LX.pick = null; if (LX.k >= LX.qs.length) libExamEnd(); return libExamDraw(); }
