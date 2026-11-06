@@ -58,7 +58,10 @@ Ngôn ngữ giao diện: tiếng Anh / tiếng Việt; trao đổi với chủ d
 - Điện thoại (≤ 760 px, ưu tiên iPhone 15 Plus 430 × 932): menu #nav thành thanh tab cố định dưới đáy (body chừa
   60px + safe-area), viewport-fit=cover + env(safe-area-inset-*) cho tai thỏ / thanh Home, ô nhập 16px (iOS không tự
   phóng to), nút trong trang ≥ 40px. Khối CSS cuối thẻ <style> ("Điện thoại (ưu tiên iPhone 15 Plus…)").
-- `study/english.html`, `study/chinese.html` – app học (do chủ dự án viết); `study/*-bank.js` – bài học mỗi ngày
+- `study/english.html`, `study/chinese.html` – app học (do chủ dự án viết); `study/*-bank.js` – bài học mỗi ngày;
+  `study/chinese-course.js` – tab "📗 Hán ngữ" (window.ZH_COURSE, 30 bài theo trình tự quyển 1–2 giáo trình Hán ngữ, nội dung
+  tự viết, không chép sách: phát âm, từ mới, ngữ pháp tiếng Việt, hội thoại + đọc to, 10 câu luyện tập, đạt ≥ 8 = hoàn thành;
+  tiến độ S.course[id] trong dữ liệu zh; từ của bài đã mở vào thẻ ôn Vocabulary; Dictation có nguồn "Hán ngữ")
   (window.ENG_BANK / ZH_BANK). Chạy riêng thì lưu localStorage; trong web thì lưu theo tài khoản + nhận thêm dữ liệu
   từ tab English / Chinese của Sheet.
 - `sheets-auth.js` – đăng nhập / tạo tài khoản, menu tài khoản (đổi mật khẩu, đăng xuất), gọi API, lưu phiên (token 6h):

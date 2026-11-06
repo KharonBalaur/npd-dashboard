@@ -98,6 +98,26 @@ form.add input{flex:1;min-width:130px}
 .gi .ck{margin-left:auto;min-width:22px;height:22px;border-radius:999px;padding:0 6px;display:grid;place-items:center;font-size:11px;background:var(--bg);color:var(--mut);flex:none}
 .gi .ck.y{background:var(--ok);color:#fff}
 .gd h3{margin:0 0 4px;font-size:20px}
+.cbk{margin:8px 4px 2px;font-weight:800;font-size:12.5px;letter-spacing:.04em;color:var(--mut)}
+.chd{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}.chd h3{margin:6px 0 2px}.chd .nav{display:flex;gap:6px;flex:none}
+.ok-t{background:var(--ok-s);color:var(--ok)}
+.csec{border-top:1px solid var(--line);margin-top:12px;padding-top:10px}.csec>summary{cursor:pointer;font-weight:800;font-size:15px;margin-bottom:6px}
+.csec ul{margin:6px 0;padding-left:20px}.csec li{margin:4px 0;line-height:1.5}
+.ctab{width:100%;border-collapse:collapse;font-size:14px}.ctab th{text-align:left;font-size:12px;color:var(--mut);border-bottom:1px solid var(--line);padding:4px 6px}.ctab td{border-bottom:1px solid var(--line);padding:6px;vertical-align:top}
+.cg{margin:8px 0 12px}.cg h4{margin:0 0 4px;font-size:15px}.cg .exs{display:flex;flex-direction:column;gap:6px}
+.cdl{display:flex;flex-direction:column;gap:8px;margin-top:8px}.cdl-l{display:flex;gap:10px;align-items:flex-start;padding:8px 10px;border-radius:12px;background:var(--bg)}
+.cdl-l.B{background:var(--lime-soft)}.cdl-l.hl{outline:2px solid var(--ink)}.cdl-l>div{display:flex;flex-direction:column;gap:2px}.cdl-n{flex:none;min-width:58px;font-weight:700;font-size:12.5px;color:var(--mut);font-family:"Microsoft YaHei","PingFang SC",sans-serif}
+.ctip{margin-top:12px;padding:10px 12px;border-radius:12px;background:#FFF8E1;font-size:13.5px}
+.cqh{display:flex;justify-content:space-between;font-size:12.5px;color:var(--mut);margin:8px 0}
+.cqq{display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:16px;font-weight:600;margin-bottom:10px}
+.copts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.copt{border:1px solid var(--line);background:#fff;border-radius:12px;padding:10px 12px;text-align:left;font-weight:600;min-height:44px}
+.copt.r{border-color:var(--ok);background:var(--ok-s);color:var(--ok)}.copt.w{border-color:var(--bad);background:var(--bad-s);color:var(--bad)}.copt:disabled{opacity:1;cursor:default}
+.cord,.cord-a{display:flex;flex-wrap:wrap;gap:6px;min-height:46px;padding:8px;border-radius:12px;background:var(--bg);margin-bottom:8px}.cord-a{background:#fff;border:1px dashed var(--line)}
+.ctk{border:1px solid var(--line);background:#fff;border-radius:10px;padding:8px 12px;font-size:18px;font-family:"Microsoft YaHei","PingFang SC",sans-serif;min-height:42px}.ctk.on{background:var(--lime-soft)}
+.cok,.cno{margin-top:10px;padding:8px 12px;border-radius:10px;font-size:13.5px}.cok{background:var(--ok-s);color:var(--ok)}.cno{background:var(--bad-s);color:var(--bad)}
+.cres{padding:12px 14px;border-radius:12px;background:var(--bad-s)}.cres.ok{background:var(--ok-s)}
+.cpick{display:none;width:100%;max-width:none;margin-bottom:10px;font-size:16px;font-weight:600}.cdl-h{display:flex;align-items:center;gap:6px}
+@media (max-width:760px){#t-course .glist{display:none}.cpick{display:block}.cdl-l{flex-direction:column;gap:2px}.copts{grid-template-columns:1fr}.ctab td:nth-child(2){white-space:nowrap}}
 .form{background:#111;color:var(--lime);border-radius:10px;padding:8px 12px;font:13px/1.6 ui-monospace,Menlo,Consolas,"Microsoft YaHei",monospace;white-space:pre-wrap;margin-top:8px}
 .gd ul{margin:8px 0;padding-left:20px}.gd li{margin:4px 0}
 .exs{display:flex;flex-direction:column;gap:6px;margin:10px 0}
@@ -138,9 +158,9 @@ body.embed{padding-top:12px}
 </style></head><body class="show-py show-vi">
 <div class="wrap">
 <div class="banner">
- <div class="top"><div class="brand"><h1>CHINESE STUDY<span>中文学习</span></h1><span class="sub">Daily lesson · Listening · Dictation · Vocabulary · Phrases · Grammar</span></div></div>
+ <div class="top"><div class="brand"><h1>CHINESE STUDY<span>中文学习</span></h1><span class="sub">Hán ngữ course · Daily lesson · Listening · Dictation · Vocabulary · Phrases · Grammar</span></div></div>
  <div class="bar">
-  <div class="tabs" id="tabs"><button data-t="today">📅 Today</button><button data-t="listen">🎧 Listening</button><button data-t="dict">✍️ Dictation</button><button data-t="vocab">📕 Vocabulary</button><button data-t="phr">💬 Phrases</button><button data-t="gram">🧩 Grammar</button></div>
+  <div class="tabs" id="tabs"><button data-t="course">📗 Hán ngữ</button><button data-t="today">📅 Today</button><button data-t="listen">🎧 Listening</button><button data-t="dict">✍️ Dictation</button><button data-t="vocab">📕 Vocabulary</button><button data-t="phr">💬 Phrases</button><button data-t="gram">🧩 Grammar</button></div>
  </div>
  <div class="bar">
   <label>Voice <select id="voice"></select></label>
@@ -154,12 +174,13 @@ body.embed{padding-top:12px}
  <div class="bar"><div class="chips" id="chips"></div><span class="sp"></span><span id="sv" title="Click to connect / save again to qe_data.json in the data folder">…</span></div>
 </div>
 
+<section class="tab" id="t-course"><div class="gwrap"><div class="glist" id="cList"></div><div class="card gd" id="cDet"></div></div></section>
 <section class="tab" id="t-today"></section>
 <section class="tab" id="t-listen"><div class="gwrap"><div class="glist" id="lList"></div><div class="card gd" id="lDet"></div></div></section>
 <section class="tab" id="t-dict">
  <div class="card">
   <div class="row sp"><h2 style="margin:0">Listen and write</h2>
-   <div class="row"><label>Level <select id="dLvl"><option value="0">All</option><option value="1">Easy</option><option value="2">Medium</option><option value="3">Hard</option><option value="today">Today's lesson</option><option value="listen">Current listening lesson</option><option value="my">My sentences</option></select></label><span class="mut" id="dStat"></span></div></div>
+   <div class="row"><label>Level <select id="dLvl"><option value="0">All</option><option value="1">Easy</option><option value="2">Medium</option><option value="3">Hard</option><option value="today">Today's lesson</option><option value="listen">Current listening lesson</option><option value="course">Hán ngữ: hội thoại bài đang học</option><option value="my">My sentences</option></select></label><span class="mut" id="dStat"></span></div></div>
   <div class="play"><button class="bigplay" id="dPlay" title="Play (Ctrl + Space)">▶</button><button class="sec" id="dSlow">🐢 Slow</button><button class="ghost" id="dHint">💡 Hint</button><span class="mut">Type in Chinese characters <b>or</b> pinyin (tones optional) · Ctrl+Space: play again · Enter: check · Enter again: next</span></div>
   <textarea id="dIn" placeholder="汉字 or pinyin…" spellcheck="false"></textarea>
   <div class="hint" id="dHintT" hidden></div>
@@ -178,6 +199,7 @@ body.embed{padding-top:12px}
 </div>
 
 <script src="chinese-bank.js"></script>
+<script src="chinese-course.js"></script>
 <script>
 /* Thiên Công Tông: inside the site (frame), extra lessons added by the team in the Google Sheet (tab Chinese)
    join the bank, and progress is saved to the signed-in account instead of this browser / qe_data.json */
@@ -344,9 +366,9 @@ const TONES=[['mā','1st · high, flat','妈 mother'],['má','2nd · rising','�
 
 /* ================= state & storage (qe_data.json › zh) ================= */
 const KEY='zh.v1',INT=[0,1,2,4,7,15],NEW_MAX=10;
-const DEF=()=>({v:1,savedAt:0,start:0,done:{},srs:{},gram:{},listen:{},custom:{vocab:[],phr:[],dict:''},stats:{days:{},dOk:0,dAll:0},opts:{tab:'today',lvl:'0',rate:.8,voice:'',voice2:'',py:true,vi:true,lsel:'z1',dir:{vocab:'en',phr:'en'}}});
+const DEF=()=>({v:1,savedAt:0,start:0,done:{},srs:{},gram:{},listen:{},course:{},custom:{vocab:[],phr:[],dict:''},stats:{days:{},dOk:0,dAll:0},opts:{tab:'today',lvl:'0',rate:.8,voice:'',voice2:'',py:true,vi:true,lsel:'z1',dir:{vocab:'en',phr:'en'}}});
 function fill(d){const b=DEF();if(!d||typeof d!=='object')return b;const o=d.opts||{};
- return Object.assign(b,d,{done:d.done||{},srs:d.srs||{},gram:d.gram||{},listen:d.listen||{},custom:Object.assign(b.custom,d.custom||{}),stats:Object.assign(b.stats,d.stats||{}),opts:Object.assign(b.opts,o,{dir:Object.assign(b.opts.dir,o.dir||{})})})}
+ return Object.assign(b,d,{done:d.done||{},srs:d.srs||{},gram:d.gram||{},listen:d.listen||{},course:d.course&&typeof d.course==='object'?d.course:{},custom:Object.assign(b.custom,d.custom||{}),stats:Object.assign(b.stats,d.stats||{}),opts:Object.assign(b.opts,o,{dir:Object.assign(b.opts.dir,o.dir||{})})})}
 const HOST=(()=>{try{return window.parent!==window&&window.parent.npdStudy||null}catch(e){return null}})();   /* the site: progress per account */
 let S;try{S=fill(HOST?HOST.load('zh'):JSON.parse(localStorage.getItem(KEY)||'null'))}catch(e){S=DEF()}
 if(!S.start)S.start=dayNum();   /* day 1 of the daily lessons = the first day this app was opened */
@@ -394,12 +416,12 @@ document.addEventListener('click',e=>{const b=e.target.closest('[data-say]');if(
 const spk=(t,sm)=>`<button class="spk${sm?' sm':''}" data-say="${esc(t)}" title="Listen">🔊</button>`;
 
 /* ================= header chips & tabs ================= */
-function decks(d){return d==='vocab'?VOCAB.concat(unlocked(BW,2),S.custom.vocab):unlocked(BS,1).concat(S.custom.phr)}   /* lesson items join the decks on the day they are taught */
+function decks(d){return d==='vocab'?VOCAB.concat(unlocked(BW,2),CW(),S.custom.vocab):unlocked(BS,1).concat(S.custom.phr)}   /* lesson items join the decks on the day they are taught */
 function dueCount(d){const t=dayNum();return decks(d).filter(it=>S.srs[it.id]&&S.srs[it.id].due<=t).length}
 function chips(){const g=GRAM.filter(x=>S.gram[x.id]).length,ls=LISTEN.filter(x=>S.listen[x.id]).length,acc=S.stats.dAll?Math.round(S.stats.dOk/S.stats.dAll*100):0,sk=streak();
- $('chips').innerHTML=`<span>🔥 Streak <b>${sk}</b> day${sk===1?'':'s'}</span><span>Lesson #${todayIdx()+1} <b>${S.done[todayIdx()]?'✓ done':'to learn'}</b></span><span>Today <b>${S.stats.days[dayStr()]||0}</b> activities</span><span>To review <b>${dueCount('vocab')}</b> words · <b>${dueCount('phr')}</b> phrases</span><span>Listening <b>${ls}</b>/${LISTEN.length}</span><span>Dictation <b>${S.stats.dOk}</b>/${S.stats.dAll} perfect${S.stats.dAll?` (${acc}%)`:''}</span><span>Grammar <b>${g}</b>/${GRAM.length}</span>`}
+ $('chips').innerHTML=`<span>🔥 Streak <b>${sk}</b> day${sk===1?'':'s'}</span><span>Lesson #${todayIdx()+1} <b>${S.done[todayIdx()]?'✓ done':'to learn'}</b></span><span>Today <b>${S.stats.days[dayStr()]||0}</b> activities</span><span>To review <b>${dueCount('vocab')}</b> words · <b>${dueCount('phr')}</b> phrases</span><span>Listening <b>${ls}</b>/${LISTEN.length}</span><span>Dictation <b>${S.stats.dOk}</b>/${S.stats.dAll} perfect${S.stats.dAll?` (${acc}%)`:''}</span><span>Grammar <b>${g}</b>/${GRAM.length}</span>${CO.length?`<span>Hán ngữ <b>${CO.filter(x=>(S.course[x.id]||{}).done).length}</b>/${CO.length}</span>`:''}`}
 function tab(t,quiet){S.opts.tab=t;document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.t===t));document.querySelectorAll('.tab').forEach(s=>s.classList.toggle('on',s.id==='t-'+t));
- if(t==='vocab'||t==='phr')deckRender(t);if(t==='gram')gramRender();if(t==='today')todayRender();if(t==='listen')listenRender();if(!quiet)save()}
+ if(t==='vocab'||t==='phr')deckRender(t);if(t==='gram')gramRender();if(t==='course')courseRender();if(t==='today')todayRender();if(t==='listen')listenRender();if(!quiet)save()}
 $('tabs').onclick=e=>{const b=e.target.closest('[data-t]');if(b)tab(b.dataset.t)};
 
 /* ================= dictation: check by characters, or by pinyin without tones ================= */
@@ -407,7 +429,8 @@ let DC=null,dChecked=false,dLast='';
 const ALLS=()=>{const a=[];VOCAB.concat(BW).forEach(x=>x.e&&a.push(x.e));BS.forEach(x=>a.push({h:x.h,p:x.p,m:x.m,v:x.v}));LISTEN.forEach(L=>L.lines.forEach(l=>a.push({h:l[1],p:l[2],m:l[3],v:l[4]})));GRAM.forEach(g=>g.ex.forEach(e=>a.push({h:e[0],p:e[1],m:e[2],v:e[3]})));return a};
 const lvOf=s=>{const n=hanOnly(s.h).length;return n<=7?1:n<=13?2:3};
 function myDict(){return S.custom.dict.split('\n').map(s=>s.trim()).filter(Boolean).map(h=>({h,p:'',m:'',v:''}))}
-function dPool(){const l=S.opts.lvl;if(l==='my')return myDict();if(l==='today')return lessonSentences(tView);
+function dPool(){const l=S.opts.lvl;if(l==='my')return myDict();
+ if(l==='course'){const c=CO.find(x=>x.id===(S.opts.csel||''))||CO[0];return c?c.dl.map(([,,h,p,v])=>({h,p,m:'',v})):[]}if(l==='today')return lessonSentences(tView);
  if(l==='listen'){const L=LISTEN.find(x=>x.id===S.opts.lsel)||LISTEN[0];return L.lines.map(l=>({h:l[1],p:l[2],m:l[3],v:l[4]}))}
  const a=ALLS();return l==='0'?a:a.filter(s=>String(lvOf(s))===l)}
 function dNext(){const p=dPool();if(!p.length){DC=null;$('dRes').innerHTML='<p class="mut">No sentences yet. Add some under “My sentences” below.</p>';return}
@@ -562,6 +585,83 @@ function gramRender(){if(!gSel)gSel=(GRAM.find(g=>!S.gram[g.id])||GRAM[0]).id;
   const ck=document.querySelector(`.gi[data-g="${g.id}"] .ck`);if(all&&ck){ck.className='ck y';ck.textContent='✓'}}}
 $('gList').onclick=e=>{const b=e.target.closest('[data-g]');if(b){gSel=b.dataset.g;gramRender();$('gDet').scrollIntoView({block:'nearest',behavior:'smooth'})}};
 
+/* ================= Hán ngữ: lộ trình theo trình tự giáo trình Hán ngữ (chinese-course.js) – học không cần sách ================= */
+/* Tiến độ: S.course[id] = {seen, done, best, n, at}. Bài đã mở → từ mới vào thẻ ôn Vocabulary. Đạt ≥ 80 % bài luyện tập → hoàn thành. */
+const CO=Array.isArray(window.ZH_COURSE)?window.ZH_COURSE:[];
+const coLbl=c=>`Q${c.b} · Bài ${c.n}`;
+const PUNCT=/^[，。！？、；：,.!?\s]+$/;
+const CW=()=>{const have=new Set(VOCAB.concat(BW).map(x=>x.h));return CO.filter(c=>S.course[c.id]).flatMap(c=>c.w.filter(w=>!have.has(w[0])).map(([h,p,pos,v,m])=>({id:'c:'+h,h,p,pos,m,v,e:null})))};
+let cSel=null,CQ=null;
+function courseRender(){const det=$('cDet');
+ if(!CO.length){$('cList').innerHTML='';det.innerHTML='<p>Không tải được chinese-course.js. Để file cùng thư mục với chinese.html.</p>';return}
+ if(!cSel||!CO.some(c=>c.id===cSel))cSel=S.opts.csel||(CO.find(c=>!(S.course[c.id]||{}).done)||CO[0]).id;
+ S.opts.csel=cSel;const c=CO.find(x=>x.id===cSel),isNew=!S.course[c.id],P=S.course[c.id]||(S.course[c.id]={seen:dayStr()});
+ let book=0;$('cList').innerHTML=`<div class="mut" style="padding:2px 4px">Đã hoàn thành <b>${CO.filter(x=>(S.course[x.id]||{}).done).length}</b> / ${CO.length} bài</div>`+CO.map(x=>{const p=S.course[x.id]||{};
+  const h=x.b!==book?`<div class="cbk">📗 Quyển ${book=x.b}</div>`:'';
+  return h+`<button class="gi ${x.id===cSel?'on':''}" data-c="${x.id}"><span><small class="mut">Bài ${x.n}</small><br>${esc(x.t)}</span><span class="ck ${p.done?'y':''}">${p.done?'✓':p.seen?'·':''}</span></button>`}).join('');
+ const i=CO.indexOf(c),prev=CO[i-1],next=CO[i+1];
+ const words=`<table class="ctab"><tr><th>Chữ Hán</th><th>Pinyin</th><th>Nghĩa</th></tr>${c.w.map(([h,p,pos,v,m])=>`<tr><td>${spk(h,1)} <span class="hz2">${esc(h)}</span></td><td><span class="py" style="display:inline">${esc(p)}</span></td><td><b>${esc(v)}</b> <span class="pos">${esc(pos)}</span><div class="mut">${esc(m)}</div></td></tr>`).join('')}</table>`;
+ const gram=c.g.map((g,k)=>`<div class="cg"><h4>${k+1}. ${esc(g.t)}</h4><ul>${g.d.map(x=>`<li>${esc(x)}</li>`).join('')}</ul><div class="exs">${g.ex.map(([h,p,v])=>S4({h:h.replace(/\|/g,''),p,m:'',v})).join('')}</div></div>`).join('');
+ const dl=`<div class="row"><button class="sec" id="cDlg">▶ Nghe cả hội thoại</button><span class="mut">Giọng 1 / giọng 2 chọn ở “Voice” và “Voice 2” phía trên.</span></div>
+  <div class="cdl">${c.dl.map(([who,nm,h,p,v],k)=>`<div class="cdl-l ${who}" data-k="${k}"><span class="cdl-n">${esc(nm)}</span><div><div class="cdl-h">${spk(h,1)} <span class="hz2">${esc(h)}</span></div><span class="py">${esc(p)}</span>${viSpan(v)}</div></div>`).join('')}</div>`;
+ const pick=`<select id="cPick" class="cpick" aria-label="Chọn bài">${[1,2].filter(bk=>CO.some(x=>x.b===bk)).map(bk=>`<optgroup label="Quyển ${bk}">${CO.filter(x=>x.b===bk).map(x=>`<option value="${x.id}" ${x.id===c.id?'selected':''}>${(S.course[x.id]||{}).done?'✓ ':''}Bài ${x.n} · ${esc(x.t)}</option>`).join('')}</optgroup>`).join('')}</select>`;
+ det.innerHTML=`${pick}<div class="chd"><div><span class="tag">${coLbl(c)}</span>${P.done?' <span class="tag ok-t">✓ Đã hoàn thành'+(P.best!=null?` · ${P.best}/${P.n}`:'')+'</span>':''}<h3>${esc(c.t)}</h3><div class="hz2">${esc(c.zh)} ${spk(c.zh,1)}</div><div class="mut">🎯 ${esc(c.goal)}</div></div>
+   <div class="nav"><button class="sec" data-cn="${prev?prev.id:''}" ${prev?'':'disabled'} title="Bài trước">◀</button><button class="sec" data-cn="${next?next.id:''}" ${next?'':'disabled'} title="Bài sau">▶</button></div></div>
+  ${c.pron?`<details class="csec" open><summary>🔤 Phát âm</summary><ul>${c.pron.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></details>`:''}
+  <details class="csec" open><summary>📕 Từ mới (${c.w.length})</summary>${words}<div class="mut">Từ của bài đã mở được thêm vào thẻ ôn ở tab Vocabulary.</div></details>
+  <details class="csec" open><summary>🧩 Ngữ pháp</summary>${gram}</details>
+  <details class="csec" open><summary>💬 Hội thoại</summary>${dl}</details>
+  ${c.tip?`<div class="ctip">💡 ${esc(c.tip)}</div>`:''}
+  <div class="csec cq" id="cQ"><div class="row sp"><b>✍️ Luyện tập</b><span class="mut">10 câu · đúng từ 8 câu là hoàn thành bài</span></div><div id="cQb">${CQ&&CQ.id===c.id?'':`<button class="pri" id="cGo">▶ Bắt đầu luyện tập</button>`}</div></div>`;
+ if(CQ&&CQ.id===c.id)cqDraw();
+ if(isNew){save();chips()}}
+function cqMake(c){const upto=CO.slice(0,CO.indexOf(c)+1).flatMap(x=>x.w),pool=upto.length>=8?upto:CO.flatMap(x=>x.w);
+ const opt=(right,key)=>{const o=[right];for(const w of shuffle(pool)){const v=w[key];if(o.length>=4)break;if(!o.includes(v))o.push(v)}return shuffle(o)};
+ const ws=shuffle(c.w),Q=[],kinds=['mean','mean','mean','hz','hz','py','py','listen'];
+ kinds.forEach((k,i)=>{const w=ws[i%ws.length];
+  if(k==='mean')Q.push({k,ask:w[0],sub:w[1],say:w[0],o:opt(w[3],3),a:w[3],tip:`${w[0]} (${w[1]}) = ${w[3]}`});
+  if(k==='hz')Q.push({k,ask:w[3],o:opt(w[0],0),a:w[0],hz:1,tip:`${w[3]} = ${w[0]} (${w[1]})`});
+  if(k==='py')Q.push({k,ask:w[0],o:opt(w[1],1),a:w[1],tip:`${w[0]} đọc là ${w[1]}`});
+  if(k==='listen')Q.push({k,say:w[0],o:opt(w[0],0),a:w[0],hz:1,tip:`Bạn vừa nghe: ${w[0]} (${w[1]}) – ${w[3]}`})});
+ const ord=shuffle(c.g.flatMap(g=>g.ex).filter(e=>e[0].split('|').filter(t=>!PUNCT.test(t)).length>=3)).slice(0,2);
+ ord.forEach(([h,p,v])=>{const t=h.split('|').filter(x=>!PUNCT.test(x));let s=shuffle(t);for(let n=0;n<5&&s.join('')===t.join('');n++)s=shuffle(t);Q.push({k:'order',ask:v,tok:s,a:t.join(''),pick:[],tip:`${t.join('')} – ${p}`})});
+ while(Q.length<10){const w=ws[Q.length%ws.length];Q.push({k:'mean',ask:w[0],sub:w[1],say:w[0],o:opt(w[3],3),a:w[3],tip:`${w[0]} (${w[1]}) = ${w[3]}`})}
+ return{id:c.id,q:shuffle(Q).slice(0,10),i:0,ok:0,ans:null}}
+const CQK={mean:'Chọn nghĩa đúng',hz:'Chọn chữ Hán đúng',py:'Chọn pinyin đúng',listen:'Nghe và chọn chữ Hán',order:'Sắp xếp thành câu đúng'};
+function cqDraw(){const b=$('cQb');if(!b||!CQ)return;
+ if(CQ.i>=CQ.q.length){const c=CO.find(x=>x.id===CQ.id),P=S.course[c.id]||(S.course[c.id]={}),pass=CQ.ok>=8;
+  b.innerHTML=`<div class="cres ${pass?'ok':''}"><b>${pass?'🎉 Hoàn thành bài!':'Chưa đạt'}</b> Đúng ${CQ.ok}/${CQ.q.length} câu.${pass?'':' Cần 8 câu – xem lại từ mới, ngữ pháp rồi làm lại nhé.'}</div>
+   <div class="row" style="margin-top:8px"><button class="sec" id="cGo">↻ Luyện lại (đề mới)</button>${pass&&CO[CO.indexOf(c)+1]?`<button class="pri" data-cn="${CO[CO.indexOf(c)+1].id}">Bài tiếp theo →</button>`:''}</div>`;return}
+ const q=CQ.q[CQ.i],done=CQ.ans!==null,right=done&&CQ.ans===q.a;
+ let body='';
+ if(q.k==='order')body=`<div class="cord-a">${q.pick.map((t,j)=>`<button class="ctk on" data-op="${j}" ${done?'disabled':''}>${esc(t)}</button>`).join('')||'<span class="mut">Chạm vào các từ bên dưới theo đúng thứ tự…</span>'}</div>
+   <div class="cord">${q.tok.map((t,j)=>q.used&&q.used.includes(j)?'':`<button class="ctk" data-ot="${j}" ${done?'disabled':''}>${esc(t)}</button>`).join('')}</div>
+   ${done?'':`<div class="row"><button class="pri" id="cOrd" ${q.pick.length===q.tok.length?'':'disabled'}>✓ Kiểm tra</button><button class="ghost" id="cOrdX">↺ Làm lại</button></div>`}`;
+ else body=`<div class="copts">${q.o.map(o=>`<button class="copt ${q.hz?'hz2':''} ${done?(o===q.a?'r':o===CQ.ans?'w':''):''}" data-oa="${esc(o)}" ${done?'disabled':''}>${esc(o)}</button>`).join('')}</div>`;
+ b.innerHTML=`<div class="cqh"><span>Câu ${CQ.i+1}/${CQ.q.length} · ${CQK[q.k]}</span><span>Đúng <b>${CQ.ok}</b></span></div>
+  <div class="cqq">${q.k==='listen'?`<button class="bigplay" data-say="${esc(q.say)}" title="Nghe lại">▶</button>`:q.k==='order'?`<span>${esc(q.ask)}</span>`:`<span class="${q.k==='hz'?'':'hz'}">${esc(q.ask)}</span>${q.say&&q.k!=='py'?' '+spk(q.say):''}${q.sub&&q.k==='mean'?`<span class="py">${esc(q.sub)}</span>`:''}`}</div>${body}
+  ${done?`<div class="${right?'cok':'cno'}">${right?'✓ Chính xác':'✗ Chưa đúng'} · ${esc(q.tip)}</div><button class="pri" id="cNext" style="margin-top:8px">${CQ.i+1<CQ.q.length?'Câu tiếp →':'Xem kết quả'}</button>`:''}`;
+ if(q.k==='listen'&&!done&&!q.played){q.played=1;say(q.say)}}
+function cqAnswer(v){const q=CQ.q[CQ.i];if(CQ.ans!==null)return;CQ.ans=v;if(v===q.a)CQ.ok++;bump();cqDraw();if(q.k!=='listen'&&q.k!=='order'&&q.hz)say(q.a)}
+function cqEnd(){const c=CO.find(x=>x.id===CQ.id),P=S.course[c.id]||(S.course[c.id]={});const pass=CQ.ok>=8;
+ P.n=CQ.q.length;P.best=Math.max(P.best||0,CQ.ok);P.at=dayStr();if(pass)P.done=P.done||dayStr();save();chips();
+ const ck=document.querySelector(`.gi[data-c="${c.id}"] .ck`);if(pass&&ck){ck.className='ck y';ck.textContent='✓'}}
+$('t-course').addEventListener('change',e=>{if(e.target.id==='cPick'){cSel=e.target.value;CQ=null;courseRender()}});
+$('t-course').addEventListener('click',e=>{const t=e.target;
+ const li=t.closest('[data-c]');if(li){cSel=li.dataset.c;CQ=null;courseRender();$('cDet').scrollIntoView({block:'start',behavior:'smooth'});return}
+ const nv=t.closest('[data-cn]');if(nv&&nv.dataset.cn){cSel=nv.dataset.cn;CQ=null;courseRender();$('cDet').scrollIntoView({block:'start',behavior:'smooth'});return}
+ if(t.id==='cGo'){CQ=cqMake(CO.find(x=>x.id===cSel));cqDraw();$('cQ').scrollIntoView({block:'nearest',behavior:'smooth'});return}
+ if(t.id==='cNext'){CQ.i++;CQ.ans=null;if(CQ.i>=CQ.q.length)cqEnd();cqDraw();return}
+ const oa=t.closest('[data-oa]');if(oa){cqAnswer(oa.dataset.oa);return}
+ const q=CQ&&CQ.q[CQ.i];
+ const ot=t.closest('[data-ot]');if(ot&&q){q.used=q.used||[];q.used.push(+ot.dataset.ot);q.pick.push(q.tok[+ot.dataset.ot]);cqDraw();return}
+ const op=t.closest('[data-op]');if(op&&q){const j=+op.dataset.op;q.pick.splice(j,1);q.used.splice(j,1);cqDraw();return}
+ if(t.id==='cOrdX'&&q){q.pick=[];q.used=[];cqDraw();return}
+ if(t.id==='cOrd'&&q){cqAnswer(q.pick.join(''));say(q.a);return}
+ if(t.id==='cDlg'){const c=CO.find(x=>x.id===cSel);if(!window.speechSynthesis)return;speechSynthesis.cancel();
+  c.dl.forEach(([who,,h],k)=>{const u=utter(h,who);u.onstart=()=>document.querySelectorAll('.cdl-l').forEach(l=>l.classList.toggle('hl',+l.dataset.k===k));u.onend=()=>{if(k===c.dl.length-1)document.querySelectorAll('.cdl-l').forEach(l=>l.classList.remove('hl'))};speechSynthesis.speak(u)})}});
+
+window.zhDebug=()=>({S,CQ,decks,dPool});   /* chỉ để kiểm thử tự động đọc trạng thái */
 /* ================= reset ================= */
 $('rst').onclick=()=>{if(!confirm('Reset all learning progress?\n\nThis clears: card levels, dictation and listening results, completed grammar topics, daily lessons and your streak.\nThis keeps: the words, phrases and sentences you added; your voice and display settings.'))return;
  const keep={custom:S.custom,opts:S.opts};S=Object.assign(DEF(),keep,{start:dayNum()});tView=0;Q.vocab=Q.phr=null;gSel=null;save();chips();tab(S.opts.tab);
