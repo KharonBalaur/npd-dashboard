@@ -51,7 +51,10 @@ Ngôn ngữ giao diện: tiếng Anh / tiếng Việt; trao đổi với chủ d
     Pp · Ppk, Gage R&R, bảng tra cứu. Mỗi chương tự đủ dữ liệu riêng, công thức giải thích từng ký hiệu (fx), ví dụ tính từng
     bước bằng code, hướng dẫn vẽ biểu đồ (giấy + Excel), bài tập đề ngẫu nhiên (số / số nguyên / chọn) tự chấm + lời giải;
     làm đúng ghi npdLib.nb {chương: ngày}. Mục lục thu gọn (thanh biểu tượng) / mở, nhớ ở localStorage npdNbToc. Nút data-nb.
-    Thư viện (S.library, tab "Thư viện" của Sheet, sửa trên web: renderBooks / bookAct; mdLite, quizOf).
+    Thư viện (S.library, tab "Thư viện" của Sheet, sửa trên web: renderBooks / bookAct; mdLite, quizOf)
+    + bài có sẵn `library-builtin.js` (window.LIB_BUILTIN, cờ builtin): libAll() = Sheet + bài có sẵn chưa có id trong Sheet;
+    bài có sẵn không xóa được, bấm Sửa = lưu bản sửa vào Sheet (cùng id, thay bản có sẵn). Chỉ đưa nội dung tự viết / tóm tắt
+    sách công khai vào file này; tài liệu nội bộ (quy trình, đào tạo TTI…) nhập vào Sheet bằng CSV, không vào repo.
   - Cave: hồ sơ / CV (cave(): profile, skills, exp, edu, cert, lang, proj), việc cần làm, lời nhắc. cavePdf: CV chuẩn
     Harvard (1 cột, serif đen trắng; bỏ mục / dòng trống; tiêu đề EN hoặc VI theo nội dung; tự co 82–112% cho vừa trang).
   - Tools: danh sách bên trái (tìm kiếm, phím /) + vùng làm việc; TOOLS / TOOL_RUN; link thẳng #tool/<key> (toolHash).

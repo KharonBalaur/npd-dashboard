@@ -1731,6 +1731,7 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%} body{-webkit-tap-highl
 <script src="breakthrough-fx.js"></script>
 <script src="fun.js"></script>
 <script src="notebook.js"></script>
+<script src="library-builtin.js"></script>
 <script id="board-data" type="application/json">
 {"version":1,"projects":[],"history":[]}
 </script>
@@ -3117,8 +3118,11 @@ function renderRank() {
 // Quiz format: one block per question (blank line between blocks): the question, then "- wrong answer" / "* right answer".
 let libMode = (() => { try { return sessionStorage.getItem("npdLibMode") || "road"; } catch (e) { return "road"; } })();
 let bookSel = "", bookQ = "", bookTopic = "", bookEdit = null;
+// Bài trong Sheet + bài có sẵn (library-builtin.js); trùng id → dùng bài trong Sheet (bản đã sửa).
+const libAll = () => { const L = S.library || [], ids = new Set(L.map(a => a.id)); return L.concat((window.LIB_BUILTIN || []).filter(a => !ids.has(a.id))); };
+const libOwn = id => (S.library || []).some(a => a.id === id);
 const libTabs = () => `<div class="lib-tabs" role="tablist"><button data-x="libMode" data-k="road" class="${libMode === "road" ? "on" : ""}">🛤 Lộ trình tu luyện</button>
-  <button data-x="libMode" data-k="books" class="${libMode === "books" ? "on" : ""}">📚 Thư viện <small>${(S.library || []).length}</small></button>
+  <button data-x="libMode" data-k="books" class="${libMode === "books" ? "on" : ""}">📚 Thư viện <small>${libAll().length}</small></button>
   <button data-x="libMode" data-k="note" class="${libMode === "note" ? "on" : ""}">📓 Sổ tay<span class="lbl"> QC</span></button>
   <button data-x="libMode" data-k="rank" class="${libMode === "rank" ? "on" : ""}">🏆 Phong Thần<span class="lbl"> Bảng</span></button>
 </div>`;
@@ -3140,7 +3144,7 @@ const quizOf = t => String(t || "").replace(/\r/g, "").split(/\n\s*\n/).map(b =>
   .map(b => ({ q:b[0], o:b.slice(1).filter(x => /^[-*]\s+/.test(x)).map(x => ({ t:x.replace(/^[-*]\s+/, ""), ok:x[0] === "*" })) })).filter(q => q.o.length > 1 && q.o.some(o => o.ok));
 const bookDone = () => libLoad().books || {};
 function renderBooks() {
-  const L = S.library || [], can = window.npdCanEdit && npdCanEdit(), done = bookDone();
+  const L = libAll(), can = window.npdCanEdit && npdCanEdit(), done = bookDone();
   const topics = [...new Set(L.map(a => a.topic || "Khác"))].sort((a, b) => a.localeCompare(b, "vi"));
   const q = bookQ.trim().toLowerCase();
   const shown = L.filter(a => (!bookTopic || (a.topic || "Khác") === bookTopic) && (!q || (a.title + " " + a.sum + " " + a.body + " " + a.topic).toLowerCase().includes(q)));
@@ -3163,8 +3167,8 @@ function renderBooks() {
       <div class="bk-act"><button type="button" data-x="bkCancel">Hủy</button><button class="pri" type="submit">💾 Lưu vào Thư viện</button></div></form>`;
   } else if (a) {
     const qz = quizOf(a.quiz), d = done[a.id];
-    main = `<article class="bk-art"><div class="bk-meta"><span class="tag">${esc(a.topic || "Khác")}</span>${a.author ? `<span>✍ ${esc(a.author)}</span>` : ""}${a.at ? `<span>🗓 ${esc(dMy(a.at))}</span>` : ""}
-        ${can ? `<span class="sp"></span><button data-x="bkEdit" data-k="${esc(a.id)}">✎ Sửa</button><button class="warn" data-x="bkDel" data-k="${esc(a.id)}">🗑 Xóa</button>` : ""}</div>
+    main = `<article class="bk-art"><div class="bk-meta"><span class="tag">${esc(a.topic || "Khác")}</span>${a.builtin && !libOwn(a.id) ? `<span title="Bài có sẵn trong web, không cần nhập vào Sheet">📦 Có sẵn</span>` : ""}${a.author ? `<span>✍ ${esc(a.author)}</span>` : ""}${a.at ? `<span>🗓 ${esc(dMy(a.at))}</span>` : ""}
+        ${can ? `<span class="sp"></span><button data-x="bkEdit" data-k="${esc(a.id)}">✎ Sửa</button>${libOwn(a.id) ? `<button class="warn" data-x="bkDel" data-k="${esc(a.id)}">🗑 Xóa</button>` : ""}` : ""}</div>
       <h2>${esc(a.title)}</h2>${a.sum ? `<p class="bk-sum">${esc(a.sum)}</p>` : ""}<div class="bk-body">${mdLite(a.body)}</div>
       ${qz.length ? `<div class="bk-qz" id="bkQz"><h4>📝 Kiểm tra nhanh · ${qz.length} câu ${d ? `<span class="ok">✓ Đã qua (${esc(dMy(d.at))})</span>` : ""}</h4>
         ${qz.map((x, i) => `<div class="bk-q"><b>${i + 1}. ${esc(x.q)}</b>${x.o.map((o, j) => `<label><input type="radio" name="bq${i}" value="${j}"> ${esc(o.t)}</label>`).join("")}</div>`).join("")}
@@ -3178,7 +3182,7 @@ function bookAct(x, k, b) {
   if (x === "bkTopic") { bookTopic = k; return renderBooks(); }
   if (x === "bkOpen") { bookSel = k; bookEdit = null; renderBooks(); const m = $(".bk-main"); if (m && innerWidth < 900) m.scrollIntoView({ behavior:"smooth" }); return; }
   if (x === "bkNew") { bookEdit = { id:"", topic:bookTopic, title:"", sum:"", body:"", quiz:"" }; return renderBooks(); }
-  if (x === "bkEdit") { const a = S.library.find(z => z.id === k); if (a) bookEdit = { ...a }; return renderBooks(); }
+  if (x === "bkEdit") { const a = libAll().find(z => z.id === k); if (a) { bookEdit = { ...a }; delete bookEdit.builtin; } return renderBooks(); }
   if (x === "bkCancel") { bookEdit = null; return renderBooks(); }
   if (x === "bkDel") {
     const a = S.library.find(z => z.id === k); if (!a) return;
@@ -3186,7 +3190,7 @@ function bookAct(x, k, b) {
       if (!ok) return; S.library = S.library.filter(z => z.id !== k); bookSel = ""; markDirty(); renderBooks(); saveFile(); });
   }
   if (x === "bkCheck") {
-    const a = S.library.find(z => z.id === k), qz = a ? quizOf(a.quiz) : []; let right = 0;
+    const a = libAll().find(z => z.id === k), qz = a ? quizOf(a.quiz) : []; let right = 0;
     qz.forEach((q, i) => { const c = document.querySelector(`#bkQz input[name=bq${i}]:checked`);
       document.querySelectorAll(`#bkQz input[name=bq${i}]`).forEach(r => { const l = r.parentNode; l.classList.toggle("r", q.o[+r.value].ok); l.classList.toggle("w", r.checked && !q.o[+r.value].ok); });
       if (c && q.o[+c.value].ok) right++; });
