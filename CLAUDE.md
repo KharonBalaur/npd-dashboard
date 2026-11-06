@@ -46,9 +46,11 @@ Ngôn ngữ giao diện: tiếng Anh / tiếng Việt; trao đổi với chủ d
     Phong Thần Bảng (tab "rank", renderRank): bảng tu vi (cảnh giới → bí kíp đạt → ít tẩu hỏa) + bảng tư chất
     (linh căn lc → điểm = 8 × fails + % câu sai; danh hiệu = linh căn, lời phê trêu vui LIB_TC, huy hiệu libBadges).
     Tab "Duyệt" / bài thực hành đã bỏ (action practice / review và tab "Tu luyện" vẫn còn trong Code.gs, trang không dùng).
-    Sổ tay (tab "📓 Sổ tay", libMode "note", `notebook.js` → window.renderNote): sổ ghi chép SPC (X̄–R), Cp · Cpk, Pp · Ppk,
-    Gage R&R (Average & Range), bảng hằng số; ví dụ tính từng bước bằng code, bài tập đề ngẫu nhiên tự điền + chấm + lời giải;
-    làm đúng ghi npdLib.nb {chương: ngày}. Nút data-nb.
+    Sổ tay (tab "📓 Sổ tay QC", libMode "note", `notebook.js` → window.renderNote): sổ ghi chép cho người mới – Thống kê cơ bản,
+    7 công cụ QC (phiếu kiểm tra, Pareto, xương cá, histogram, phân tán, phân tầng, biểu đồ kiểm soát p), SPC X̄–R, Cp · Cpk,
+    Pp · Ppk, Gage R&R, bảng tra cứu. Mỗi chương tự đủ dữ liệu riêng, công thức giải thích từng ký hiệu (fx), ví dụ tính từng
+    bước bằng code, hướng dẫn vẽ biểu đồ (giấy + Excel), bài tập đề ngẫu nhiên (số / số nguyên / chọn) tự chấm + lời giải;
+    làm đúng ghi npdLib.nb {chương: ngày}. Mục lục thu gọn (thanh biểu tượng) / mở, nhớ ở localStorage npdNbToc. Nút data-nb.
     Thư viện (S.library, tab "Thư viện" của Sheet, sửa trên web: renderBooks / bookAct; mdLite, quizOf).
   - Cave: hồ sơ / CV (cave(): profile, skills, exp, edu, cert, lang, proj), việc cần làm, lời nhắc. cavePdf: CV chuẩn
     Harvard (1 cột, serif đen trắng; bỏ mục / dòng trống; tiêu đề EN hoặc VI theo nội dung; tự co 82–112% cho vừa trang).
