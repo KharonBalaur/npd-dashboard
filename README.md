@@ -10,7 +10,7 @@ Web nội bộ cho team QE: **Training** (lộ trình tu luyện + thư viện k
 | `NPD_BuildStatus.html` | Địa chỉ cũ, tự chuyển sang `JLTN_WEBSITE` |
 | `study/` | App học tiếng Anh / tiếng Trung và ngân hàng bài học mỗi ngày |
 | `realms.js` | Lộ trình Training: 14 cảnh giới + Vị Tế, 3 giới, các bí kíp (window.REALMS) |
-| `notebook.js` | Sổ tay thống kê (Training → 📓 Sổ tay): SPC, Cp · Cpk, Pp · Ppk, Gage R&R – ví dụ từng bước, bài tập tự tính |
+| `notebook.js` | Sổ tay QC (Training → 📓 Sổ tay QC): thống kê cơ bản, 7 công cụ QC, SPC, Cp · Cpk, Pp · Ppk, Gage R&R – giải thích cho người mới, ví dụ từng bước, hướng dẫn vẽ, bài tập tự tính |
 | `fun.js` | Tiêu Dao Các (Relax): trò chơi nhỏ, bài thở Tĩnh Tâm, Gieo Quẻ 5 Phút |
 | `quiz-bank.js` | Ngân hàng câu hỏi quiz cho các bí kíp (window.QUIZ_BANK) |
 | `lessons-nhan-gioi.js`, `lessons-linh-gioi.js`, `lessons-tien-gioi.js` | Bài đọc dễ hiểu, thuật ngữ Anh – Việt – Trung, nguồn cho 50 bí kíp của Nhân / Linh / Tiên Giới (window.LESSONS) |

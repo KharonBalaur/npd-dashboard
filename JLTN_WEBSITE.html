@@ -393,38 +393,58 @@ table.np tr.gs td{border-top:2px solid #d9d0f0}
 .pg-card h3{margin:0 0 10px;font-size:15px;color:var(--navy)} .pg-card h3 small{margin-left:6px;font-weight:400;color:var(--muted);font-size:12px}
 .pg-card .k{font-size:11px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:var(--muted)}
 .pg-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
-/* Sổ tay thống kê (notebook.js): giấy kẻ dòng, lề đỏ, ghi chú dán */
-.nb-wrap{display:grid;grid-template-columns:240px minmax(0,1fr);gap:18px;align-items:start}
-.nb-toc{position:sticky;top:76px;display:flex;flex-direction:column;gap:6px;padding:14px;border-radius:14px;background:#2b3a55;color:#e9e2d4;box-shadow:0 8px 20px rgba(20,33,61,.18)}
-.nb-cover{font-family:"Patrick Hand","Noto Serif",Georgia,serif;font-size:24px;color:#f3d58c;line-height:1.1;margin-bottom:6px} .nb-cover small{font-size:14px;color:#e9e2d4}
-.nb-toc button{text-align:left;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:#fff;border-radius:10px;padding:8px 10px;white-space:normal;height:auto}
-.nb-toc button.on{background:#f3d58c;color:#14213d;border-color:#f3d58c;font-weight:700} .nb-toc i{font-style:normal;color:#7fd39b} .nb-toc button.on i{color:#1e6b3f} .nb-toc .nb-small{color:#c9d1e3}
-.nb-page{position:relative;min-width:0;padding:22px 26px 30px 64px;border-radius:6px 14px 14px 6px;color:#1f2633;font-size:15px;line-height:28px;
-  background:linear-gradient(90deg,transparent 46px,#f2a7a7 46px,#f2a7a7 48px,transparent 48px),repeating-linear-gradient(180deg,#fffef8 0,#fffef8 27px,#dbe7f3 27px,#dbe7f3 28px);
-  box-shadow:0 1px 0 #e6dcc6,0 10px 24px rgba(20,33,61,.12);border:1px solid #ece4cf}
-.nb-page h3{margin:0 0 6px;font-family:"Patrick Hand","Noto Serif",Georgia,serif;font-size:28px;color:#14213d;line-height:1.3}
-.nb-page h4{margin:18px 0 4px;font-family:"Patrick Hand","Noto Serif",Georgia,serif;font-size:21px;color:#7a2a1c;line-height:1.3}
-.nb-page p{margin:0 0 6px} .nb-page ul{margin:0 0 6px;padding-left:20px} .nb-page mark{background:linear-gradient(180deg,transparent 45%,#fff07a 45%);padding:0 2px}
-.nb-small{font-size:12.5px;color:#5b6475;line-height:1.5}
-.nb-eq{display:inline-block;margin:4px 0;padding:2px 10px;border-radius:6px;background:rgba(20,33,61,.06);font-family:ui-monospace,Consolas,monospace;font-size:13.5px;line-height:1.7;max-width:100%;overflow-x:auto;white-space:nowrap} .nb-eq+.nb-eq{display:block;width:max-content}
-.nb-step{display:flex;gap:12px;margin:12px 0} .nb-step>div>b:first-child{display:block} .nb-step>div{flex:1;min-width:0} .nb-no{flex:none;width:30px;height:30px;border-radius:50%;background:#14213d;color:#f3d58c;display:flex;align-items:center;justify-content:center;font-weight:700;margin-top:-1px}
-.nb-tw{overflow-x:auto;margin:6px 0} .nb-t{border-collapse:collapse;background:#fff;font-size:13px;line-height:1.4} .nb-t th{background:#eef3fa;color:#14213d;padding:5px 8px;border:1px solid #d5deea;font-weight:600;white-space:nowrap}
-.nb-t td{padding:4px 8px;border:1px solid #e1e7ef;text-align:right;white-space:nowrap} .nb-t td:first-child{text-align:center} .nb-t.tx td{text-align:left;white-space:normal} .nb-t td small{color:#7a8496}
-.nb-note{margin:12px 0;padding:10px 14px;border-radius:4px;background:#fff59d;box-shadow:2px 3px 8px rgba(0,0,0,.12);transform:rotate(-.4deg);line-height:1.55;font-size:14px}
-.nb-note.warn{background:#ffe0b2} .nb-note.pin{background:#d7f5dd;transform:rotate(.4deg)}
-.nb-ch{display:block;width:100%;max-width:560px;height:auto;margin:6px 0;background:#fff;border:1px solid #e1e7ef;border-radius:8px}
-.nb-det summary{cursor:pointer;color:#14213d;font-weight:600}
-.nb-ex{margin-top:20px;padding:14px 16px;border:2px dashed #7a2a1c;border-radius:12px;background:rgba(255,255,255,.85);line-height:1.5}
-.nb-ex h4{margin-top:0} .nb-ok{font-family:Inter,sans-serif;font-size:12.5px;color:#1e6b3f;margin-left:6px}
-.nb-in{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:8px;margin:8px 0}
-.nb-in label{display:flex;flex-direction:column;gap:3px;font-size:13px;font-weight:600;color:#14213d;position:relative}
-.nb-in input{padding:7px 30px 7px 10px;border:1px solid #c9d3e3;border-radius:8px;font-size:15px;background:#fff}
-.nb-in i{position:absolute;right:9px;bottom:8px;font-style:normal;font-weight:800} .nb-in i.ok{color:#1e8e4f} .nb-in i.no{color:#c0392b}
-.nb-act{display:flex;flex-wrap:wrap;gap:8px} .nb-res{margin:8px 0 0;padding:8px 12px;border-radius:8px;background:#fdecea;color:#a0281c} .nb-res.ok{background:#e7f6ec;color:#1e6b3f}
-.nb-sol{margin-top:10px;padding:10px 12px;border-radius:10px;background:#f3f6fb;border:1px solid #d5deea}
-@media (max-width:600px){.nb-cover{font-size:17px!important} .nb-cover br{display:none} .nb-cover small{margin-left:6px}}
-@media (max-width:900px){.nb-wrap{grid-template-columns:1fr} .nb-toc{position:static;flex-direction:row;flex-wrap:wrap} .nb-cover{flex:1 1 100%;font-size:20px} .nb-toc button{flex:1 1 calc(50% - 6px)} .nb-toc .nb-small{display:none}}
-@media (max-width:600px){.nb-page{padding:16px 12px 22px 30px;background:linear-gradient(90deg,transparent 20px,#f2a7a7 20px,#f2a7a7 22px,transparent 22px),repeating-linear-gradient(180deg,#fffef8 0,#fffef8 27px,#dbe7f3 27px,#dbe7f3 28px)} .nb-page h3{font-size:24px} .nb-step{gap:8px} .nb-no{width:26px;height:26px}}
+/* Sổ tay chất lượng (notebook.js): mục lục thu gọn được + trang sổ rộng, giấy kẻ dòng nhạt, thẻ công thức */
+.nb-wrap{display:grid;grid-template-columns:250px minmax(0,1fr);gap:16px;align-items:start}
+.nb-wrap.min{grid-template-columns:58px minmax(0,1fr)}
+.nb-toc{position:sticky;top:70px;display:flex;flex-direction:column;gap:4px;padding:10px;border-radius:14px;background:#2b3a55;color:#e9e2d4;box-shadow:0 8px 20px rgba(20,33,61,.18);max-height:calc(100vh - 90px);overflow:auto;scrollbar-width:thin}
+.nb-wrap.min .nb-toc{padding:8px 6px;align-items:center}
+.nb-tg{align-self:stretch;background:rgba(243,213,140,.15);border:1px solid rgba(243,213,140,.4);color:#f3d58c;border-radius:9px;padding:6px 8px;font-weight:700}
+.nb-cover{font-family:"Patrick Hand","Noto Serif",Georgia,serif;font-size:21px;color:#f3d58c;line-height:1.15;margin:6px 2px 2px} .nb-cover small{display:block;font-family:Inter,sans-serif;font-size:11.5px;color:#c9d1e3;margin-top:3px}
+.nb-g{margin:8px 4px 2px;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#9fb0cc}
+.nb-toc hr{width:70%;border:0;border-top:1px solid rgba(255,255,255,.15);margin:4px 0}
+.nb-toc button[data-nb="ch"]{display:flex;align-items:center;gap:8px;width:100%;text-align:left;background:transparent;border:1px solid transparent;color:#fff;border-radius:9px;padding:6px 8px;white-space:normal;height:auto;font-size:13.5px;position:relative}
+.nb-toc button[data-nb="ch"]:hover{background:rgba(255,255,255,.08)} .nb-toc button.on{background:#f3d58c!important;color:#14213d!important;font-weight:700}
+.nb-wrap.min .nb-toc button[data-nb="ch"]{width:42px;height:40px;justify-content:center;padding:0}
+.nb-ic{font-size:17px;width:22px;text-align:center;flex:none} .nb-toc i{font-style:normal;color:#7fd39b;margin-left:auto} .nb-toc button.on i{color:#1e6b3f}
+.nb-toc i.dot{position:absolute;right:3px;top:3px;width:7px;height:7px;border-radius:50%;background:#7fd39b;margin:0}
+.nb-page{position:relative;min-width:0;padding:22px 34px 30px 58px;border-radius:6px 14px 14px 6px;color:#1f2633;font-size:16px;line-height:1.75;
+  background:linear-gradient(90deg,transparent 38px,#f4b9b9 38px,#f4b9b9 40px,transparent 40px),#fffef9;box-shadow:0 1px 0 #e6dcc6,0 10px 24px rgba(20,33,61,.10);border:1px solid #ece4cf}
+.nb-crumb{font-size:12px;color:#8a93a3;margin-bottom:2px}
+.nb-page h3{margin:0 0 10px;font-family:"Patrick Hand","Noto Serif",Georgia,serif;font-size:30px;color:#14213d;line-height:1.25}
+.nb-page h4{margin:26px 0 8px;padding-bottom:2px;border-bottom:2px dashed #e6d7b8;font-family:"Patrick Hand","Noto Serif",Georgia,serif;font-size:22px;color:#7a2a1c;line-height:1.3}
+.nb-page p{margin:0 0 10px} .nb-page ul,.nb-page ol{margin:0 0 10px;padding-left:22px} .nb-page li{margin:3px 0}
+.nb-page mark{background:linear-gradient(180deg,transparent 50%,#fff07a 50%);padding:0 2px} .nb-page code{background:#eef2f8;border-radius:4px;padding:1px 5px;font-size:13.5px}
+.nb-small{font-size:13px;color:#5b6475;line-height:1.55}
+.nb-fx{margin:12px 0;border:1px solid #d5deea;border-left:5px solid #3c6fb4;border-radius:10px;background:#f7faff;overflow:hidden}
+.nb-fx-t{padding:6px 14px;background:#eaf1fb;font-size:12.5px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;color:#3c5a8a}
+.nb-fx-f{padding:10px 14px 6px;font-family:"Cambria Math","STIX Two Math","Times New Roman",serif;font-size:21px;color:#14213d;line-height:1.5;overflow-x:auto}
+.nb-fx-s{padding:0 14px 8px;font-size:14.5px;line-height:1.6} .nb-fx-s i{color:#5b6475} .nb-fx-s ul{margin:2px 0 0;padding-left:18px} .nb-fx-x{padding:6px 14px 10px;font-size:14px;color:#3c4a60;border-top:1px dashed #d5deea}
+.nb-eq{display:block;width:max-content;max-width:100%;margin:6px 0;padding:6px 12px;border-radius:8px;background:#f2f4f8;font-family:"Cambria Math","STIX Two Math","Times New Roman",serif;font-size:17px;line-height:1.5;overflow-x:auto}
+.nb-step{display:flex;gap:12px;margin:16px 0} .nb-step>div{flex:1;min-width:0} .nb-st{display:block;margin-bottom:4px;font-size:16px}
+.nb-no{flex:none;width:30px;height:30px;border-radius:50%;background:#14213d;color:#f3d58c;display:flex;align-items:center;justify-content:center;font-weight:700}
+.nb-tw{overflow-x:auto;margin:8px 0} .nb-t{border-collapse:collapse;background:#fff;font-size:14px;line-height:1.45} .nb-t th{background:#eef3fa;color:#14213d;padding:6px 10px;border:1px solid #d5deea;font-weight:600;white-space:nowrap}
+.nb-t td{padding:5px 10px;border:1px solid #e1e7ef;text-align:right;white-space:nowrap} .nb-t td:first-child{text-align:center} .nb-t td small{color:#7a8496}
+.nb-t.tx td{text-align:left;white-space:normal} .nb-tal{font-family:"Patrick Hand",monospace;color:#7a2a1c;letter-spacing:1px}
+.nb-note{margin:14px 0;padding:12px 16px;border-radius:4px;background:#fff7b0;box-shadow:2px 3px 8px rgba(0,0,0,.10);line-height:1.6;font-size:15px}
+.nb-note.warn{background:#ffe3c0} .nb-note.pin{background:#dcf5e2}
+.nb-ch{display:block;width:100%;max-width:640px;height:auto;margin:8px 0;background:#fff;border:1px solid #e1e7ef;border-radius:8px}
+.nb-how{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:10px 0} .nb-how>div{padding:10px 14px;border-radius:10px;background:#fff;border:1px solid #e6d7b8;font-size:14.5px;line-height:1.6} .nb-how ol{margin:6px 0 0;padding-left:20px}
+.nb-ex{margin-top:28px;padding:16px 18px;border:2px dashed #7a2a1c;border-radius:12px;background:#fffdf5;line-height:1.6}
+.nb-ex h4{margin-top:0;border:0} .nb-ok{font-family:Inter,sans-serif;font-size:13px;color:#1e6b3f;margin-left:6px} .nb-given{margin-bottom:6px}
+.nb-obs{display:flex;flex-wrap:wrap;gap:5px;margin:6px 0} .nb-obs span{padding:2px 8px;border-radius:12px;background:#eef3fa;font-size:13px}
+.nb-in{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:10px;margin:10px 0} .nb-in.wide{grid-template-columns:repeat(auto-fill,minmax(260px,1fr))}
+.nb-in label{display:flex;flex-direction:column;gap:3px;font-size:13.5px;font-weight:600;color:#14213d;position:relative}
+.nb-in input,.nb-in select{padding:8px 30px 8px 10px;border:1px solid #c9d3e3;border-radius:8px;font-size:15px;background:#fff;max-width:none}
+.nb-in i{position:absolute;right:9px;bottom:9px;font-style:normal;font-weight:800} .nb-in select+i{right:28px} .nb-in i.ok{color:#1e8e4f} .nb-in i.no{color:#c0392b}
+.nb-act{display:flex;flex-wrap:wrap;gap:8px} .nb-res{margin:10px 0 0;padding:8px 12px;border-radius:8px;background:#fdecea;color:#a0281c} .nb-res.ok{background:#e7f6ec;color:#1e6b3f}
+.nb-sol{margin-top:12px;padding:12px 14px;border-radius:10px;background:#f3f6fb;border:1px solid #d5deea}
+.nb-pn{display:flex;justify-content:space-between;gap:10px;margin-top:26px;padding-top:14px;border-top:1px solid #ece4cf;flex-wrap:wrap} .nb-pn button{white-space:normal;height:auto}
+@media (max-width:900px){.nb-how{grid-template-columns:1fr}}
+@media (max-width:760px){.nb-wrap,.nb-wrap.min{grid-template-columns:1fr} .nb-toc{position:static;max-height:none}
+  .nb-wrap.min .nb-toc{flex-direction:row;overflow-x:auto;padding:6px;align-items:center} .nb-wrap.min .nb-toc hr{width:1px;height:28px;border:0;border-left:1px solid rgba(255,255,255,.2);margin:0 2px}
+  .nb-wrap.min .nb-tg{align-self:center;flex:none} .nb-wrap.min .nb-toc button[data-nb="ch"]{flex:none}
+  .nb-page{padding:16px 14px 22px 26px;font-size:15.5px;background:linear-gradient(90deg,transparent 14px,#f4b9b9 14px,#f4b9b9 16px,transparent 16px),#fffef9} .nb-page h3{font-size:25px}
+  .nb-fx-f{font-size:18px} .nb-eq{font-size:15.5px} .nb-step{gap:8px} .nb-no{width:26px;height:26px}}
 /* Tiêu Dao Các (fun.js) */
 .fn-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;margin-bottom:16px}
 .fn-tile{display:flex;align-items:flex-start;gap:12px;padding:14px 16px;text-align:left;background:#fff;border:1px solid var(--line);border-radius:14px;cursor:pointer;white-space:normal;height:auto;transition:transform .15s,box-shadow .15s,border-color .15s}
@@ -3099,7 +3119,7 @@ let libMode = (() => { try { return sessionStorage.getItem("npdLibMode") || "roa
 let bookSel = "", bookQ = "", bookTopic = "", bookEdit = null;
 const libTabs = () => `<div class="lib-tabs" role="tablist"><button data-x="libMode" data-k="road" class="${libMode === "road" ? "on" : ""}">🛤 Lộ trình tu luyện</button>
   <button data-x="libMode" data-k="books" class="${libMode === "books" ? "on" : ""}">📚 Thư viện <small>${(S.library || []).length}</small></button>
-  <button data-x="libMode" data-k="note" class="${libMode === "note" ? "on" : ""}">📓 Sổ tay<span class="lbl"> SPC</span></button>
+  <button data-x="libMode" data-k="note" class="${libMode === "note" ? "on" : ""}">📓 Sổ tay<span class="lbl"> QC</span></button>
   <button data-x="libMode" data-k="rank" class="${libMode === "rank" ? "on" : ""}">🏆 Phong Thần<span class="lbl"> Bảng</span></button>
 </div>`;
 const mdLite = t => {                                                     // the small text format of the library → HTML (escaped first)
