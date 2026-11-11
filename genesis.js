@@ -483,64 +483,156 @@
     const C = G.life, ch = [];
     [0, 1, 2, 3, 4, 5].forEach(k => { const L_ = C.log.filter(l => stageOf(l[0])[1] === k); if (L_.length) ch.push([stageOf(L_[0][0])[0], L_.filter((_, i) => i < 2 || i >= L_.length - 2).map(l => `${l[0]} tuổi – ${l[1]}`.slice(0, 120))]); });
     const book = { t:title(C), n:C.n, g:C.g, o:C.o, r:C.r, ln:lineName(C), car:careerName(C), age:C.age, end:ending(C), cause:C.death, ep:String(ep || '').slice(0, 120),
-      av:{ r:C.r, g:C.g, line:C.line, genes:C.genes.slice(), hair:C.hair, car:C.car ? C.car.k : '' }, st:{ ...C.s }, fame:C.fame, hum:C.hum, mut:C.mut, kids:C.kids, sp:C.spouse, ch, at:new Date().toISOString().slice(0, 10) };
+      av:{ r:C.r, g:C.g, line:C.line, genes:C.genes.slice(), hair:C.hair, car:C.car ? C.car.k : '', mut:C.mut, age:C.age }, st:{ ...C.s }, fame:C.fame, hum:C.hum, mut:C.mut, kids:C.kids, sp:C.spouse, ch, at:new Date().toISOString().slice(0, 10) };
     G.books.unshift(book); G.books = G.books.slice(0, 12);
     G.legacy = leg === 'gene' && C.genes.length ? { k:'gene', v:pick(C.genes), from:C.n } : leg === 'rr' ? { k:'rr' } : leg === 'gold' ? { k:'gold' } : leg === 'nm' ? { k:'nm' } : null;
     G.life = null; UI.tab = 'books'; UI.book = 0; save(G); render();
   }
 
-  // ---------- nhân vật chibi (SVG) ----------
-  const HAIR = ['#3b2a20', '#1f2937', '#a16207', '#be185d', '#e5e7eb', '#7c3aed'];
-  const SKIN = { human:'#fcd9bd', beast:'#f6cfa3', elf:'#ffe7d6', dwarf:'#f0c39c' };
+  // ---------- nhân vật doodle (SVG) ----------
+  // Phong cách doodle dễ thương: viền đậm, thân tròn, mắt chấm có điểm sáng, má hồng gạch chéo. Mỗi bộ phận ghép vẽ chi tiết riêng
+  // (lông, vảy, xương cánh, đinh tán…) kèm ĐƯỜNG KHÂU ở chỗ nối; dị hóa càng cao càng nhiều gân phát sáng, ≥ 60% mọc mắt thứ ba.
+  // A = { r, g, line, genes, hair, car, mut?, hp?, age? } (sách cũ thiếu mut / hp / age vẫn vẽ được).
+  const HAIR = ['#4a3426', '#2b2530', '#c08a2e', '#d9467f', '#e8e4ef', '#7c4dcc'];
+  const SKIN = { human:'#ffe2cc', beast:'#f9d3a8', elf:'#fff0e3', dwarf:'#f3c8a2' };
+  const INK = '#2b2530';
+  const mir = s => `<g transform="translate(160 0) scale(-1 1)">${s}</g>`;           // lật đối xứng qua trục giữa (x = 80)
+  function stitch(x1, y1, x2, y2, n, col) {                                          // đường khâu: nét đứt + các mũi khâu ngang
+    const dx = x2 - x1, dy = y2 - y1, L = Math.hypot(dx, dy) || 1, px = -dy / L * 4.5, py = dx / L * 4.5; let d = '';
+    for (let i = 1; i <= n; i++) { const t = i / (n + 1), x = x1 + dx * t, y = y1 + dy * t; d += `M${(x - px).toFixed(1)} ${(y - py).toFixed(1)}L${(x + px).toFixed(1)} ${(y + py).toFixed(1)}`; }
+    return `<path d="M${x1} ${y1}L${x2} ${y2}" stroke="${col || INK}" stroke-width="1.6" stroke-dasharray="3 3" fill="none"/><path d="${d}" stroke="${col || INK}" stroke-width="1.8" fill="none"/>`;
+  }
+  const bigW = w => `<g transform="translate(62 114) scale(1.22) rotate(-14) translate(-62 -114)">${w}</g>`;   // cánh to, nhô cao khỏi thân
+  const vein = (d, col) => `<path d="${d}" stroke="${col}" stroke-width="4" opacity=".25" fill="none"/><path d="${d}" stroke="${col}" stroke-width="1.6" fill="none"/>`;
+  const spark = (x, y, r, col) => `<path d="M${x} ${y - r}Q${x} ${y} ${x + r} ${y}Q${x} ${y} ${x} ${y + r}Q${x} ${y} ${x - r} ${y}Q${x} ${y} ${x} ${y - r}Z" fill="${col}" stroke="${INK}" stroke-width="1.4"/>`;
+  const hatch = (x, y) => `<path d="M${x} ${y + 3}l4 -6 M${x + 5} ${y + 3}l4 -6 M${x + 10} ${y + 3}l4 -6" stroke="#e8798f" stroke-width="1.6"/>`;
   function avatar(A, px) {
-    const lk = A.line ? A.line.k : '', sub = A.line ? A.line.sub : '', G_ = A.genes || [], hasG = g => G_.includes(g);
-    const skin = lk === 'vamp' || lk === 'hybrid' ? '#f6eaf3' : lk === 'jiang' && sub === 'corpse' ? '#d3e4cf' : SKIN[A.r] || SKIN.human;
-    const hair = HAIR[(A.hair || 0) % HAIR.length], eye = lk === 'vamp' ? '#dc2626' : lk === 'wolf' ? '#d97706' : lk === 'witch' ? '#8b5cf6' : lk === 'hybrid' ? '#e11d48' : lk === 'jiang' && sub === 'corpse' ? '#475569' : hasG('g_owl') ? '#f59e0b' : '#3b2a20';
-    const cloth = { soldier:'#64748b', merchant:'#b45309', scholar:'#e2e8f0', hunter:'#4d7c0f', thief:'#334155', king:'#a21caf', farmer:'#65a30d', fisher:'#0284c7' }[A.car] || '#60a5fa';
-    const auraC = lk === 'vamp' ? '#fecdd3' : lk === 'wolf' ? '#fde68a' : lk === 'witch' ? '#ddd6fe' : lk === 'jiang' ? '#bbf7d0' : lk === 'shin' ? '#cbd5e1' : lk === 'hybrid' ? '#fda4af' : hasG('g_virus') ? '#bbf7d0' : '';
-    let s = `<svg viewBox="0 0 140 160" width="${px}" height="${px * 160 / 140}" role="img" aria-label="Nhân vật" xmlns="http://www.w3.org/2000/svg">`;
-    if (auraC) s += `<circle cx="70" cy="80" r="64" fill="${auraC}" opacity=".55"/>`;
-    if (lk === 'vamp' || lk === 'hybrid') s += `<path d="M30 112 L70 70 L110 112 L104 150 L36 150Z" fill="#7f1d1d"/>`;
-    // sau lưng: cánh, đuôi
-    if (hasG('g_bat')) s += `<path d="M48 100 Q22 78 14 96 Q22 98 20 108 Q30 104 32 114 Q40 106 50 110Z M92 100 Q118 78 126 96 Q118 98 120 108 Q110 104 108 114 Q100 106 90 110Z" fill="#4c1d95"/>`;
-    if (hasG('g_eagle')) s += `<path d="M50 104 Q18 86 12 110 Q30 108 34 120 Q42 110 52 114Z M90 104 Q122 86 128 110 Q110 108 106 120 Q98 110 88 114Z" fill="#fff" stroke="#cbd5e1"/>`;
-    if (hasG('g_fly')) s += `<ellipse cx="34" cy="100" rx="18" ry="12" fill="#c4b5fd" opacity=".8"/><ellipse cx="106" cy="100" rx="18" ry="12" fill="#f9a8d4" opacity=".8"/>`;
-    if (hasG('g_dragon')) s += `<path d="M96 140 Q128 136 126 112 Q124 100 132 96 Q120 96 120 110 Q120 128 96 130Z" fill="#f97316"/><circle cx="131" cy="96" r="4" fill="#fde047"/>`;
-    if (hasG('g_fox')) s += `<path d="M96 138 Q132 132 128 104 Q118 122 98 126Z" fill="#fb923c"/><path d="M128 104 Q124 112 118 116 L126 114Z" fill="#fff"/>`;
-    if (lk === 'wolf' || lk === 'hybrid' || hasG('g_wolf')) s += `<path d="M94 140 Q122 140 118 116 Q110 130 96 130Z" fill="#9ca3af"/>`;
-    // thân
-    s += `<rect x="44" y="104" width="52" height="44" rx="20" fill="${lk === 'shin' ? '#111827' : lk === 'witch' ? '#4c1d95' : lk === 'jiang' && sub === 'corpse' ? '#1e3a8a' : cloth}"/>`;
-    s += `<circle cx="42" cy="122" r="8" fill="${hasG('g_meteor') ? '#94a3b8' : skin}" ${hasG('g_meteor') ? 'stroke="#475569" stroke-width="2"' : ''}/><circle cx="98" cy="122" r="8" fill="${skin}"/>`;
-    if (hasG('g_wolf')) s += `<path d="M93 126 l2 6 M98 128 l1 6 M103 126 l-1 6" stroke="#374151" stroke-width="2"/>`;
-    // tai (sau đầu)
-    if (hasG('g_rabbit')) s += `<ellipse cx="54" cy="18" rx="9" ry="26" fill="#fff" stroke="#e5e7eb"/><ellipse cx="54" cy="20" rx="4" ry="18" fill="#fbcfe8"/><ellipse cx="86" cy="18" rx="9" ry="26" fill="#fff" stroke="#e5e7eb" transform="rotate(14 86 40)"/><ellipse cx="86" cy="20" rx="4" ry="18" fill="#fbcfe8" transform="rotate(14 86 40)"/>`;
-    if (hasG('g_cat')) s += `<path d="M36 40 L42 12 L60 30Z M104 40 L98 12 L80 30Z" fill="${hair}"/><path d="M42 34 L44 20 L54 30Z M98 34 L96 20 L86 30Z" fill="#fbcfe8"/>`;
-    if (lk === 'wolf' || lk === 'hybrid') s += `<path d="M34 42 L38 8 L62 30Z M106 42 L102 8 L78 30Z" fill="#9ca3af"/><path d="M40 34 L41 18 L54 30Z M100 34 L99 18 L86 30Z" fill="#e5e7eb"/>`;
-    // đầu
-    s += `<circle cx="70" cy="64" r="42" fill="${skin}"/>`;
-    if (A.r === 'elf') s += `<path d="M28 62 L10 48 L30 72Z M112 62 L130 48 L110 72Z" fill="${skin}"/>`;
-    if (hasG('g_scale')) s += `<path d="M38 74 l4 -4 l4 4 l-4 4z M44 80 l4 -4 l4 4 l-4 4z M96 74 l4 -4 l4 4 l-4 4z" fill="#93c5fd"/>`;
-    if (hasG('g_virus')) s += `<circle cx="40" cy="58" r="3" fill="#22c55e"/><circle cx="102" cy="82" r="3" fill="#22c55e"/><circle cx="96" cy="48" r="2" fill="#4ade80"/>`;
-    // tóc
-    s += A.g === 'f' ? `<path d="M28 66 Q26 22 70 22 Q114 22 112 66 Q104 40 70 38 Q36 40 28 66Z" fill="${hair}"/><path d="M28 60 Q20 96 32 110 Q34 86 36 70Z M112 60 Q120 96 108 110 Q106 86 104 70Z" fill="${hair}"/>`
-      : `<path d="M28 62 Q28 22 70 22 Q112 22 112 62 Q100 40 86 44 Q78 34 66 42 Q52 36 44 48 Q34 48 28 62Z" fill="${hair}"/>`;
-    if (A.r === 'dwarf') s += `<path d="M44 84 Q70 116 96 84 Q90 96 70 98 Q50 96 44 84Z" fill="${hair}"/>`;
-    // mắt, má, miệng
-    if (hasG('g_gear')) s += `<circle cx="54" cy="66" r="10" fill="#e2e8f0" stroke="#475569" stroke-width="3"/><circle cx="54" cy="66" r="4" fill="#0ea5e9"/>`;
-    else s += `<ellipse cx="54" cy="66" rx="6.5" ry="8.5" fill="${eye}"/><circle cx="56" cy="62" r="2.4" fill="#fff"/>`;
-    s += `<ellipse cx="86" cy="66" rx="6.5" ry="8.5" fill="${eye}"/><circle cx="88" cy="62" r="2.4" fill="#fff"/>`;
-    s += `<ellipse cx="44" cy="80" rx="6" ry="3.5" fill="#fda4af" opacity=".7"/><ellipse cx="96" cy="80" rx="6" ry="3.5" fill="#fda4af" opacity=".7"/>`;
-    if (lk === 'shin') s += `<path d="M30 74 Q70 70 110 74 L108 92 Q70 104 32 92Z" fill="#111827"/>`;
-    else { s += `<path d="M62 84 Q70 91 78 84" fill="none" stroke="#7c2d12" stroke-width="2.4" stroke-linecap="round"/>`;
-      if (lk === 'vamp' || lk === 'hybrid') s += `<path d="M64 86 l2 5 l2 -4.5 M72 85.5 l2 4.5 l2 -5" fill="#fff" stroke="#fff" stroke-width="1"/>`; }
-    // phụ kiện đầu
-    if (hasG('g_deer')) s += `<path d="M46 26 L40 6 M42 14 L34 10 M94 26 L100 6 M98 14 L106 10" stroke="#a16207" stroke-width="4" stroke-linecap="round"/><circle cx="34" cy="10" r="3" fill="#f9a8d4"/>`;
-    if (hasG('g_star')) s += `<ellipse cx="70" cy="14" rx="26" ry="6" fill="none" stroke="#facc15" stroke-width="4"/>`;
-    if (lk === 'witch') s += `<path d="M32 34 L70 -6 Q78 10 108 34Z" fill="#6d28d9"/><rect x="26" y="30" width="88" height="8" rx="4" fill="#4c1d95"/><path d="M74 14 l3 6 6 1 -5 4 1 6 -5 -3 -5 3 1 -6 -5 -4 6 -1z" fill="#fde047"/>`;
-    if (lk === 'shin') s += `<rect x="28" y="40" width="84" height="10" rx="4" fill="#111827"/><rect x="58" y="40" width="24" height="10" rx="2" fill="#94a3b8"/><path d="M112 44 Q126 40 128 54" stroke="#111827" stroke-width="5" fill="none"/>`;
-    if (lk === 'jiang') s += sub === 'corpse' ? `<ellipse cx="70" cy="28" rx="40" ry="10" fill="#1e3a8a"/><rect x="50" y="10" width="40" height="18" rx="8" fill="#1e3a8a"/><circle cx="70" cy="10" r="5" fill="#dc2626"/><rect x="62" y="36" width="16" height="40" fill="#fde047"/><path d="M66 42 h8 M70 42 v28 M66 54 h8 M66 64 l8 6" stroke="#dc2626" stroke-width="2"/>`
-      : `<path d="M30 40 Q70 8 110 40 Q70 30 30 40Z" fill="#facc15"/><path d="M62 18 h16" stroke="#dc2626" stroke-width="3"/>`;
-    return s + '</svg>';
+    const lk = A.line ? A.line.k : '', sub = A.line ? A.line.sub : '', GS = A.genes || [], has = g => GS.includes(g);
+    const mut = +A.mut || 0, tired = A.hp != null && A.hp < 30, old = (A.age || 0) >= 60;
+    const corpse = lk === 'jiang' && sub === 'corpse';
+    const skin = lk === 'vamp' || lk === 'hybrid' ? '#f5ecf6' : corpse ? '#cfe3d0' : SKIN[A.r] || SKIN.human;
+    const hair = old && !lk ? '#e5e3ea' : HAIR[(A.hair || 0) % HAIR.length];
+    const eyeL = lk === 'vamp' ? '#d42a45' : lk === 'wolf' ? '#e09a12' : lk === 'witch' ? '#8b5cf6' : lk === 'hybrid' ? '#d42a45' : corpse ? '#5b6b7a' : INK;
+    const eyeR = lk === 'hybrid' ? '#e09a12' : eyeL;
+    const cloth = lk === 'shin' ? '#2f3542' : lk === 'witch' ? '#7c4dcc' : corpse ? '#2a4a8f' : lk === 'jiang' ? '#f2c94c'
+      : { soldier:'#8a94a6', merchant:'#d08a3a', scholar:'#eef2f7', hunter:'#6f9a3b', thief:'#4b5563', king:'#a33bb8', farmer:'#8fbf5a', fisher:'#3b9bd6' }[A.car] || '#8ec5ff';
+    const glow = lk === 'vamp' || lk === 'hybrid' ? '#ff5a7a' : lk === 'wolf' ? '#f5b324' : lk === 'witch' ? '#a78bfa' : has('g_virus') ? '#3ddc84' : lk === 'jiang' ? '#4ade80' : '#7dd3fc';
+    let s = `<svg viewBox="-12 -26 184 212" width="${px}" height="${Math.round(px * 212 / 184)}" role="img" aria-label="Nhân vật" xmlns="http://www.w3.org/2000/svg">
+      <g stroke="${INK}" stroke-width="3" stroke-linejoin="round" stroke-linecap="round">`;
+    // nền: hào quang huyết mạch + nét xoáy khi dị hóa rất cao
+    if (lk || has('g_virus')) s += `<circle cx="80" cy="96" r="78" fill="${glow}" opacity=".16" stroke="none"/>`;
+    if (mut >= 80) s += `<path d="M12 40 q8 -10 14 0 t14 0 M128 150 q8 -10 14 0 t14 0 M18 150 q6 -8 12 0" stroke="${glow}" stroke-width="2.4" fill="none"/>`;
+    // ---- phía sau: áo choàng, cánh, đuôi ----
+    if (lk === 'vamp' || lk === 'hybrid') s += `<path d="M46 110 C26 138 30 172 48 176 L112 176 C130 172 134 138 114 110Z" fill="#7a1f2e"/><path d="M60 176 L64 150 M100 176 L96 150" stroke="#4d121c" stroke-width="2"/>`;
+    if (has('g_bat')) { const w = `<path d="M62 116 C42 94 20 88 4 98 C11 103 10 110 8 117 C17 114 21 119 21 126 C29 122 33 126 35 133 C43 128 52 128 62 132Z" fill="#9b87c9"/>
+        <path d="M62 117 L5 98 M62 120 L8 116 M62 124 L21 126 M62 128 L35 133" stroke="#5b4a85" stroke-width="1.8" fill="none"/><path d="M4 98 l-4 -5 l6 2" fill="#fff" stroke-width="1.6"/>`; s += bigW(w) + mir(bigW(w)); }
+    if (has('g_eagle')) { const w = `<path d="M62 114 C38 94 14 96 2 110 C12 112 8 120 13 125 C21 120 21 129 28 131 C33 125 38 133 46 133 C50 127 56 129 62 129Z" fill="#fffdf7"/>
+        <path d="M14 112 q8 4 14 -2 M20 122 q8 4 14 -2 M34 126 q6 3 11 -2 M40 112 q7 4 12 -2" stroke="#b7a98f" stroke-width="1.7" fill="none"/>`; s += bigW(w) + mir(bigW(w)); }
+    if (has('g_fly')) { const w = `<ellipse cx="34" cy="104" rx="24" ry="17" transform="rotate(-22 34 104)" fill="#f5c2e7"/><ellipse cx="42" cy="130" rx="15" ry="10" transform="rotate(18 42 130)" fill="#cdb8f5"/>
+        <circle cx="30" cy="102" r="5" fill="#fff" stroke-width="1.8"/><circle cx="44" cy="96" r="3" fill="#fde68a" stroke-width="1.6"/><circle cx="40" cy="130" r="3" fill="#fff" stroke-width="1.6"/>`; s += bigW(w) + mir(bigW(w)); }
+    if (has('g_dragon')) s += `<path d="M104 146 C130 152 146 138 144 118 C143 108 150 100 158 100 C150 93 135 98 133 112 C131 128 122 135 104 134Z" fill="#ff9a4d"/>
+        <path d="M118 135 l4 -9 l5 7 M131 128 l7 -7 l2 9 M139 116 l8 -4 l-1 9" fill="#ffd166" stroke-width="2"/>
+        <path d="M114 142 q4 -4 8 0 M126 138 q4 -4 8 0 M137 130 q3 -4 7 -1" stroke="#c2581b" stroke-width="1.6" fill="none"/>
+        <path d="M156 101 C150 92 154 84 160 80 C160 88 166 90 164 98 C162 102 158 103 156 101Z" fill="#ffe066"/><path d="M158 98 C156 94 158 90 160 88 C161 92 162 95 158 98Z" fill="#ff7b39" stroke-width="1.4"/>
+        ${stitch(104, 133, 104, 147, 3)}`;
+    if (has('g_fox')) s += `<path d="M104 150 C130 162 154 146 152 120 C151 104 140 92 128 96 C136 108 132 122 120 128 C114 132 108 134 104 136Z" fill="#ff9f5a"/>
+        <path d="M128 96 C134 92 146 96 150 108 C144 104 138 104 132 106 C132 102 131 99 128 96Z" fill="#fffaf2"/>
+        <path d="M130 140 q6 -2 8 -8 M140 128 q5 -3 6 -9 M118 146 q6 0 9 -5" stroke="#c96a2b" stroke-width="1.6" fill="none"/>${stitch(104, 136, 104, 150, 3)}`;
+    if (lk === 'wolf' || lk === 'hybrid') s += `<path d="M104 148 C126 156 142 142 140 124 l5 -6 l-8 1 l-1 -8 l-6 6 C126 132 116 138 104 138Z" fill="#a9b0bc"/><path d="M122 144 l3 -6 M132 136 l4 -5" stroke="#6b7280" stroke-width="1.6"/>`;
+    if (old) s += `<path d="M130 120 C130 112 138 112 138 120 L138 172" stroke="#8a5a2b" stroke-width="5" fill="none"/>`;
+    // ---- chân, thân ----
+    s += `<ellipse cx="64" cy="168" rx="12" ry="7" fill="${corpse ? '#1d2c55' : '#fff'}"/><ellipse cx="96" cy="168" rx="12" ry="7" fill="${corpse ? '#1d2c55' : '#fff'}"/>`;
+    s += `<path d="M52 108 C43 132 48 166 80 166 C112 166 117 132 108 108Z" fill="${cloth}"/>`;
+    s += `<path d="M98 142 l6 -8 M101 150 l6 -8 M95 135 l5 -7" stroke="${INK}" stroke-width="1.4" opacity=".35"/>`;                  // nét đổ bóng doodle
+    if (corpse) s += `<rect x="68" y="124" width="24" height="22" rx="3" fill="#f2c94c" stroke-width="2"/><path d="M73 130 h14 M73 135 h14 M73 140 h10" stroke="#b45309" stroke-width="1.6"/>`;
+    else if (lk === 'witch') s += `<path d="M80 112 L80 160" stroke-width="2"/><circle cx="80" cy="124" r="2.5" fill="#fde047"/><circle cx="80" cy="138" r="2.5" fill="#fde047"/>`;
+    else if (lk === 'wolf' || lk === 'hybrid') s += `<path d="M66 112 l4 8 l4 -6 l4 8 l4 -8 l4 6 l4 -8 l2 6" fill="#f1f1f4" stroke-width="2"/>`;
+    else if (A.car === 'king') s += `<path d="M64 112 L80 128 L96 112" fill="none" stroke="#fcd34d" stroke-width="3"/>`;
+    else s += `<path d="M66 112 Q80 124 94 112" fill="none" stroke-width="2"/><circle cx="80" cy="134" r="2.2" fill="${INK}"/><circle cx="80" cy="146" r="2.2" fill="${INK}"/>`;
+    // gân dị hóa lan từ cổ xuống thân
+    if (has('g_bat') || has('g_eagle') || has('g_fly')) s += `<path d="M54 116 l6 6 M60 116 l-6 6 M100 116 l6 6 M106 116 l-6 6" stroke-width="1.8"/>`;   // mũi khâu nối cánh trên vai
+    if (mut >= 40) s += vein('M72 112 q-4 10 2 18 q4 8 -2 16 M88 112 q5 9 -1 17 q-4 9 3 15', glow);
+    // ---- tay ----
+    const arm = (x, rot) => `<ellipse cx="${x}" cy="132" rx="9" ry="13" transform="rotate(${rot} ${x} 132)" fill="${skin}"/>`;
+    if (lk === 'jiang' && corpse) {
+      const a = `<rect x="10" y="116" width="40" height="14" rx="7" fill="${cloth}"/><circle cx="10" cy="123" r="8" fill="${skin}"/><path d="M3 118 l-5 -2 M2 123 l-6 0 M3 128 l-5 2" stroke-width="2.2"/>`;
+      s += a + mir(a);
+    } else {
+      s += has('g_meteor') ? `<path d="M50 118 C36 120 30 140 38 148 C46 154 54 146 56 136Z" fill="#cdd5df"/><path d="M40 128 l10 4 M37 138 l12 3" stroke-width="1.8"/>
+          <circle cx="42" cy="124" r="1.8" fill="${INK}"/><circle cx="48" cy="146" r="1.8" fill="${INK}"/><path d="M44 132 l3 5 l-3 4" stroke="#ff8a3d" stroke-width="2.2" fill="none"/>
+          <circle cx="54" cy="118" r="5" fill="#94a3b8"/><path d="M51 118 h6 M54 115 v6" stroke-width="1.6"/>${stitch(48, 112, 58, 124, 2)}`
+        : arm(44, 28);
+      s += has('g_wolf') ? `<ellipse cx="116" cy="134" rx="13" ry="14" fill="#b3b9c4"/><ellipse cx="116" cy="138" rx="6" ry="4.5" fill="#f5b5c4" stroke-width="1.6"/>
+          <circle cx="109" cy="129" r="2.4" fill="#f5b5c4" stroke-width="1.2"/><circle cx="116" cy="126" r="2.4" fill="#f5b5c4" stroke-width="1.2"/><circle cx="123" cy="129" r="2.4" fill="#f5b5c4" stroke-width="1.2"/>
+          <path d="M108 148 l-2 7 l5 -4 M116 149 l0 8 l4 -6 M124 147 l3 7 l1 -6" fill="#fff" stroke-width="1.8"/><path d="M106 122 l3 -4 l3 3 l3 -4 l3 3 l3 -4 l3 4" fill="none" stroke-width="1.8"/>${stitch(104, 118, 112, 122, 2)}`
+        : arm(116, -28);
+    }
+    if (lk === 'witch') s += `<path d="M120 136 L140 102" stroke="#8a5a2b" stroke-width="4"/>${spark(141, 99, 7, '#fde047')}`;
+    if (lk === 'shin') s += `<path d="M126 120 l4 10 l10 4 l-10 4 l-4 10 l-4 -10 l-10 -4 l10 -4z" fill="#cbd5e1" stroke-width="2"/><circle cx="126" cy="134" r="2" fill="${INK}"/>`;
+    if (lk === 'jiang' && !corpse) s += `<rect x="112" y="122" width="12" height="22" rx="2" fill="#fde68a" stroke-width="2"/><path d="M115 127 h6 M118 127 v12 M115 134 l6 4" stroke="#d14343" stroke-width="1.6"/>`;
+    // ---- tai sau đầu ----
+    if (has('g_rabbit')) { const e = `<path d="M58 36 C44 2 50 -18 60 -12 C70 -6 72 18 70 38Z" fill="#fffdfb"/><path d="M60 30 C52 6 56 -8 61 -6 C66 -2 66 16 66 32Z" fill="#f9c6d6" stroke="none"/>
+        <path d="M56 34 l3 -5 l2 4 l3 -5 l2 5" fill="none" stroke-width="1.6"/>${stitch(56, 38, 72, 40, 3)}`; s += e + `<g transform="rotate(12 80 70)">${mir(e)}</g>`; }
+    if (has('g_cat') && !(lk === 'wolf' || lk === 'hybrid')) { const e = `<path d="M38 56 L34 16 L66 34Z" fill="${hair}"/><path d="M41 46 L39 25 L57 36Z" fill="#f9c6d6" stroke="none"/><path d="M42 40 l6 2 M41 46 l7 0" stroke-width="1.4"/>`; s += e + mir(e); }
+    if (lk === 'wolf' || lk === 'hybrid') { const e = `<path d="M34 60 L28 10 L68 34Z" fill="#a9b0bc"/><path d="M37 48 L34 22 L58 36Z" fill="#e9eaef" stroke="none"/><path d="M38 44 l3 -6 l3 4 l2 -7 l3 5" fill="none" stroke-width="1.6"/>`; s += e + mir(e); }
+    if (A.r === 'elf') { const e = `<path d="M33 70 C20 64 10 52 4 44 C10 64 20 80 34 86Z" fill="${skin}"/><path d="M28 70 C20 64 16 58 12 54" stroke-width="1.6" fill="none"/>`; s += e + mir(e); }
+    // ---- đầu ----
+    s += `<path d="M30 76 C29 42 52 26 80 26 C108 26 131 42 130 76 C130 106 108 120 80 120 C52 120 30 106 30 76Z" fill="${skin}"/>`;
+    if (corpse) s += `<path d="M42 96 l6 -4 M44 92 l2 6" stroke="#5b6b7a" stroke-width="1.6"/>${stitch(104, 58, 116, 76, 3, '#5b6b7a')}`;
+    // vảy cá ghép trên má (viền khâu quanh mảng ghép)
+    if (has('g_scale')) s += `<path d="M38 82 q5 -6 10 0 q5 -6 10 0 M42 90 q5 -6 10 0 q5 -6 10 0 M38 98 q5 -6 10 0" stroke="#4f8fd9" stroke-width="2" fill="#cfe6ff"/>
+        <path d="M34 78 C42 72 62 74 64 84 C66 96 56 104 42 102 C34 100 32 88 34 78Z" fill="none" stroke-width="1.6" stroke-dasharray="3 3"/>`;
+    if (has('g_virus')) s += `<circle cx="112" cy="88" r="5" fill="#7dfca8"/><circle cx="104" cy="100" r="3" fill="#7dfca8"/><circle cx="40" cy="62" r="3.5" fill="#7dfca8"/>
+        ${vein('M112 93 q-2 8 -10 10 M40 66 q4 6 2 12', '#22c55e')}<circle cx="120" cy="80" r="1.5" fill="#22c55e" stroke="none"/><circle cx="118" cy="96" r="1.2" fill="#22c55e" stroke="none"/>`;
+    // ---- mắt ----
+    if (has('g_owl')) s += `<circle cx="62" cy="80" r="14" fill="#fff4dc"/><circle cx="98" cy="80" r="14" fill="#fff4dc"/>
+        <path d="M50 70 l-4 -3 M52 92 l-4 3 M110 70 l4 -3 M108 92 l4 3 M62 64 v-4 M98 64 v-4" stroke-width="1.8"/>`;
+    const eye = (x, col) => tired ? `<path d="M${x - 7} 79 Q${x} 85 ${x + 7} 79" fill="none" stroke-width="2.6"/>`
+      : `<ellipse cx="${x}" cy="80" rx="6.2" ry="7.6" fill="${col}"/>${col !== INK ? `<ellipse cx="${x}" cy="80" rx="1.8" ry="5.6" fill="${INK}" stroke="none"/>` : ''}<circle cx="${x + 2.2}" cy="76.6" r="2.4" fill="#fff" stroke="none"/><circle cx="${x - 2}" cy="83" r="1.1" fill="#fff" stroke="none"/>`;
+    if (has('g_gear')) s += `<g stroke-width="2">${Array.from({ length:10 }, (_, i) => { const a = i * Math.PI / 5; return `<rect x="${(62 + 14 * Math.cos(a) - 2.5).toFixed(1)}" y="${(80 + 14 * Math.sin(a) - 2.5).toFixed(1)}" width="5" height="5" fill="#b8c2cf" transform="rotate(${i * 36} ${(62 + 14 * Math.cos(a)).toFixed(1)} ${(80 + 14 * Math.sin(a)).toFixed(1)})"/>`; }).join('')}</g>
+        <circle cx="62" cy="80" r="12" fill="#d7dee8"/><circle cx="62" cy="80" r="7" fill="#5ec8f5"/><circle cx="64.5" cy="77.5" r="2.4" fill="#fff" stroke="none"/><circle cx="52" cy="72" r="1.4" fill="${INK}"/><circle cx="72" cy="88" r="1.4" fill="${INK}"/>`;
+    else s += eye(62, eyeL);
+    s += eye(98, eyeR);
+    s += `<path d="M55 68 q6 -3 11 0 M94 68 q6 -3 11 0" stroke-width="2.2" fill="none"/>`;                                            // lông mày
+    if (tired) s += `<path d="M118 56 C114 62 116 68 120 68 C124 68 124 62 118 56Z" fill="#9fd4ff" stroke-width="1.8"/>`;
+    // má hồng gạch chéo
+    s += `<ellipse cx="50" cy="94" rx="8" ry="4.6" fill="#ffb3c4" stroke="none" opacity=".75"/><ellipse cx="110" cy="94" rx="8" ry="4.6" fill="#ffb3c4" stroke="none" opacity=".75"/>${hatch(44, 94)}${hatch(104, 94)}`;
+    // ---- miệng ----
+    if (lk === 'shin') s += '';
+    else if (lk === 'vamp' || lk === 'hybrid') s += `<path d="M71 96 Q80 106 89 96Z" fill="#8f2236" stroke-width="2.4"/><path d="M73 97 l2 5 l2 -4.6 M83 97.4 l2 4.6 l2 -5" fill="#fff" stroke-width="1.4"/>`;
+    else if (lk === 'wolf' || has('g_cat')) s += `<path d="M72 96 Q76 101 80 96 Q84 101 88 96" fill="none" stroke-width="2.4"/><path d="M78 92 L82 92 L80 94.5Z" fill="${INK}" stroke-width="1.6"/>`;
+    else if (corpse) s += `<path d="M72 99 h16" stroke-width="2.4"/><path d="M75 99 v3 M80 99 v3 M85 99 v3" stroke-width="1.6"/>`;
+    else s += tired ? `<path d="M74 100 Q80 96 86 100" fill="none" stroke-width="2.4"/>` : `<path d="M73 96 Q80 104 87 96" fill="#c2415a" stroke-width="2.4"/><path d="M76 99 Q80 102 84 99" fill="#ff8fa3" stroke="none"/>`;
+    // ---- tóc ----
+    const hairD = A.g === 'f' ? `<path d="M30 74 C27 36 52 22 80 22 C108 22 133 36 130 74 C124 58 114 50 104 52 C98 42 88 46 84 52 C78 42 66 44 62 52 C52 48 40 56 30 74Z" fill="${hair}"/>
+        <path d="M30 70 C22 98 28 116 40 122 C38 104 36 88 36 76Z M130 70 C138 98 132 116 120 122 C122 104 124 88 124 76Z" fill="${hair}"/><circle cx="34" cy="34" r="10" fill="${hair}"/><circle cx="126" cy="34" r="10" fill="${hair}"/>`
+      : A.g === 'm' ? `<path d="M30 72 C28 40 50 22 80 22 C110 22 132 40 130 72 C122 60 116 54 108 56 C104 46 96 50 92 54 C86 44 74 46 70 54 C62 48 52 54 48 62 C40 60 34 64 30 72Z" fill="${hair}"/><path d="M74 24 C72 12 80 6 88 8 C82 12 82 18 86 24" fill="${hair}"/>`
+      : `<path d="M30 80 C26 38 52 22 80 22 C108 22 134 38 130 80 C124 70 122 60 116 58 C96 56 64 56 44 58 C38 60 34 70 30 80Z" fill="${hair}"/>`;
+    if (!corpse && lk !== 'shin') s += hairD;
+    if (A.r === 'dwarf' && A.g !== 'f') s += `<path d="M48 100 C54 126 106 126 112 100 C104 112 96 108 92 112 C88 106 72 106 68 112 C64 108 56 112 48 100Z" fill="${hair}"/>`;
+    if (mut >= 60) s += `<path d="M71 58 Q80 50 89 58 Q80 66 71 58Z" fill="#fff"/><circle cx="80" cy="58" r="3.4" fill="${glow}" stroke-width="1.6"/><path d="M73 53 l-2 -3 M80 51 v-4 M87 53 l2 -3" stroke-width="1.6"/>`;
+    // ---- phụ kiện đầu ----
+    if (has('g_deer')) { const h = `<path d="M60 34 C56 22 52 12 44 4 M54 20 C48 18 44 20 40 16 M50 12 C50 6 52 2 56 -2" stroke="${INK}" stroke-width="7" fill="none"/>
+        <path d="M60 34 C56 22 52 12 44 4 M54 20 C48 18 44 20 40 16 M50 12 C50 6 52 2 56 -2" stroke="#c9934e" stroke-width="3.6" fill="none"/><circle cx="40" cy="16" r="3.4" fill="#ffb3d1" stroke-width="1.6"/><circle cx="56" cy="-2" r="3" fill="#bff0c8" stroke-width="1.6"/>`; s += h + mir(h) + stitch(56, 36, 66, 32, 2) + mir(stitch(56, 36, 66, 32, 2)); }
+    if (has('g_star')) s += `<ellipse cx="80" cy="6" rx="30" ry="7" fill="none" stroke="#f5c518" stroke-width="5"/><ellipse cx="80" cy="6" rx="30" ry="7" fill="none" stroke-width="1.4"/>${spark(48, -4, 5, '#fde68a')}${spark(114, -2, 4, '#fde68a')}`;
+    if (lk === 'witch') s += `<ellipse cx="80" cy="34" rx="56" ry="11" fill="#5b2fa8"/><path d="M48 31 C56 8 72 -8 96 -22 C92 -4 98 14 112 31Z" fill="#7c4dcc"/><path d="M52 26 Q80 34 110 26" stroke="#f5c518" stroke-width="5" fill="none"/>
+        <rect x="88" y="0" width="12" height="11" fill="#e7b1ff" stroke-width="1.8" transform="rotate(14 94 6)"/>${stitch(88, 1, 99, 4, 2)}${spark(70, 10, 6, '#fde047')}`;
+    if (lk === 'shin') s += `<path fill-rule="evenodd" d="M24 78 C22 34 52 18 80 18 C108 18 138 34 136 78 C136 110 112 124 80 124 C48 124 24 110 24 78Z M44 80 C44 66 60 62 80 62 C100 62 116 66 116 80 C116 94 100 98 80 98 C60 98 44 94 44 80Z" fill="#2f3542"/>
+        <path d="M44 86 C60 92 100 92 116 86 L114 104 C100 112 60 112 46 104Z" fill="#232831"/><path d="M60 98 q20 6 40 0" stroke="#4b5563" stroke-width="1.6" fill="none"/>
+        <rect x="64" y="40" width="32" height="12" rx="3" fill="#b8c2cf"/><path d="M74 46 h12 M80 42 v8" stroke-width="1.6"/><path d="M134 60 C148 56 154 64 160 60 M134 68 C146 70 150 78 158 78" stroke="#2f3542" stroke-width="6" fill="none"/>`;
+    if (lk === 'jiang') s += corpse ? `<path d="M30 42 C40 22 120 22 130 42 Z" fill="#1d2c55"/><ellipse cx="80" cy="42" rx="54" ry="8" fill="#1d2c55"/><circle cx="80" cy="18" r="6" fill="#e0453a"/>
+        <path d="M80 24 L80 30" stroke-width="2"/><rect x="69" y="44" width="22" height="46" rx="2" fill="#ffd84d" stroke-width="2.2"/><path d="M74 50 h12 M80 50 v32 M74 60 h12 M74 70 l12 7 M74 78 h12" stroke="#d63b3b" stroke-width="2"/>`
+      : `<path d="M54 32 L58 12 L102 12 L106 32Z" fill="#2b2530"/><rect x="72" y="16" width="16" height="10" fill="#f2c94c" stroke-width="1.6"/>`;
+    if (!lk && !has('g_deer') && !has('g_star')) s += {
+      king:`<path d="M52 30 L54 8 L66 20 L80 2 L94 20 L106 8 L108 30Z" fill="#fcd34d"/><circle cx="80" cy="14" r="3" fill="#ef4444" stroke-width="1.6"/><circle cx="62" cy="24" r="2.4" fill="#60a5fa" stroke-width="1.4"/><circle cx="98" cy="24" r="2.4" fill="#60a5fa" stroke-width="1.4"/>`,
+      soldier:`<path d="M32 50 C32 18 128 18 128 50 Z" fill="#a7b1c2"/><path d="M80 18 C84 6 96 4 100 10" stroke="#e0453a" stroke-width="6" fill="none"/><path d="M40 44 h80" stroke-width="2"/>`,
+      scholar:`<rect x="52" y="34" width="22" height="14" rx="7" fill="#bde7ff"/><rect x="86" y="34" width="22" height="14" rx="7" fill="#bde7ff"/><path d="M74 41 h12 M30 42 h22 M108 42 h22" stroke-width="2.4"/>`,
+      farmer:`<ellipse cx="80" cy="34" rx="62" ry="12" fill="#f2d27a"/><path d="M50 32 C54 10 106 10 110 32Z" fill="#f2d27a"/><path d="M52 26 Q80 34 108 26" stroke="#d14343" stroke-width="4" fill="none"/><path d="M30 34 l8 4 M124 34 l-8 4" stroke-width="1.4"/>`,
+      fisher:`<path d="M40 40 C42 14 118 14 120 40 Z" fill="#3b9bd6"/><path d="M30 42 Q80 30 130 42" stroke-width="3" fill="#2f7fb3"/>`,
+      hunter:`<path d="M38 42 C40 14 120 14 122 42 Z" fill="#6f9a3b"/><path d="M110 24 C122 4 136 0 140 2 C132 10 124 20 112 30Z" fill="#e0453a" stroke-width="2"/>`,
+      thief:`<path d="M30 54 C34 30 126 30 130 54 C110 46 50 46 30 54Z" fill="#4b5563"/><path d="M128 50 l14 -6 l-4 12Z" fill="#4b5563" stroke-width="2"/>`,
+    }[A.car] || '';
+    return s + '</g></svg>';
   }
 
   // ---------- giao diện ----------
@@ -609,7 +701,7 @@
 
   function charCard(C) {
     const st = stageOf(C.age), ln = C.line ? LINE[C.line.k].sub[C.line.sub] : null;
-    return `<div class="gx-card"><div class="gx-av">${avatar({ r:C.r, g:C.g, line:C.line, genes:C.genes, hair:C.hair, car:C.car ? C.car.k : '' }, 190)}</div>
+    return `<div class="gx-card"><div class="gx-av">${avatar({ r:C.r, g:C.g, line:C.line, genes:C.genes, hair:C.hair, car:C.car ? C.car.k : '', mut:C.mut, hp:C.hp, age:C.age }, 210)}</div>
       <div class="gx-nm">${E(C.n)}</div><div class="gx-sub">${C.age} tuổi · ${st[0]} · ${RACE[C.r][1]}</div>
       <div class="gx-sub">${C.line ? `${LINE[C.line.k].ic} ${E(ln[0])}` : 'Người thường'} · ${E(careerName(C))}</div>
       <div class="gx-bars">${STATS.map(([k, n, ic]) => bar(`${ic} ${n}`, C.s[k])).join('')}</div>
@@ -634,7 +726,7 @@
         <div class="gx-lab">Nơi sinh</div><div class="gx-pick">${Object.entries(ORIGIN).map(([k, o]) => `<button class="gx-pk${d.o === k ? ' on' : ''}" data-g="org" data-k="${k}"><b>${o[0]} ${E(o[1])}</b><small>${E(o[5])}</small></button>`).join('')}</div>
         <div class="gx-lab">Chủng tộc</div><div class="gx-pick">${Object.entries(RACE).map(([k, r]) => `<button class="gx-pk${d.r === k ? ' on' : ''}" data-g="race" data-k="${k}"><b>${r[0]} ${E(r[1])}</b><small>${E(r[4])}</small></button>`).join('')}</div>
         <div class="gx-lab">Gieo định mệnh</div>
-        ${d.roll ? `<div class="gx-two" style="grid-template-columns:200px minmax(0,1fr)"><div class="gx-av">${avatar({ r:d.r, g:d.g, genes:d.r === 'beast' ? ['g_cat'] : [], hair:2 }, 170)}</div><div>
+        ${d.roll ? `<div class="gx-two" style="grid-template-columns:200px minmax(0,1fr)"><div class="gx-av">${avatar({ r:d.r, g:d.g, genes:d.r === 'beast' ? ['g_cat'] : [], hair:2 }, 180)}</div><div>
             <div class="gx-roll">${STATS.map(([k, n, ic]) => `<div class="gx-st ${d.roll.s[k] >= 12 ? 'hi' : d.roll.s[k] <= 4 ? 'lo' : ''}"><small>${ic} ${n}</small><b>${d.roll.s[k]}</b></div>`).join('')}</div>
             <div class="gx-chips"><span class="gx-chip">${OMEN[d.roll.omen][0]} ${E(OMEN[d.roll.omen][1])} – ${E(OMEN[d.roll.omen][3])}</span>${d.roll.tr.map(t => `<span class="gx-chip line" title="${E(TRAITS[t][2])}">${TRAITS[t][0]} ${E(TRAITS[t][1])}</span>`).join('')}
               ${d.roll.nm ? `<span class="gx-chip lore">☯ ${d.roll.nm} điểm Nghịch Mệnh</span>` : ''}</div>

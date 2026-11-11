@@ -10,6 +10,8 @@ Ngôn ngữ giao diện: tiếng Anh / tiếng Việt; trao đổi với chủ d
 
 ## Files
 - `index.html` – chuyển hướng sang JLTN_WEBSITE; `NPD_BuildStatus.html` – chuyển hướng (giữ link cũ)
+- Các thẻ `<script src="*.js?v=…">` trong JLTN_WEBSITE.html có số phiên bản: sửa file .js nào thì đổi v (vd 20261111b → 20261112a)
+  để trình duyệt không dùng bản cũ trong bộ nhớ đệm.
 - `JLTN_WEBSITE.html` – app chính (1 file, JS thuần). Trang: home, lib (Training), eng, zh, tool, cave, fun (Relax); showTab(t).
   Biến toàn cục: S (dữ liệu chung: links, address, library, study, history), tabNow. Thẻ `<script id="board-data">`
   PHẢI luôn rỗng: {"version":1,"projects":[],"history":[]}
@@ -83,7 +85,9 @@ Ngôn ngữ giao diện: tiếng Anh / tiếng Việt; trao đổi với chủ d
   chọn hoạt động + sự kiện đời (EV: {id, a:[tuổi], w, if, once, c:[{t, if, chk:[chỉ số, độ khó], ok, no, r, rf}]}) → gene / thú hồn
   (GENE, đào thải theo Tương thích gen), 4 nhánh năng lượng (+ Bản Nguyên ẩn), huyết mạch LINE (Huyết Tộc 4 nhánh, Lang Tộc,
   Phù Thủy, Cương Thi, Ảnh Môn, Huyết Lang), nghề CAREER → chết → Cuốn Sách Nhân Sinh + di sản đời sau. Huyết Sử (LORE, 14 chương,
-  tiểu sử chung các nhánh) mở dần, giữ qua các đời. Nhân vật chibi = SVG ghép lớp (avatar). Nút data-g; CSS tự chèn (#gx-css).
+  tiểu sử chung các nhánh) mở dần, giữ qua các đời. Nhân vật = SVG phong cách doodle (avatar: viền đậm, thân tròn, mắt chấm, má gạch
+  chéo; bộ phận ghép vẽ chi tiết + đường khâu stitch() chỗ nối; dị hóa ≥ 40 có gân vein(), ≥ 60 mắt thứ ba, ≥ 80 nét xoáy; HP < 30
+  mệt; tuổi ≥ 60 tóc bạc + gậy; mũ / áo theo huyết mạch và nghề). Nút data-g; CSS tự chèn (#gx-css).
   Lưu npdFun@user.gen {v:1, life, books (≤ 12), lore, lives, legacy} – giữ dưới 30 000 ký tự (ô Sheet ≤ 45 000 cho cả npdFun).
   Nội dung tự viết, chỉ lấy cảm hứng mô-típ dân gian / thể loại (không dùng tên riêng / nhân vật của tác phẩm có bản quyền).
 - Điện thoại (≤ 760 px, ưu tiên iPhone 15 Plus 430 × 932): menu #nav thành thanh tab cố định dưới đáy (body chừa
