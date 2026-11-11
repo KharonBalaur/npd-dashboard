@@ -58,14 +58,20 @@ Ngôn ngữ giao diện: tiếng Anh / tiếng Việt; trao đổi với chủ d
   - Cave: hồ sơ / CV (cave(): profile, skills, exp, edu, cert, lang, proj), việc cần làm, lời nhắc. cavePdf: CV chuẩn
     Harvard (1 cột, serif đen trắng; bỏ mục / dòng trống; tiêu đề EN hoặc VI theo nội dung; tự co 82–112% cho vừa trang).
   - Tools: danh sách bên trái (tìm kiếm, phím /) + vùng làm việc; TOOLS / TOOL_RUN; link thẳng #tool/<key> (toolHash).
+    Đang mở 1 công cụ (máy tính): danh sách thu thành thanh biểu tượng 68px (.tl-app.rail, nút » / «, nhớ ở localStorage npdToolRail).
     Ô nhập / nút / tab dạng segmented dùng chung CSS "#tool .tl-main …".
     Cpk và Gage R&R có nút "Xuất báo cáo PDF" (tlReport: A4, thông tin rp_* tùy chọn, kết quả, biểu đồ SVG, số liệu, phương pháp, ô ký).
     "Chuỗi Dung Sai" (key stack) = trang riêng `tools/stackup.html` (QE Tolerance Stackup & Vector Chain Analyzer, JS thuần + Canvas 2D)
     nhúng bằng iframe .tl-fr (?embed=1&k=uKey("npdStack")); trang con gửi chiều cao qua postMessage {stackH}. Chuỗi kích thước
     {id, part, desc, nom, up, lo (có dấu), type plane / cyl / sph, hole, dia, dUp, dLo, dir ±1, on, bal} lưu localStorage theo khóa k
     (clean() kiểm tra dữ liệu, chỉ thêm trường). Bề mặt tròn: thêm vector Ø/2 (trục / cầu −, lỗ +). Worst-Case, RSS (σ = √Σ(T/3)²,
-    Cpk, PPM), Monte Carlo 50 000 mẫu, Pareto % đóng góp (theo kích thước / Part), bóng số trên bản vẽ (ảnh; PDF qua pdf.js
-    3.11.174 cdnjs, chỉ giữ trong phiên), Export PDF = window.print() với #report, Lưu / Mở .json. window.stackDebug cho test.
+    Cpk, PPM), Monte Carlo 50 000 mẫu, Pareto % đóng góp (theo kích thước / Part). Bố cục: thanh kết quả (màu PASS / FAIL + KPI)
+    → thanh thiết lập → [danh sách kích thước thu gọn, bấm dòng để mở (openId) | khung tab: Vector Loop, Tiếp xúc tròn – phẳng,
+    Pareto & so sánh, Bản vẽ, 3D]. Nhiều bản vẽ (DWS, tối đa 8, mỗi bản gán 1 Part, xem 1 bản / so sánh cạnh nhau, pan-zoom riêng;
+    ảnh hoặc PDF qua pdf.js 3.11.174 cdnjs; chỉ giữ trong phiên), bóng số d.bal {x, y, pg, dw: tên file}. Tab 3D: Three.js r128
+    (cdnjs, tải khi mở tab) dựng từ chuỗi kích thước – hàng trên vector +, hàng dưới vector −, trụ / cầu theo Ø, khe hở / cấn tô
+    màu, bản vẽ của Part treo trên khối của Part (không đọc hình học từ ảnh bản vẽ). Export PDF = window.print() với #report
+    (kèm ảnh 3D + mọi bản vẽ), Lưu / Mở .json. window.stackDebug cho test.
   - English / 中文: khung iframe tới study/*.html; window.npdStudy {load, save, extra, user} nối tiến độ theo tài khoản.
 - `fun.js` – Tiêu Dao Các (tab "fun", nút Relax): trò chơi nhỏ tự thiết kế (Soi Lỗi, Phản Xạ, Luyện Đan, Tính Nhẩm),
   Tĩnh Tâm (thở hộp 4-4-4-4), Gieo Quẻ 5 Phút (việc nhỏ / câu đố / chuyện cười QE). window.renderFun, funStop (rời tab dừng
