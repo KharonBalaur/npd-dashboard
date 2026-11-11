@@ -78,6 +78,14 @@ Ngôn ngữ giao diện: tiếng Anh / tiếng Việt; trao đổi với chủ d
   đồng hồ). Nút dùng data-f (không qua data-x). Kỷ lục: npdFun {best:{spot, react, memo, math}, plays, calm} theo tài khoản.
   Bảng Xếp Hạng (mục "top"): kỷ lục mọi tài khoản từ action "rank" (row.fun do Code.gs funBest_ lọc giá trị hợp lý),
   dòng của mình dùng kỷ lục trên máy; top 10 mỗi trò + dòng của mình nếu ngoài top.
+- `genesis.js` – game "Bản Nguyên Kỳ Duyên: Tiến Hóa Thư" (ô 'gene' trong Tiêu Dao Các, window.GenesisGame {mount, summary,
+  debug}): gieo định mệnh (7 nơi sinh, 4 chủng tộc, 6 chỉ số, điềm sinh, đặc điểm, Nghịch Mệnh cho người kém may) → mỗi lượt
+  chọn hoạt động + sự kiện đời (EV: {id, a:[tuổi], w, if, once, c:[{t, if, chk:[chỉ số, độ khó], ok, no, r, rf}]}) → gene / thú hồn
+  (GENE, đào thải theo Tương thích gen), 4 nhánh năng lượng (+ Bản Nguyên ẩn), huyết mạch LINE (Huyết Tộc 4 nhánh, Lang Tộc,
+  Phù Thủy, Cương Thi, Ảnh Môn, Huyết Lang), nghề CAREER → chết → Cuốn Sách Nhân Sinh + di sản đời sau. Huyết Sử (LORE, 14 chương,
+  tiểu sử chung các nhánh) mở dần, giữ qua các đời. Nhân vật chibi = SVG ghép lớp (avatar). Nút data-g; CSS tự chèn (#gx-css).
+  Lưu npdFun@user.gen {v:1, life, books (≤ 12), lore, lives, legacy} – giữ dưới 30 000 ký tự (ô Sheet ≤ 45 000 cho cả npdFun).
+  Nội dung tự viết, chỉ lấy cảm hứng mô-típ dân gian / thể loại (không dùng tên riêng / nhân vật của tác phẩm có bản quyền).
 - Điện thoại (≤ 760 px, ưu tiên iPhone 15 Plus 430 × 932): menu #nav thành thanh tab cố định dưới đáy (body chừa
   60px + safe-area), viewport-fit=cover + env(safe-area-inset-*) cho tai thỏ / thanh Home, ô nhập 16px (iOS không tự
   phóng to), nút trong trang ≥ 40px. Khối CSS cuối thẻ <style> ("Điện thoại (ưu tiên iPhone 15 Plus…)").
