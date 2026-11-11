@@ -1352,6 +1352,7 @@ table.g.mx td.cell.selc{background:#f8f9fc}
 @media (prefers-reduced-motion:reduce){#cuZ *,#cuZ{animation:none!important}#cuZ .cz-qi,#cuZ .cz-up{display:none}}
 /* Vạn Pháp Điện tools */
 .pg-ic svg{width:18px;height:18px;fill:none;stroke:var(--lime);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.tl-fr{display:block;width:100%;height:1400px;border:0;background:transparent}
 .tl-g{margin-bottom:18px} .tl-g h4{margin:0 0 8px;font-size:12px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--navy)} .tl-g h4 small{margin-left:8px;font-weight:600;color:var(--muted);letter-spacing:.5px}
 .tl-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(320px,100%),1fr));gap:12px}
 .tl-tile{position:relative;display:flex;align-items:flex-start;gap:14px;padding:16px;text-align:left;background:#fff;border:1px solid var(--bd);border-radius:10px;cursor:pointer;transition:border-color .15s,box-shadow .15s,transform .15s}
@@ -3360,6 +3361,7 @@ const TL_IC = {
   hall:'<circle cx="12" cy="12" r="3.2"/><path d="M12 2.8v3M12 18.2v3M2.8 12h3M18.2 12h3M5.5 5.5l2.1 2.1M16.4 16.4l2.1 2.1M5.5 18.5l2.1-2.1M16.4 7.6l2.1-2.1"/>',
   aql:'<path d="M3.5 8 10 4.8 16.5 8v6.6L10 17.8 3.5 14.6Z"/><path d="M3.5 8 10 11.2 16.5 8M10 11.2v6.6"/><circle cx="17.3" cy="16.3" r="3"/><path d="m19.5 18.5 2.2 2.2"/>',
   cpk:'<path d="M3 19.5h18"/><path d="M4.5 19.5c3 0 4.2-12 7.5-12s4.5 12 7.5 12"/><path d="M6.5 4.5v15M17.5 4.5v15" stroke-dasharray="2 2.2"/>',
+  stack:'<path d="M3.5 19.5h17"/><rect x="4" y="14" width="9" height="4" rx="1"/><rect x="6" y="9" width="7" height="4" rx="1"/><circle cx="9" cy="5.5" r="2.3"/><path d="M17.5 4v15M15.8 5.8 17.5 4l1.7 1.8M15.8 17.2l1.7 1.8 1.7-1.8"/>',
   grr:'<path d="M5 3.5h3.5v17H5Z"/><path d="M8.5 6h11l-2 3.5H8.5"/><path d="M8.5 13h4.5l-1.5 3H8.5"/><path d="M11 6v2M13.5 6v2.5M16 6v2"/>',
   date:'<rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4M7.5 14h2M11 14h2M14.5 14h2M7.5 17h2M11 17h2"/>',
   unit:'<path d="M3.5 16.5 16.5 3.5l4 4-13 13Z"/><path d="m7 13 2 2M9.5 10.5l1.4 1.4M12 8l2 2M14.5 5.5l1.4 1.4"/>',
@@ -3372,13 +3374,17 @@ const TOOLS = [
   ["aql", "q", "Lấy Mẫu OQC", "AQL sampling", "Cỡ mẫu và Ac / Re theo quy trình OQC TTi (VOPSOPOQC0001), MIL-STD-105E và C=0; nhập số lỗi để ra kết luận lô."],
   ["cpk", "q", "Năng Lực Quá Trình", "Cp · Cpk · Pp · Ppk", "Dán dữ liệu đo: chỉ số năng lực, PPM, histogram và biểu đồ kiểm soát."],
   ["grr", "q", "Phân Tích Hệ Đo", "Gage R&R · ANOVA", "Mẫu × người đo × lần đo: %GRR, ndc, biểu đồ và kết luận theo AIAG."],
+  ["stack", "q", "Chuỗi Dung Sai", "Tolerance stackup", "Worst-Case / RSS / Monte Carlo cho chuỗi kích thước: vector loop, tiếp xúc tròn – phẳng, Pareto đóng góp, bóng số trên bản vẽ, xuất PDF."],
   ["date", "d", "Thiên Thời Bàn", "Work calendar", "Công chuẩn kỳ 21 → 20, ngày chốt công 5 & 20, sổ OT (Ngọc Nhi hỏi mỗi ngày)."],
   ["unit", "d", "Đổi Đơn Vị", "Unit converter", "Quy đổi theo hệ SI: chiều dài, khối lượng, lực, mô-men, áp suất, nhiệt độ…"],
   ["link", "d", "Truyền Tống Trận", "Quick links", "Đường tắt tới TeamCenter, OT, TTi Dashboard, K2 SER, Cadena…"],
   ["mail", "d", "Mẫu Thư", "Email templates", "Mẫu email gửi khách hàng / supplier / nội bộ."]];
 const TOOL_GROUPS = [["q", "Pháp khí chất lượng", "Quality tools"], ["d", "Tiện ích hằng ngày", "Daily utilities"]];
-const TOOL_RUN = { aql:() => aqHtml(), cpk:() => cpkHtml(), grr:() => grrHtml(), date:() => ttHtml(), unit:() => ucHtml(), link:() => lkHtml() };
+// Chuỗi Dung Sai = trang riêng tools/stackup.html nhúng bằng iframe (dữ liệu lưu theo tài khoản: khóa uKey("npdStack") trong localStorage).
+const stackSrc = () => "tools/stackup.html?k=" + encodeURIComponent(uKey("npdStack"));
+const TOOL_RUN = { stack:() => `<iframe class="tl-fr" title="QE Tolerance Stackup" src="${stackSrc()}&embed=1"></iframe>`, aql:() => aqHtml(), cpk:() => cpkHtml(), grr:() => grrHtml(), date:() => ttHtml(), unit:() => ucHtml(), link:() => lkHtml() };
 let toolSel = "", toolQ = "";
+window.addEventListener("message", e => { if (e.origin !== location.origin || !e.data || !(e.data.stackH > 200)) return; const f = document.querySelector("#tool .tl-fr"); if (f) f.style.height = Math.min(20000, e.data.stackH) + "px"; });
 // Layout like the usual online tool sites: a side list (search + groups) and the open tool on the right. The open tool is in
 // the address (#tool/aql) so a link opens it directly, and the last one used is remembered in this tab.
 const toolHash = k => { try { history.replaceState(null, "", k ? "#tool/" + k : location.pathname + location.search); } catch (e) {} };
