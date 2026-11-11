@@ -2,11 +2,13 @@
  * Thiên Công Tông · Tiêu Dao Các (tab "fun") – góc thư giãn khi rảnh: trò chơi nhỏ tự thiết kế + bài thở + gợi ý việc vui 5 phút.
  * Dùng các hàm chung của JLTN_WEBSITE.html: $, esc, lsGet, lsSet, uKey, pgHead. Nút dùng thuộc tính data-f (không đụng data-x của trang chính).
  * Bảng Xếp Hạng (mục "top"): kỷ lục mọi người, lấy từ action "rank" (row.fun, Code.gs funBest_).
- * Kỷ lục lưu theo tài khoản: npdFun@user = { best:{spot, react, memo, math}, plays:{trò:số lần}, calm:số phút đã thở }
+ * Kỷ lục lưu theo tài khoản: npdFun@user = { best:{spot, react, memo, math}, plays:{trò:số lần}, calm:số phút đã thở,
+ *   gen: game Bản Nguyên Kỳ Duyên (genesis.js) }
  * (chỉ thêm trường; đồng bộ lên tab "Cá nhân" qua sheets-bridge như các dữ liệu cá nhân khác).
  */
 (function () {
   const FUN = [
+    ['gene', '🧬', 'Bản Nguyên Kỳ Duyên', 'Game mô phỏng một đời: gieo định mệnh, dung nhập thú hồn, thức tỉnh Huyết Tộc, Lang Tộc, Phù Thủy, Cương Thi, Ảnh Môn… rồi viết Cuốn Sách Nhân Sinh.'],
     ['spot', '🔍', 'Soi Lỗi', 'Tìm ô khác màu trong lưới linh kiện – càng lên cao càng khó. 30 giây.'],
     ['react', '⚡', 'Phản Xạ', 'Đèn xanh là bấm! 5 lượt, tính thời gian phản xạ trung bình.'],
     ['memo', '💊', 'Luyện Đan', 'Lật thẻ tìm cặp dược liệu giống nhau, càng ít lượt càng giỏi.'],
@@ -57,7 +59,7 @@
     const d = fs(), g = FUN.find(x => x[0] === cur);
     sec.innerHTML = `${pgHead('🍃', 'Tiêu Dao Các', 'Relax', 'Rảnh rỗi thì ghé đây: vài trò chơi nhỏ, một bài thở và gợi ý việc vui 5 phút cho đầu óc thảnh thơi.')}
       <div class="fn-grid">${FUN.map(([k, ic, n, desc]) => `<button class="fn-tile${k === cur ? ' on' : ''}" data-f="open" data-k="${k}"><span class="fn-ic">${ic}</span>
-        <span class="fn-tx"><b>${esc(n)}</b><small>${esc(desc)}</small><em>${k === 'calm' ? `Đã tĩnh tâm ${Math.round(d.calm)} phút` : k === 'idea' ? 'Gieo bao nhiêu cũng được' : k === 'top' ? 'Cập nhật mỗi phút' : esc(bestTxt(k))}${d.plays[k] ? ` · chơi ${d.plays[k]} lần` : ''}</em></span></button>`).join('')}</div>
+        <span class="fn-tx"><b>${esc(n)}</b><small>${esc(desc)}</small><em>${k === 'gene' ? esc(window.GenesisGame ? GenesisGame.summary() : '') : k === 'calm' ? `Đã tĩnh tâm ${Math.round(d.calm)} phút` : k === 'idea' ? 'Gieo bao nhiêu cũng được' : k === 'top' ? 'Cập nhật mỗi phút' : esc(bestTxt(k))}${d.plays[k] ? ` · chơi ${d.plays[k]} lần` : ''}</em></span></button>`).join('')}</div>
       ${g ? `<div class="pg-card fn-box" id="fnBox"><div class="fn-h"><h3>${g[1]} ${esc(g[2])}</h3><button data-f="close" title="Đóng">✕ Đóng</button></div><div id="fnStage"></div></div>` : ''}`;
     if (g) VIEW[cur]();
   }
@@ -202,6 +204,10 @@
       <div class="fn-c"><button data-f="topLoad">⟳ Cập nhật</button><span class="fn-m">${RK_AT ? 'Lúc ' + new Date(RK_AT).toLocaleTimeString('vi-VN', { hour:'2-digit', minute:'2-digit' }) + ' · ' : ''}kỷ lục mới lên bảng sau khoảng 1 phút</span></div>`);
   };
   ACT.topLoad = () => { RK_AT = 0; stage('<p class="fn-p">⏳ Đang mở bảng vàng…</p>'); loadTop(true); };
+
+  // ---------- Bản Nguyên Kỳ Duyên (genesis.js – lưu trong npdFun.gen) ----------
+  VIEW.gene = () => { if (!T || T.k !== 'gene') { played('gene'); T = { k:'gene' }; } const s = $('#fnStage'); if (!s) return;
+    if (window.GenesisGame) GenesisGame.mount(s); else stage('<p class="fn-p">Không tải được game (genesis.js).</p>'); };
 
   // ---------- Gieo Quẻ 5 Phút ----------
   VIEW.idea = () => { const it = T && T.k === 'idea' ? T.it : null;
