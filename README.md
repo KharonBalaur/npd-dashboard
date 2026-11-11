@@ -11,7 +11,7 @@ Web nội bộ cho team QE: **Training** (lộ trình tu luyện + thư viện k
 | `study/` | App học tiếng Anh / tiếng Trung và ngân hàng bài học mỗi ngày |
 | `realms.js` | Lộ trình Training: 14 cảnh giới + Vị Tế, 3 giới, các bí kíp (window.REALMS) |
 | `notebook.js` | Sổ tay QC (Training → 📓 Sổ tay QC): thống kê cơ bản, 7 công cụ QC, SPC, Cp · Cpk, Pp · Ppk, Gage R&R – giải thích cho người mới, ví dụ từng bước, hướng dẫn vẽ, bài tập tự tính |
-| `genesis.js` | Game “Bản Nguyên Kỳ Duyên: Tiến Hóa Thư” trong Tiêu Dao Các: mô phỏng một đời, dung nhập gene / thú hồn, huyết mạch Huyết Tộc · Lang Tộc · Phù Thủy · Cương Thi · Ảnh Môn, Cuốn Sách Nhân Sinh – lưu theo tài khoản |
+| `genesis.js` | Game “Bản Nguyên Kỳ Duyên: Tiến Hóa Thư” trong Tiêu Dao Các (giao diện tối 5 tab): mô phỏng một đời với thời thế, nhân vật phụ, tính cách, dị năng, cộng hưởng gene; huyết mạch Huyết Tộc · Lang Tộc · Phù Thủy · Cương Thi · Ảnh Môn; Cuốn Sách Nhân Sinh – lưu theo tài khoản |
 | `tools/stackup.html` | QE Tolerance Stackup & Vector Chain Analyzer (Tools → Chuỗi Dung Sai, mở riêng được): Worst-Case / RSS / Monte Carlo, vector loop, tiếp xúc tròn – phẳng, Pareto, nhiều bản vẽ (so sánh cạnh nhau, bóng số), mô hình 3D dựng từ chuỗi kích thước, xuất PDF |
 | `library-builtin.js` | Bài Thư viện có sẵn (không cần nhập Sheet): APQP theo sách AIAG, Control Plan 26 ô, checklist APQP – tóm tắt bằng lời của team |
 | `fun.js` | Tiêu Dao Các (Relax): trò chơi nhỏ, bài thở Tĩnh Tâm, Gieo Quẻ 5 Phút |
