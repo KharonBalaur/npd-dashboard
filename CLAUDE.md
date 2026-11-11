@@ -81,14 +81,28 @@ Ngôn ngữ giao diện: tiếng Anh / tiếng Việt; trao đổi với chủ d
   Bảng Xếp Hạng (mục "top"): kỷ lục mọi tài khoản từ action "rank" (row.fun do Code.gs funBest_ lọc giá trị hợp lý),
   dòng của mình dùng kỷ lục trên máy; top 10 mỗi trò + dòng của mình nếu ngoài top.
 - `genesis.js` – game "Bản Nguyên Kỳ Duyên: Tiến Hóa Thư" (ô 'gene' trong Tiêu Dao Các, window.GenesisGame {mount, summary,
-  debug}): gieo định mệnh (7 nơi sinh, 4 chủng tộc, 6 chỉ số, điềm sinh, đặc điểm, Nghịch Mệnh cho người kém may) → mỗi lượt
-  chọn hoạt động + sự kiện đời (EV: {id, a:[tuổi], w, if, once, c:[{t, if, chk:[chỉ số, độ khó], ok, no, r, rf}]}) → gene / thú hồn
-  (GENE, đào thải theo Tương thích gen), 4 nhánh năng lượng (+ Bản Nguyên ẩn), huyết mạch LINE (Huyết Tộc 4 nhánh, Lang Tộc,
-  Phù Thủy, Cương Thi, Ảnh Môn, Huyết Lang), nghề CAREER → chết → Cuốn Sách Nhân Sinh + di sản đời sau. Huyết Sử (LORE, 14 chương,
-  tiểu sử chung các nhánh) mở dần, giữ qua các đời. Nhân vật = SVG phong cách doodle (avatar: viền đậm, thân tròn, mắt chấm, má gạch
-  chéo; bộ phận ghép vẽ chi tiết + đường khâu stitch() chỗ nối; dị hóa ≥ 40 có gân vein(), ≥ 60 mắt thứ ba, ≥ 80 nét xoáy; HP < 30
-  mệt; tuổi ≥ 60 tóc bạc + gậy; mũ / áo theo huyết mạch và nghề). Nút data-g; CSS tự chèn (#gx-css).
-  Lưu npdFun@user.gen {v:1, life, books (≤ 12), lore, lives, legacy} – giữ dưới 30 000 ký tự (ô Sheet ≤ 45 000 cho cả npdFun).
+  debug}). Giao diện tông tối kiểu "Genesis Codex" (nền #0f1016, viền phát sáng cyan / xanh lục / tím / vàng), 5 tab UI.tab:
+  life (Chào Đời / Cuộc Đời: HUD, sự kiện, dòng lịch sử, thẻ nhân vật, thủ bản đang viết), dna (Phòng Gene: vị trí SLOT, tách
+  gene data-g="cut" 30 vàng, lực chiến, cộng hưởng SYN), skills (Dị Năng: tìm #gxSkq + lọc nhóm), lore (thời đại WORLD_ERAS,
+  thế lực FACTIONS, nhánh huyết mạch, nhật ký mật mã LORE), books (Thư Viện + xuất .txt exportBook).
+  Gieo định mệnh (7 nơi sinh, 4 chủng tộc, giới tính, màu tóc, 6 chỉ số, điềm sinh, đặc điểm, Nghịch Mệnh cho người kém may)
+  → mỗi lượt chọn hoạt động ACTS + sự kiện đời (EV: {id, a:[tuổi], w, if, once, tg:[thẻ], t, d, c:[{t, if, chk:[chỉ số, độ khó],
+  ok, no, r, rf}]}; t / d có chỗ trống {ban} {dich} {su} {tinh} {spouse} {kid} {place} – tx()) hoặc gặp gỡ ngẫu nhiên ENC (22% từ
+  12 tuổi, C.ev = {enc, p, who}). Đời khác nhau nhờ: thời thế 40 thập kỷ C.eras (ERAS: thái bình, chiến loạn, đại dịch, nạn đói,
+  Huyết Nguyệt, thịnh thế, đại hàn – lọc sự kiện, nhân hệ số hoạt động), nhân vật phụ C.npc {ban, dich, su, tinh: {n, aff, st, role}}
+  (npcTick có tin tức / sự kiện riêng), tính cách C.al {g thiện, l trật tự, b liều lĩnh} → persona(), dấu ấn C.deeds, con C.kidn,
+  dị năng SKILLS (28, tự thức tỉnh theo điều kiện; sự kiện có thẻ tg trùng → thêm lựa chọn ⚡ chắc thắng useSkill), cộng hưởng
+  SYN (10 bộ gene → flags), ~17 kết cục ending(). Hiệu ứng ok / no: chỉ số, hp, gold, hum, fame, want, good / law / bold, life, age,
+  năng lượng, en, gene, rmGene, flag, lore ('any'), line, car, rank, spouse, kids, meet (+sudo), aff, npcst, deed 'Tính từ|việc',
+  die, ending. Gene / thú hồn (GENE, đào thải theo Tương thích gen), 4 nhánh năng lượng (+ Bản Nguyên ẩn), huyết mạch LINE
+  (Huyết Tộc 4 nhánh, Lang Tộc, Phù Thủy, Cương Thi, Ảnh Môn, Huyết Lang), nghề CAREER → chết (hồi sinh: Nghịch Mệnh, Cương Thi,
+  Phượng Hoàng Niết Bàn) → Cuốn Sách Nhân Sinh (sum, ps, deeds, ch) + di sản đời sau. Huyết Sử (LORE, 14 chương) mở dần, giữ qua các đời.
+  Nhân vật = SVG: avatar() → dưới 13 tuổi avatarKid (doodle: viền đậm, thân tròn, mắt chấm), từ 13 tuổi avatarAdult (tỉ lệ người
+  lớn, mắt hạnh nhân, lông mày, mũi, môi; áo choàng / quan phục / áo đạo sĩ / trang phục nghề; mọi gene vẽ chi tiết + đường khâu
+  stitch(); dị hóa ≥ 40 gân, ≥ 60 mắt thứ ba, ≥ 80 nét xoáy; HP < 30 băng bó; tuổi ≥ 60 tóc bạc + gậy, trừ huyết mạch bất tử
+  – thọ > 200 thì hình dừng ở 40 tuổi). Nút data-g; CSS tự chèn (#gx-css, data-v).
+  Lưu npdFun@user.gen {v:1, life, books (≤ 12), lore, lives, legacy} – giữ dưới 30 000 ký tự (ô Sheet ≤ 45 000 cho cả npdFun;
+  C.log giữ 70 dòng). Đời đang dở từ bản cũ: upgrade(C) chỉ thêm trường (al, npc, eras, deeds, kidn), không đổi id sự kiện cũ.
   Nội dung tự viết, chỉ lấy cảm hứng mô-típ dân gian / thể loại (không dùng tên riêng / nhân vật của tác phẩm có bản quyền).
 - Điện thoại (≤ 760 px, ưu tiên iPhone 15 Plus 430 × 932): menu #nav thành thanh tab cố định dưới đáy (body chừa
   60px + safe-area), viewport-fit=cover + env(safe-area-inset-*) cho tai thỏ / thanh Home, ô nhập 16px (iOS không tự
