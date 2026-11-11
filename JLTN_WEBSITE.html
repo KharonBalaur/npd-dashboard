@@ -1428,6 +1428,18 @@ a.lk:hover{border-color:#d9ad55;box-shadow:0 4px 14px rgba(20,33,61,.1)} .lk .lk
 .tl-ni.on .tl-ic{box-shadow:0 0 0 2px var(--lime)}
 .tl-ni:focus-visible{outline:0;box-shadow:0 0 0 3px rgba(200,212,0,.5)}
 .tl-none{margin:6px;font-size:13px;color:var(--muted)}
+.tl-rt{display:none}
+@media (min-width:761px){
+  .tl-app.open .tl-rt{display:flex;align-items:center;justify-content:center;gap:6px;flex:none;height:34px;border:1px solid var(--bd);border-radius:8px;background:#f7f9fc;color:var(--navy);font-size:15px;font-weight:700}
+  .tl-app.open .tl-rt span{font-size:12.5px} .tl-app.open .tl-rt:hover{background:#eef2f9}
+  .tl-app.rail{grid-template-columns:68px minmax(0,1fr)}
+  .tl-app.rail .tl-side{padding:10px 8px;align-items:center}
+  .tl-app.rail .tl-rt{width:48px} .tl-app.rail .tl-q,.tl-app.rail .tl-ni>span:not(.tl-ic),.tl-app.rail .tl-ni em{display:none}
+  .tl-app.rail .tl-gh{height:1px;margin:6px 6px;background:var(--bd);font-size:0;overflow:hidden;align-self:stretch}
+  .tl-app.rail .tl-nav{margin:0;padding:0;align-items:center}
+  .tl-app.rail .tl-ni{width:48px;min-height:48px;justify-content:center;padding:0}
+}
+.tl-run.slim{padding:12px 14px} .tl-run.slim .tl-h{margin:0 0 10px;padding-bottom:10px} .tl-run.slim .tl-h p{display:none} .tl-run.slim .tl-h .tl-ic{width:36px;height:36px}
 .tl-main{min-width:0;scroll-margin-top:64px} .tl-main .tl-g:last-child{margin-bottom:0}
 .tl-run .tl-h{align-items:flex-start} .tl-h p{margin:4px 0 0;font-size:13px;line-height:1.45;color:var(--ink2)}
 .tl-hb{display:flex;gap:6px;flex:none}
@@ -3384,6 +3396,8 @@ const TOOL_GROUPS = [["q", "Pháp khí chất lượng", "Quality tools"], ["d",
 const stackSrc = () => "tools/stackup.html?k=" + encodeURIComponent(uKey("npdStack"));
 const TOOL_RUN = { stack:() => `<iframe class="tl-fr" title="QE Tolerance Stackup" src="${stackSrc()}&embed=1"></iframe>`, aql:() => aqHtml(), cpk:() => cpkHtml(), grr:() => grrHtml(), date:() => ttHtml(), unit:() => ucHtml(), link:() => lkHtml() };
 let toolSel = "", toolQ = "";
+// Đang mở 1 công cụ (máy tính): danh sách bên trái thu thành thanh biểu tượng để vùng làm việc rộng hơn; nhớ lựa chọn ở npdToolRail.
+let toolRail = (() => { try { return localStorage.getItem("npdToolRail") !== "0"; } catch (e) { return true; } })();
 window.addEventListener("message", e => { if (e.origin !== location.origin || !e.data || !(e.data.stackH > 200)) return; const f = document.querySelector("#tool .tl-fr"); if (f) f.style.height = Math.min(20000, e.data.stackH) + "px"; });
 // Layout like the usual online tool sites: a side list (search + groups) and the open tool on the right. The open tool is in
 // the address (#tool/aql) so a link opens it directly, and the last one used is remembered in this tab.
@@ -3395,15 +3409,16 @@ function renderTools() {
   const hit = x => !q || (x[2] + " " + x[3] + " " + x[4]).toLowerCase().includes(q);
   const hall = `<svg viewBox="0 0 24 24" aria-hidden="true">${TL_IC.hall}</svg>`;
   const side = TOOL_GROUPS.map(([g, vn, en]) => { const L = TOOLS.filter(x => x[1] === g && hit(x)); return L.length ? `<div class="tl-gh">${vn}<small>${en}</small></div>
-    ${L.map(([k, , n, e]) => `<button class="tl-ni${k === toolSel ? " on" : ""}" data-x="tool" data-k="${k}"${k === toolSel ? ' aria-current="page"' : ""}>${tlIcon(k)}<span><b>${esc(n)}</b><small>${esc(e)}</small></span>${TOOL_RUN[k] ? "" : `<em>Sắp mở</em>`}</button>`).join("")}` : ""; }).join("")
+    ${L.map(([k, , n, e]) => `<button class="tl-ni${k === toolSel ? " on" : ""}" data-x="tool" data-k="${k}" title="${esc(n + " · " + e)}"${k === toolSel ? ' aria-current="page"' : ""}>${tlIcon(k)}<span><b>${esc(n)}</b><small>${esc(e)}</small></span>${TOOL_RUN[k] ? "" : `<em>Sắp mở</em>`}</button>`).join("")}` : ""; }).join("")
     || `<p class="tl-none">Không có công cụ nào khớp “${esc(toolQ)}”.</p>`;
-  const main = t ? `<div class="pg-card tl-run"><div class="tl-h">${tlIcon(t[0])}<div class="tl-t"><h3>${esc(t[2])}</h3><small>${esc(t[3])}</small><p>${esc(t[4])}</p></div>
+  const rail = !!t && toolRail, slim = t && t[0] === "stack";
+  const main = t ? `<div class="pg-card tl-run${slim ? " slim" : ""}"><div class="tl-h">${tlIcon(t[0])}<div class="tl-t"><h3>${esc(t[2])}</h3><small>${esc(t[3])}</small><p>${esc(t[4])}</p></div>
       <div class="tl-hb"><button data-x="toolLink" title="Sao chép đường dẫn tới công cụ này">🔗 <span>Sao chép link</span></button><button class="tl-back" data-x="toolBack" title="Tất cả công cụ">✕ <span>Đóng</span></button></div></div>
       ${run ? run() : `<div class="soon">⚒ Công cụ đang được hoàn thiện. Chi tiết sẽ bổ sung.</div>`}</div>`
     : `<div class="tl-home">${TOOL_GROUPS.map(([g, vn, en]) => `<section class="tl-g"><h4>${vn}<small>${en}</small></h4><div class="tl-grid">${TOOLS.filter(x => x[1] === g && hit(x)).map(([k, , n, e, d]) =>
       `<button class="tl-tile" data-x="tool" data-k="${k}">${tlIcon(k)}<span class="tl-tx"><b>${esc(n)}</b><small>${esc(e)}</small><span class="d">${esc(d)}</span></span>${TOOL_RUN[k] ? "" : `<span class="tag">Sắp mở</span>`}</button>`).join("")}</div></section>`).join("")}</div>`;
   $("#tool").innerHTML = `${pgHead(hall, "Vạn Pháp Điện", "Support tools", "Công cụ hỗ trợ công việc hằng ngày: chọn một công cụ, kết quả tính ngay khi nhập.")}
-  <div class="tl-app${t ? " open" : ""}"><aside class="tl-side" aria-label="Danh sách công cụ"><label class="tl-q"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/></svg>
+  <div class="tl-app${t ? " open" : ""}${rail ? " rail" : ""}"><aside class="tl-side" aria-label="Danh sách công cụ">${t ? `<button class="tl-rt" data-x="toolRail" title="${rail ? "Mở rộng danh sách công cụ" : "Thu gọn danh sách – vùng làm việc rộng hơn"}" aria-expanded="${!rail}">${rail ? "»" : "«"}<span>${rail ? "" : "Thu gọn"}</span></button>` : ""}<label class="tl-q"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/></svg>
       <input id="tlQ" type="search" placeholder="Tìm công cụ…  ( / )" value="${esc(toolQ)}" autocomplete="off" aria-label="Tìm công cụ"></label>
       <nav class="tl-nav">${side}</nav></aside>
     <div class="tl-main">${main}</div></div>`;
@@ -3415,7 +3430,7 @@ document.addEventListener("input", e => {
 });
 document.addEventListener("keydown", e => {
   if (tabNow !== "tool") return;
-  if (e.key === "/" && !e.target.closest("input,textarea,select,[contenteditable]")) { e.preventDefault(); const i = $("#tlQ"); if (i) i.focus(); }
+  if (e.key === "/" && !e.target.closest("input,textarea,select,[contenteditable]")) { e.preventDefault(); if (toolRail && toolSel && innerWidth > 760) { toolRail = false; renderTools(); } const i = $("#tlQ"); if (i) i.focus(); }
   else if (e.key === "Enter" && e.target.id === "tlQ") { const b = $(".tl-nav .tl-ni"); if (b) b.click(); }
   else if (e.key === "Escape" && e.target.id === "tlQ" && toolQ) { toolQ = ""; renderTools(); $("#tlQ").focus(); }
 });
@@ -4216,6 +4231,7 @@ document.addEventListener("click", e => {                                // butt
     if (X && X.mode === "topic" && X.fail) libPage = 0;                   // "Đọc lại bài": mở lại trang đầu của bí kíp
     renderLib(); return X && X.mode === "topic" ? libScrollRead() : undefined; }
   if (x === "tool") { toolSel = k; try { sessionStorage.setItem("npdTool", k); } catch (e) {} toolHash(k); renderTools(); const m = $(".tl-main"); if (m && innerWidth < 900) m.scrollIntoView({ block:"start", behavior:"smooth" }); return; }
+  if (x === "toolRail") { toolRail = !toolRail; try { localStorage.setItem("npdToolRail", toolRail ? "1" : "0"); } catch (e) {} return renderTools(); }
   if (x === "toolBack") { toolSel = ""; try { sessionStorage.removeItem("npdTool"); } catch (e) {} toolHash(""); return renderTools(); }
   if (x === "toolLink") { const u = location.href.split("#")[0] + "#tool/" + toolSel;
     (navigator.clipboard ? navigator.clipboard.writeText(u) : Promise.reject()).then(() => { b.innerHTML = "✓ <span>Đã sao chép</span>"; setTimeout(() => b.isConnected && (b.innerHTML = "🔗 <span>Sao chép link</span>"), 1600); }, () => prompt("Sao chép đường dẫn:", u)); return; }

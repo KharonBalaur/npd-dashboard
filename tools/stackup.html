@@ -8,15 +8,17 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap">
 <style>
 /* QE Tolerance Stackup – công cụ 1 trang (HTML/CSS/JS thuần, Canvas 2D). Chạy riêng hoặc nhúng trong Tools của JLTN_WEBSITE
-   (?embed=1&k=<khóa lưu>). Dữ liệu chuỗi kích thước lưu ở localStorage của trình duyệt; bản vẽ chỉ giữ trong phiên. */
-:root{--navy:#14213d;--navy2:#22335a;--lime:#c8d400;--blue:#2563eb;--blue-bg:#e8f0fe;--violet:#7c3aed;--green:#15803d;--green2:#16a34a;
-  --green-bg:#e6f6ec;--red:#dc2626;--red-bg:#fdecec;--amber:#b45309;--amber-bg:#fff4e0;--ink:#0f172a;--ink2:#334155;--muted:#64748b;
-  --line:#dbe2ec;--bg:#eef2f7;--card:#fff;--r:12px}
+   (?embed=1&k=<khóa lưu>). Dữ liệu chuỗi kích thước lưu ở localStorage của trình duyệt; bản vẽ chỉ giữ trong phiên.
+   Bố cục: thanh kết quả (màu theo PASS / FAIL) → thanh thiết lập → [danh sách kích thước thu gọn | khung hiển thị có tab]. */
+:root{--navy:#14213d;--navy2:#22335a;--lime:#c8d400;--blue:#2563eb;--blue-bg:#eaf1ff;--blue-bd:#c7d8fb;--violet:#7c3aed;--violet-bg:#f3edff;
+  --green:#15803d;--green2:#16a34a;--green-bg:#e9f8ef;--green-bd:#a7dfbb;--red:#dc2626;--red-bg:#fdeeee;--red-bd:#f5b5b5;--amber:#b45309;--amber-bg:#fff5e2;
+  --ink:#0f172a;--ink2:#334155;--muted:#64748b;--line:#dde4ee;--bg:#eef2f7;--card:#fff;--r:14px}
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
 body{margin:0;font:14px/1.45 Inter,"Segoe UI",Roboto,Arial,sans-serif;color:var(--ink);background:var(--bg);font-variant-numeric:tabular-nums}
 button,input,select{font:inherit;color:inherit}
 button{cursor:pointer}
+/* header */
 .hd{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:12px;padding:10px 18px;padding-left:max(18px,env(safe-area-inset-left));
   padding-right:max(18px,env(safe-area-inset-right));background:var(--navy);color:#fff;box-shadow:0 2px 10px rgba(15,23,42,.18)}
 .hd .lg{flex:none;width:38px;height:38px;border-radius:10px;background:var(--lime);display:grid;place-items:center}
@@ -24,21 +26,24 @@ button{cursor:pointer}
 .hd h1{margin:0;font-size:17px;font-weight:800;letter-spacing:.2px;line-height:1.2}
 .hd h1 small{display:block;font-size:11.5px;font-weight:500;color:#aab6cf;letter-spacing:.3px}
 .hd .tt{flex:1;min-width:0}
-.hd .act{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
-.hb{display:inline-flex;align-items:center;gap:6px;min-height:36px;padding:0 13px;border-radius:8px;border:1px solid rgba(255,255,255,.22);
+.hd .act{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.hb{display:inline-flex;align-items:center;gap:6px;min-height:36px;padding:0 12px;border-radius:8px;border:1px solid rgba(255,255,255,.2);
   background:rgba(255,255,255,.06);color:#fff;font-weight:600;font-size:13px;white-space:nowrap}
 a.hb{text-decoration:none}
 .hb:hover{background:rgba(255,255,255,.14)} .hb.pri{background:var(--lime);border-color:var(--lime);color:var(--navy)} .hb.pri:hover{filter:brightness(1.05)}
 .hb.dan:hover{background:#b91c1c;border-color:#b91c1c}
-.app{display:grid;gap:14px;padding:14px 18px 24px;max-width:1720px;margin:0 auto;
-  grid-template-columns:340px minmax(0,1fr) 330px;grid-template-rows:auto 1fr;grid-template-areas:"side center res" "side bottom bottom";align-items:start}
-.side{grid-area:side} .center{grid-area:center} .res{grid-area:res} .bottom{grid-area:bottom}
-.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:14px;min-width:0}
-.card+.card{margin-top:14px}
-.ch{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin:0 0 10px}
-.ch h2{margin:0;font-size:12px;font-weight:800;letter-spacing:.9px;text-transform:uppercase;color:var(--navy)}
-.ch .n{margin-left:auto;font-size:12px;color:var(--muted)}
-.ch .stp{display:inline-grid;place-items:center;width:20px;height:20px;border-radius:50%;background:var(--navy);color:var(--lime);font-size:11px;font-weight:800}
+/* khung chung */
+.app{display:flex;flex-direction:column;gap:14px;padding:14px 18px 24px;max-width:1720px;margin:0 auto}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);min-width:0}
+.pane{background:var(--card);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;min-width:0;box-shadow:0 1px 2px rgba(15,23,42,.04)}
+.ph{display:flex;align-items:center;flex-wrap:wrap;gap:8px;padding:10px 14px;border-bottom:1px solid var(--line)}
+.ph h2{margin:0;font-size:12.5px;font-weight:800;letter-spacing:.8px;text-transform:uppercase}
+.ph .n{font-size:12px;font-weight:600}
+.ph.blue{background:var(--blue-bg);border-bottom-color:var(--blue-bd)} .ph.blue h2{color:#1e3a8a} .ph.blue .n{color:#3b5bb5}
+.ph.navy{background:var(--navy);border-bottom-color:var(--navy);padding:8px 10px}
+.pb{padding:14px}
+.sp{flex:1}
+.stp{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--blue);color:#fff;font-size:11.5px;font-weight:800;flex:none}
 label.f{display:flex;flex-direction:column;gap:3px;font-size:11.5px;font-weight:600;color:var(--muted);min-width:0}
 input.i,select.i{width:100%;min-width:0;height:34px;padding:0 9px;border:1px solid #cfd8e5;border-radius:8px;background:#fff;color:var(--ink);font-size:13.5px}
 select.i{appearance:none;-webkit-appearance:none;padding-right:26px;background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%2364748b' stroke-width='1.6'/%3E%3C/svg%3E") no-repeat right 9px center}
@@ -49,91 +54,93 @@ input.i.bad{border-color:var(--red);background:var(--red-bg)}
 .seg{display:inline-flex;padding:3px;border-radius:9px;background:#eef2f7;border:1px solid var(--line);gap:2px}
 .seg button{border:0;background:transparent;border-radius:7px;min-height:30px;padding:0 12px;font-weight:700;font-size:13px;color:var(--muted)}
 .seg button.on{background:#fff;color:var(--navy);box-shadow:0 1px 3px rgba(15,23,42,.15)}
-.seg.wide{display:flex} .seg.wide button{flex:1}
-.seg button small{display:block;font-size:10.5px;font-weight:500;color:var(--muted);line-height:1.1}
-.mt{margin-top:10px} .mt6{margin-top:6px}
-.note{margin:8px 0 0;font-size:12px;color:var(--muted);line-height:1.45}
-.note b{color:var(--ink2)}
+.note{margin:8px 0 0;font-size:12px;color:var(--muted);line-height:1.45} .note b{color:var(--ink2)}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:34px;padding:0 12px;border:1px solid #cfd8e5;border-radius:8px;background:#fff;font-weight:600;font-size:13px;color:var(--ink2)}
 .btn:hover{background:#f4f7fb;border-color:#b8c3d4} .btn.pri{background:var(--navy);border-color:var(--navy);color:#fff} .btn.pri:hover{background:var(--navy2)}
+.btn.add{border-style:dashed;border-color:#9fb6e6;color:var(--blue);background:#f7faff} .btn.add:hover{background:var(--blue-bg)}
 .btn.blk{width:100%} .btn:disabled{opacity:.45;cursor:default}
-/* bản vẽ (sidebar) */
-.drop{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;min-height:96px;padding:12px;border:1.5px dashed #b8c3d4;border-radius:10px;background:#f8fafc;
-  text-align:center;color:var(--muted);font-size:12.5px;cursor:pointer}
-.drop:hover,.drop.ov{border-color:var(--blue);background:var(--blue-bg);color:var(--blue)}
-.drop b{color:var(--navy);font-size:13px}
-.dwf{display:flex;align-items:center;gap:10px;padding:8px;border:1px solid var(--line);border-radius:10px}
-.dwf img{width:64px;height:48px;object-fit:cover;border-radius:6px;border:1px solid var(--line);background:#fff}
-.dwf .t{flex:1;min-width:0;font-size:12.5px} .dwf .t b{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-/* thẻ kích thước */
-.dims{display:flex;flex-direction:column;gap:10px}
-.dc{border:1px solid var(--line);border-left:4px solid var(--blue);border-radius:10px;padding:10px;background:#fff;transition:opacity .15s,box-shadow .2s}
-.dc.neg{border-left-color:var(--violet)}
-.dc.off{opacity:.55;border-left-color:#cbd5e1;background:#f8fafc}
-.dc.flash{box-shadow:0 0 0 3px rgba(200,212,0,.75)}
-.dc-h{display:flex;align-items:center;gap:7px;margin-bottom:8px}
-.dc-id{flex:none;min-width:30px;padding:2px 6px;border-radius:6px;background:var(--navy);color:var(--lime);font-size:12px;text-align:center}
-.dc-h .i{flex:1}
-.dc .seg button{min-height:28px;padding:0 10px;font-size:15px}
-.dc .seg button.on[data-v="1"]{color:var(--blue)} .dc .seg button.on[data-v="-1"]{color:var(--violet)}
-.dc-b{display:flex;flex-direction:column;gap:8px}
-.dc-eff{margin:0;padding:6px 8px;border-radius:7px;background:var(--blue-bg);color:#1e3a8a;font-size:11.8px;line-height:1.4}
+.hide{display:none!important}
+/* 1 · thanh kết quả */
+.sum{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.55fr);gap:14px;padding:14px;border-left:6px solid #94a3b8}
+.sum.pass{border-left-color:var(--green2);background:linear-gradient(90deg,#f0fbf4,#fff 45%)}
+.sum.fail{border-left-color:var(--red);background:linear-gradient(90deg,#fff1f1,#fff 45%)}
+.vd{display:flex;gap:12px;align-items:flex-start;min-width:0}
+.vd .ic{flex:none;width:52px;height:52px;border-radius:50%;display:grid;place-items:center;font-size:28px;font-weight:800;color:#fff;background:#94a3b8}
+.sum.pass .vd .ic{background:var(--green2);box-shadow:0 0 0 6px rgba(22,163,74,.14)} .sum.fail .vd .ic{background:var(--red);box-shadow:0 0 0 6px rgba(220,38,38,.14)}
+.vd small{display:block;font-size:11px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--muted)}
+.vd h3{margin:0;font-size:30px;font-weight:800;letter-spacing:.5px;line-height:1.1}
+.sum.pass .vd h3{color:var(--green)} .sum.fail .vd h3{color:var(--red)}
+.vd ul{margin:6px 0 0;padding-left:16px;font-size:12.5px;color:var(--ink2)} .vd li{margin:2px 0}
+.vd .warn,.vd .tip{margin-top:8px;padding:7px 9px;border-radius:8px;font-size:12px;line-height:1.45}
+.vd .warn{background:var(--amber-bg);color:var(--amber);font-weight:600} .vd .tip{background:#fff;border:1px solid var(--line);color:var(--ink2)} .vd .tip b{color:var(--navy)}
+.kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;align-content:start}
+.k{padding:8px 10px 9px;border:1px solid var(--line);border-top:3px solid var(--blue);border-radius:10px;background:#fff;min-width:0}
+.k small{display:block;font-size:11px;font-weight:700;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.k b{display:block;font-size:20px;font-weight:800;color:var(--blue);line-height:1.25}
+.k em{display:block;font-style:normal;font-size:11px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.k.r{border-top-color:var(--red);background:#fffafa} .k.r b{color:var(--red)} .k.g{border-top-color:var(--green2)} .k.g b{color:var(--green)}
+.k.a{border-top-color:var(--amber)} .k.a b{color:var(--amber)}
+/* 2 · thiết lập */
+.cfg{display:flex;flex-wrap:wrap;align-items:flex-end;gap:10px 14px;padding:10px 14px}
+.cfg .grp{display:flex;flex-direction:column;gap:3px} .cfg .grp>span{font-size:11.5px;font-weight:600;color:var(--muted)}
+.cfg label.f{width:108px} .cfg label.f.s{width:84px}
+.cfg .hint{flex:1;min-width:200px;font-size:12px;color:var(--muted);align-self:center}
+.cfg .hint b{color:var(--red)}
+/* 3 · vùng làm việc */
+.work{display:grid;grid-template-columns:400px minmax(0,1fr);gap:14px;align-items:start}
+.legend{display:flex;flex-wrap:wrap;gap:6px 12px;margin:0 0 10px;font-size:11.5px;color:var(--muted)}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:4px;vertical-align:-1px}
+.dims{display:flex;flex-direction:column;gap:8px}
+.dc{border:1px solid var(--line);border-left:4px solid var(--blue);border-radius:10px;background:#fff;transition:box-shadow .2s,opacity .15s}
+.dc.neg{border-left-color:var(--violet)} .dc.off{opacity:.6;border-left-color:#cbd5e1;background:#f8fafc}
+.dc.open{border-color:var(--blue-bd);box-shadow:0 6px 18px rgba(37,99,235,.1)} .dc.neg.open{border-color:#d9c8fb}
+.dc.flash{box-shadow:0 0 0 3px rgba(200,212,0,.8)}
+.dc-h{display:flex;align-items:center;gap:8px;padding:8px 10px}
+.dc-sum{flex:1;min-width:0;display:flex;align-items:center;gap:9px;border:0;background:none;padding:2px 0;text-align:left;border-radius:8px}
+.dc-sum:focus-visible{outline:0;box-shadow:0 0 0 3px rgba(37,99,235,.25)}
+.dc-id{flex:none;min-width:30px;padding:2px 6px;border-radius:6px;background:var(--blue);color:#fff;font-size:12px;text-align:center}
+.dc.neg .dc-id{background:var(--violet)} .dc.off .dc-id{background:#94a3b8}
+.dc-nm{flex:1;min-width:0;display:flex;flex-direction:column;line-height:1.3}
+.dc-nm b{font-size:13px;font-weight:700;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dc-nm small{font-size:11.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dc-val{flex:none;text-align:right;font-weight:800;color:var(--blue);font-size:13px;line-height:1.25} .dc.neg .dc-val{color:var(--violet)} .dc.off .dc-val{color:#94a3b8}
+.dc-val em{display:block;font-style:normal;font-size:11px;font-weight:600;color:var(--muted)}
+.dc-val i{font-style:normal;margin-right:5px;padding:0 5px;border-radius:5px;background:#eef2f7;color:var(--ink2);font-size:11px;font-weight:700}
+.chev{flex:none;color:var(--muted);font-size:12px;transition:transform .15s} .dc.open .chev{transform:rotate(180deg)}
+.dc-b{display:flex;flex-direction:column;gap:8px;padding:10px;border-top:1px dashed var(--line);background:#fbfcfe;border-radius:0 0 10px 10px}
+.dc-row{display:flex;gap:8px;align-items:flex-end} .dc-row label.f:first-child{flex:1}
+.dc-eff{margin:0;padding:7px 9px;border-radius:8px;background:var(--blue-bg);color:#1e3a8a;font-size:11.8px;line-height:1.45}
 .dc-warn{margin:0;color:var(--red);font-size:12px;font-weight:600} .dc-warn:empty{display:none}
-.dc-f{display:flex;gap:4px;justify-content:flex-end;margin-top:2px}
-.ib{display:inline-grid;place-items:center;min-width:30px;height:28px;padding:0 6px;border:1px solid transparent;border-radius:7px;background:transparent;color:var(--muted);font-size:13px}
-.ib:hover{background:#eef2f7;color:var(--ink)} .ib.del:hover{background:var(--red-bg);color:var(--red)} .ib.on{background:var(--amber-bg);color:var(--amber)}
+.dc-f{display:flex;gap:4px;justify-content:flex-end}
+.dc .seg button{min-height:32px;padding:0 13px;font-size:16px}
+.dc .seg button.on[data-v="1"]{color:var(--blue)} .dc .seg button.on[data-v="-1"]{color:var(--violet)}
+.ib{display:inline-grid;place-items:center;min-width:32px;height:30px;padding:0 6px;border:1px solid var(--line);border-radius:7px;background:#fff;color:var(--muted);font-size:13px}
+.ib:hover{background:#eef2f7;color:var(--ink)} .ib.del:hover{background:var(--red-bg);border-color:var(--red-bd);color:var(--red)} .ib.on{background:var(--amber-bg);color:var(--amber)}
+.ib:disabled{opacity:.4;cursor:default}
 .sw{position:relative;flex:none;width:36px;height:20px} .sw input{position:absolute;opacity:0;inset:0;margin:0;cursor:pointer;z-index:1}
 .sw span{position:absolute;inset:0;border-radius:20px;background:#cbd5e1;transition:.15s}
 .sw span::after{content:"";position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.25);transition:.15s}
 .sw input:checked+span{background:var(--green2)} .sw input:checked+span::after{left:18px}
 .sw input:focus-visible+span{box-shadow:0 0 0 3px rgba(37,99,235,.3)}
-/* trung tâm */
-.tabs{display:flex;gap:4px;flex-wrap:wrap;margin:-2px 0 10px}
-.tabs button{display:inline-flex;align-items:center;gap:6px;min-height:34px;padding:0 13px;border:1px solid var(--line);border-radius:8px;background:#fff;font-weight:600;font-size:13px;color:var(--muted)}
-.tabs button.on{background:var(--navy);border-color:var(--navy);color:#fff}
-.chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px;align-items:center}
-.chips .lb{font-size:11.5px;font-weight:700;color:var(--muted);margin-right:2px}
-.chip{display:inline-flex;align-items:center;gap:6px;min-height:28px;padding:0 10px;border:1px solid var(--line);border-radius:99px;background:#fff;font-size:12px;font-weight:600;color:var(--ink2);max-width:220px}
-.chip span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.chip i{flex:none;width:9px;height:9px;border-radius:50%;background:#cbd5e1}
-.chip.on i{background:var(--green2)} .chip:not(.on){color:#94a3b8;text-decoration:line-through}
+details.info{margin-top:12px;border:1px solid var(--line);border-radius:10px;background:#fbfcfe}
+details.info summary{cursor:pointer;list-style:none;padding:9px 12px;font-size:12.5px;font-weight:700;color:var(--ink2)} details.info summary::-webkit-details-marker{display:none}
+details.info .dc-b{border-radius:0 0 10px 10px}
+/* khung hiển thị */
+.tabs{display:flex;gap:4px;flex-wrap:wrap}
+.tabs button{display:inline-flex;align-items:center;gap:6px;min-height:34px;padding:0 13px;border:0;border-radius:8px;background:transparent;font-weight:600;font-size:13px;color:#b8c4da}
+.tabs button:hover{background:rgba(255,255,255,.08);color:#fff} .tabs button.on{background:#fff;color:var(--navy)}
+.tabs button i{font-style:normal;color:var(--lime);font-size:10px}
 .cvw{position:relative;width:100%;border:1px solid var(--line);border-radius:10px;background:#fbfcfe;overflow:hidden}
 .cvw canvas{display:block;width:100%}
-#cvLoop{cursor:default}
-.scn{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-bottom:10px}
-.scn .sp{flex:1}
+.scn{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:10px}
 .hist{margin-top:10px}
-.cap{margin:6px 2px 0;font-size:12px;color:var(--muted)}
-/* bản vẽ (viewer) */
-.dwv{border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#fff}
-.dw-tb{display:flex;flex-wrap:wrap;align-items:center;gap:6px;padding:8px;border-bottom:1px solid var(--line);background:#f8fafc;font-size:12.5px}
-.dw-tb .nm{flex:1;min-width:120px;font-weight:600;color:var(--ink2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.dw-stage{position:relative;height:480px;overflow:hidden;background:#e9edf3 repeating-linear-gradient(45deg,#e4e9f0 0 10px,#edf1f6 10px 20px);touch-action:none;cursor:grab}
-.dw-stage.pan{cursor:grabbing} .dw-stage.place{cursor:crosshair}
-.dw-layer{position:absolute;left:0;top:0;transform-origin:0 0}
-.dw-layer img{display:block;user-select:none;-webkit-user-drag:none;pointer-events:none;box-shadow:0 2px 14px rgba(15,23,42,.18);background:#fff}
-.bal{position:absolute;display:grid;place-items:center;min-width:30px;height:30px;padding:0 6px;border-radius:99px;background:var(--blue);color:#fff;font-size:12px;font-weight:800;
-  border:2px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,.35);cursor:pointer;transform-origin:center}
-.bal.neg{background:var(--violet)} .bal.off{background:#94a3b8}
-.dw-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;height:100%;color:var(--muted);text-align:center;padding:20px}
-.placing{display:flex;align-items:center;gap:8px;padding:7px 10px;background:var(--amber-bg);color:var(--amber);font-size:12.5px;font-weight:600;border-bottom:1px solid #f5d9a8}
-.placing .sp{flex:1}
-/* kết quả */
-.vd{display:flex;gap:12px;align-items:flex-start;padding:14px;border-radius:12px;border:1px solid}
-.vd.pass{background:var(--green-bg);border-color:#9fd8b3} .vd.fail{background:var(--red-bg);border-color:#f3b0b0} .vd.empty{background:#f1f5f9;border-color:var(--line)}
-.vd .ic{flex:none;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font-size:24px;font-weight:800;color:#fff}
-.vd.pass .ic{background:var(--green2)} .vd.fail .ic{background:var(--red)} .vd.empty .ic{background:#94a3b8}
-.vd small{display:block;font-size:11px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--muted)}
-.vd h3{margin:0;font-size:26px;font-weight:800;letter-spacing:.5px;line-height:1.15}
-.vd.pass h3{color:var(--green)} .vd.fail h3{color:var(--red)}
-.vd ul{margin:6px 0 0;padding-left:16px;font-size:12.5px;color:var(--ink2)} .vd li{margin:2px 0}
-.vd .warn{margin-top:8px;padding:6px 8px;border-radius:7px;background:var(--amber-bg);color:var(--amber);font-size:12px;font-weight:600}
-.kpi{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
-.k{padding:9px 10px;border:1px solid var(--line);border-radius:10px;background:#fff}
-.k small{display:block;font-size:11px;font-weight:600;color:var(--muted)}
-.k b{display:block;font-size:19px;font-weight:800;color:var(--blue);line-height:1.25}
-.k b.r{color:var(--red)} .k b.g{color:var(--green)} .k em{font-style:normal;font-size:11px;color:var(--muted)}
-.k.big{grid-column:span 2}
+.cap{margin:8px 2px 0;font-size:12px;color:var(--muted)}
+.blk2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px;align-items:start}
+.box{border:1px solid var(--line);border-radius:12px;padding:12px;min-width:0}
+.box h4{margin:0 0 8px;font-size:12px;font-weight:800;letter-spacing:.7px;text-transform:uppercase;color:var(--navy);display:flex;align-items:center;gap:8px}
+#par svg{display:block;width:100%;height:auto}
+.top1{margin:10px 0 0;padding:8px 10px;border-radius:8px;background:var(--red-bg);color:#991b1b;font-size:12.5px}
+.bar{height:6px;border-radius:3px;background:#e2e8f0;overflow:hidden;min-width:56px} .bar i{display:block;height:100%;background:var(--blue)}
 .tbl{width:100%;border-collapse:collapse;font-size:12.5px}
 .tbl th,.tbl td{padding:6px 6px;border-bottom:1px solid #edf1f6;text-align:right;white-space:nowrap}
 .tbl th{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;background:#f8fafc}
@@ -141,36 +148,38 @@ input.i.bad{border-color:var(--red);background:var(--red-bg)}
 .tbl tr.sel td{background:#f5f8ff;font-weight:700}
 .tbl td.l{text-align:left;white-space:normal}
 .tag{display:inline-block;padding:1px 8px;border-radius:99px;font-size:11px;font-weight:800}
-.tag.p{background:var(--green-bg);color:var(--green)} .tag.f{background:var(--red-bg);color:var(--red)} .tag.n{background:#eef2f7;color:var(--muted)}
+.tag.p{background:var(--green-bg);color:var(--green)} .tag.f{background:var(--red-bg);color:var(--red)}
 .scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
-.tip{margin-top:12px;padding:10px;border-radius:10px;background:#f8fafc;border:1px solid var(--line);font-size:12.5px;color:var(--ink2)}
-.tip b{color:var(--navy)}
-.bot{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:14px;align-items:start}
-#par svg{display:block;width:100%;height:auto}
-.top1{margin:8px 0 0;padding:8px 10px;border-radius:8px;background:var(--red-bg);color:#991b1b;font-size:12.5px}
-.bar{height:6px;border-radius:3px;background:#e2e8f0;overflow:hidden;min-width:60px} .bar i{display:block;height:100%;background:var(--blue)}
+/* bản vẽ */
+.drop{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;min-height:300px;padding:20px;border:2px dashed #b8c3d4;border-radius:12px;background:#f8fafc;
+  text-align:center;color:var(--muted);font-size:13px;cursor:pointer}
+.drop:hover,.drop.ov{border-color:var(--blue);background:var(--blue-bg);color:var(--blue)}
+.drop b{color:var(--navy);font-size:15px} .drop .big{font-size:34px;line-height:1}
+.dwv{border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#fff}
+.dw-tb{display:flex;flex-wrap:wrap;align-items:center;gap:6px;padding:8px;border-bottom:1px solid var(--line);background:#f8fafc;font-size:12.5px}
+.dw-tb .nm{flex:1;min-width:120px;font-weight:600;color:var(--ink2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.dw-stage{position:relative;height:520px;overflow:hidden;background:#e9edf3 repeating-linear-gradient(45deg,#e4e9f0 0 10px,#edf1f6 10px 20px);touch-action:none;cursor:grab}
+.dw-stage.pan{cursor:grabbing} .dw-stage.place{cursor:crosshair}
+.dw-layer{position:absolute;left:0;top:0;transform-origin:0 0}
+.dw-layer img{display:block;user-select:none;-webkit-user-drag:none;pointer-events:none;box-shadow:0 2px 14px rgba(15,23,42,.18);background:#fff}
+.bal{position:absolute;display:grid;place-items:center;min-width:30px;height:30px;padding:0 6px;border-radius:99px;background:var(--blue);color:#fff;font-size:12px;font-weight:800;
+  border:2px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,.35);cursor:pointer;transform-origin:center}
+.bal.neg{background:var(--violet)} .bal.off{background:#94a3b8}
+.placing{display:flex;align-items:center;gap:8px;padding:7px 10px;background:var(--amber-bg);color:var(--amber);font-size:12.5px;font-weight:600;border-bottom:1px solid #f5d9a8}
 .ft{max-width:1720px;margin:0 auto;padding:0 18px 22px;font-size:11.5px;color:var(--muted)}
 #report{display:none}
-.hide{display:none!important}
 /* nhúng trong Tools */
-html.embed body{background:transparent} html.embed .hd{position:static;border-radius:12px 12px 0 0;padding:10px 14px}
-html.embed .app{padding:12px 0 0} html.embed .ft{padding:12px 0 0}
+html.embed body{background:transparent} html.embed .hd{position:static;border-radius:12px;padding:8px 12px} html.embed .hd .lg{width:32px;height:32px}
+html.embed .hd h1{font-size:15px} html.embed .app{padding:12px 0 0} html.embed .ft{padding:12px 0 0}
 /* bố cục */
-@media (max-width:1320px){
-  .app{grid-template-columns:330px minmax(0,1fr);grid-template-rows:auto auto 1fr;grid-template-areas:"side center" "side res" "side bottom"}
-  .bot{grid-template-columns:minmax(0,1fr)}
-  .res{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px} .res .card+.card{margin-top:0}
-}
-@media (max-width:1000px){
-  .app{grid-template-columns:minmax(0,1fr);grid-template-rows:none;grid-template-areas:"side" "res" "center" "bottom"}
-  .bot{grid-template-columns:minmax(0,1fr)}
-}
+@media (max-width:1180px){ .sum{grid-template-columns:minmax(0,1fr)} .work{grid-template-columns:360px minmax(0,1fr)} .blk2{grid-template-columns:minmax(0,1fr)} }
+@media (max-width:960px){ .work{grid-template-columns:minmax(0,1fr)} }
 @media (max-width:760px){
   .hd{flex-wrap:wrap;gap:10px;padding:10px 12px} .hd .act{width:100%;display:grid;grid-template-columns:repeat(3,1fr)} .hb{justify-content:center;min-height:40px;padding:0 8px}
-  .app{padding:10px 10px 18px;gap:10px} .res{grid-template-columns:minmax(0,1fr)}
-  input.i,select.i{font-size:16px;height:40px} .btn,.tabs button,.seg button{min-height:40px} .ib{min-width:40px;height:40px} .chip{min-height:34px}
-  .dw-stage{height:360px} .g3{grid-template-columns:1fr 1fr 1fr} .k b{font-size:17px}
-  html.embed .hd .act{grid-template-columns:repeat(3,1fr)}
+  .app{padding:10px 10px 18px;gap:10px} .kpis{grid-template-columns:repeat(2,minmax(0,1fr))} .vd h3{font-size:26px}
+  .cfg label.f,.cfg label.f.s{width:calc(33.3% - 10px)} .cfg .grp{width:100%} .cfg .grp .seg{display:flex} .cfg .grp .seg button{flex:1}
+  input.i,select.i{font-size:16px;height:40px} .btn,.tabs button,.seg button{min-height:40px} .ib{min-width:40px;height:40px}
+  .dw-stage{height:360px} .drop{min-height:220px} .k b{font-size:18px} .ph.navy .tabs{width:100%} .ph.navy .tabs button{flex:1;justify-content:center;padding:0 6px;font-size:12px}
 }
 @media print{
   @page{size:A4;margin:11mm 10mm}
@@ -187,6 +196,27 @@ html.embed .app{padding:12px 0 0} html.embed .ft{padding:12px 0 0}
   #report .sig div{border:1px solid #9aa4b2;height:70px;padding:4px;font-size:10px} #report .brk{break-inside:avoid}
   #report ul{margin:4px 0;padding-left:16px}
 }
+.btn.on{background:var(--amber-bg);border-color:#f5d9a8;color:var(--amber)}
+/* nhiều bản vẽ */
+.dw-strip{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;margin-bottom:10px;align-items:stretch}
+.dw-th{flex:none;display:flex;align-items:center;gap:8px;width:260px;padding:6px;border:1px solid var(--line);border-radius:10px;background:#fff;cursor:pointer}
+.dw-th.on{border-color:var(--blue);box-shadow:0 0 0 2px rgba(37,99,235,.2)}
+.dw-th img{flex:none;width:56px;height:42px;object-fit:cover;border-radius:6px;border:1px solid var(--line);background:#fff}
+.dw-th .t{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px} .dw-th .t b{font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dw-th select.i{height:28px;font-size:12px;padding:0 22px 0 6px}
+.dw-add{flex:none;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;width:112px;border:1.5px dashed #9fb6e6;border-radius:10px;background:#f7faff;color:var(--blue);font-weight:700;font-size:18px}
+.dw-add span{font-size:11.5px} .dw-add:hover{background:var(--blue-bg)}
+.dw-tb{border:1px solid var(--line);border-radius:10px;margin-bottom:10px}
+.dw-grid{display:grid;gap:10px} .dw-grid.g{grid-template-columns:repeat(2,minmax(0,1fr))}
+.dw-cell{border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#fff} .dw-grid.g .dw-cell.on{border-color:var(--blue);box-shadow:0 0 0 2px rgba(37,99,235,.18)}
+.dw-ct{padding:6px 10px;font-size:12px;border-bottom:1px solid var(--line);background:#f8fafc;white-space:nowrap;overflow:hidden;text-overflow:ellipsis} .dw-ct b{color:var(--navy)}
+.dw-grid.g .dw-stage{height:420px}
+.placing{border-radius:10px;margin-bottom:10px;border:1px solid #f5d9a8}
+/* 3D */
+.tb3{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:10px} .tb3 .note{margin:0;flex:1;min-width:220px}
+.cv3{border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#f4f7fb;min-height:200px} .cv3 canvas{display:block;width:100%;cursor:grab}
+@media (max-width:760px){ .dw-grid.g{grid-template-columns:minmax(0,1fr)} .dw-th{width:230px} .dw-grid.g .dw-stage{height:340px} }
+
 </style>
 </head>
 <body>
@@ -203,77 +233,71 @@ html.embed .app{padding:12px 0 0} html.embed .ft{padding:12px 0 0}
   </div>
 </header>
 <input type="file" id="fJson" accept=".json,application/json" hidden>
-<input type="file" id="fDw" accept="image/*,application/pdf,.pdf" hidden>
+<input type="file" id="fDw" accept="image/*,application/pdf,.pdf" multiple hidden>
 
 <main class="app">
-  <aside class="side">
-    <section class="card">
-      <div class="ch"><span class="stp">1</span><h2>Bản vẽ</h2><span class="n">PDF · PNG · JPG</span></div>
-      <div id="dwSide"></div>
-    </section>
-    <section class="card">
-      <div class="ch"><span class="stp">2</span><h2>Phương pháp &amp; yêu cầu</h2></div>
-      <div class="seg wide" id="segM">
-        <button data-m="wc">Worst-Case<small>cộng tuyến tính</small></button>
-        <button data-m="rss">Statistical (RSS)<small>căn tổng bình phương</small></button>
+  <section class="card sum" id="sum" aria-live="polite"><div class="vd" id="verdict"></div><div class="kpis" id="kpis"></div></section>
+
+  <section class="card cfg" aria-label="Phương pháp và yêu cầu">
+    <div class="grp"><span>Phương pháp tính</span><div class="seg" id="segM"><button data-m="wc">Worst-Case</button><button data-m="rss">Statistical (RSS)</button></div></div>
+    <label class="f">LSL · Gap ≥<input class="i num" id="iLsl" inputmode="decimal" placeholder="0"></label>
+    <label class="f">USL · Gap ≤<input class="i num" id="iUsl" inputmode="decimal" placeholder="bỏ trống"></label>
+    <label class="f">Cpk mục tiêu<input class="i num" id="iCpk" inputmode="decimal" placeholder="1.33"></label>
+    <label class="f s">Đơn vị<select class="i" id="iUnit"><option value="mm">mm</option><option value="in">inch</option></select></label>
+    <label class="f s">Số lẻ<select class="i" id="iDec"><option value="2">2</option><option value="3">3</option><option value="4">4</option></select></label>
+    <span class="hint">Gap Min &lt; LSL = <b>cấn / kẹt</b> · USL bỏ trống nếu không giới hạn khe hở tối đa.</span>
+  </section>
+
+  <div class="work">
+    <section class="pane dimsP">
+      <div class="ph blue"><span class="stp">1</span><h2>Chuỗi kích thước</h2><span class="n" id="dimN"></span><span class="sp"></span><button class="btn add" data-h="add">＋ Thêm</button></div>
+      <div class="pb">
+        <div class="legend"><span><i style="background:var(--blue)"></i>Hướng + (tăng khe hở)</span><span><i style="background:var(--violet)"></i>Hướng − (giảm khe hở)</span><span><i style="background:#cbd5e1"></i>Đang bỏ qua</span></div>
+        <div class="dims" id="dims"></div>
+        <button class="btn add blk" data-h="add" style="margin-top:10px">＋ Thêm kích thước</button>
+        <p class="note">Bấm vào một dòng để mở / sửa. Dung sai dưới gõ <b>0.05</b> hiểu là <b>−0.05</b> (gõ <b>+0.02</b> nếu dương); gõ <b>±0.05</b> ở ô trên để điền cả hai.
+          Bề mặt tròn: nhập khoảng cách <b>tâm → mặt</b> và <b>Ø</b>, công cụ tự trừ Ø/2.</p>
+        <details class="info"><summary>📝 Thông tin báo cáo (tùy chọn) ▾</summary>
+          <div class="dc-b">
+            <label class="f">Dự án / sản phẩm<input class="i" data-info="proj"></label>
+            <div class="g2"><label class="f">Bản vẽ số / Rev<input class="i" data-info="dwg"></label><label class="f">Người phân tích<input class="i" data-info="who"></label></div>
+            <label class="f">Ghi chú<input class="i" data-info="note"></label>
+          </div>
+        </details>
       </div>
-      <div class="g3 mt">
-        <label class="f">LSL · Gap ≥<input class="i num" id="iLsl" inputmode="decimal" placeholder="0"></label>
-        <label class="f">USL · Gap ≤<input class="i num" id="iUsl" inputmode="decimal" placeholder="bỏ trống"></label>
-        <label class="f">Cpk mục tiêu<input class="i num" id="iCpk" inputmode="decimal" placeholder="1.33"></label>
-      </div>
-      <div class="g2 mt">
-        <label class="f">Đơn vị<select class="i" id="iUnit"><option value="mm">mm</option><option value="in">inch</option></select></label>
-        <label class="f">Số lẻ hiển thị<select class="i" id="iDec"><option value="2">2</option><option value="3">3</option><option value="4">4</option></select></label>
-      </div>
-      <p class="note">Gap Min &lt; LSL (mặc định 0) = <b>cấn / kẹt (interference)</b>. USL bỏ trống nếu không giới hạn khe hở tối đa.</p>
     </section>
-    <section class="card">
-      <div class="ch"><span class="stp">3</span><h2>Chuỗi kích thước</h2><span class="n" id="dimN"></span></div>
-      <div class="dims" id="dims"></div>
-      <button class="btn blk mt" data-h="add">＋ Thêm kích thước</button>
-      <p class="note"><b>Hướng +</b>: kích thước làm khe hở lớn thêm · <b>Hướng −</b>: làm khe hở nhỏ lại. Dung sai dưới gõ <b>0.05</b> hiểu là <b>−0.05</b> (gõ <b>+0.02</b> nếu dương); gõ <b>±0.05</b> ở ô trên để điền cả hai.
-      Bề mặt tròn: nhập khoảng cách <b>tâm → mặt</b> và <b>Ø</b>, công cụ tự trừ Ø/2.</p>
-    </section>
-    <section class="card">
-      <details id="infoBox"><summary class="ch" style="cursor:pointer;list-style:none"><span class="stp">4</span><h2>Thông tin báo cáo</h2><span class="n">tùy chọn ▾</span></summary>
-        <div class="dc-b">
-          <label class="f">Dự án / sản phẩm<input class="i" data-info="proj"></label>
-          <div class="g2"><label class="f">Bản vẽ số / Rev<input class="i" data-info="dwg"></label><label class="f">Người phân tích<input class="i" data-info="who"></label></div>
-          <label class="f">Ghi chú<input class="i" data-info="note"></label>
+
+    <section class="pane vizP">
+      <div class="ph navy"><div class="tabs" id="tabs" role="tablist">
+        <button data-v="loop">⟿ Vector Loop</button>
+        <button data-v="contact">◐ Tiếp xúc tròn – phẳng</button>
+        <button data-v="par">📊 Pareto &amp; so sánh</button>
+        <button data-v="dwg">📐 Bản vẽ <i id="dwTabN"></i></button>
+        <button data-v="3d">🧊 3D</button>
+      </div></div>
+      <div class="pb">
+        <div id="vLoop"><div class="cvw"><canvas id="cvLoop" aria-label="Sơ đồ vector loop"></canvas></div>
+          <p class="cap">Bấm vào một dòng (công tắc bên trái) để <b>bật / tắt</b> kích thước khỏi chuỗi. Xanh lam = hướng +, tím = hướng −, xám đứt = đang bỏ qua. Sơ đồ không theo tỉ lệ khe hở.</p></div>
+        <div id="vContact">
+          <div class="scn" id="scn"></div>
+          <div class="cvw"><canvas id="cvScene" aria-label="Mô phỏng tiếp xúc bề mặt tròn – mặt phẳng"></canvas></div>
+          <div class="cvw hist"><canvas id="cvHist" aria-label="Phân bố khe hở"></canvas></div>
+          <p class="cap" id="mcCap"></p>
         </div>
-      </details>
+        <div id="vPar">
+          <div class="box"><h4>So sánh phương pháp</h4><div class="scroll" id="cmp"></div></div>
+          <div class="blk2" style="margin-top:14px">
+            <div class="box"><h4>Pareto · % đóng góp sai số<span class="sp"></span><span class="seg" id="segP"><button data-p="dim">Kích thước</button><button data-p="part">Part</button></span></h4><div id="par"></div></div>
+            <div class="box"><h4>Sensitivity</h4><div class="scroll" id="parTbl"></div></div>
+          </div>
+        </div>
+        <div id="vDwg"></div>
+        <div id="v3d"><div class="tb3"><p class="note">Mô hình 3D <b>dựng tự động từ chuỗi kích thước 2D</b>: hàng trên = vector +, hàng dưới = vector −, chi tiết tròn theo Ø; bản vẽ 2D của mỗi Part treo phía trên khối của Part đó. Kéo để xoay · lăn chuột để phóng to.</p>
+          <button class="btn" data-h="view3">↺ Góc nhìn</button><button class="btn" data-h="auto3">⟳ Tự xoay</button><button class="btn" data-h="dwPick">＋ Bản vẽ</button></div>
+          <div class="cv3" id="cv3"></div><p class="cap" id="msg3"></p></div>
+      </div>
     </section>
-  </aside>
-
-  <section class="center card">
-    <div class="tabs" id="tabs">
-      <button data-v="loop">⟿ Vector Loop</button>
-      <button data-v="contact">◐ Tiếp xúc tròn – phẳng</button>
-      <button data-v="dwg">📐 Bản vẽ</button>
-    </div>
-    <div class="chips" id="chips"></div>
-    <div id="vLoop"><div class="cvw"><canvas id="cvLoop" aria-label="Sơ đồ vector loop"></canvas></div>
-      <p class="cap">Bấm vào một dòng (hoặc chip ở trên) để <b>bật / tắt</b> kích thước khỏi chuỗi. Mũi tên xanh lam = hướng +, tím = hướng −, xám đứt = đang bỏ qua. Sơ đồ không theo tỉ lệ khe hở.</p></div>
-    <div id="vContact">
-      <div class="scn" id="scn"></div>
-      <div class="cvw"><canvas id="cvScene" aria-label="Mô phỏng tiếp xúc bề mặt tròn – mặt phẳng"></canvas></div>
-      <div class="cvw hist"><canvas id="cvHist" aria-label="Phân bố khe hở"></canvas></div>
-      <p class="cap" id="mcCap"></p>
-    </div>
-    <div id="vDwg"></div>
-  </section>
-
-  <aside class="res">
-    <section class="card"><div class="ch"><h2>Kết luận QE</h2><span class="n" id="mName"></span></div><div id="verdict"></div></section>
-    <section class="card"><div class="ch"><h2>So sánh phương pháp</h2></div><div class="scroll" id="cmp"></div><div id="tip"></div></section>
-  </aside>
-
-  <section class="bottom card">
-    <div class="ch"><h2>Pareto · Sensitivity – % đóng góp sai số</h2><span class="n"></span>
-      <div class="seg" id="segP" style="margin-left:auto"><button data-p="dim">Theo kích thước</button><button data-p="part">Theo Part</button></div></div>
-    <div class="bot"><div id="par"></div><div class="scroll" id="parTbl"></div></div>
-  </section>
+  </div>
 </main>
 <p class="ft">Giả định RSS / Monte Carlo: mỗi kích thước phân bố chuẩn, tâm tại giữa miền dung sai, nửa miền dung sai = 3σ. Kết quả dùng tham khảo kỹ thuật – đối chiếu bản vẽ và yêu cầu riêng của khách hàng.</p>
 <div id="report"></div>
@@ -301,11 +325,11 @@ const fin = (v, d = 0) => (typeof v === "number" && isFinite(v) ? v : d);
 function clean(o) {                                            // dữ liệu từ localStorage / file → chuẩn, không tin đầu vào
   const b = blank(); if (!o || typeof o !== "object" || !Array.isArray(o.dims)) return null;
   const S_ = Object.assign(b, { method:o.method === "rss" ? "rss" : "wc", lsl:fin(o.lsl, 0), usl:typeof o.usl === "number" && isFinite(o.usl) ? o.usl : null,
-    cpkT:fin(o.cpkT, 1.33), unit:o.unit === "in" ? "in" : "mm", dec:[2, 3, 4].includes(o.dec) ? o.dec : 3, view:["loop", "contact", "dwg"].includes(o.view) ? o.view : "loop",
+    cpkT:fin(o.cpkT, 1.33), unit:o.unit === "in" ? "in" : "mm", dec:[2, 3, 4].includes(o.dec) ? o.dec : 3, view:["loop", "contact", "par", "dwg", "3d"].includes(o.view) ? o.view : "loop",
     par:o.par === "part" ? "part" : "dim", info:Object.assign(b.info, o.info && typeof o.info === "object" ? { proj:String(o.info.proj || ""), dwg:String(o.info.dwg || ""), who:String(o.info.who || ""), note:String(o.info.note || "") } : {}) });
   S_.dims = o.dims.slice(0, 60).map((d, i) => ({ id:String(d.id || "D" + (i + 1)).slice(0, 8), part:String(d.part || "").slice(0, 80), desc:String(d.desc || "").slice(0, 160),
     nom:fin(d.nom), up:fin(d.up), lo:fin(d.lo), type:["plane", "cyl", "sph"].includes(d.type) ? d.type : "plane", hole:!!d.hole, dia:Math.max(0, fin(d.dia)), dUp:fin(d.dUp), dLo:fin(d.dLo),
-    dir:d.dir < 0 ? -1 : 1, on:d.on !== false, bal:d.bal && isFinite(d.bal.x) && isFinite(d.bal.y) ? { x:+d.bal.x, y:+d.bal.y, pg:fin(d.bal.pg, 1) } : null }));
+    dir:d.dir < 0 ? -1 : 1, on:d.on !== false, bal:d.bal && isFinite(d.bal.x) && isFinite(d.bal.y) ? Object.assign({ x:+d.bal.x, y:+d.bal.y, pg:fin(d.bal.pg, 1) }, d.bal.dw ? { dw:String(d.bal.dw).slice(0, 200) } : {}) : null }));
   if (!S_.dims.length) S_.dims = [blankDim(1)];
   S_.n = Math.max(fin(o.n, 0), ...S_.dims.map(d => +(/\d+/.exec(d.id) || [0])[0])) + 1;
   return S_;
@@ -418,7 +442,7 @@ const DPRc = c => c.getTransform().a || 1;
 let loopHit = [];
 function loopH(W) { const rowH = W < 560 ? 40 : 44; return { rowH, H:Math.max(240, 74 + (links(true).length + 1) * rowH + 22) }; }
 function drawLoop(cv, W, dpr) {
-  const L = links(true), { rowH, H } = loopH(W), c = prep(cv, W, H, dpr), lw = W < 560 ? 104 : 196, top = 62;
+  const L = links(true), { rowH, H } = loopH(W), c = prep(cv, W, H, dpr), lw = W < 560 ? 132 : 226, top = 62;
   let p = 0; const seg = L.map(l => { const a = p, b = p + l.s * l.nom; if (l.on) p = b; return { l, a, b }; });
   const gap = p, xsv = [0, gap, ...seg.flatMap(s => [s.a, s.b])];
   let mn = Math.min(...xsv), mx = Math.max(...xsv); if (mx - mn < 1e-9) { mn -= 1; mx += 1; }
@@ -436,9 +460,11 @@ function drawLoop(cv, W, dpr) {
     if (i % 2 === 0) { c.fillStyle = "rgba(241,245,249,.65)"; c.fillRect(0, y - rowH / 2, W, rowH); }
     if (hoverRow === i) { c.fillStyle = "rgba(200,212,0,.16)"; c.fillRect(0, y - rowH / 2, W, rowH); }
     // nhãn
-    c.font = "800 12px Inter,Arial"; c.fillStyle = l.on ? C.navy : C.off; c.fillText(l.name, 12, y - 3);
+    if (l.k === "L") { c.save(); c.fillStyle = l.on ? C.green : "#cbd5e1"; c.beginPath(); c.roundRect ? c.roundRect(12, y - 8, 26, 16, 8) : c.rect(12, y - 8, 26, 16); c.fill();
+      c.fillStyle = "#fff"; c.beginPath(); c.arc(l.on ? 30 : 20, y, 6, 0, 7); c.fill(); c.restore(); }
+    c.font = "800 12px Inter,Arial"; c.fillStyle = l.on ? C.navy : C.off; c.fillText(l.name, 46, y - 3);
     c.font = "500 11px Inter,Arial"; c.fillStyle = l.on ? C.muted : C.off;
-    c.fillText(fitText(c, l.k === "R" ? (l.s < 0 ? "bán kính trừ khe hở" : "bán kính lỗ cộng khe hở") : (l.d.part || l.d.desc || "—"), lw - 16), 12, y + 12);
+    c.fillText(fitText(c, l.k === "R" ? (l.s < 0 ? "bán kính trừ khe hở" : "bán kính lỗ cộng khe hở") : (l.d.part || l.d.desc || "—"), lw - 50), 46, y + 12);
     // mũi tên
     const xa = X(s.a), xb = X(s.b);
     arrow(c, xa, y, Math.abs(xb - xa) < 3 ? xa + (l.s || 1) * 3 : xb, col, 3, l.on ? (l.k === "R" ? [6, 4] : null) : [5, 4]);
@@ -546,92 +572,221 @@ function drawHist(cv, W, dpr, upto) {
   return H;
 }
 
-// ---------- bản vẽ ----------
-const DW = { src:"", name:"", w:0, h:0, z:1, x:0, y:0, pdf:null, page:1, pages:1, busy:"" };
-let placing = "";
+// ---------- bản vẽ: nhiều bản vẽ, mỗi bản gán cho 1 Part; xem 1 bản hoặc so sánh cạnh nhau ----------
+// Bản vẽ chỉ giữ trong phiên (ảnh lớn không vừa localStorage). Bóng số lưu ở d.bal {x, y (tỉ lệ 0–1), pg, dw: tên file bản vẽ}.
+const DWS = []; let dwCur = 0, dwLay = "one", dwBusy = "", placing = "";
 const PDFJS = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js", PDFW = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
-const loadScript = src => new Promise((ok, no) => { if (window.pdfjsLib) return ok(); const s = document.createElement("script"); s.src = src; s.onload = ok; s.onerror = no; document.head.appendChild(s); });
-function openDw(f) {
-  if (!f) return;
-  if (f.size > 40e6) return alert("File quá lớn (> 40 MB).");
-  DW.name = f.name; DW.pdf = null; DW.page = 1; DW.pages = 1;
-  if (f.type === "application/pdf" || /\.pdf$/i.test(f.name)) return openPdf(f);
-  if (!/^image\//.test(f.type)) return alert("Chỉ nhận PDF hoặc ảnh (PNG, JPG…).");
-  setImg(URL.createObjectURL(f));
-}
-function setImg(src) {
-  const im = new Image();
-  im.onload = () => { DW.src = src; DW.w = im.naturalWidth; DW.h = im.naturalHeight; DW.busy = ""; renderDwSide(); setView("dwg"); requestAnimationFrame(fitDw); if (placing) seeDw(); };
-  im.onerror = () => { DW.busy = ""; alert("Không mở được ảnh này."); renderDwSide(); };
-  im.src = src;
-}
-async function openPdf(f) {
-  DW.busy = "Đang mở PDF…"; renderDwSide();
-  try {
-    await loadScript(PDFJS); window.pdfjsLib.GlobalWorkerOptions.workerSrc = PDFW;
-    DW.pdf = await window.pdfjsLib.getDocument({ data:await f.arrayBuffer() }).promise; DW.pages = DW.pdf.numPages; await pdfPage(1);
-  } catch (e) { DW.busy = ""; DW.pdf = null; renderDwSide(); alert("Không đọc được PDF (cần mạng để tải trình đọc PDF). Hãy xuất trang bản vẽ ra ảnh PNG / JPG rồi tải lên."); }
-}
-async function pdfPage(n) {
-  if (!DW.pdf) return; n = Math.max(1, Math.min(DW.pages, n)); DW.busy = "Đang dựng trang " + n + "…"; renderDwSide();
-  const pg = await DW.pdf.getPage(n), v0 = pg.getViewport({ scale:1 }), sc = Math.min(3, 2600 / Math.max(v0.width, v0.height)), vp = pg.getViewport({ scale:sc });
+const loadScript = (src, ready) => new Promise((ok, no) => { if (ready()) return ok(); const s = document.createElement("script"); s.src = src; s.onload = ok; s.onerror = no; document.head.appendChild(s); });
+const partsList = () => [...new Set(S.dims.map(d => (d.part || "").trim()).filter(Boolean))];
+const setImg = (o, src) => new Promise((ok, no) => { const im = new Image(); im.onload = () => { o.src = src; o.w = im.naturalWidth; o.h = im.naturalHeight; o.fit = true; ok(); }; im.onerror = no; im.src = src; });
+async function pdfPage(o, n) {
+  n = Math.max(1, Math.min(o.pages, n));
+  const pg = await o.pdf.getPage(n), v0 = pg.getViewport({ scale:1 }), sc = Math.min(3, 2600 / Math.max(v0.width, v0.height)), vp = pg.getViewport({ scale:sc });
   const cv = document.createElement("canvas"); cv.width = Math.round(vp.width); cv.height = Math.round(vp.height);
   const cx = cv.getContext("2d"); cx.fillStyle = "#fff"; cx.fillRect(0, 0, cv.width, cv.height);
-  await pg.render({ canvasContext:cx, viewport:vp }).promise; DW.page = n; setImg(cv.toDataURL("image/png"));
+  await pg.render({ canvasContext:cx, viewport:vp }).promise; o.page = n; await setImg(o, cv.toDataURL("image/png"));
 }
-function renderDwSide() {
-  const el = $("#dwSide");
-  el.innerHTML = DW.busy ? `<div class="drop">⏳ ${esc(DW.busy)}</div>`
-    : DW.src ? `<div class="dwf"><img src="${DW.src}" alt=""><div class="t"><b title="${esc(DW.name)}">${esc(DW.name)}</b><span class="note" style="margin:0">${DW.pdf ? `Trang ${DW.page}/${DW.pages} · ` : ""}${DW.w}×${DW.h}px</span></div></div>
-      <div class="g2 mt6"><button class="btn" data-h="dwView">👁 Xem bản vẽ</button><button class="btn" data-h="dwPick">⟳ Đổi file</button></div>`
-    : `<div class="drop" id="drop" data-h="dwPick" role="button" tabindex="0"><b>⬆ Tải bản vẽ lên</b>Kéo thả hoặc bấm để chọn PDF / ảnh<span style="font-size:11px">Đặt bóng số (balloon) cho từng kích thước</span></div>`;
-  if (S.view === "dwg") renderDwView();
+async function openDw(files) {
+  files = [...(files || [])];
+  if (DWS.length + files.length > 8) { alert("Tối đa 8 bản vẽ trong một phân tích."); files = files.slice(0, Math.max(0, 8 - DWS.length)); }
+  for (const f of files) {
+    const isPdf = f.type === "application/pdf" || /\.pdf$/i.test(f.name);
+    if (f.size > 40e6) { alert(`${f.name}: file quá lớn (> 40 MB).`); continue; }
+    if (!isPdf && !/^image\//.test(f.type)) { alert(`${f.name}: chỉ nhận PDF hoặc ảnh (PNG, JPG…).`); continue; }
+    const used = new Set(DWS.map(x => x.part)), parts = partsList(), low = f.name.toLowerCase();
+    const keys = p => p.toLowerCase().split(/\s*[–-]\s*/).map(x => x.replace(/\s+/g, "")).filter(x => x.length > 1), flat = low.replace(/[\s_.-]+/g, "");
+    const part = parts.find(p => !used.has(p) && keys(p).some(t => flat.includes(t))) || parts.find(p => !used.has(p)) || "";   // đoán Part theo tên file
+    const o = { name:f.name, part, src:"", w:0, h:0, pdf:null, page:1, pages:1, z:1, x:0, y:0, fit:true };
+    dwBusy = "Đang mở " + f.name + "…"; if (S.view === "dwg") renderDwView();
+    try {
+      if (isPdf) { await loadScript(PDFJS, () => window.pdfjsLib); window.pdfjsLib.GlobalWorkerOptions.workerSrc = PDFW;
+        o.pdf = await window.pdfjsLib.getDocument({ data:await f.arrayBuffer() }).promise; o.pages = o.pdf.numPages; await pdfPage(o, 1); }
+      else await setImg(o, URL.createObjectURL(f));
+      DWS.push(o); dwCur = DWS.length - 1;
+    } catch (e) { alert(isPdf ? `${f.name}: không đọc được PDF (cần mạng để tải trình đọc PDF). Hãy xuất trang bản vẽ ra ảnh PNG / JPG rồi tải lên.` : `${f.name}: không mở được ảnh này.`); }
+  }
+  dwBusy = ""; if (DWS.length > 1 && files.length > 1) dwLay = "grid";
+  renderDwSide(); if (S.view !== "dwg" && S.view !== "3d") setView("dwg"); else if (S.view === "3d") render3D(); if (placing) seeDw();
 }
+function renderDwSide() { $("#dwTabN").textContent = DWS.length ? DWS.length : ""; if (S.view === "dwg") renderDwView(); }
+const balOn = (b, o, i) => b && (b.dw ? b.dw === o.name : i === 0) && (b.pg || 1) === o.page;
 function renderDwView() {
-  const el = $("#vDwg"), d = S.dims.find(x => x.id === placing);
-  if (!DW.src) { el.innerHTML = `<div class="dwv"><div class="dw-stage" style="cursor:default"><div class="dw-empty"><b style="color:var(--navy);font-size:15px">📐 Chưa có bản vẽ</b>Tải bản vẽ PDF hoặc ảnh 2D, rồi đặt bóng số D1, D2… lên đúng vị trí kích thước.<button class="btn pri" data-h="dwPick">⬆ Tải bản vẽ</button></div></div></div>`; return; }
-  el.innerHTML = `<div class="dwv">${d ? `<div class="placing">📍 Bấm lên bản vẽ để đặt bóng số <b>${esc(d.id)}</b><span class="sp"></span><button class="btn" data-h="placeOff">Hủy</button></div>` : ""}
-    <div class="dw-tb"><span class="nm">${esc(DW.name)}</span>${DW.pdf && DW.pages > 1 ? `<button class="btn" data-h="pgPrev" ${DW.page <= 1 ? "disabled" : ""}>‹</button><span>Trang ${DW.page}/${DW.pages}</span><button class="btn" data-h="pgNext" ${DW.page >= DW.pages ? "disabled" : ""}>›</button>` : ""}
+  const el = $("#vDwg"), d = S.dims.find(x => x.id === placing), parts = partsList();
+  if (!DWS.length) { el.innerHTML = `<div class="drop" id="drop" data-h="dwPick" role="button" tabindex="0">${dwBusy ? `<span class="big">⏳</span><b>${esc(dwBusy)}</b>`
+      : `<span class="big">📐</span><b>Tải bản vẽ lên</b>Kéo thả hoặc bấm để chọn một hoặc <b>nhiều</b> file PDF / ảnh (PNG, JPG)<span style="font-size:12px">Mỗi bản vẽ gán cho 1 Part · so sánh cạnh nhau · bấm 📍 trong dòng kích thước để đặt bóng số.</span>`}</div>`; return; }
+  if (dwCur >= DWS.length) dwCur = DWS.length - 1;
+  const o = DWS[dwCur], grid = dwLay === "grid" && DWS.length > 1, shown = grid ? DWS.map((_, i) => i) : [dwCur];
+  el.innerHTML = `${d ? `<div class="placing">📍 Bấm lên bản vẽ để đặt bóng số <b>${esc(d.id)}</b>${d.part ? ` (${esc(d.part)})` : ""}<span class="sp"></span><button class="btn" data-h="placeOff">Hủy</button></div>` : ""}
+    <div class="dw-strip">${DWS.map((x, i) => `<div class="dw-th${i === dwCur ? " on" : ""}" data-dwsel="${i}"><img src="${x.src}" alt=""><div class="t"><b title="${esc(x.name)}">${esc(x.name)}</b>
+        <select class="i" data-dwpart="${i}" aria-label="Gán bản vẽ cho Part"><option value="">— Gán cho Part —</option>${[...new Set([...parts, x.part].filter(Boolean))].map(p => `<option value="${esc(p)}" ${x.part === p ? "selected" : ""}>${esc(p)}</option>`).join("")}</select></div>
+        <button class="ib del" data-dwdel="${i}" title="Bỏ bản vẽ này">✕</button></div>`).join("")}
+      ${DWS.length < 8 ? `<button class="dw-add" data-h="dwPick" title="Thêm bản vẽ">＋<span>Thêm bản vẽ</span></button>` : ""}${dwBusy ? `<span class="note">⏳ ${esc(dwBusy)}</span>` : ""}</div>
+    <div class="dw-tb"><span class="seg"><button data-dwlay="one" class="${grid ? "" : "on"}">▣ 1 bản vẽ</button><button data-dwlay="grid" class="${grid ? "on" : ""}" ${DWS.length < 2 ? "disabled" : ""}>⊞ So sánh cạnh nhau</button></span>
+      <span class="nm">${esc(o.part || "Chưa gán Part")} · ${esc(o.name)}</span>
+      ${o.pdf && o.pages > 1 ? `<button class="btn" data-h="pgPrev" ${o.page <= 1 ? "disabled" : ""}>‹</button><span>Trang ${o.page}/${o.pages}</span><button class="btn" data-h="pgNext" ${o.page >= o.pages ? "disabled" : ""}>›</button>` : ""}
       <button class="btn" data-h="zOut" title="Thu nhỏ">−</button><button class="btn" data-h="zIn" title="Phóng to">＋</button><button class="btn" data-h="zFit">Vừa khung</button></div>
-    <div class="dw-stage${d ? " place" : ""}" id="dwStage"><div class="dw-layer" id="dwLayer" style="width:${DW.w}px;height:${DW.h}px"><img src="${DW.src}" width="${DW.w}" height="${DW.h}" alt="Bản vẽ"><div id="dwBal"></div></div></div></div>
-    <p class="cap">Lăn chuột để phóng to / thu nhỏ, kéo để di chuyển. Bấm 📍 trên thẻ kích thước để đặt bóng số; bấm bóng số để tới thẻ đó. Bản vẽ chỉ giữ trong phiên này (bóng số được lưu).</p>`;
-  drawBal(); applyDw();
+    <div class="dw-grid${grid ? " g" : ""}">${shown.map(i => { const x = DWS[i]; return `<div class="dw-cell${i === dwCur ? " on" : ""}">${grid ? `<div class="dw-ct"><b>${esc(x.part || "Chưa gán Part")}</b> · ${esc(x.name)}</div>` : ""}
+      <div class="dw-stage${d ? " place" : ""}" data-dw="${i}"><div class="dw-layer" style="width:${x.w}px;height:${x.h}px"><img src="${x.src}" width="${x.w}" height="${x.h}" alt="Bản vẽ ${esc(x.name)}"><div class="dw-bal"></div></div></div></div>`; }).join("")}</div>
+    <p class="cap">Lăn chuột để phóng to / thu nhỏ, kéo để di chuyển (mỗi bản vẽ riêng). Bấm 📍 trong dòng kích thước rồi bấm lên bản vẽ để đặt bóng số; bấm bóng số để mở dòng đó. Bản vẽ chỉ giữ trong phiên này (bóng số được lưu).</p>`;
+  drawBal(); shown.forEach(applyDw);
+  requestAnimationFrame(() => shown.forEach(i => { if (DWS[i] && DWS[i].fit) { fitDw(i); DWS[i].fit = false; } }));
 }
+const stageOf = i => $(`.dw-stage[data-dw="${i}"]`);
 function drawBal() {
-  const el = $("#dwBal"); if (!el) return;
-  el.innerHTML = S.dims.filter(d => d.bal && (d.bal.pg || 1) === DW.page).map(d => `<button class="bal${d.dir < 0 ? " neg" : ""}${d.on ? "" : " off"}" data-bal="${esc(d.id)}" title="${esc(d.id + " · " + (d.part || "") + " " + (d.desc || ""))}"
-    style="left:${(d.bal.x * DW.w).toFixed(1)}px;top:${(d.bal.y * DW.h).toFixed(1)}px">${esc(d.id)}</button>`).join("");
+  DWS.forEach((o, i) => { const st = stageOf(i); if (!st) return;
+    st.querySelector(".dw-bal").innerHTML = S.dims.filter(d => balOn(d.bal, o, i)).map(d => `<button class="bal${d.dir < 0 ? " neg" : ""}${d.on ? "" : " off"}" data-bal="${esc(d.id)}" title="${esc(d.id + " · " + (d.part || "") + " " + (d.desc || ""))}"
+      style="left:${(d.bal.x * o.w).toFixed(1)}px;top:${(d.bal.y * o.h).toFixed(1)}px">${esc(d.id)}</button>`).join("");
+    applyDw(i); });
 }
-function applyDw() { const l = $("#dwLayer"); if (!l) return; l.style.transform = `translate(${DW.x}px,${DW.y}px) scale(${DW.z})`; $$(".bal").forEach(b => b.style.transform = `translate(-50%,-50%) scale(${1 / DW.z})`); }
-function fitDw() { const st = $("#dwStage"); if (!st || !DW.w) return; const W = st.clientWidth, H = st.clientHeight; DW.z = Math.min(W / DW.w, H / DW.h) * 0.96; DW.x = (W - DW.w * DW.z) / 2; DW.y = (H - DW.h * DW.z) / 2; applyDw(); }
-function zoomAt(f, px, py) { const st = $("#dwStage"); if (!st) return; if (px == null) { px = st.clientWidth / 2; py = st.clientHeight / 2; }
-  const z = Math.max(0.05, Math.min(12, DW.z * f)); DW.x = px - (px - DW.x) * z / DW.z; DW.y = py - (py - DW.y) * z / DW.z; DW.z = z; applyDw(); }
+function applyDw(i) { const o = DWS[i], st = stageOf(i); if (!o || !st) return; st.firstElementChild.style.transform = `translate(${o.x}px,${o.y}px) scale(${o.z})`; st.querySelectorAll(".bal").forEach(b => b.style.transform = `translate(-50%,-50%) scale(${1 / o.z})`); }
+function fitDw(i = dwCur) { const o = DWS[i], st = stageOf(i); if (!o || !st || !o.w) return; const W = st.clientWidth, H = st.clientHeight; o.z = Math.min(W / o.w, H / o.h) * 0.96; o.x = (W - o.w * o.z) / 2; o.y = (H - o.h * o.z) / 2; applyDw(i); }
+function zoomAt(i, f, px, py) { const o = DWS[i], st = stageOf(i); if (!o || !st) return; if (px == null) { px = st.clientWidth / 2; py = st.clientHeight / 2; }
+  const z = Math.max(0.05, Math.min(12, o.z * f)); o.x = px - (px - o.x) * z / o.z; o.y = py - (py - o.y) * z / o.z; o.z = z; applyDw(i); }
+function selDw(i) { if (i === dwCur) return; dwCur = i; $$(".dw-th").forEach((t, k) => t.classList.toggle("on", k === i)); $$(".dw-cell").forEach(c => c.classList.toggle("on", c.querySelector(".dw-stage").dataset.dw == i));
+  const o = DWS[i], nm = $(".dw-tb .nm"); if (nm) nm.textContent = (o.part || "Chưa gán Part") + " · " + o.name; }
 let drag = null;
 document.addEventListener("pointerdown", e => {
-  const st = e.target.closest("#dwStage"); if (!st || e.target.closest(".bal")) return;
-  drag = { x:e.clientX, y:e.clientY, ox:DW.x, oy:DW.y, moved:false, id:e.pointerId }; st.setPointerCapture(e.pointerId); st.classList.add("pan");
+  const st = e.target.closest(".dw-stage[data-dw]"); if (!st || e.target.closest(".bal")) return;
+  const i = +st.dataset.dw, o = DWS[i]; if (!o) return; selDw(i);
+  drag = { i, x:e.clientX, y:e.clientY, ox:o.x, oy:o.y, moved:false, id:e.pointerId, st }; st.setPointerCapture(e.pointerId); st.classList.add("pan");
 });
-document.addEventListener("pointermove", e => { if (!drag || e.pointerId !== drag.id) return; const dx = e.clientX - drag.x, dy = e.clientY - drag.y; if (Math.abs(dx) + Math.abs(dy) > 4) drag.moved = true; if (drag.moved) { DW.x = drag.ox + dx; DW.y = drag.oy + dy; applyDw(); } });
+document.addEventListener("pointermove", e => { if (!drag || e.pointerId !== drag.id) return; const dx = e.clientX - drag.x, dy = e.clientY - drag.y; if (Math.abs(dx) + Math.abs(dy) > 4) drag.moved = true;
+  if (drag.moved) { const o = DWS[drag.i]; o.x = drag.ox + dx; o.y = drag.oy + dy; applyDw(drag.i); } });
 document.addEventListener("pointerup", e => {
-  if (!drag || e.pointerId !== drag.id) return; const st = $("#dwStage"); st && st.classList.remove("pan");
-  if (!drag.moved && placing && st) { const r = st.getBoundingClientRect(), x = (e.clientX - r.left - DW.x) / DW.z / DW.w, y = (e.clientY - r.top - DW.y) / DW.z / DW.h;
-    const d = S.dims.find(q => q.id === placing); if (d && x >= 0 && x <= 1 && y >= 0 && y <= 1) { d.bal = { x:+x.toFixed(4), y:+y.toFixed(4), pg:DW.page }; save(); placing = ""; renderDims(); renderDwView(); } }
+  if (!drag || e.pointerId !== drag.id) return; const { st, i } = drag, o = DWS[i]; st.classList.remove("pan");
+  if (!drag.moved && placing && o) { const r = st.getBoundingClientRect(), x = (e.clientX - r.left - o.x) / o.z / o.w, y = (e.clientY - r.top - o.y) / o.z / o.h;
+    const d = S.dims.find(q => q.id === placing); if (d && x >= 0 && x <= 1 && y >= 0 && y <= 1) { d.bal = { x:+x.toFixed(4), y:+y.toFixed(4), pg:o.page, dw:o.name }; save(); placing = ""; renderDims(); renderDwView(); } }
   drag = null;
 });
-document.addEventListener("wheel", e => { const st = e.target.closest("#dwStage"); if (!st) return; e.preventDefault(); const r = st.getBoundingClientRect(); zoomAt(e.deltaY < 0 ? 1.15 : 1 / 1.15, e.clientX - r.left, e.clientY - r.top); }, { passive:false });
+document.addEventListener("wheel", e => { const st = e.target.closest(".dw-stage[data-dw]"); if (!st) return; e.preventDefault(); const r = st.getBoundingClientRect(); zoomAt(+st.dataset.dw, e.deltaY < 0 ? 1.15 : 1 / 1.15, e.clientX - r.left, e.clientY - r.top); }, { passive:false });
+document.addEventListener("change", e => { const s = e.target.closest("[data-dwpart]"); if (!s) return; const o = DWS[+s.dataset.dwpart]; if (o) { o.part = s.value; renderDwView(); } });
+
+// ---------- 3D: mô hình dựng tự động từ chuỗi kích thước 2D (Three.js r128, tải khi mở tab) ----------
+// Hàng trên = vector hướng +, hàng dưới = vector hướng −, xếp nối tiếp từ mặt chuẩn (Datum) – sơ đồ stack-up chuẩn;
+// cuối 2 hàng là khe hở (xanh) hoặc vùng cấn (đỏ). Chi tiết tròn = trụ / cầu thật theo Ø. Bản vẽ 2D của Part treo phía trên khối của Part đó.
+const THREE_URL = "https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js";
+const PCOL = ["#3b82f6", "#8b5cf6", "#f59e0b", "#10b981", "#ef4444", "#06b6d4", "#ec4899", "#84cc16"];
+let T3 = null, t3Err = "";
+async function render3D() {
+  const wrap = $("#cv3"); if (!wrap) return;
+  if (!window.THREE) { $("#msg3").textContent = "Đang tải bộ dựng 3D…";
+    try { await loadScript(THREE_URL, () => window.THREE); } catch (e) { t3Err = "Không tải được bộ dựng 3D (Three.js) – cần kết nối mạng."; $("#msg3").textContent = t3Err; return; } }
+  try { if (!T3) init3D(wrap); size3D(); build3D(); size3D(); $("#msg3").textContent = ""; loop3D(); }
+  catch (e) { $("#msg3").textContent = "Trình duyệt không hỗ trợ WebGL để hiển thị 3D."; }
+}
+function init3D(wrap) {
+  const TH = window.THREE, r = new TH.WebGLRenderer({ antialias:true, preserveDrawingBuffer:true });
+  r.setPixelRatio(DPR()); r.setClearColor(0xf4f7fb, 1); wrap.appendChild(r.domElement);
+  const sc = new TH.Scene(), cam = new TH.PerspectiveCamera(38, 1, 0.1, 500);
+  sc.add(new TH.AmbientLight(0xffffff, 0.62)); const dl = new TH.DirectionalLight(0xffffff, 0.75); dl.position.set(6, 12, 9); sc.add(dl);
+  const dl2 = new TH.DirectionalLight(0xffffff, 0.25); dl2.position.set(-8, -4, -6); sc.add(dl2);
+  const grid = new TH.GridHelper(40, 40, 0xc9d3e1, 0xe3e9f1); grid.position.y = -4.2; sc.add(grid);
+  T3 = { r, sc, cam, root:null, th:-0.38, ph:1.2, rad:22, fitRad:22, auto:false, raf:0, tgt:new TH.Vector3(0, 0, 0), fitTgt:new TH.Vector3(0, 0, 0) };
+  const cv = r.domElement; let dr = null;
+  cv.addEventListener("pointerdown", e => { dr = { x:e.clientX, y:e.clientY, th:T3.th, ph:T3.ph }; cv.setPointerCapture(e.pointerId); T3.auto = false; upd3Btns(); });
+  cv.addEventListener("pointermove", e => { if (!dr) return; T3.th = dr.th - (e.clientX - dr.x) * 0.008; T3.ph = Math.max(0.15, Math.min(Math.PI - 0.15, dr.ph - (e.clientY - dr.y) * 0.008)); });
+  cv.addEventListener("pointerup", () => { dr = null; });
+  cv.addEventListener("wheel", e => { e.preventDefault(); T3.rad = Math.max(4, Math.min(120, T3.rad * (e.deltaY > 0 ? 1.1 : 1 / 1.1))); }, { passive:false });
+  cv.style.touchAction = "none";
+}
+function size3D() { if (!T3) return; const wrap = $("#cv3"), W = wrap.clientWidth, H = innerWidth < 760 ? 380 : 540; if (!W) return; if (T3.W === W && T3.H === H) return; T3.W = W; T3.H = H; T3.r.setSize(W, H); T3.cam.aspect = W / H; T3.cam.updateProjectionMatrix(); if (T3.root) fit3D(true); }
+function loop3D() {
+  cancelAnimationFrame(T3.raf);
+  const tick = () => { if (S.view !== "3d" || !T3) return; if (T3.auto) T3.th += 0.006;
+    const { cam, tgt, rad, th, ph } = T3; cam.position.set(tgt.x + rad * Math.sin(ph) * Math.sin(th), tgt.y + rad * Math.cos(ph), tgt.z + rad * Math.sin(ph) * Math.cos(th)); cam.lookAt(tgt);
+    T3.r.render(T3.sc, cam); T3.raf = requestAnimationFrame(tick); };
+  tick();
+}
+function label3D(lines, col, scale = 1) {                     // chữ nổi (sprite) từ canvas
+  const TH = window.THREE, cv = document.createElement("canvas"), c = cv.getContext("2d"), fs = 44;
+  c.font = `800 ${fs}px Inter,Arial`; const w = Math.max(...lines.map((t, k) => { c.font = `${k ? 600 : 800} ${k ? fs * 0.8 : fs}px Inter,Arial`; return c.measureText(t).width; })) + 40, h = lines.length * fs * 1.15 + 26;
+  cv.width = Math.ceil(w); cv.height = Math.ceil(h);
+  c.fillStyle = "rgba(255,255,255,.93)"; c.strokeStyle = col; c.lineWidth = 5; c.beginPath(); c.roundRect ? c.roundRect(3, 3, cv.width - 6, cv.height - 6, 18) : c.rect(3, 3, cv.width - 6, cv.height - 6); c.fill(); c.stroke();
+  lines.forEach((t, k) => { c.font = `${k ? 600 : 800} ${k ? fs * 0.8 : fs}px Inter,Arial`; c.fillStyle = k ? "#334155" : col; c.textBaseline = "top"; c.fillText(t, 20, 14 + k * fs * 1.15); });
+  const tx = new TH.CanvasTexture(cv); tx.minFilter = TH.LinearFilter;
+  const sp = new TH.Sprite(new TH.SpriteMaterial({ map:tx, depthTest:false, transparent:true })); sp.renderOrder = 10;
+  const k = 0.0082 * scale; sp.scale.set(cv.width * k, cv.height * k, 1); return sp;
+}
+function build3D() {
+  const TH = window.THREE; if (T3.root) { T3.sc.remove(T3.root); T3.root.traverse(o => { if (o.geometry) o.geometry.dispose(); if (o.material) { if (o.material.map) o.material.map.dispose(); o.material.dispose(); } }); }
+  const root = new TH.Group(); T3.root = root; T3.sc.add(root);
+  const L = RES.L.filter(l => l.nom > 0), pos = L.filter(l => l.s > 0), neg = L.filter(l => l.s < 0);
+  const P = pos.reduce((s, l) => s + l.nom, 0), N = neg.reduce((s, l) => s + l.nom, 0);
+  if (!L.length) { const sp = label3D(["Chưa có kích thước", "Nhập chuỗi kích thước để dựng 3D"], "#64748b", 1.2); root.add(sp); return; }
+  const k = 16 / Math.max(P, N, 1e-6), x0 = -8, parts = [...new Set(S.dims.map(d => d.part || "—"))], colOf = p => PCOL[parts.indexOf(p || "—") % PCOL.length];
+  const rMax = Math.max(0.5, ...L.filter(l => l.k === "R").map(l => l.nom * k)), hB = 1.1, dep = 2.2, gapY = Math.max(hB, rMax * 2) / 2 + 0.55;
+  const rowY = s => s > 0 ? gapY : -gapY, firstOf = {};
+  const box = (x1, x2, y, h, col, op) => { const w = Math.max(0.02, x2 - x1), g = new TH.BoxGeometry(w, h, dep);
+    const m = new TH.Mesh(g, new TH.MeshStandardMaterial({ color:col, roughness:0.55, metalness:0.08, transparent:op < 1, opacity:op })); m.position.set((x1 + x2) / 2, y, 0); root.add(m);
+    const e = new TH.LineSegments(new TH.EdgesGeometry(g), new TH.LineBasicMaterial({ color:0x1e293b, transparent:true, opacity:0.45 })); e.position.copy(m.position); root.add(e); return m; };
+  [[pos, 1], [neg, -1]].forEach(([row, s]) => {
+    let x = x0; const y = rowY(s);
+    row.forEach((l, j) => {
+      const len = l.nom * k, col = colOf(l.d.part), x2 = x + len;
+      if (l.k === "R") { x = x2; return; }                          // bán kính: đã nằm trong khối tròn
+      const nextR = row[j + 1] && row[j + 1].k === "R" && row[j + 1].d === l.d ? row[j + 1] : null;
+      if (circ(l.d) && nextR) {                                     // tâm → mặt: thanh mảnh + khối tròn tâm tại x2
+        box(x, x2, y, 0.22, col, 1);
+        const R = l.d.dia / 2 * k, mat = new TH.MeshStandardMaterial({ color:col, roughness:0.35, metalness:0.2 });
+        const m = l.d.type === "sph" ? new TH.Mesh(new TH.SphereGeometry(R, 40, 28), mat) : new TH.Mesh(new TH.CylinderGeometry(R, R, dep * 1.05, 48), mat);
+        if (l.d.type !== "sph") m.rotation.x = Math.PI / 2; m.position.set(x2 + (nextR.s === s ? 0 : 0), y, 0); root.add(m);
+        const lb = label3D([`${l.d.id} · ${l.d.part || "—"}`, `${l.d.type === "sph" ? "Cầu" : l.d.hole ? "Lỗ" : "Trục"} Ø${fx(l.d.dia)} · tâm ${fx(l.nom)}`], col); lb.position.set(x2, y + Math.max(R, hB / 2) + 0.75, 0); root.add(lb);
+      } else {
+        box(x + 0.015, x2 - 0.015, y, hB, col, 1);
+        const lb = label3D([`${l.d.id} · ${l.d.part || "—"}`, `${s > 0 ? "+" : "−"}${fx(l.nom)} ${ftol(l.up, l.lo)}`], col); lb.position.set((x + x2) / 2, y + (s > 0 ? hB / 2 + 0.7 : -hB / 2 - 0.7), 0); root.add(lb);
+      }
+      if (!firstOf[l.d.part || "—"]) firstOf[l.d.part || "—"] = { x:(x + x2) / 2, y, s };
+      x = x2;
+    });
+  });
+  // mặt chuẩn
+  const top = gapY + Math.max(hB, rMax * 2) / 2 + 0.3; box(x0 - 0.12, x0, 0, top * 2, 0x14213d, 1);
+  const dl = label3D(["Datum"], "#14213d", 0.9); dl.position.set(x0 - 0.2, -top - 0.5, 0); root.add(dl);
+  // khe hở / cấn ở cuối 2 hàng
+  const j = RES.judge(S.method), xa = x0 + N * k, xb = x0 + P * k, bad = !j.pass, gx1 = Math.min(xa, xb), gx2 = Math.max(xa, xb, gx1 + 0.16);
+  const gcol = bad ? 0xdc2626 : 0x16a34a; box(gx1, gx2, 0, top * 2, gcol, 0.35);
+  const gl = label3D([`${RES.nom < 0 ? "⚠ Cấn" : "Gap"} ${fx(RES.nom)} ${S.unit}`, `min ${fx(j.lo)} · max ${fx(j.hi)} · ${bad ? "FAIL" : "PASS"}`], bad ? "#dc2626" : "#16a34a", 1.15);
+  gl.position.set(gx2 + 1.9, 0, 0); root.add(gl);
+  // mũi tên hướng
+  [[1, "+ tăng khe hở", 0x2563eb], [-1, "− giảm khe hở", 0x7c3aed]].forEach(([s, t, c]) => { const y = rowY(s) + (s > 0 ? 1 : -1) * (Math.max(hB, rMax * 2) / 2 + 1.6);
+    const a = new TH.ArrowHelper(new TH.Vector3(1, 0, 0), new TH.Vector3(x0, y, dep / 2 + 0.2), 3, c, 0.5, 0.3); root.add(a);
+    const lb = label3D([t], "#" + c.toString(16).padStart(6, "0"), 0.75); lb.position.set(x0 + 4.4, y, dep / 2 + 0.2); root.add(lb); });
+  // bản vẽ 2D của từng Part
+  const loader = new TH.TextureLoader();
+  DWS.forEach(o => { const f = firstOf[o.part || "—"]; if (!o.part || !f || !o.src) return;
+    const w = 4.2, h = w * o.h / o.w, tx = loader.load(o.src); tx.minFilter = TH.LinearFilter;
+    const pl = new TH.Mesh(new TH.PlaneGeometry(w, h), new TH.MeshBasicMaterial({ map:tx, side:TH.DoubleSide }));
+    const y = f.y + (f.s > 0 ? 1 : -1) * (Math.max(hB, rMax * 2) / 2 + 2.6 + h / 2); pl.position.set(f.x, y, -dep / 2 - 0.4); root.add(pl);
+    const fr = new TH.LineSegments(new TH.EdgesGeometry(new TH.PlaneGeometry(w, h)), new TH.LineBasicMaterial({ color:new TH.Color(colOf(o.part)) })); fr.position.copy(pl.position); root.add(fr);
+    const ln = new TH.Line(new TH.BufferGeometry().setFromPoints([new TH.Vector3(f.x, f.y, -dep / 2 - 0.4), new TH.Vector3(f.x, y + (f.s > 0 ? -h / 2 : h / 2), -dep / 2 - 0.4)]), new TH.LineDashedMaterial({ color:0x64748b, dashSize:0.2, gapSize:0.15 }));
+    ln.computeLineDistances(); root.add(ln); });
+  fit3D(false);
+}
+function fit3D(reset) {                                        // camera lùi vừa đủ để thấy cả mô hình + bản vẽ treo phía trên
+  const TH = window.THREE, bx = new TH.Box3().setFromObject(T3.root); if (bx.isEmpty()) return;
+  const c = bx.getCenter(new TH.Vector3()), sz = bx.getSize(new TH.Vector3()), a = T3.cam.aspect || 1.6, t = Math.tan(T3.cam.fov * Math.PI / 360);
+  T3.fitTgt.copy(c); T3.fitRad = Math.max(sz.x / a, sz.y) / (2 * t) * 1.12 + sz.z;
+  if (reset || !T3.fitted) { T3.tgt.copy(c); T3.rad = T3.fitRad; T3.fitted = true; }
+}
+let b3t = 0; const build3DSoon = () => { clearTimeout(b3t); b3t = setTimeout(() => { if (T3 && window.THREE && S.view === "3d") build3D(); }, 120); };
+function upd3Btns() { const b = $("[data-h=auto3]"); if (b) b.classList.toggle("on", !!(T3 && T3.auto)); }
 
 // ---------- thẻ kích thước ----------
 const fin_ = v => (+v).toFixed(Math.max(D(), (String(v).split(".")[1] || "").length > 6 ? 6 : (String(v).split(".")[1] || "").length));
 const fN = v => isFinite(v) ? fin_(v) : "";
 const fT = v => isFinite(v) ? (v < 0 ? "-" : "+") + fin_(Math.abs(v)) : "";
+let openId = "";                                               // kích thước đang mở để sửa (chỉ 1 dòng mở một lúc)
+const TYPE_VN = { plane:"Mặt phẳng", cyl:"Trụ / lỗ", sph:"Mặt cầu" };
 function dimCard(d, i) {
-  const ci = d.type !== "plane";
-  return `<div class="dc${d.on ? "" : " off"}${d.dir < 0 ? " neg" : ""}" data-i="${i}" id="dc-${esc(d.id)}">
+  const ci = d.type !== "plane", open = openId === d.id;
+  return `<div class="dc${d.on ? "" : " off"}${d.dir < 0 ? " neg" : ""}${open ? " open" : ""}" data-i="${i}" id="dc-${esc(d.id)}">
     <div class="dc-h"><label class="sw" title="Đưa vào / loại khỏi chuỗi (Ignore)"><input type="checkbox" data-f="on" ${d.on ? "checked" : ""} aria-label="Bật / tắt ${esc(d.id)}"><span></span></label>
-      <b class="dc-id">${esc(d.id)}</b><input class="i" data-f="part" value="${esc(d.part)}" placeholder="Part (vd Part A – Chốt)" aria-label="Part">
-      <div class="seg" role="group" aria-label="Hướng vector"><button data-a="dir" data-v="1" class="${d.dir > 0 ? "on" : ""}" title="+ : làm tăng khe hở">+</button><button data-a="dir" data-v="-1" class="${d.dir < 0 ? "on" : ""}" title="− : làm giảm khe hở">−</button></div></div>
-    <div class="dc-b">
-      <input class="i" data-f="desc" value="${esc(d.desc)}" placeholder="Mô tả (vd Mặt chuẩn A → tâm chốt)" aria-label="Mô tả">
+      <button class="dc-sum" data-a="open" aria-expanded="${open}" title="${open ? "Thu gọn" : "Mở để sửa"}"><b class="dc-id">${esc(d.id)}</b>
+        <span class="dc-nm"><b data-sn></b><small data-sd></small></span><span class="dc-val" data-sv></span><span class="chev">▾</span></button></div>
+    ${open ? `<div class="dc-b">
+      <div class="dc-row"><label class="f">Part<input class="i" data-f="part" value="${esc(d.part)}" placeholder="vd Part A – Chốt"></label>
+        <label class="f">Hướng<span class="seg" role="group" aria-label="Hướng vector"><button data-a="dir" data-v="1" class="${d.dir > 0 ? "on" : ""}" title="+ : làm tăng khe hở">+</button><button data-a="dir" data-v="-1" class="${d.dir < 0 ? "on" : ""}" title="− : làm giảm khe hở">−</button></span></label></div>
+      <label class="f">Mô tả<input class="i" data-f="desc" value="${esc(d.desc)}" placeholder="vd Mặt chuẩn A → tâm chốt"></label>
       <div class="g3"><label class="f">${ci ? "Tâm → mặt" : "Danh nghĩa"}<input class="i num" data-f="nom" inputmode="decimal" value="${fN(d.nom)}"></label>
         <label class="f">Dung sai trên<input class="i num" data-f="up" inputmode="decimal" value="${fT(d.up)}" placeholder="+0.05"></label>
         <label class="f">Dung sai dưới<input class="i num" data-f="lo" inputmode="decimal" value="${fT(d.lo)}" placeholder="-0.05"></label></div>
@@ -645,9 +800,9 @@ function dimCard(d, i) {
       <div class="dc-f"><button class="ib" data-a="up" title="Lên" ${i ? "" : "disabled"}>↑</button><button class="ib" data-a="down" title="Xuống" ${i < S.dims.length - 1 ? "" : "disabled"}>↓</button>
         <button class="ib" data-a="dup" title="Nhân bản">⧉</button><button class="ib${placing === d.id ? " on" : ""}" data-a="pin" title="${d.bal ? "Đặt lại" : "Đặt"} bóng số trên bản vẽ">📍${d.bal ? "✓" : ""}</button>
         <button class="ib del" data-a="del" title="Xóa">🗑</button></div>
-    </div></div>`;
+    </div>` : ""}</div>`;
 }
-function renderDims() { $("#dims").innerHTML = S.dims.map(dimCard).join(""); updCards(); }
+function renderDims() { if (openId && !S.dims.some(d => d.id === openId)) openId = ""; $("#dims").innerHTML = S.dims.map(dimCard).join(""); updCards(); }
 function updCards() {
   $$("#dims .dc").forEach(el => {
     const d = S.dims[+el.dataset.i]; if (!d) return;
@@ -655,7 +810,10 @@ function updCards() {
     if (circ(d) && d.dLo > d.dUp) w.push("Dung sai Ø dưới lớn hơn Ø trên.");
     if (d.type !== "plane" && !(d.dia > 0)) w.push("Nhập đường kính Ø để tự trừ Ø/2.");
     if (d.nom < 0) w.push("Danh nghĩa âm – dùng hướng − thay vì số âm.");
-    el.querySelector("[data-warn]").textContent = w.join(" ");
+    el.querySelector("[data-sn]").textContent = d.part || "Chưa đặt tên Part";
+    el.querySelector("[data-sd]").textContent = (w.length ? "⚠ " : "") + (d.desc || TYPE_VN[d.type]);
+    el.querySelector("[data-sv]").innerHTML = `${circ(d) ? `<i>Ø${fx(d.dia)}</i>` : ""}${d.dir > 0 ? "+" : "−"}${fx(d.nom)}<em>${ftol(d.up, d.lo)}</em>`;
+    const wn = el.querySelector("[data-warn]"); if (wn) wn.textContent = w.join(" ");
     const e = el.querySelector("[data-eff]");
     if (e) { const r = d.dia / 2, rs = rSign(d), act = d.nom + rs * r;
       e.innerHTML = circ(d) ? `Khoảng cách thực tế = tâm → mặt ${rs < 0 ? "−" : "+"} Ø/2 = ${fx(d.nom)} ${rs < 0 ? "−" : "+"} ${fx(r)} = <b>${fx(act)}</b><br>Đóng góp vào khe hở: ${fsg(d.dir * d.nom)} ${rs < 0 ? "−" : "+"} ${fx(r)} (dung sai Ø/2 = ${ftol(d.dUp / 2, d.dLo / 2)})` : "Nhập Ø > 0."; }
@@ -698,46 +856,45 @@ $("#dims").addEventListener("click", e => {
   if (a === "dir") { d.dir = +b.dataset.v; }
   else if (a === "up" && i > 0) [S.dims[i - 1], S.dims[i]] = [S.dims[i], S.dims[i - 1]];
   else if (a === "down" && i < S.dims.length - 1) [S.dims[i + 1], S.dims[i]] = [S.dims[i], S.dims[i + 1]];
-  else if (a === "dup") { const n = JSON.parse(JSON.stringify(d)); n.id = "D" + S.n++; n.bal = null; S.dims.splice(i + 1, 0, n); }
+  else if (a === "open") { openId = openId === d.id ? "" : d.id; return renderDims(); }
+  else if (a === "dup") { const n = JSON.parse(JSON.stringify(d)); n.id = "D" + S.n++; n.bal = null; S.dims.splice(i + 1, 0, n); openId = n.id; }
   else if (a === "del") { if (S.dims.length === 1) { S.dims = [blankDim(S.n++)]; } else if (confirm(`Xóa kích thước ${d.id}?`)) S.dims.splice(i, 1); else return; }
-  else if (a === "pin") { if (!DW.src) { placing = d.id; pickDw(); } else { placing = placing === d.id ? "" : d.id; setView("dwg"); if (placing) seeDw(); } }
+  else if (a === "pin") { if (!DWS.length) { placing = d.id; pickDw(); } else { placing = placing === d.id ? "" : d.id; setView("dwg"); if (placing) seeDw(); } }
   renderDims(); changed(true);
 });
 
 // ---------- kết quả ----------
 function renderOut() {
-  const R = RES, m = S.method, j = R.judge(m), unit = S.unit;
-  $("#mName").textContent = m === "wc" ? "Worst-Case" : "Statistical (RSS)";
-  let vd;
-  if (!R.n) vd = `<div class="vd empty"><div class="ic">?</div><div><small>Chưa có dữ liệu</small><h3>—</h3><ul><li>Nhập kích thước (danh nghĩa, dung sai, hướng) và bật ít nhất 1 kích thước trong chuỗi – hoặc bấm ✦ Ví dụ.</li></ul></div></div>`;
-  else {
-    const lowCpk = m === "rss" && j.pass && R.cpk < S.cpkT;
-    vd = `<div class="vd ${j.pass ? "pass" : "fail"}"><div class="ic">${j.pass ? "✓" : "✕"}</div><div style="min-width:0"><small>Kết luận · ${m === "wc" ? "Worst-Case" : "RSS ±3σ"}</small><h3>${j.pass ? "PASS" : "FAIL"}</h3>
-      <ul>${j.pass ? `<li>Gap Min ${fx(j.lo)} ≥ LSL ${fx(S.lsl)}${S.usl != null ? ` và Gap Max ${fx(j.hi)} ≤ USL ${fx(S.usl)}` : ""} → lắp ráp không cấn${m === "wc" ? " ở mọi tổ hợp dung sai" : " với xác suất ≈ 99.73% trở lên"}.</li>` : j.why.map(w => `<li><b>${esc(w)}</b></li>`).join("")}</ul>
-      ${lowCpk ? `<div class="warn">⚠ Cpk ${R.cpk.toFixed(2)} &lt; mục tiêu ${S.cpkT} – đạt nhưng biên an toàn thấp, cần theo dõi.</div>` : ""}</div></div>`;
-  }
-  const big = (t, v, cls, sub) => `<div class="k"><small>${t}</small><b class="${cls || ""}">${v}</b>${sub ? `<em>${sub}</em>` : ""}</div>`;
-  const kp = !R.n ? "" : `<div class="kpi">
-    ${big("Gap Min", fx(j.lo), j.lo < S.lsl ? "r" : "g", m === "wc" ? "Worst-Case" : "μ − 3σ")}${big("Gap Max", fx(j.hi), S.usl != null && j.hi > S.usl ? "r" : "", m === "wc" ? "Worst-Case" : "μ + 3σ")}
-    ${big("Mean Gap (μ)", fx(R.mean), "", "danh nghĩa " + fx(R.nom) + " " + unit)}${big(m === "wc" ? "Tổng dung sai ±" : "σ khe hở", m === "wc" ? fx(R.wcT) : fx(R.sd, D() + 1), "", m === "wc" ? "Σ |T<sub>i</sub>|" : "±3σ = ±" + fx(R.rssT))}
-    ${m === "rss" ? big("Cpk", isFinite(R.cpk) ? R.cpk.toFixed(2) : "∞", R.cpk < 1 ? "r" : R.cpk < S.cpkT ? "" : "g", `Cpl ${isFinite(R.cpl) ? R.cpl.toFixed(2) : "∞"} · Cpu ${isFinite(R.cpu) ? R.cpu.toFixed(2) : "–"}`)
-      + big("PPM dự báo", fppm(R.ppm), R.ppm > 63 ? "r" : "g", `cấn ${fppm(R.ppmL)} · lỏng ${fppm(R.ppmU)}`)
-      : big("PPM (Worst-Case)", j.pass ? "0" : "> 0", j.pass ? "g" : "r", "nếu mọi chi tiết trong dung sai") + big("PPM ước tính (RSS)", fppm(R.ppm), R.ppm > 63 ? "r" : "", "tham khảo thống kê")}</div>`;
-  $("#verdict").innerHTML = vd + kp;
-  // so sánh
-  const okMC = MC && MC.sig === sig(), row = (k, n, lo, hi, p, extra) => { const jj = k === "mc" ? { pass:p === 0 } : R.judge(k);
-    return `<tr class="${k === m ? "sel" : ""}"><td>${n} <span class="tag ${jj.pass ? "p" : "f"}">${jj.pass ? "PASS" : "FAIL"}</span></td><td>${fx(lo)}</td><td>${fx(hi)}</td><td>${extra}</td></tr>`; };
-  $("#cmp").innerHTML = !R.n ? `<p class="note">—</p>` : `<table class="tbl"><thead><tr><th>Phương pháp</th><th>Min</th><th>Max</th><th>PPM · Cpk</th></tr></thead><tbody>
-    ${row("wc", "Worst-Case", R.wcMin, R.wcMax, null, "–")}${row("rss", "RSS ±3σ", R.rssMin, R.rssMax, null, `${fppm(R.ppm)} · ${isFinite(R.cpk) ? R.cpk.toFixed(2) : "∞"}`)}
-    ${okMC ? row("mc", `Monte Carlo (${(MC.n / 1000).toFixed(0)}k)`, MC.min, MC.max, MC.lo + MC.hi, `${fppm(MC.ppm)} · σ ${fx(MC.sd, D() + 1)}`) : `<tr><td>Monte Carlo</td><td colspan="3" class="l"><button class="btn" data-h="mc">▶ Chạy 50 000 mẫu</button></td></tr>`}</tbody></table>`;
+  const R = RES, m = S.method, j = R.judge(m), unit = S.unit, okMC = MC && MC.sig === sig();
+  $("#sum").className = "card sum " + (!R.n ? "" : j.pass ? "pass" : "fail");
   // gợi ý
   let tip = "";
   if (R.n) {
     const top = [...R.L].sort((a, b) => (m === "wc" ? b.pw - a.pw : b.pr - a.pr))[0], sh = S.lsl - j.lo, ov = S.usl != null ? j.hi - S.usl : 0;
-    if (!j.pass) tip = `<b>Gợi ý xử lý:</b> ${sh > 0 ? `thiếu ${fx(sh)} ${unit} ở Gap Min → tăng khe hở danh nghĩa ≥ ${fx(sh)} hoặc giảm tổng dung sai ${m === "wc" ? "" : "(theo RSS) "}tương ứng. ` : ""}${ov > 0 ? `Vượt USL ${fx(ov)} ${unit} → giảm khe hở danh nghĩa hoặc siết dung sai. ` : ""}Ưu tiên siết <b>${esc(top.name)}</b> (${esc(top.d.part || "—")}) – đóng góp ${fpct(m === "wc" ? top.pw : top.pr)}.${m === "wc" && R.judge("rss").pass ? " Nếu quá trình ổn định (Cpk ≥ 1.33 từng kích thước), có thể đánh giá theo RSS." : ""}`;
-    else tip = `<b>Kích thước nhạy nhất:</b> ${esc(top.name)} (${esc(top.d.part || "—")}) – ${fpct(m === "wc" ? top.pw : top.pr)} sai số. Đưa vào Control Plan / kiểm soát đặc tính đặc biệt nếu cần.`;
+    if (!j.pass) tip = `<b>Gợi ý:</b> ${sh > 0 ? `thiếu ${fx(sh)} ${unit} ở Gap Min → tăng khe hở danh nghĩa ≥ ${fx(sh)} hoặc giảm tổng dung sai tương ứng. ` : ""}${ov > 0 ? `Vượt USL ${fx(ov)} ${unit} → giảm khe hở danh nghĩa hoặc siết dung sai. ` : ""}Ưu tiên siết <b>${esc(top.name)}</b> (${esc(top.d.part || "—")}) – đóng góp ${fpct(m === "wc" ? top.pw : top.pr)}.${m === "wc" && R.judge("rss").pass ? " Nếu quá trình ổn định (Cpk ≥ 1.33 từng kích thước), có thể đánh giá theo RSS." : ""}`;
+    else tip = `<b>Nhạy nhất:</b> ${esc(top.name)} (${esc(top.d.part || "—")}) – ${fpct(m === "wc" ? top.pw : top.pr)} sai số. Đưa vào Control Plan nếu là đặc tính đặc biệt.`;
   }
-  $("#tip").innerHTML = tip ? `<div class="tip">${tip}</div>` : "";
+  if (!R.n) $("#verdict").innerHTML = `<div class="ic">?</div><div style="min-width:0"><small>Chưa có dữ liệu</small><h3>—</h3><ul><li>Nhập kích thước (danh nghĩa, dung sai, hướng) và bật ít nhất 1 kích thước – hoặc bấm ✦ Ví dụ.</li></ul></div>`;
+  else {
+    const lowCpk = m === "rss" && j.pass && R.cpk < S.cpkT;
+    $("#verdict").innerHTML = `<div class="ic">${j.pass ? "✓" : "✕"}</div><div style="min-width:0"><small>Kết luận QE · ${m === "wc" ? "Worst-Case" : "RSS ±3σ"}</small><h3>${j.pass ? "PASS" : "FAIL"}</h3>
+      <ul>${j.pass ? `<li>Gap Min ${fx(j.lo)} ≥ LSL ${fx(S.lsl)}${S.usl != null ? ` và Gap Max ${fx(j.hi)} ≤ USL ${fx(S.usl)}` : ""} → lắp không cấn${m === "wc" ? " ở mọi tổ hợp dung sai" : " (≈ 99.73% trở lên)"}.</li>` : j.why.map(w => `<li><b>${esc(w)}</b></li>`).join("")}</ul>
+      ${lowCpk ? `<div class="warn">⚠ Cpk ${R.cpk.toFixed(2)} &lt; mục tiêu ${S.cpkT} – đạt nhưng biên an toàn thấp, cần theo dõi.</div>` : ""}${tip ? `<div class="tip">${tip}</div>` : ""}</div>`;
+  }
+  const k = (t, v, cls, sub) => `<div class="k ${cls || ""}"><small>${t}</small><b>${v}</b><em>${sub || "&nbsp;"}</em></div>`;
+  $("#kpis").innerHTML = !R.n ? "" :
+    k("Gap Min", fx(j.lo), j.lo < S.lsl ? "r" : "g", (m === "wc" ? "Worst-Case" : "μ − 3σ") + " · LSL " + fx(S.lsl))
+    + k("Gap Max", fx(j.hi), S.usl != null && j.hi > S.usl ? "r" : "", (m === "wc" ? "Worst-Case" : "μ + 3σ") + (S.usl != null ? " · USL " + fx(S.usl) : ""))
+    + k("Mean Gap (μ)", fx(R.mean), "", "danh nghĩa " + fx(R.nom) + " " + unit)
+    + (m === "wc" ? k("Tổng dung sai ±", fx(R.wcT), "", "Σ |Tᵢ| · " + R.n + " vector") : k("σ khe hở", fx(R.sd, D() + 1), "", "±3σ = ±" + fx(R.rssT)))
+    + k("Cpk" + (m === "wc" ? " (tham khảo)" : ""), isFinite(R.cpk) ? R.cpk.toFixed(2) : "∞", R.cpk < 1 ? "r" : R.cpk < S.cpkT ? "a" : "g", `Cpl ${isFinite(R.cpl) ? R.cpl.toFixed(2) : "∞"} · Cpu ${isFinite(R.cpu) ? R.cpu.toFixed(2) : "–"}`)
+    + k("PPM dự báo" + (m === "wc" ? " (RSS)" : ""), fppm(R.ppm), R.ppm > 63 ? "r" : "g", `cấn ${fppm(R.ppmL)} · lỏng ${fppm(R.ppmU)}${okMC ? " · MC " + fppm(MC.ppm) : ""}`);
+  // so sánh
+  const row = (key, n, lo, hi, p, extra) => { const jj = key === "mc" ? { pass:p === 0 } : R.judge(key);
+    return `<tr class="${key === m ? "sel" : ""}"><td>${n} <span class="tag ${jj.pass ? "p" : "f"}">${jj.pass ? "PASS" : "FAIL"}</span></td><td>${fx(lo)}</td><td>${fx(hi)}</td><td>${extra}</td></tr>`; };
+  $("#cmp").innerHTML = !R.n ? `<p class="note">—</p>` : `<table class="tbl"><thead><tr><th>Phương pháp</th><th>Gap Min</th><th>Gap Max</th><th>PPM · Cpk / σ</th></tr></thead><tbody>
+    ${row("wc", "Worst-Case", R.wcMin, R.wcMax, null, "–")}${row("rss", "RSS ±3σ", R.rssMin, R.rssMax, null, `${fppm(R.ppm)} · Cpk ${isFinite(R.cpk) ? R.cpk.toFixed(2) : "∞"}`)}
+    ${okMC ? row("mc", `Monte Carlo (${(MC.n / 1000).toFixed(0)}k)`, MC.min, MC.max, MC.lo + MC.hi, `${fppm(MC.ppm)} · σ ${fx(MC.sd, D() + 1)}`) : `<tr><td>Monte Carlo</td><td colspan="3" class="l"><button class="btn" data-h="mc">▶ Chạy 50 000 mẫu</button></td></tr>`}</tbody></table>`;
   renderPareto();
 }
 function paretoData() {
@@ -774,9 +931,6 @@ function renderPareto() {
 }
 
 // ---------- vẽ khu trung tâm ----------
-function renderChips() {
-  $("#chips").innerHTML = `<span class="lb">Toggle:</span>` + S.dims.map((d, i) => `<button class="chip${d.on ? " on" : ""}" data-tog="${i}" title="${d.on ? "Bấm để bỏ qua (Ignore)" : "Bấm để đưa vào chuỗi"}"><i></i><span>${esc(d.id)}${d.part ? " · " + esc(d.part) : ""}</span></button>`).join("");
-}
 function renderScn() {
   const okMC = MC && MC.sig === sig();
   $("#scn").innerHTML = `<div class="seg">${[["nom", "Danh nghĩa"], ["min", "Gap Min"], ["max", "Gap Max"]].map(([k, t]) => `<button data-sc="${k}" class="${scen === k ? "on" : ""}">${t}</button>`).join("")}</div>
@@ -791,19 +945,19 @@ function drawCenter() {
     const dpr = DPR();
     if (S.view === "loop") { const w = $("#vLoop .cvw").clientWidth; if (w) drawLoop($("#cvLoop"), w, dpr); }
     if (S.view === "contact") { const w = $("#vContact .cvw").clientWidth; if (w) { drawScene($("#cvScene"), w, dpr); drawHist($("#cvHist"), w, dpr, mcAnim ? mcAnim.k : null); } }
+    if (S.view === "3d" && T3) { size3D(); }
     postH();
   });
 }
 function setView(v) {
   S.view = v; save();
-  $$("#tabs button").forEach(b => b.classList.toggle("on", b.dataset.v === v));
-  $("#vLoop").classList.toggle("hide", v !== "loop"); $("#vContact").classList.toggle("hide", v !== "contact"); $("#vDwg").classList.toggle("hide", v !== "dwg");
-  $("#chips").classList.toggle("hide", v === "dwg");
-  if (v === "dwg") renderDwView(); else { if (v === "contact") renderScn(); drawCenter(); }
+  $$("#tabs button").forEach(b => { b.classList.toggle("on", b.dataset.v === v); b.setAttribute("aria-selected", b.dataset.v === v); });
+  ["loop", "contact", "par", "dwg", "3d"].forEach(k => $("#" + { loop:"vLoop", contact:"vContact", par:"vPar", dwg:"vDwg", "3d":"v3d" }[k]).classList.toggle("hide", v !== k));
+  if (v === "dwg") renderDwView(); else if (v === "3d") render3D(); else { if (v === "contact") renderScn(); drawCenter(); }
   postH();
 }
 function changed(full) {
-  if (full !== "light") { RES = calc(); if (mcAnim) stopMC(); renderOut(); renderChips(); if (S.view === "contact") renderScn(); drawCenter(); if (S.view === "dwg") drawBal(); }
+  if (full !== "light") { RES = calc(); if (mcAnim) stopMC(); renderOut(); if (S.view === "contact") renderScn(); drawCenter(); if (S.view === "dwg") drawBal(); if (S.view === "3d") build3DSoon(); }
   updCards(); save();
 }
 function startMC() {
@@ -823,18 +977,19 @@ function stopMC() { if (mcAnim) cancelAnimationFrame(mcAnim.raf); mcAnim = null;
 
 // ---------- báo cáo PDF ----------
 function imgOf(fn, W) { const cv = document.createElement("canvas"); fn(cv, W, 2); return cv.toDataURL("image/png"); }
-function dwgImg() {
-  return new Promise(ok => { if (!DW.src) return ok("");
-    const im = new Image(); im.onload = () => { const sc = Math.min(1, 1800 / Math.max(DW.w, DW.h)), cv = document.createElement("canvas"); cv.width = DW.w * sc; cv.height = DW.h * sc;
+function dwgImgs() {                                          // mỗi bản vẽ + bóng số của nó → ảnh JPEG cho báo cáo
+  return Promise.all(DWS.map((o, i) => new Promise(ok => {
+    const im = new Image(); im.onload = () => { const sc = Math.min(1, 1800 / Math.max(o.w, o.h)), cv = document.createElement("canvas"); cv.width = o.w * sc; cv.height = o.h * sc;
       const c = cv.getContext("2d"); c.fillStyle = "#fff"; c.fillRect(0, 0, cv.width, cv.height); c.drawImage(im, 0, 0, cv.width, cv.height);
-      const r = Math.max(14, cv.width / 70); S.dims.filter(d => d.bal && (d.bal.pg || 1) === DW.page).forEach(d => { const x = d.bal.x * cv.width, y = d.bal.y * cv.height;
+      const r = Math.max(14, cv.width / 70); S.dims.filter(d => balOn(d.bal, o, i)).forEach(d => { const x = d.bal.x * cv.width, y = d.bal.y * cv.height;
         c.fillStyle = d.dir < 0 ? C.violet : C.blue; c.beginPath(); c.arc(x, y, r, 0, 7); c.fill(); c.lineWidth = 3; c.strokeStyle = "#fff"; c.stroke();
         c.fillStyle = "#fff"; c.font = `800 ${Math.round(r * 0.85)}px Inter,Arial`; c.textAlign = "center"; c.textBaseline = "middle"; c.fillText(d.id, x, y + 1); });
-      ok(cv.toDataURL("image/jpeg", 0.85)); }; im.onerror = () => ok(""); im.src = DW.src; });
+      ok({ name:o.name, part:o.part, img:cv.toDataURL("image/jpeg", 0.85) }); }; im.onerror = () => ok(null); im.src = o.src; }))).then(a => a.filter(Boolean));
 }
 async function exportPdf() {
   const R = RES, m = S.method, j = R.judge(m), I = S.info, okMC = MC && MC.sig === sig(), today = new Date().toLocaleDateString("vi-VN");
-  const loop = imgOf((cv, W, d) => drawLoop(cv, W, d), 980), scene = imgOf((cv, W, d) => drawScene(cv, W, d, RES.nom), 980), hist = imgOf((cv, W, d) => drawHist(cv, W, d), 980), dw = await dwgImg();
+  const loop = imgOf((cv, W, d) => drawLoop(cv, W, d), 980), scene = imgOf((cv, W, d) => drawScene(cv, W, d, RES.nom), 980), hist = imgOf((cv, W, d) => drawHist(cv, W, d), 980), dws = await dwgImgs();
+  let img3 = ""; try { if (T3 && window.THREE) { if (S.view !== "3d") { build3D(); } T3.r.render(T3.sc, T3.cam); img3 = T3.r.domElement.toDataURL("image/png"); } } catch (e) {}
   const dims = links(true).map(l => `<tr><td class="l">${esc(l.name)}</td><td class="l">${esc(l.d.part)}</td><td class="l">${esc(l.k === "R" ? "Ø/2 của " + l.d.id + (l.d.hole ? " (lỗ)" : "") : l.d.desc)}</td><td class="l">${{ plane:"Planar", cyl:"Cylinder", sph:"Sphere" }[l.d.type]}</td>
     <td>${l.s > 0 ? "+" : "−"}</td><td>${fx(l.nom)}</td><td>${fsg(l.up)}</td><td>${fsg(l.lo)}</td><td>${l.on ? "✓" : "Ignore"}</td></tr>`).join("");
   const contrib = paretoData().map(x => `<tr><td class="l">${esc(x.n)}</td><td class="l">${esc(x.part)}</td><td>${fx(x.hb)}</td><td>${fpct(x.pw)}</td><td>${fpct(x.pr)}</td></tr>`).join("");
@@ -852,7 +1007,8 @@ async function exportPdf() {
     <h2>3. Vector loop</h2><img src="${loop}" alt="" class="brk">
     <div class="two brk"><div><h2>4. Tiếp xúc tròn – phẳng (danh nghĩa)</h2><img src="${scene}" alt=""></div><div><h2>5. Phân bố khe hở</h2><img src="${hist}" alt=""></div></div>
     <h2>6. Pareto – % đóng góp sai số</h2><div class="two brk"><div>${paretoSvg(paretoData())}</div><table><thead><tr><th class="l">${S.par === "part" ? "Part" : "Dim"}</th><th class="l">Part</th><th>±T</th><th>% WC</th><th>% RSS</th></tr></thead><tbody>${contrib}</tbody></table></div>
-    ${dw ? `<h2>7. Bản vẽ &amp; bóng số</h2><img src="${dw}" alt="" style="max-height:150mm">` : ""}
+    ${img3 ? `<h2>7. Mô hình 3D (dựng từ chuỗi kích thước)</h2><img src="${img3}" alt="" class="brk" style="max-height:110mm">` : ""}
+    ${dws.length ? `<h2>8. Bản vẽ &amp; bóng số</h2>${dws.map(x => `<div class="brk"><b>${esc(x.part || "Chưa gán Part")}</b> · ${esc(x.name)}<img src="${x.img}" alt="" style="max-height:120mm"></div>`).join("")}` : ""}
     <h2>Phương pháp tính</h2><ul style="font-size:10.5px">
       <li>Worst-Case: Gap Min = Σ(Nominal + Lower) của hướng + − Σ(Nominal + Upper) của hướng −; Gap Max = Σ(Nominal + Upper)<sub>+</sub> − Σ(Nominal + Lower)<sub>−</sub>.</li>
       <li>RSS: σ = √Σ(T<sub>i</sub>/3)², T<sub>i</sub> = nửa miền dung sai; μ = Σ ±(Nominal + tâm dung sai); Gap = μ ± 3σ; Cpk = min(μ − LSL, USL − μ) / 3σ; PPM = Φ phân bố chuẩn ngoài [LSL, USL].</li>
@@ -866,15 +1022,17 @@ async function exportPdf() {
 function seeDw() { requestAnimationFrame(() => { const v = $("#vDwg"), r = v.getBoundingClientRect(); if (r.top < 60 || r.bottom > innerHeight) v.scrollIntoView({ behavior:"smooth", block:"center" }); }); }
 function pickDw() { $("#fDw").value = ""; $("#fDw").click(); }
 document.addEventListener("click", e => {
-  const t = e.target.closest("[data-h],[data-m],[data-v],[data-tog],[data-sc],[data-p],[data-bal]"); if (!t) return;
+  const t = e.target.closest("[data-h],[data-m],[data-v],[data-sc],[data-p],[data-bal],[data-dwsel],[data-dwdel],[data-dwlay]"); if (!t) return;
+  if (t.dataset.dwdel != null) { DWS.splice(+t.dataset.dwdel, 1); if (dwCur >= DWS.length) dwCur = Math.max(0, DWS.length - 1); if (DWS.length < 2) dwLay = "one"; renderDwSide(); renderDwView(); return; }
+  if (t.dataset.dwsel != null) { if (e.target.closest("select")) return; dwCur = +t.dataset.dwsel; return renderDwView(); }
+  if (t.dataset.dwlay) { if (t.disabled) return; dwLay = t.dataset.dwlay; DWS.forEach(o => o.fit = true); return renderDwView(); }
   if (t.dataset.m) { S.method = t.dataset.m; $$("#segM button").forEach(b => b.classList.toggle("on", b.dataset.m === S.method)); return changed(true); }
   if (t.dataset.v && t.closest("#tabs")) return setView(t.dataset.v);
-  if (t.dataset.tog != null) { const d = S.dims[+t.dataset.tog]; if (d) { d.on = !d.on; renderDims(); changed(true); } return; }
   if (t.dataset.sc) { stopMC(); scen = t.dataset.sc; renderScn(); return drawCenter(); }
   if (t.dataset.p) { S.par = t.dataset.p; save(); return renderPareto(); }
-  if (t.dataset.bal) { const el = $("#dc-" + CSS.escape(t.dataset.bal)); if (el) { el.scrollIntoView({ behavior:"smooth", block:"center" }); el.classList.add("flash"); setTimeout(() => el.classList.remove("flash"), 1400); } return; }
+  if (t.dataset.bal) { openId = t.dataset.bal; renderDims(); const el = $("#dc-" + CSS.escape(t.dataset.bal)); if (el) { el.scrollIntoView({ behavior:"smooth", block:"center" }); el.classList.add("flash"); setTimeout(() => el.classList.remove("flash"), 1400); } return; }
   const h = t.dataset.h;
-  if (h === "add") { S.dims.push(blankDim(S.n++)); renderDims(); changed(true); const c = $("#dims .dc:last-child input[data-f=part]"); c && c.focus(); }
+  if (h === "add") { const n = blankDim(S.n++); S.dims.push(n); openId = n.id; renderDims(); changed(true); const c = $("#dims .dc:last-child input[data-f=part]"); if (c) { c.focus(); c.scrollIntoView({ block:"nearest" }); } }
   else if (h === "example") { if (confirm("Nạp ví dụ mẫu? Chuỗi kích thước hiện tại sẽ bị thay thế (hãy 💾 Lưu trước nếu cần).")) { S = example(); boot(); } }
   else if (h === "reset") { if (confirm("Reset: xóa toàn bộ chuỗi kích thước, yêu cầu và bóng số?")) { S = blank(); MC = null; boot(); } }
   else if (h === "save") { const b = new Blob([JSON.stringify(S, null, 1)], { type:"application/json" }), a = document.createElement("a");
@@ -885,19 +1043,21 @@ document.addEventListener("click", e => {
   else if (h === "dwPick") pickDw();
   else if (h === "dwView") setView("dwg");
   else if (h === "placeOff") { placing = ""; renderDims(); renderDwView(); }
-  else if (h === "zIn") zoomAt(1.25); else if (h === "zOut") zoomAt(0.8); else if (h === "zFit") fitDw();
-  else if (h === "pgPrev") pdfPage(DW.page - 1); else if (h === "pgNext") pdfPage(DW.page + 1);
+  else if (h === "zIn") zoomAt(dwCur, 1.25); else if (h === "zOut") zoomAt(dwCur, 0.8); else if (h === "zFit") fitDw(dwCur);
+  else if (h === "pgPrev" || h === "pgNext") { const o = DWS[dwCur]; if (o && o.pdf) pdfPage(o, o.page + (h === "pgNext" ? 1 : -1)).then(() => { renderDwView(); if (S.view === "3d") render3D(); }); }
+  else if (h === "view3") { if (T3) { T3.th = -0.38; T3.ph = 1.2; size3D(); fit3D(true); } }
+  else if (h === "auto3") { if (T3) { T3.auto = !T3.auto; upd3Btns(); } }
 });
 document.addEventListener("keydown", e => { if (e.key === "Enter" && e.target.id === "drop") pickDw(); if (e.key === "Escape" && placing) { placing = ""; renderDims(); if (S.view === "dwg") renderDwView(); } });
-$("#fDw").addEventListener("change", e => openDw(e.target.files[0]));
+$("#fDw").addEventListener("change", e => openDw(e.target.files));
 $("#fJson").addEventListener("change", async e => {
   const f = e.target.files[0]; if (!f) return;
   try { const o = clean(JSON.parse(await f.text())); if (!o) throw 0; S = o; MC = null; boot(); } catch (err) { alert("File không đúng định dạng của công cụ Stackup."); }
 });
 ["dragover", "dragleave", "drop"].forEach(ev => document.addEventListener(ev, e => {
-  const z = e.target.closest && e.target.closest("#drop,#vDwg,.side"); if (!z || !e.dataTransfer || ![...e.dataTransfer.types].includes("Files")) return;
+  const z = e.target.closest && e.target.closest("#drop,#vDwg,#v3d,.dimsP"); if (!z || !e.dataTransfer || ![...e.dataTransfer.types].includes("Files")) return;
   e.preventDefault(); const dz = $("#drop"); if (dz) dz.classList.toggle("ov", ev === "dragover");
-  if (ev === "drop") openDw(e.dataTransfer.files[0]);
+  if (ev === "drop") openDw(e.dataTransfer.files);
 }));
 // yêu cầu / thông tin
 const setReq = () => {
@@ -918,7 +1078,7 @@ cvL.addEventListener("mousemove", e => { const h = rowAt(e), i = h ? loopHit.ind
 cvL.addEventListener("mouseleave", () => { if (hoverRow !== -1) { hoverRow = -1; drawCenter(); } });
 // chiều cao khi nhúng trong Tools
 let lastH = 0;
-function postH() { if (!EMBED || parent === window) return; const h = Math.ceil(document.documentElement.scrollHeight); if (Math.abs(h - lastH) > 2) { lastH = h; try { parent.postMessage({ stackH:h }, location.origin); } catch (e) {} } }
+function postH() { if (!EMBED || parent === window) return; const h = Math.ceil(document.body.getBoundingClientRect().height) + 4; /* chiều cao nội dung thật – scrollHeight không bao giờ nhỏ hơn khung iframe */ if (Math.abs(h - lastH) > 2) { lastH = h; try { parent.postMessage({ stackH:h }, location.origin); } catch (e) {} } }
 new ResizeObserver(() => { drawCenter(); postH(); }).observe(document.body);
 
 function boot() {
@@ -927,7 +1087,7 @@ function boot() {
   $("#iLsl").value = S.lsl; $("#iUsl").value = S.usl == null ? "" : S.usl; $("#iCpk").value = S.cpkT; $("#iUnit").value = S.unit; $("#iDec").value = String(S.dec);
   $$("#iLsl,#iUsl,#iCpk").forEach(x => x.classList.remove("bad"));
   $$("[data-info]").forEach(el => el.value = S.info[el.dataset.info] || "");
-  renderDwSide(); renderDims(); renderChips(); renderOut(); setView(S.view); save();
+  renderDwSide(); renderDims(); renderOut(); setView(S.view); save();
 }
 boot();
 window.stackDebug = () => ({ S, RES, MC, calc, links, num });
