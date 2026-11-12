@@ -85,18 +85,28 @@ Ngôn ngữ giao diện: tiếng Anh / tiếng Việt; trao đổi với chủ d
   life (Chào Đời / Cuộc Đời: HUD, sự kiện, dòng lịch sử, thẻ nhân vật, thủ bản đang viết), dna (Phòng Gene: vị trí SLOT, tách
   gene data-g="cut" 30 vàng, lực chiến, cộng hưởng SYN), skills (Dị Năng: tìm #gxSkq + lọc nhóm), lore (thời đại WORLD_ERAS,
   thế lực FACTIONS, nhánh huyết mạch, nhật ký mật mã LORE), books (Thư Viện + xuất .txt exportBook).
-  Gieo định mệnh (7 nơi sinh, 4 chủng tộc, giới tính, màu tóc, 6 chỉ số, điềm sinh, đặc điểm, Nghịch Mệnh cho người kém may)
-  → mỗi lượt chọn hoạt động ACTS + sự kiện đời (EV: {id, a:[tuổi], w, if, once, tg:[thẻ], t, d, c:[{t, if, chk:[chỉ số, độ khó],
-  ok, no, r, rf}]}; chữ có chỗ trống {ban} {dich} {su} {tinh} {con} {o} {banx} {dichx} {kidgene} – tx(); ENC dùng {p}) hoặc gặp gỡ ngẫu nhiên ENC (22% từ
-  12 tuổi, C.ev = {enc, p, who}). Đời khác nhau nhờ: thời thế 40 thập kỷ C.eras (ERAS: thái bình, chiến loạn, đại dịch, nạn đói,
-  Huyết Nguyệt, thịnh thế, đại hàn – lọc sự kiện, nhân hệ số hoạt động), nhân vật phụ C.npc {ban, dich, su, tinh: {n, aff, st, role}}
-  (npcTick có tin tức / sự kiện riêng), tính cách C.al {g thiện, l trật tự, b liều lĩnh} → persona(), dấu ấn C.deeds, con C.kidn,
-  dị năng SKILLS (28, tự thức tỉnh theo điều kiện; sự kiện có thẻ tg trùng → thêm lựa chọn ⚡ chắc thắng useSkill), cộng hưởng
-  SYN (10 bộ gene → flags), ~17 kết cục ending(). Hiệu ứng ok / no: chỉ số, hp, gold, hum, fame, want, good / law / bold, life, age,
-  năng lượng, en, gene, rmGene, flag, lore ('any'), line, car, rank, spouse, kids, meet (+sudo), aff, npcst, deed 'Tính từ|việc',
-  die, ending. Gene / thú hồn (GENE, đào thải theo Tương thích gen), 4 nhánh năng lượng (+ Bản Nguyên ẩn), huyết mạch LINE
-  (Huyết Tộc 4 nhánh, Lang Tộc, Phù Thủy, Cương Thi, Ảnh Môn, Huyết Lang), nghề CAREER → chết (hồi sinh: Nghịch Mệnh, Cương Thi,
-  Phượng Hoàng Niết Bàn) → Cuốn Sách Nhân Sinh (sum, ps, deeds, ch) + di sản đời sau. Huyết Sử (LORE, 14 chương) mở dần, giữ qua các đời.
+  Gieo quẻ (v3): nơi sinh (11, ORIGIN_W) và chủng tộc (9, RACE_W: + Ngư Nhân, Long Duệ, Vũ Tộc, Hồ Tộc, Thạch Nhân) do trời định;
+  người chơi chỉ chọn tên, giới tính, màu tóc. Kiếp đầu của tài khoản gieo 1 lần; kiếp sau gieo lại bằng phúc duyên G.phuc (cộng khi
+  đóng sách: sống ≥ 60, danh vọng ≥ 50, thiện ≥ 40, kết cục đặc biệt, mở ≥ 2 Huyết Sử; tối đa 6) + 2 nếu di sản "rr"; bản nháp lưu
+  G.draft (tải lại trang không được gieo lại). Thiên phú TRAITS có tác dụng thật (TRAIT_FX, chkBonus). Gene bẩm sinh INNATE (C.innate).
+  Thời gian: C.days (tuổi = days / 365). Mỗi hoạt động ACTS kéo dài ACT_DUR ngày (trường sinh ×6) → passTime (yearTick mỗi năm:
+  thời thế, tuổi, tin tức NPC, lợi ích nghề) → hoạt cảnh makeScenes (SCN, tự hiện dần) → afterTime: biến cố lớn khi C.since ≥ C.gap
+  (gapOf theo tuổi) hoặc tình huống đời thường (EV có dl:1) hoặc chỉ là ngày bình yên; nút ⏩ autoLive = để thời gian trôi tới biến cố.
+  Sự kiện EV: {id, a:[tuổi], w, if, once, dl?, era?, tg:[thẻ], t, d, c:[{t, if, chk:[chỉ số, độ khó], ok, no, r, rf, alt}]};
+  chữ có chỗ trống {ban} {dich} {su} {tinh} {con} {o} {banx} {dichx} {kidgene} – tx(); gặp gỡ ENC dùng {p} (22% / 30% nếu mồ côi).
+  Thời thế C.segs [[khóa, tuổi bắt đầu, số năm]] dài ngắn ngẫu nhiên (ERA_LEN, 12 loại, makeSegs / eraSeg; đời cũ: segsFromDecades).
+  Gene (v3): lời mời C.offers [{k:'gene'|'skill', id}] → lấy / bỏ / đổi cái cũ (resolveOffer). Ô gene geneCap = 1 + Tương thích gen / 8
+  (+1 Phế Thể, +1 học giả bậc 3, +5 Vạn Huyết Quả C.fruit); geneBlock: cánh / đuôi / mai / chi cần Thể, mắt / hạt nhân cần Trí, gene
+  khác loài FUSE_ONLY cần Vạn Huyết Quả. Virus / bào tử nhiễm thẳng. Dị năng: C.sk do biến cố (crisis khi bị thương nặng / Nghịch Mệnh /
+  sự kiện sk:'crisis', ưu tiên dị năng có tư chất skReq) hoặc bảo vật; skillCap 2 (+1 Ý chí ≥ 14), Dị Nhân 5. Bảo vật BAO (25 món:
+  thực vật / động vật / vũ khí / năng lượng; nuốt / dung hợp → hiệu ứng + dị năng), túi C.inv ≤ 8, useBao. Huyết mạch Dị Nhân
+  (LINE.mutant) + dung hợp huyết mạch thứ hai C.line2 (cần Vạn Huyết Quả; tên FUSE_N / fuseName). Nghề: bậc nối thêm ở cuối, lên bậc
+  theo năm làm việc C.car.xp (CAR_XP), lợi ích CAR_PERK (cộng kiểm tra, thu nhập, miễn thiên tai…). Trục tính cách Thiện / Trật tự ↔
+  Hỗn loạn / Liều lĩnh (hiệu ứng good, law, chaos, bold). Hiệu ứng ok / no thêm: fruit, bao ('any' | 'rare' | id), sk, chaos, mut.
+  Đời khác nhau nhờ: thời thế, nhân vật phụ C.npc {ban, dich, su, tinh: {n, aff, st, role}} (npcTick), tính cách C.al → persona(),
+  dấu ấn C.deeds, con C.kidn, ~20 kết cục ending(). Huyết Sử (LORE, 14 chương) mở dần, giữ qua các đời.
+  Thư Viện: sách nhiều trang (bookPages: bìa + bảng nhân sinh → tự truyện → từng giai đoạn → văn bia), sắp xếp; quá 12 cuốn → G.arch
+  (tóm tắt, ≤ 80).
   Nhân vật = SVG: avatar() → dưới 13 tuổi avatarKid (doodle: viền đậm, thân tròn, mắt chấm), từ 13 tuổi avatarAdult (tỉ lệ người
   lớn, mắt hạnh nhân, lông mày, mũi, môi; áo choàng / quan phục / áo đạo sĩ / trang phục nghề; mọi gene vẽ chi tiết + đường khâu
   stitch(); dị hóa ≥ 40 gân, ≥ 60 mắt thứ ba, ≥ 80 nét xoáy; HP < 30 băng bó; tuổi ≥ 60 tóc bạc + gậy, trừ huyết mạch bất tử
@@ -105,8 +115,9 @@ Ngôn ngữ giao diện: tiếng Anh / tiếng Việt; trao đổi với chủ d
   đáy (nhãn ngắn), thẻ nhân vật thu gọn .gx-mini, nút ✕ (data-g="exit") đóng game. Máy tính: nút ⛶ (UI.max → #fnBox.gx-max).
   Không dùng font monospace cho chữ Việt (Menlo / Consolas thiếu dấu → chữ nhảy, mất dấu); .mono = cùng font + số đều.
   Chỉ dùng emoji ≤ Unicode 12 (máy cũ / Windows hiện ô vuông với emoji mới).
-  Lưu npdFun@user.gen {v:1, life, books (≤ 12), lore, lives, legacy} – giữ dưới 30 000 ký tự (ô Sheet ≤ 45 000 cho cả npdFun;
-  C.log giữ 70 dòng). Đời đang dở từ bản cũ: upgrade(C) chỉ thêm trường (al, npc, eras, deeds, kidn), không đổi id sự kiện cũ.
+  Lưu npdFun@user.gen {v:1, life, books (≤ 12), arch, lore, lives, legacy, phuc, draft} – giữ dưới 30 000 ký tự (ô Sheet ≤ 45 000 cho
+  cả npdFun; C.log giữ 70 dòng). Đời đang dở từ bản cũ: upgrade(C) chỉ thêm trường (al, npc, segs, deeds, kidn, innate, sk = dị năng
+  đang đủ điều kiện, inv, offers, fruit, days, since, gap), không đổi id sự kiện cũ.
   Nội dung tự viết, chỉ lấy cảm hứng mô-típ dân gian / thể loại (không dùng tên riêng / nhân vật của tác phẩm có bản quyền).
 - Điện thoại (≤ 760 px, ưu tiên iPhone 15 Plus 430 × 932): menu #nav thành thanh tab cố định dưới đáy (body chừa
   60px + safe-area), viewport-fit=cover + env(safe-area-inset-*) cho tai thỏ / thanh Home, ô nhập 16px (iOS không tự

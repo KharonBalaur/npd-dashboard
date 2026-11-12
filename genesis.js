@@ -89,7 +89,7 @@
     hybrid:{ ic:'🌑', n:'Huyết Lang', sub:{
       one:   ['Huyết Lang Tiên Tri', { the:5, y:2 }, 500, -20, { hac:15, thu:15 }, 'Cả Huyết Tộc lẫn Lang Tộc đều muốn có hoặc muốn diệt bạn.'] } },
   };
-  const lineName = C => C.line ? LINE[C.line.k].sub[C.line.sub][0] : 'Người thường';
+  const lineName = C => !C.line ? 'Người thường' : C.line2 && LINE[C.line2.k] ? fuseName(C.line.k, C.line2.k) : LINE[C.line.k].sub[C.line.sub][0];
   const CAREER = {
     farmer:  ['🌾', ['Nông dân', 'Điền chủ', 'Đại địa chủ']], fisher:['🎣', ['Ngư dân', 'Chủ thuyền', 'Vua biển cả']],
     merchant:['💰', ['Bán rong', 'Chủ tiệm', 'Đại thương hội']], soldier:['⚔', ['Lính', 'Đội trưởng', 'Tướng quân', 'Nguyên soái']],
@@ -134,9 +134,7 @@
     peace:['🕊', 'Thái bình', 'Đời sống yên ả, ít biến cố.'], war:['⚔', 'Chiến loạn', 'Biên giới cháy, trai tráng ra trận.'], plague:['☣', 'Đại dịch', 'Dịch bệnh lan, người ngã như rạ.'],
     famine:['🌾', 'Mất mùa', 'Đói kém, giá gạo cao hơn vàng.'], moon:['🌕', 'Huyết Nguyệt', 'Trăng đỏ mỗi đêm, dị thú và Huyết Tộc trỗi dậy.'], gold:['✨', 'Thịnh thế', 'Buôn bán phát đạt, học viện mở rộng.'], cold:['❄', 'Đông dài', 'Mùa đông kéo dài nhiều năm.'],
   };
-  const eraOf = C => (C.eras && C.eras[Math.min(Math.floor(C.age / 10), C.eras.length - 1)]) || 'peace';
-  function makeEras() { const k = Object.keys(ERAS), a = []; let cur = 'peace';
-    for (let i = 0; i < 40; i++) { if (i === 0 || Math.random() < .55) cur = Math.random() < .35 ? 'peace' : pick(k); a.push(cur); } return a; }
+  const eraOf = C => (C.segs && C.segs.length ? eraSeg(C)[0] : C.eras && C.eras[Math.min(Math.floor(C.age / 10), C.eras.length - 1)]) || 'peace';
   const WORLD_ERAS = [
     ['Thượng Cổ Chấp Bút', 'Hội Chấp Bút viết ra vạn vật trong Bản Nguyên Thư. Sinh linh thuần khiết nhưng đứng yên, không tiến hóa.', '#f43f5e'],
     ['Đại Đứt Gãy', 'Đứa Con Đầu Tiên tự sửa mã của chính mình; cuốn sách vỡ nghìn mảnh, Ấn Mã rơi khắp nhân gian, Hội Chấp Bút biến mất.', '#eab308'],
@@ -185,7 +183,7 @@
     ['sk_origin', '✴', 'Viết Mã', 'Bản Nguyên', 'SSR', C => !!C.flags.origin, 'Cân bằng 4 nhánh năng lượng (nhánh Bản Nguyên)', ['mystery', 'fight', 'social', 'danger', 'heal'], 'Bạn sửa một dòng mã của thực tại – kết quả như ý.', { lore:'L2' }],
   ];
   const SKM = Object.fromEntries(SKILLS.map(s => [s[0], s]));
-  const skillsOf = C => SKILLS.filter(s => { try { return s[5](C); } catch (e) { return false; } });
+  const skillsOf = C => SKILLS.filter(s => (C.sk || []).includes(s[0]));   // v3: dị năng phải được thức tỉnh (biến cố / bảo vật)
   // cộng hưởng gene: đủ bộ là thưởng chỉ số + danh hiệu (một lần mỗi đời)
   const SYN = [
     ['syn_drake', 'Long Ảnh', ['g_dragon', 'g_bat'], { the:2, fame:5 }, 'Thân rồng cánh dơi – bay lượn phun lửa.'],
@@ -204,6 +202,134 @@
   const npcName = () => pick(SURN) + ' ' + pick(GIVEN);
   const NPCR = { ban:['🤝', 'Bạn thuở nhỏ'], dich:['⚔', 'Kình địch'], su:['🧙', 'Sư phụ'], tinh:['💗', 'Người thương'] };
   const PLACES = ['bên bờ suối', 'ở ngã ba đường', 'trong quán trọ ven đường', 'dưới chân cầu đá', 'giữa chợ phiên', 'trong rừng trúc', 'trước cổng thành', 'bên đống lửa trại'];
+
+  // ===== v3 (ý tưởng chủ dự án 12/11): nơi sinh & chủng tộc ngẫu nhiên, thiên phú có tác dụng, thời thế dài ngắn,
+  //       Vạn Huyết Quả + ô gene, bảo vật + dị năng thức tỉnh qua biến cố, Dị Nhân, dung hợp huyết mạch, nghề có bậc & lợi ích =====
+  Object.assign(ORIGIN, {
+    port:   ['⚓', 'Cảng thị Kim Lân', 'của Cảng Kim Lân', { van:1, mi:1 }, 20, 'Bến cảng của Thương Hội; tàu từ khắp nơi chở theo cả gene lạ và bảo vật.'],
+    border: ['🛡', 'Làng ven Chiến Trường Vạn Tộc', 'của Chiến Trường Cũ', { the:1, y:1 }, 4, 'Đất thấm máu vạn tộc – nơi duy nhất mọc Vạn Huyết Quả.'],
+    desert: ['🏜', 'Ốc đảo Cát Đỏ', 'của Ốc Đảo Cát Đỏ', { y:2 }, 6, 'Giữa sa mạc; đêm nghe tiếng chuông của thành cổ bị cát vùi.'],
+    snow:   ['❄', 'Bắc địa Tuyết Phong', 'của Bắc Địa', { the:1, y:1 }, 6, 'Xứ băng giá – quê của Lang Tộc và những gia đình da lạnh như băng.'],
+  });
+  const ORIGIN_W = { fish:14, slum:14, tribe:12, tower:9, noble:7, east:12, mount:10, port:10, border:5, desert:7, snow:8 };   // nơi sinh do trời định
+  Object.assign(RACE, {
+    merrow: ['🧜', 'Ngư Nhân', { mi:1, gen:1 }, 20, 'Tộc biển phương Tây (Merrow): vảy bạc trên má, nín thở cả giờ dưới nước.'],
+    drake:  ['🐉', 'Long Duệ', { the:1, y:1 }, 60, 'Hậu duệ rồng phương Đông: sinh ra đã có đuôi rồng nhỏ, máu nóng, sống lâu.'],
+    avian:  ['🦅', 'Vũ Tộc', { van:1, the:1, mi:-1 }, 0, 'Tộc người chim vùng núi cao: sinh ra đã có đôi cánh nhỏ.'],
+    foxkin: ['🦊', 'Hồ Tộc', { mi:2, tri:1, the:-1 }, 80, 'Tộc hồ ly phương Đông: một chiếc đuôi cáo, tu càng lâu càng thêm đuôi.'],
+    stone:  ['🗿', 'Thạch Nhân', { the:3, y:1, mi:-2, van:-1 }, 100, 'Người đá phương Tây (Golemkin): da xám như đá, chậm mà bền.'],
+  });
+  const RACE_W = { human:30, beast:13, elf:10, dwarf:10, merrow:7, drake:5, avian:7, foxkin:6, stone:6 };
+  // gene bẩm sinh của chủng tộc: không tính vào ô gene, không tách được
+  const INNATE = { beast:['g_cat', 'g_rabbit', 'g_wolf'], merrow:['g_scale'], drake:['g_dragon'], avian:['g_eagle'], foxkin:['g_fox'] };
+  const pickW = w => { let r = Math.random() * Object.values(w).reduce((a, b) => a + b, 0); for (const [k, v] of Object.entries(w)) { r -= v; if (r <= 0) return k; } return Object.keys(w)[0]; };
+  Object.assign(TRAITS, {
+    iron:   ['🪨', 'Thiết Cốt', 'Xương cứng như sắt.'],
+    oldsoul:['📿', 'Linh Hồn Cổ', 'Nhớ mang máng một kiếp xa xưa.'],
+    beastf: ['🐾', 'Thú Duyên', 'Muông thú tự tìm đến.'],
+    chaos:  ['🌀', 'Mệnh Hỗn Độn', 'Sinh dưới một vì sao loạn.'],
+    longev: ['🍑', 'Trường Thọ', 'Tướng thọ trời cho.'],
+  });
+  // thiên phú giúp gì – hiện ngay khi gieo quẻ
+  const TRAIT_FX = { empty:'+1 ô gene; gene gần như không bị đào thải', sick:'Sinh lực đầu đời 70; kháng Virus Thượng Cổ 60%', orph:'Gặp gỡ ngẫu nhiên nhiều hơn; sư phụ tìm đến sớm',
+    lucky:'+1 mọi lần gieo xúc xắc; sự kiện hiếm đến thường hơn', genius:'Học hành tăng Trí nhanh gấp rưỡi; kiểm tra Trí +1', beauty:'Kiểm tra Mị +2; giao du được thiện cảm gấp đôi',
+    iron:'Kiểm tra Thể +2; bị thương mất ít sinh lực hơn', oldsoul:'Mở sẵn 1 chương Huyết Sử; kiểm tra Trí +1', beastf:'Gene thú hồn bớt đào thải; khám phá dễ gặp thú hồn',
+    chaos:'Dễ gặp biến cố và thức tỉnh dị năng; trục Trật tự bắt đầu ở Hỗn loạn', longev:'Thọ mệnh +15 năm' };
+
+  // thời thế mới + độ dài ngẫu nhiên (năm)
+  Object.assign(ERAS, {
+    magic:  ['🔮', 'Ma pháp phục hưng', 'Học viện mở cửa, sách cổ được dịch lại – học hành gấp bội.'],
+    tribes: ['🩸', 'Vạn Tộc Đại Chiến', 'Mọi chủng tộc lao vào nhau; trên chiến trường bắt đầu mọc Vạn Huyết Quả.'],
+    steam:  ['⚙', 'Kỷ hơi nước', 'Máy móc và gene cơ giới lan khắp nơi; thợ và học giả lên ngôi.'],
+    eclipse:['🌑', 'Nhật thực dài', 'Mặt trời tắt nhiều năm; Huyết Tộc đi lại giữa ban ngày.'],
+    flood:  ['🌊', 'Đại hồng thủy', 'Nước dâng nuốt đồng bằng; người dạt lên núi, Ngư Nhân lên bờ.'],
+  });
+  const ERA_LEN = { peace:[8, 50], war:[2, 14], plague:[1, 7], famine:[1, 5], moon:[2, 12], gold:[6, 35], cold:[4, 30], magic:[8, 40], tribes:[4, 25], steam:[12, 60], eclipse:[1, 8], flood:[1, 5] };
+  function makeSegs(from, to) { const k = Object.keys(ERAS), a = []; let t = from, cur = '';
+    while (t < to) { cur = Math.random() < .35 && cur !== 'peace' ? 'peace' : pick(k.filter(x => x !== cur && x !== 'peace')); const [lo, hi] = ERA_LEN[cur] || [5, 20], n = rnd(lo, hi); a.push([cur, t, n]); t += n; }
+    return a; }
+  function eraSeg(C) {
+    const a = C.age; let s = C.segs.find(x => a >= x[1] && a < x[1] + x[2]);
+    if (!s) { const L_ = C.segs[C.segs.length - 1], from = L_ ? L_[1] + L_[2] : 0; C.segs = C.segs.concat(makeSegs(from, Math.max(a + 1, from + 60))); s = C.segs.find(x => a >= x[1] && a < x[1] + x[2]); }
+    return s; }
+  const segsFromDecades = d => d.reduce((a, k, i) => { const L_ = a[a.length - 1]; if (L_ && L_[0] === k) L_[2] += 10; else a.push([ERAS[k] ? k : 'peace', i * 10, 10]); return a; }, []);
+
+  // bảo vật: [id, biểu tượng, tên, loại, độ hiếm, mô tả, cách dùng (nuot nuốt / dung dung hợp), hiệu ứng, dị năng thức tỉnh]
+  const BAO = [
+    ['b_fruit', '🍏', 'Vạn Huyết Quả', 'Thực vật', 'Thần', 'Quả nhỏ xám xịt như táo dại héo – không ai để ý. Chỉ mọc ở Chiến Trường Vạn Tộc sau hàng chục năm máu muôn tộc thấm đất. Ăn vào: mở 5 ô ghép gene của bất kỳ chủng tộc nào và cho phép dung hợp huyết mạch.', 'nuot', { fruit:1, hp:-20 }, ''],
+    ['b_peach', '🍑', 'Bàn Đào Ngàn Năm', 'Thực vật', 'Thần', 'Đào chín một lần mỗi nghìn năm.', 'nuot', { life:40, hp:30 }, ''],
+    ['b_ginseng', '🥕', 'Huyết Sâm Tuyết Sơn', 'Thực vật', 'Hiếm', 'Củ sâm đỏ như máu mọc dưới tuyết.', 'nuot', { hp:40, life:8 }, 'sk_regen'],
+    ['b_lotus', '💮', 'Băng Tâm Liên', 'Thực vật', 'Hiếm', 'Sen trắng nở trong hồ băng, tỏa hơi lạnh trong lành.', 'nuot', { y:2, thanh:10 }, 'sk_ice'],
+    ['b_mush', '🍄', 'Nấm Bào Tử Cổ', 'Thực vật', 'Hiếm', 'Mọc trong hang có Virus Thượng Cổ.', 'nuot', { hac:8 }, 'sk_spore'],
+    ['b_herb', '🌿', 'Linh Thảo Thanh Tâm', 'Thực vật', 'Thường', 'Thảo dược quen thuộc của các thầy lang.', 'nuot', { hp:20, hum:5 }, ''],
+    ['b_dragon', '🐲', 'Long Đởm', 'Động vật', 'Thần', 'Mật của một con rồng già, còn ấm.', 'nuot', { the:2, y:1 }, 'sk_dragon'],
+    ['b_feather', '🔥', 'Phượng Vũ', 'Động vật', 'Thần', 'Lông phượng hoàng không bao giờ nguội.', 'dung', { thanh:15 }, 'sk_heal'],
+    ['b_fang', '🐺', 'Nanh Sói Trăng', 'Động vật', 'Hiếm', 'Nanh của sói đầu đàn, phát sáng đêm trăng tròn.', 'dung', { thu:10 }, 'sk_claw'],
+    ['b_owl', '🦉', 'Mắt Cú Ngàn Năm', 'Động vật', 'Hiếm', 'Viên ngọc mắt cú – nhìn thấu bóng tối.', 'dung', { tri:1 }, 'sk_owl'],
+    ['b_foxtail', '🦊', 'Đuôi Hồ Chín Tầng', 'Động vật', 'Hiếm', 'Một chiếc đuôi cáo trắng, đếm được chín lớp lông.', 'dung', { mi:2 }, 'sk_fox'],
+    ['b_wind', '🦅', 'Lông Bão Đại Bàng', 'Động vật', 'Hiếm', 'Cầm trên tay thấy người nhẹ bẫng.', 'dung', { van:1 }, 'sk_fly'],
+    ['b_shell', '🐢', 'Mai Huyền Băng', 'Động vật', 'Hiếm', 'Mảnh mai rùa lạnh buốt, cứng hơn thép.', 'dung', { the:1 }, 'sk_shell'],
+    ['b_beast', '🟢', 'Thú Hạch', 'Động vật', 'Thường', 'Hạch năng lượng trong não dị thú.', 'nuot', { thu:15 }, 'sk_beast'],
+    ['b_stake', '🌲', 'Cọc Gỗ Cây Mã', 'Vũ khí', 'Hiếm', 'Gỗ của Cây Mã – thứ duy nhất xuyên được tim Huyết Tộc Khởi Thủy.', 'dung', { fame:3 }, 'sk_slayer'],
+    ['b_mirror', '☯', 'Gương Bát Quái', 'Vũ khí', 'Hiếm', 'Gương đồng của đạo sĩ Đông Hương, soi đâu cương thi chùn bước.', 'dung', { thanh:8 }, 'sk_seal'],
+    ['b_kunai', '🗡', 'Đoản Đao Ảnh Mã', 'Vũ khí', 'Hiếm', 'Lưỡi đao không phản chiếu ánh sáng.', 'dung', { van:1 }, 'sk_ninja'],
+    ['b_gauntlet', '🥊', 'Găng Thiên Thạch', 'Vũ khí', 'Hiếm', 'Đúc từ mảnh sao rơi, nặng như cối đá.', 'dung', { co:10 }, 'sk_iron'],
+    ['b_wand', '✨', 'Đũa Cây Mã', 'Vũ khí', 'Hiếm', 'Đũa phép của một phù thủy Học Viện Ngũ Tinh đã khuất.', 'dung', { tri:1 }, 'sk_spell'],
+    ['b_lens', '🔍', 'Kính Dung Sai', 'Vũ khí', 'Thường', 'Kính lúp khắc vạch chia tới 0,01 mm.', 'dung', { tri:1 }, 'sk_scan'],
+    ['b_sun', '🌟', 'Tinh Thạch Thiên Quang', 'Năng lượng', 'Hiếm', 'Viên đá giữ lại ánh mặt trời của một ngày hạ chí.', 'nuot', { thanh:20 }, 'sk_halo'],
+    ['b_void', '🌑', 'Hư Không Thạch', 'Năng lượng', 'Thần', 'Cầm vào thấy bàn tay mình mờ đi.', 'dung', { hac:20 }, 'sk_shadow'],
+    ['b_plasma', '⚡', 'Lõi Plasma', 'Năng lượng', 'Thần', 'Lõi năng lượng xanh lục từ cỗ máy Thượng Cổ.', 'dung', { co:20 }, 'sk_plasma'],
+    ['b_storm', '⛈', 'Châu Lôi Vũ', 'Năng lượng', 'Hiếm', 'Viên ngọc chứa cả một cơn giông.', 'dung', { thanh:8, co:8 }, 'sk_storm'],
+    ['b_shard', '📜', 'Mảnh Ấn Mã', 'Năng lượng', 'Thần', 'Một mảnh của Bản Nguyên Thư, chữ trên đó còn chuyển động.', 'dung', { lore:'any' }, 'sk_origin'],
+  ];
+  const BAOM = Object.fromEntries(BAO.map(b => [b[0], b]));
+  const BAO_W = { Thường:10, Hiếm:4, Thần:1 };
+
+  // dị năng mới (Dị Nhân và bảo vật)
+  SKILLS.push(
+    ['sk_regen', '🧫', 'Tái Sinh Tế Bào', 'Dị Nhân', 'SR', C => lk_(C) === 'mutant' || C.s.the >= 16, 'Dị Nhân hoặc Thể ≥ 16', ['danger', 'heal', 'fight'], 'Vết thương khép lại ngay trước mắt mọi người.', { hp:15 }],
+    ['sk_tele', '🌀', 'Dịch Chuyển Tức Thời', 'Dị Nhân', 'SSR', C => lk_(C) === 'mutant', 'Dị Nhân', ['escape', 'travel', 'danger'], 'Bạn chớp mắt – và đã đứng ở đầu kia con phố.', { van:1 }],
+    ['sk_mind', '🧠', 'Đọc Tâm', 'Dị Nhân', 'SR', C => lk_(C) === 'mutant' || C.s.tri >= 17, 'Dị Nhân hoặc Trí ≥ 17', ['social', 'mystery', 'trade', 'love'], 'Bạn nghe thấy điều người kia chưa kịp nói.', { mi:1 }],
+    ['sk_metal', '🧲', 'Điều Khiển Kim Loại', 'Dị Nhân', 'SSR', C => lk_(C) === 'mutant' && C.en.co >= 30, 'Dị Nhân và Thiên Thạch ≥ 30', ['fight', 'work', 'danger'], 'Mọi lưỡi kiếm quanh bạn khẽ rung rồi quay mũi.', { co:5 }],
+    ['sk_storm', '⛈', 'Hô Phong Hoán Vũ', 'Dị Nhân', 'SSR', C => lk_(C) === 'mutant' && C.en.thanh >= 30, 'Dị Nhân và Thiên Quang ≥ 30', ['fight', 'nature', 'famine'], 'Mây đen kéo đến theo cái phất tay của bạn.', { thanh:5 }],
+    ['sk_ice', '❄', 'Băng Phong', 'Dị Nhân', 'SR', C => lk_(C) === 'mutant' || C.o === 'snow', 'Dị Nhân hoặc sinh ở Bắc địa', ['fight', 'escape'], 'Hơi thở bạn đóng băng cả mặt hồ.', { the:1 }],
+    ['sk_fire', '🔥', 'Hỏa Diễm Thủ', 'Dị Nhân', 'SR', C => lk_(C) === 'mutant' || C.r === 'drake', 'Dị Nhân hoặc Long Duệ', ['fight', 'danger', 'work'], 'Lòng bàn tay bạn bùng lửa đỏ.', { hac:3 }],
+    ['sk_tide', '🌊', 'Ngự Thủy', 'Hoang Dã', 'SR', C => C.r === 'merrow' || has_(C, 'g_scale'), 'Ngư Nhân hoặc Vảy Cá Ngân', ['escape', 'nature', 'travel'], 'Dòng nước tách đôi nhường đường cho bạn.', { van:1 }],
+    ['sk_slayer', '🗡', 'Diệt Huyết Thuật', 'Đời Thường', 'SR', C => (C.car && C.car.k === 'hunter') || C.flags.stake, 'Thợ săn hoặc từng cầm Cọc Gỗ Cây Mã', ['undead', 'fight'], 'Bạn biết chính xác chỗ nào trên ngực kẻ bất tử cần đâm.', { fame:4 }],
+    ['sk_time', '⏳', 'Ngưng Đọng Khoảnh Khắc', 'Bản Nguyên', 'SSR', C => lk_(C) === 'mutant' && C.flags.origin, 'Dị Nhân đã mở nhánh Bản Nguyên', ['danger', 'escape', 'fight', 'social'], 'Thế giới đứng yên ba nhịp tim – đủ để bạn đổi kết cục.', { lore:'any' }],
+  );
+  SKILLS.forEach(s => { SKM[s[0]] = s; });
+
+  // Dị Nhân + dung hợp huyết mạch
+  LINE.mutant = { ic:'🧿', n:'Dị Nhân', sub:{
+    born:['Dị Nhân Bẩm Sinh', { gen:2, y:1 }, 10, 0, { co:10, thanh:5 }, 'Gene X thức tỉnh tuổi dậy thì; Thánh Đường gọi là “quỷ”, Học Viện Gen gọi là “mẫu vật”. Chứa được tới 5 dị năng.'],
+    made:['Dị Nhân Nhân Tạo', { the:2, tri:1 }, 0, -10, { co:15 }, 'Sinh ra từ ống nghiệm của Học Viện Gen; mạnh nhưng không ổn định. Chứa được tới 5 dị năng.'] } };
+  const FUSE_N = { 'vamp+wolf':'Huyết Lang Lai', 'jiang+vamp':'Thi Huyết Vương', 'jiang+wolf':'Thi Lang', 'vamp+witch':'Huyết Vu Sư', 'witch+wolf':'Lang Vu', 'jiang+witch':'Đạo Thi Pháp Sư',
+    'shin+vamp':'Ảnh Huyết', 'shin+wolf':'Ảnh Lang', 'jiang+shin':'Ảnh Thi', 'shin+witch':'Ảnh Vu', 'mutant+vamp':'Dị Huyết', 'mutant+wolf':'Dị Lang', 'jiang+mutant':'Dị Thi',
+    'mutant+witch':'Dị Vu', 'mutant+shin':'Dị Ảnh', 'hybrid+mutant':'Dị Huyết Lang', 'hybrid+jiang':'Thi Huyết Lang', 'hybrid+witch':'Huyết Lang Vu', 'hybrid+shin':'Ảnh Huyết Lang' };
+  const fuseName = (a, b) => FUSE_N[[a, b].sort().join('+')] || `${LINE[a].n} × ${LINE[b].n}`;
+
+  // nghề: thêm bậc (chỉ nối thêm ở cuối – giữ đúng bậc đã lưu) + lợi ích theo bậc
+  CAREER.farmer[1].push('Chúa Đất Một Vùng'); CAREER.fisher[1].push('Hải Vương Truyền Kỳ'); CAREER.merchant[1].push('Hội Chủ Kim Lân');
+  CAREER.soldier[1].push('Đại Nguyên Soái Thiên Hạ'); CAREER.scholar[1].push('Đại Hiền Giả'); CAREER.hunter[1].push('Đồ Long Giả'); CAREER.thief[1].push('Vua Bóng Đêm');
+  CAREER.king[1].push('Hoàng Đế', 'Thiên Cổ Nhất Đế');
+  const CAR_XP = [1, 3, 7, 12, 20];   // số năm làm việc để lên bậc kế tiếp
+  // [chỉ số được cộng khi kiểm tra (+1 mỗi bậc), hệ số thu nhập theo bậc, lợi ích theo bậc]
+  const CAR_PERK = {
+    farmer:  ['the', .5, ['Lương thực đủ ăn', 'Mất mùa không mất vàng', 'Nuôi cả làng: danh vọng tăng mỗi năm', 'Kho lương nghìn hộc: sinh lực hồi mỗi năm']],
+    fisher:  ['van', .5, ['Cá tôm qua ngày', 'Hồng thủy không làm mất vàng', 'Ra khơi khám phá hay gặp bảo vật biển', 'Thuyền buồm lớn: khám phá nhanh gấp đôi']],
+    merchant:['mi', .8, ['Biết mặc cả', 'Mua được bảo vật ở chợ', 'Thu nhập gấp đôi', 'Thương hội che chở: truy nã giảm mỗi năm']],
+    soldier: ['the', .6, ['Lương lính', 'Chiến loạn ít nguy hiểm hơn', 'Danh vọng tăng mỗi năm', 'Có thể dấy binh xưng vương']],
+    scholar: ['tri', .5, ['Đọc được sách cổ', 'Gene bớt 10% đào thải', '+1 ô gene nhờ phòng thí nghiệm', 'Tách gene miễn phí']],
+    hunter:  ['van', .5, ['Săn thú qua ngày', 'Khám phá hay gặp bảo vật thú', 'Thú hồn dễ tìm đến', 'Kiểm tra Thể cũng được cộng']],
+    thief:   ['van', .6, ['Tay nhanh hơn mắt', 'Truy nã giảm mỗi năm', 'Chợ đen bán bảo vật', 'Mưu tính luôn có lời']],
+    king:    ['mi', 1, ['Thuế cả nước', 'Danh vọng tăng mỗi năm', 'Cả triều đình phục vụ: sinh lực hồi mỗi năm']],
+  };
+  const carRk = (C, k) => C.car && C.car.k === k ? C.car.rk : -1;
+  const carBonus = (C, s) => !C.car || !CAR_PERK[C.car.k] ? 0 : (CAR_PERK[C.car.k][0] === s ? C.car.rk : 0) + (C.car.k === 'hunter' && s === 'the' && C.car.rk >= 3 ? 1 : 0);
+  // cộng thêm vào lần kiểm tra chỉ số: thiên phú + nghề
+  const chkBonus = (C, s) => (C.tr.includes('lucky') ? 1 : 0) + (s === 'the' && C.tr.includes('iron') ? 2 : 0) + (s === 'tri' && (C.tr.includes('genius') || C.tr.includes('oldsoul')) ? 1 : 0)
+    + (s === 'mi' && C.tr.includes('beauty') ? 2 : 0) + carBonus(C, s);
 
   // ---------- sự kiện đời ----------
   // {id, a:[tuổi từ, đến], w trọng số, if:C=>bool, once, t tiêu đề, d nội dung, c:[{t, if, chk:[chỉ số, độ khó], ok, no, r, rf}]}
@@ -288,7 +414,7 @@
       { t:'Dán bùa vào trán nó', chk:['tri', 9], ok:{ line:['jiang', 'dao'], fame:5, lore:'L8' }, no:{ hp:-20 }, r:'Nó đứng im như tượng. Phái Huyền Phù nhận bạn làm đệ tử.', rf:'Bùa dán lệch! Bạn bị cào một vệt dài.' },
       { t:'Rải gạo nếp rồi chạy', ok:{ y:1, lore:'L8' }, r:'Nó nhảy loạn xạ trên gạo nếp. Bạn thoát.' }] },
     // ----- trưởng thành -----
-    { id:'a_job', a:[17, 45], w:7, if:C => !C.car, t:'Chọn đường mưu sinh', d:'Đã đến lúc tự kiếm cơm. Bạn chọn con đường nào?', c:[
+    { id:'a_job', a:[17, 45], w:12, if:C => !C.car, t:'Chọn đường mưu sinh', d:'Đã đến lúc tự kiếm cơm. Bạn chọn con đường nào?', c:[
       { t:'🌾 Làm nông', ok:{ car:'farmer', hp:5 }, r:'Ruộng vườn bình yên.' },
       { t:'🎣 Ra khơi', if:C => C.o === 'fish', ok:{ car:'fisher' }, r:'Biển gọi tên bạn.' },
       { t:'💰 Buôn bán', ok:{ car:'merchant', gold:5 }, r:'Gánh hàng rong đầu tiên.' },
@@ -607,6 +733,154 @@
       { t:'Giấu một bí mật trong sách', ok:{ flag:'hiddenpage', lore:'L2' }, r:'Chỉ người có Khoảng Trắng mới đọc được trang ấy.' }] },
     { id:'m_grand', a:[58, 900], w:3, once:1, if:C => C.kids >= 1, tg:['love'], t:'Cháu chào đời', d:'Bạn bế đứa cháu nội đỏ hỏn trên tay.', c:[
       { t:'Kể cho cháu nghe chuyện đời mình', ok:{ hum:8, good:3 }, r:'Đứa bé cười khanh khách.' }] },
+    // ===== v3: Vạn Huyết Quả, Dị Nhân, dung hợp huyết mạch, bảo vật, biến cố, tuổi già =====
+    { id:'x_fruit', a:[14, 999], w:2, once:1, if:C => ['war', 'tribes'].includes(eraOf(C)) && C.age - eraSeg(C)[1] >= 3 || (C.o === 'border' && C.age >= 16), tg:['explore', 'danger'],
+      t:'Cây lạ trên chiến trường cũ', d:'Giữa bãi xương của Chiến Trường Vạn Tộc mọc một cây nhỏ cằn cỗi. Trên cành treo đúng một quả xám xịt, nhăn nheo – chẳng ai thèm nhìn.', c:[
+      { t:'Hái về ăn thử', chk:['y', 10], ok:{ bao:'b_fruit', deed:'Kẻ Nếm Vạn Huyết|Tìm thấy Vạn Huyết Quả' }, no:{ hp:-25, bao:'b_fruit' }, r:'Quả chát xít, nhưng bạn cất kỹ – tim đập theo nhịp lạ khi cầm nó.', rf:'Bóng ma lính cũ lao ra giữ cây. Bạn giật được quả và chạy, người đầy thương tích.' },
+      { t:'Đem bán cho Thương Hội', ok:{ gold:120 }, r:'Gã thương nhân Kim Lân trả giá cao bất ngờ – bạn sẽ không bao giờ biết vì sao.' },
+      { t:'Bỏ qua – quả héo thế ăn làm gì', ok:{}, r:'Bạn đi tiếp. Nhiều năm sau mới nghe kể về Vạn Huyết Quả.' }] },
+    { id:'t_mutant', a:[12, 19], w:3, once:1, if:C => noLine(C) && (C.s.gen >= 11 || C.tr.includes('chaos') || C.omen === 4 || Math.random() < .25), tg:['danger', 'mystery'],
+      t:'Gene X thức tỉnh', d:'Một sáng bạn tỉnh dậy, chiếc cốc trên bàn lơ lửng giữa không trung. Mắt bạn sáng lên một màu không tên.', c:[
+      { t:'Chấp nhận con người mới', ok:{ line:['mutant', 'born'], sk:'crisis', chaos:5 }, r:'Bạn là Dị Nhân. Thế giới sẽ không bao giờ nhìn bạn như trước.' },
+      { t:'Tìm đến Học Viện Gen', ok:{ line:['mutant', 'born'], sk:'crisis', law:5, meet:'su', sudo:'giáo sư Học Viện Gen' }, r:'Một giáo sư tóc bạc mỉm cười: “Ta đợi em lâu rồi.”' },
+      { t:'Kìm nén, giấu đi', chk:['y', 11], ok:{ y:2, flag:'xlatent' }, no:{ line:['mutant', 'born'], want:15 }, r:'Năng lực ngủ yên – nhưng chưa biến mất.', rf:'Năng lực bùng ra giữa chợ. Thánh Đường dán cáo thị truy nã.' }] },
+    { id:'a_lab', a:[18, 50], w:2, once:1, if:C => noLine(C) && ((C.car && C.car.k === 'scholar') || C.gold >= 80 || has(C, 'xlatent')), tg:['mystery', 'danger'],
+      t:'Phòng thí nghiệm tầng hầm', d:'Học Viện Gen tuyển người thử “huyết thanh tiến hóa”. Thù lao hậu hĩnh, rủi ro không ai nói.', c:[
+      { t:'Ký hợp đồng', chk:['the', 10], ok:{ line:['mutant', 'made'], sk:'crisis', gold:40 }, no:{ hp:-35, mut:10 }, r:'Bạn tỉnh dậy với một cơ thể khác hẳn – Dị Nhân Nhân Tạo.', rf:'Cơ thể đào thải huyết thanh. Bạn sốt mê man ba tháng.' },
+      { t:'Lẻn vào đánh cắp mẫu thử', chk:['van', 12], ok:{ bao:'any', want:15, chaos:5 }, no:{ want:25 }, r:'Bạn ôm được một hộp bảo vật và trốn thoát.', rf:'Bị bắt quả tang – lệnh truy nã dán khắp thành.' },
+      { t:'Từ chối', ok:{ hum:3 }, r:'Bạn không muốn làm chuột bạch.' }] },
+    { id:'a_fuse', a:[18, 999], w:3, once:1, if:C => C.line && !C.line2 && (C.fruit > 0 || has(C, 'fuse')), tg:['danger', 'mystery'],
+      t:'Dòng máu thứ hai', d:'Vạn Huyết Quả trong người khiến máu bạn sôi lên mỗi khi gặp một tộc khác. Bạn có thể dung hợp thêm một huyết mạch – nếu chịu được cơn đau.', c:[
+      { t:'Uống máu sói đầu đàn', if:C => !['wolf', 'hybrid'].includes(C.line.k), chk:['the', 12], ok:{ line:['wolf', 'born'] }, no:{ hp:-30 }, r:'Hai dòng máu giằng xé rồi hòa làm một.', rf:'Cơ thể đào thải – bạn nôn ra máu đen.' },
+      { t:'Để Huyết Tộc cắn', if:C => !['vamp', 'hybrid'].includes(C.line.k), chk:['y', 12], ok:{ line:['vamp', 'pact'] }, no:{ hp:-30 }, r:'Răng nanh mọc ra bên cạnh dòng máu cũ.', rf:'Bạn ngất đi ba ngày.' },
+      { t:'Nằm vào quan tài dưỡng thi', if:C => C.line.k !== 'jiang', chk:['y', 13], ok:{ line:['jiang', 'corpse'] }, no:{ hp:-35 }, r:'Bạn bước ra – lạnh, cứng, và mạnh hơn bao giờ hết.', rf:'Thi khí suýt nuốt trọn bạn.' },
+      { t:'Nhận Ấn Mã của Học Viện Ngũ Tinh', if:C => C.line.k !== 'witch', chk:['tri', 12], ok:{ line:['witch', 'acad'] }, no:{ hp:-20 }, r:'Ngón tay bạn tóe tia phép.', rf:'Phép phản phệ.' },
+      { t:'Giữ nguyên dòng máu', ok:{ y:1 }, r:'Một dòng máu là đủ.' }] },
+    { id:'a_chest', a:[16, 999], w:3, tg:['explore', 'mystery', 'danger'], t:'Hòm cổ dưới đáy giếng', d:'Dây gàu vướng phải một chiếc hòm sắt gỉ, khóa bằng bùa đã phai mực.', c:[
+      { t:'Phá khóa', chk:['the', 11], ok:{ bao:'any' }, no:{ hp:-12 }, r:'Bên trong là một món bảo vật.', rf:'Bùa nổ tung vào mặt bạn.' },
+      { t:'Giải bùa', chk:['tri', 11], ok:{ bao:'any', lore:'any' }, no:{ hp:-8 }, r:'Bùa tan, hòm tự mở.', rf:'Bạn đọc sai một nét.' },
+      { t:'Thả xuống lại', ok:{ law:3 }, r:'Có những thứ nên để yên.' }] },
+    { id:'a_market', a:[16, 999], w:2, if:C => C.gold >= 60 && (carRk(C, 'merchant') >= 1 || carRk(C, 'thief') >= 2 || C.o === 'port'), tg:['trade'], t:'Phiên chợ bảo vật', d:'Một phiên chợ chỉ mở vào đêm không trăng; người bán đeo mặt nạ.', c:[
+      { t:'Mua một món (60 vàng)', ok:{ gold:-60, bao:'any' }, r:'Bạn mang về một món đồ lạ.' },
+      { t:'Mua món đắt nhất (150 vàng)', if:C => C.gold >= 150, ok:{ gold:-150, bao:'rare' }, r:'Món đồ phát sáng trong túi bạn.' },
+      { t:'Chỉ xem', ok:{}, r:'Ngắm cho biết.' }] },
+    { id:'a_crisis', a:[16, 999], w:2, if:C => C.hp < 45, tg:['danger'], t:'Ranh giới sống chết', d:'Bạn sốt mê man. Trong cơn mê, một giọng nói hỏi: “Ngươi muốn sống tiếp bằng mọi giá?”', c:[
+      { t:'“Bằng mọi giá.”', chk:['y', 11], ok:{ sk:'crisis', hp:20, chaos:5 }, no:{ hp:-10 }, r:'Bạn tỉnh dậy – trong người có thứ gì đó vừa thức giấc.', rf:'Bạn tỉnh dậy, yếu hơn.' },
+      { t:'Buông xuôi, nghỉ ngơi', ok:{ hp:15, hum:3 }, r:'Cơn sốt lui dần.' }] },
+    // tuổi già
+    { id:'o_will', a:[60, 999], w:3, once:1, if:C => C.lifeMax < 200, t:'Viết di chúc', d:'Tay bạn run khi cầm bút. Có những điều phải viết ra trước khi quên.', c:[
+      { t:'Chia đều cho con cháu', if:C => C.kids > 0, ok:{ good:5, hum:5, deed:'Phúc Hậu|Chia gia tài cho con cháu' }, r:'Con cháu quây quần, không ai tranh giành.' },
+      { t:'Để lại cho trại trẻ mồ côi', ok:{ good:10, gold:-30, fame:5 }, r:'Tên bạn được khắc trên cổng trại trẻ.' },
+      { t:'Chôn vàng ở nơi chỉ mình biết', ok:{ chaos:5, flag:'buried' }, r:'Bạn vẽ một tấm bản đồ khó hiểu.' }] },
+    { id:'o_rival', a:[60, 999], w:3, once:1, if:C => C.npc.dich && C.npc.dich.st === 'ok', t:'Gặp lại kình địch', d:'{dich} giờ cũng tóc bạc, ngồi một mình ở quán trà đầu làng.', c:[
+      { t:'Ngồi xuống, gọi thêm một ấm', ok:{ aff:{ dich:40 }, hum:5, deed:'Bao Dung|Làm hòa với kình địch' }, r:'Hai ông bà già cười về những chuyện ngày xưa.' },
+      { t:'Thách đấu lần cuối', chk:['the', 9], ok:{ fame:5, bold:5 }, no:{ hp:-15 }, r:'Bạn thắng – nhưng chẳng còn thấy vui như xưa.', rf:'Lưng bạn đau suốt một tuần.' },
+      { t:'Lặng lẽ đi qua', ok:{}, r:'Có những người chỉ nên nhớ.' }] },
+    { id:'o_teach', a:[55, 999], w:3, once:1, if:C => C.car, t:'Truyền nghề', d:'Một đứa trẻ cứ đứng nhìn bạn làm việc suốt cả buổi chiều.', c:[
+      { t:'Nhận làm đệ tử', ok:{ hum:5, fame:5, deed:'Tận Tụy|Truyền hết nghề cho lớp sau' }, r:'Nó học nhanh hơn bạn hồi trẻ.' },
+      { t:'Đuổi đi', ok:{ good:-3 }, r:'Đứa trẻ bỏ đi, ngoái lại một lần.' }] },
+    { id:'o_sick', a:[60, 999], w:3, if:C => C.lifeMax < 200, tg:['heal', 'danger'], t:'Trọng bệnh', d:'Một cơn ho kéo dài cả mùa đông. Thầy lang lắc đầu.', c:[
+      { t:'Uống thuốc, giữ ấm', chk:['y', 10], ok:{ hp:10 }, no:{ hp:-20 }, r:'Mùa xuân về, bạn ra vườn được.', rf:'Bạn gầy rộc đi.' },
+      { t:'Tìm thần y trên núi', chk:['van', 11], ok:{ hp:25, life:3 }, no:{ hp:-15, gold:-20 }, r:'Thần y cho bạn thêm vài năm.', rf:'Leo núi giữa mùa đông – một sai lầm.' }] },
+    { id:'o_home', a:[60, 999], w:2, once:1, t:'Về thăm quê', d:'Bạn trở lại {o}. Cây đa đầu làng vẫn còn, người quen thì không.', c:[
+      { t:'Thắp nhang cho cha mẹ', ok:{ hum:8, y:1 }, r:'Gió thổi qua rặng tre như tiếng ai gọi.' },
+      { t:'Tìm lại bạn cũ', ok:{ hum:5, aff:{ ban:20 } }, r:'{banx}' },
+      { t:'Ở lại quê luôn', ok:{ flag:'hermit', hp:10 }, r:'Bạn dựng một căn nhà nhỏ cạnh bờ ao.' }] },
+    { id:'o_dream', a:[65, 999], w:2, once:1, tg:['mystery'], t:'Giấc mơ về kiếp trước', d:'Bạn mơ thấy mình là một người khác, ở một thời đại khác, viết dở một cuốn sách.', c:[
+      { t:'Ghi lại giấc mơ', ok:{ lore:'any', tri:1 }, r:'Những dòng chữ trong mơ khớp với Huyết Sử.' },
+      { t:'Kể cho con cháu nghe', if:C => C.kids > 0, ok:{ hum:5, fame:3 }, r:'Đứa cháu nhỏ ngủ quên giữa chừng.' }] },
+    { id:'m_dust', a:[120, 999], w:3, if:C => C.lifeMax > 200, tg:['travel', 'mystery'], t:'Bụi thời gian', d:'Bạn đi qua ngôi làng mình từng sống trăm năm trước. Không ai còn nhớ tên bạn.', c:[
+      { t:'Kể chuyện xưa cho lũ trẻ', ok:{ hum:5, fame:2 }, r:'Chúng tưởng bạn bịa – cũng được.' },
+      { t:'Lặng lẽ rời đi', ok:{ y:1 }, r:'Thêm một nơi chỉ còn trong trí nhớ.' }] },
+
+    // ===== đời thường (dl:1): tình huống nhỏ giữa các biến cố lớn =====
+    { id:'d_cake', dl:1, a:[3, 12], w:3, t:'Mẹ làm bánh', d:'Mùi bánh nếp thơm cả gian bếp. Mẹ dặn: “Đợi cả nhà về rồi ăn.”', c:[
+      { t:'Ăn vụng một cái', chk:['van', 8], ok:{ hp:3, bold:2 }, no:{ law:2 }, r:'Không ai phát hiện.', rf:'Bị bắt quả tang, đứng úp mặt vào tường.' },
+      { t:'Ngồi đợi', ok:{ law:3, hum:2 }, r:'Bữa tối ấm cúng.' },
+      { t:'Mang một cái sang cho {ban}', ok:{ aff:{ ban:8 }, good:2 }, r:'{ban} cười tít mắt.' }] },
+    { id:'d_rain', dl:1, a:[3, 15], w:3, t:'Mưa rào mùa hạ', d:'Mưa trút xuống sân đất. Lũ trẻ trong xóm ùa ra.', c:[
+      { t:'Tắm mưa', ok:{ the:1, hp:-3 }, r:'Hắt xì cả tối nhưng vui.' },
+      { t:'Ngồi bên cửa đọc sách', ok:{ tri:1 }, r:'Tiếng mưa ru đều.' }] },
+    { id:'d_cat', dl:1, a:[4, 30], w:2, t:'Mèo hoang', d:'Một con mèo hoang gầy nhom lẽo đẽo theo bạn về nhà.', c:[
+      { t:'Nuôi nó', ok:{ hum:3, thu:3, flag:'cat' }, r:'Nó ngủ trên ngực bạn mỗi đêm.' },
+      { t:'Cho ăn rồi đuổi đi', ok:{ good:1 }, r:'Nó đi, rồi mai lại đến.' }] },
+    { id:'d_fest', dl:1, a:[5, 80], w:3, t:'Hội làng', d:'Trống hội vang từ đầu làng. Có múa lân, có thi kéo co, có cả gánh xiếc dị nhân.', c:[
+      { t:'Thi kéo co', chk:['the', 9], ok:{ fame:3 }, no:{ hp:-3 }, r:'Đội bạn thắng!', rf:'Ngã sõng soài giữa sân.' },
+      { t:'Xem gánh xiếc dị nhân', ok:{ lore:'any', hum:-1 }, r:'Một cô bé có đôi cánh nhỏ nháy mắt với bạn.' },
+      { t:'Dạo chợ quê', ok:{ gold:-3, hp:5 }, r:'Một bát chè, một xâu kẹo.' }] },
+    { id:'d_lost', dl:1, a:[4, 10], w:2, t:'Lạc giữa chợ phiên', d:'Bạn mải xem người ta bán chim, ngoảnh lại không thấy ai quen.', c:[
+      { t:'Đứng yên chờ', ok:{ law:2 }, r:'Cha mẹ tìm thấy bạn sau nửa canh giờ.' },
+      { t:'Tự tìm đường về', chk:['tri', 8], ok:{ y:1 }, no:{ hp:-3 }, r:'Bạn về đến cổng trước cả cha mẹ.', rf:'Bạn đi lạc tới tận bờ sông.' }] },
+    { id:'d_exam', dl:1, a:[12, 20], w:3, t:'Kỳ thi cuối năm', d:'Đêm trước kỳ thi, cả nhà tắt đèn sớm.', c:[
+      { t:'Thức khuya ôn bài', chk:['tri', 9], ok:{ tri:1, fame:1 }, no:{ hp:-5 }, r:'Đỗ đầu lớp.', rf:'Ngủ gật trong phòng thi.' },
+      { t:'Đi ngủ sớm', ok:{ hp:3 }, r:'Thi bình thường, đầu óc tỉnh táo.' },
+      { t:'Chép bài của bạn bên cạnh', chk:['van', 10], ok:{ law:-4 }, no:{ fame:-3, law:-2 }, r:'Qua được, lòng hơi gợn.', rf:'Bị thầy bắt, đứng phạt cả buổi.' }] },
+    { id:'d_glance', dl:1, a:[14, 40], w:3, t:'Ánh mắt nơi bến đò', d:'Ai đó trên chuyến đò ngang nhìn bạn rồi vội quay đi.', c:[
+      { t:'Bắt chuyện', chk:['mi', 9], ok:{ meet:'tinh' }, no:{ mi:1 }, r:'Hai người nói chuyện tới tận bờ bên kia.', rf:'Bạn lắp bắp, người ta bật cười.' },
+      { t:'Nhìn lại rồi thôi', ok:{}, r:'Có những ánh mắt chỉ để nhớ.' }] },
+    { id:'d_parttime', dl:1, a:[12, 25], w:3, t:'Việc làm thêm', d:'Ông chủ quán mì thiếu người rửa bát buổi tối.', c:[
+      { t:'Nhận làm', ok:{ gold:8, hp:-3 }, r:'Tay nhăn nheo, túi rủng rỉnh.' },
+      { t:'Để dành thời gian học', ok:{ tri:1 }, r:'Sách vẫn hơn bát.' }] },
+    { id:'d_night', dl:1, a:[13, 22], w:2, t:'Trốn nhà đi chơi đêm', d:'Đám bạn huýt sáo dưới cửa sổ: “Ra bờ sông xem đom đóm!”', c:[
+      { t:'Trèo cửa sổ ra', ok:{ bold:4, law:-3, hum:2 }, alt:[{ p:.3, ok:{ lore:'any', bold:3 }, r:'Bờ sông đêm đó có ánh sáng lạ chạy trên mặt nước.' }], r:'Một đêm đáng nhớ.' },
+      { t:'Ở nhà', ok:{ law:3 }, r:'Bạn nghe tiếng cười xa dần.' }] },
+    { id:'d_book', dl:1, a:[10, 60], w:2, t:'Sách cấm', d:'Trên gác xép có một cuốn sách bìa da, gáy ghi “Chimera Chi Thư – đừng mở”.', c:[
+      { t:'Mở ra đọc', ok:{ tri:1, flag:'chimbook', lore:'any' }, r:'Sách dạy cách ghép thú hồn sao cho không bị đào thải.' },
+      { t:'Đem nộp Thánh Đường', ok:{ law:5, gold:5 }, r:'Linh mục khen bạn ngoan đạo.' }] },
+    { id:'d_market', dl:1, a:[18, 999], w:3, t:'Mặc cả ở chợ', d:'Bà bán cá nói thách gấp đôi.', c:[
+      { t:'Mặc cả tới cùng', chk:['mi', 9], ok:{ gold:5 }, no:{ gold:-3 }, r:'Mua được giá hời.', rf:'Bị mắng là keo kiệt.' },
+      { t:'Trả đủ, cho thêm', ok:{ gold:-5, good:2 }, r:'Bà cười móm mém, cho thêm mớ rau.' }] },
+    { id:'d_cold', dl:1, a:[6, 999], w:3, t:'Cảm lạnh', d:'Trời trở gió, bạn sốt nhẹ.', c:[
+      { t:'Nằm nghỉ, ăn cháo hành', ok:{ hp:5 }, r:'Hai ngày sau khỏe lại.' },
+      { t:'Gắng đi làm', chk:['the', 9], ok:{ gold:5 }, no:{ hp:-10 }, r:'Không sao.', rf:'Ốm nặng thêm.' }] },
+    { id:'d_neighbor', dl:1, a:[16, 999], w:3, t:'Hàng xóm cãi nhau', d:'Hai nhà bên cạnh cãi nhau về cái hàng rào, to tiếng tới nửa đêm.', c:[
+      { t:'Đứng ra phân xử', chk:['mi', 10], ok:{ fame:2, law:3 }, no:{ aff:{ dich:-3 } }, r:'Hai bên bắt tay.', rf:'Cả hai quay sang mắng bạn.' },
+      { t:'Đóng cửa ngủ', ok:{}, r:'Chuyện nhà người.' }] },
+    { id:'d_loan', dl:1, a:[18, 999], w:3, if:C => C.gold >= 20, t:'Người quen vay tiền', d:'Một người quen cũ đến nhà, ấp úng hỏi vay 20 vàng.', c:[
+      { t:'Cho vay', ok:{ gold:-20, good:3 }, alt:[{ p:.5, ok:{ gold:10, good:3 }, r:'Một năm sau họ trả cả gốc lẫn lãi, kèm một giỏ trứng.' }], r:'Họ không bao giờ trả lại.' },
+      { t:'Từ chối khéo', ok:{}, r:'Họ ra về, hơi buồn.' }] },
+    { id:'d_cook', dl:1, a:[18, 999], w:2, if:C => C.spouse || npcOk(C, 'tinh'), tg:['love'], t:'Bữa tối cho người thương', d:'Bạn muốn nấu một bữa thật ngon cho {tinh}.', c:[
+      { t:'Trổ tài nấu nướng', chk:['tri', 9], ok:{ aff:{ tinh:10 }, hum:3 }, no:{ aff:{ tinh:3 } }, r:'Ăn sạch nồi.', rf:'Cháy khét – nhưng người ta vẫn khen.' },
+      { t:'Ra quán ăn', ok:{ gold:-8, aff:{ tinh:6 } }, r:'Một buổi tối nhẹ nhàng.' }] },
+    { id:'d_tax', dl:1, a:[18, 999], w:2, t:'Quan thu thuế', d:'Quan thu thuế gõ cửa, đòi thêm “thuế canh gác”.', c:[
+      { t:'Nộp cho yên', ok:{ gold:-10, law:3 }, r:'Quan đi sang nhà bên.' },
+      { t:'Cãi lý', chk:['tri', 10], ok:{ chaos:3, fame:2 }, no:{ gold:-15, want:5 }, r:'Quan đuối lý bỏ đi.', rf:'Bị phạt nặng hơn.' },
+      { t:'Giấu tiền dưới nền nhà', chk:['van', 10], ok:{ chaos:4 }, no:{ gold:-20 }, r:'Quan lục không ra.', rf:'Quan lục ra cả hũ.' }] },
+    { id:'d_thief', dl:1, a:[14, 999], w:2, t:'Kẻ trộm đêm', d:'Nửa đêm có tiếng lạch cạch ở bếp.', c:[
+      { t:'Cầm gậy ra bắt', chk:['the', 10], ok:{ fame:2 }, no:{ hp:-8, gold:-10 }, r:'Tên trộm bỏ chạy, rơi cả túi đồ.', rf:'Bị xô ngã, mất ít tiền.' },
+      { t:'Nói chuyện với hắn', chk:['mi', 10], ok:{ good:4, meet:'ban', sudo:'tên trộm hoàn lương' }, no:{ gold:-10 }, r:'Hắn đói. Bạn cho hắn ăn – và có thêm một người bạn.', rf:'Hắn chạy mất cùng nồi cơm.' }] },
+    { id:'d_tavern', dl:1, a:[18, 999], w:3, tg:['social'], t:'Quán rượu đầu phố', d:'Quán đông nghịt; một lão say kể chuyện “Huyết Tộc đi giữa ban ngày”.', c:[
+      { t:'Ngồi nghe', ok:{ lore:'any' }, r:'Nửa thật nửa bịa – nhưng có một chi tiết lạ.' },
+      { t:'Uống thi', chk:['the', 10], ok:{ gold:8, bold:3 }, no:{ hp:-6, gold:-5 }, r:'Bạn thắng một vò rượu.', rf:'Bạn tỉnh dậy dưới gầm bàn.' },
+      { t:'Về sớm', ok:{ hp:3 }, r:'Một giấc ngon.' }] },
+    { id:'d_kidsick', dl:1, a:[20, 999], w:3, if:C => C.kids > 0 && C.lifeMax < 200, t:'Con ốm', d:'{con} sốt cao giữa đêm.', c:[
+      { t:'Thức trắng chăm con', ok:{ hp:-5, hum:4 }, r:'Sáng ra, con hạ sốt, ôm cổ bạn ngủ ngon lành.' },
+      { t:'Chạy đi tìm thầy lang', ok:{ gold:-8, hum:2 }, r:'Thầy lang bốc cho ba thang thuốc.' }] },
+    { id:'d_harvest', dl:1, a:[16, 999], w:2, if:C => C.car && ['farmer', 'fisher', 'hunter'].includes(C.car.k), tg:['work', 'nature'], t:'Mùa bội thu', d:'Năm nay trời thương: lúa trĩu, cá đầy khoang, thú béo.', c:[
+      { t:'Bán hết lấy vàng', ok:{ gold:20 }, r:'Túi nặng trĩu.' },
+      { t:'Chia cho hàng xóm', ok:{ good:4, fame:3 }, r:'Cả xóm mang ơn.' }] },
+    { id:'d_letter', dl:1, a:[16, 999], w:2, t:'Thư từ phương xa', d:'Một lá thư nhàu nát, dấu bưu trạm từ ba năm trước.', c:[
+      { t:'Đọc ngay', ok:{ aff:{ ban:5 }, hum:2 }, r:'Là thư của {ban}: “Tôi vẫn ổn. Nhớ cậu.”' },
+      { t:'Để dành tối đọc', ok:{ y:1 }, r:'Bạn đọc đi đọc lại tới khuya.' }] },
+    { id:'d_garden', dl:1, a:[55, 999], w:3, t:'Khu vườn sau nhà', d:'Bạn dành cả buổi sáng với mấy luống rau và giàn bầu.', c:[
+      { t:'Trồng thêm cây thuốc', ok:{ hp:5, bao:'b_herb' }, r:'Luống linh thảo xanh mướt.' },
+      { t:'Ngồi uống trà ngắm vườn', ok:{ hum:3, hp:3 }, r:'Một con chim sẻ đậu xuống bàn trà.' }] },
+    { id:'d_story', dl:1, a:[55, 999], w:3, t:'Lũ trẻ xin kể chuyện', d:'Đám trẻ con trong xóm ngồi vòng quanh chân bạn.', c:[
+      { t:'Kể chuyện thật đời mình', ok:{ fame:2, hum:3 }, r:'Chúng há hốc mồm.' },
+      { t:'Kể chuyện ma cương thi', ok:{ bold:2 }, r:'Đứa nhỏ nhất khóc thét, đứa lớn nhất đòi nghe nữa.' }] },
+    { id:'d_moonlit', dl:1, a:[16, 999], w:2, if:C => C.line, tg:['mystery'], t:'Đêm trăng khó ngủ', d:'Dòng máu trong người bạn rạo rực dưới ánh trăng.', c:[
+      { t:'Ra rừng thả mình theo bản năng', ok:{ thu:5, hac:3, hum:-3 }, r:'Bạn trở về lúc gà gáy, chân đầy bùn.' },
+      { t:'Thiền định kìm lại', chk:['y', 10], ok:{ y:1, hum:2 }, no:{ hum:-4 }, r:'Bạn làm chủ được mình.', rf:'Bạn cào nát cánh cửa.' }] },
+    { id:'d_found', dl:1, a:[8, 999], w:2, tg:['explore'], t:'Nhặt được của rơi', d:'Trên đường về có một túi vải nhỏ nằm giữa đường.', c:[
+      { t:'Mở ra xem', ok:{}, alt:[{ p:.35, ok:{ bao:'any' }, r:'Bên trong là một món bảo vật!' }, { p:.5, ok:{ gold:12 }, r:'Một ít bạc vụn.' }], r:'Chỉ có đá cuội và một mẩu giấy “Lừa đấy!”.' },
+      { t:'Mang đến quan trả lại', ok:{ law:4, good:3 }, r:'Người mất đồ cảm ơn rối rít.' }] },
+    { id:'d_rainday', dl:1, a:[13, 999], w:2, t:'Ngày mưa dầm', d:'Mưa cả tuần, không ra khỏi nhà được.', c:[
+      { t:'Đọc sách', ok:{ tri:1 }, r:'Hết một chồng sách.' },
+      { t:'Sửa lại mái nhà', ok:{ the:1, hp:-2 }, r:'Nhà hết dột.' },
+      { t:'Ngủ cho đã', ok:{ hp:6 }, r:'Ngủ tới trưa.' }] },
+    { id:'d_wanted', dl:1, a:[16, 999], w:3, if:C => C.want >= 30, tg:['escape', 'stealth'], t:'Cáo thị truy nã', d:'Mặt bạn được vẽ khá giống trên tấm cáo thị ở cổng chợ.', c:[
+      { t:'Xé đi', chk:['van', 10], ok:{ want:-5, chaos:3 }, no:{ want:5 }, r:'Không ai thấy.', rf:'Lính gác hô hoán.' },
+      { t:'Đổi kiểu tóc, sống kín đáo', ok:{ want:-3, mi:-1 }, r:'Hàng xóm nhìn bạn lạ lẫm.' }] },
   ];
   const EVM = Object.fromEntries(EV.map(e => [e.id, e]));
   const ACTS = [
@@ -681,28 +955,43 @@
     if (!C) return C;
     C.al = C.al && typeof C.al === 'object' ? C.al : { g:0, l:0, b:0 };
     C.npc = C.npc && typeof C.npc === 'object' ? C.npc : { ban:{ n:npcName(), aff:10, st:'ok' }, dich:{ n:npcName(), aff:-5, st:'ok' } };
-    C.eras = Array.isArray(C.eras) && C.eras.length ? C.eras : makeEras();
+    if (!Array.isArray(C.segs) || !C.segs.length) C.segs = Array.isArray(C.eras) && C.eras.length ? segsFromDecades(C.eras) : makeSegs(0, 130);
     C.deeds = Array.isArray(C.deeds) ? C.deeds : []; C.kidn = Array.isArray(C.kidn) ? C.kidn : [];
     C.flags = C.flags || {}; C.seen = C.seen || []; C.genes = C.genes || [];
+    C.innate = Array.isArray(C.innate) ? C.innate : (C.r === 'beast' && C.genes.length ? [C.genes[0]] : []);
+    if (!Array.isArray(C.sk)) C.sk = SKILLS.filter(s => skReq(C, s)).map(s => s[0]);   // v3: giữ dị năng đời cũ đang có
+    C.inv = Array.isArray(C.inv) ? C.inv.filter(x => BAOM[x]) : []; C.offers = Array.isArray(C.offers) ? C.offers.filter(o => o && (o.k === 'gene' ? GENE[o.id] : SKM[o.id])) : [];
+    C.fruit = +C.fruit || 0; if (C.days == null) C.days = C.age * 365; if (C.since == null) C.since = 0; if (!C.gap) C.gap = gapOf(C);
+    if (!C.lastEra) C.lastEra = eraOf(C);
     if (C.ph === 'ev' && !evOf(C)) { C.ph = 'act'; C.ev = null; }
     return C;
   }
   function load() {
     const d = lsGet(KEY(), {}); const g = d.gen && typeof d.gen === 'object' ? d.gen : {};
     g.v = 1; g.books = Array.isArray(g.books) ? g.books : []; g.lore = Array.isArray(g.lore) ? g.lore.filter(x => LORE_N[x]) : []; g.lives = +g.lives || 0;
-    g.life = g.life && typeof g.life === 'object' && g.life.s ? upgrade(g.life) : null; g.legacy = g.legacy || null; return g;
+    g.life = g.life && typeof g.life === 'object' && g.life.s ? upgrade(g.life) : null; g.legacy = g.legacy || null;
+    g.phuc = g.phuc != null ? Math.max(0, +g.phuc || 0) : (g.lives > 0 ? 2 : 0);          // v3: phúc duyên (lượt gieo lại)
+    g.arch = Array.isArray(g.arch) ? g.arch : [];                                         // v3: sách cũ lưu tóm tắt
+    g.draft = g.draft && g.draft.roll && g.draft.roll.s && ORIGIN[g.draft.o] && RACE[g.draft.r] ? g.draft : null;
+    return g;
   }
   function save(g) {
     const d = lsGet(KEY(), {});
     if (g.life && g.life.log.length > 70) g.life.log = g.life.log.slice(0, 6).concat(g.life.log.slice(-64));
-    let s = JSON.stringify(g); while (s.length > 30000 && g.books.length > 3) { g.books.pop(); s = JSON.stringify(g); }   // ô Sheet tối đa ~45 000 ký tự cho cả npdFun
+    const arch = b => ({ t:b.t, n:b.n, age:b.age, end:b.end, ln:b.ln, car:b.car, r:b.r, at:b.at });
+    while (g.books.length > 12) g.arch.unshift(arch(g.books.pop()));
+    let s = JSON.stringify(g); while (s.length > 30000 && g.books.length > 3) { g.arch.unshift(arch(g.books.pop())); s = JSON.stringify(g); }   // ô Sheet tối đa ~45 000 ký tự cho cả npdFun
+    g.arch = g.arch.slice(0, 80); while (JSON.stringify(g).length > 30000 && g.arch.length) g.arch.pop();
     d.gen = g; d.plays = d.plays && typeof d.plays === 'object' ? d.plays : {}; lsSet(KEY(), d);
   }
   let G = null, UI = { tab:'life', cre:null, res:null, pend:null, book:0, lore:'', skq:'', skc:'', max:false };
 
   // ---------- tạo nhân vật ----------
-  function newDraft() { return { n:npcName(), g:pick(['m', 'f']), o:'fish', r:'human', roll:null, rr:3 + (G.legacy && G.legacy.k === 'rr' ? 2 : 0), hair:rnd(0, 5) }; }
+  // kiếp đầu của tài khoản: gieo đúng 1 lần; các kiếp sau: thêm lượt gieo lại bằng phúc duyên tích lũy (+2 nếu di sản là lượt gieo)
+  function newDraft() { const lg = G.legacy && G.legacy.k === 'rr' ? 2 : 0;
+    return { n:npcName(), g:pick(['m', 'f']), o:'', r:'', roll:null, lg, rr:lg + (G.lives > 0 ? (G.phuc || 0) : 0), hair:rnd(0, 5) }; }
   function roll(dr) {
+    dr.o = pickW(ORIGIN_W); dr.r = pickW(RACE_W);
     const s = {}; STATS.forEach(([k]) => { s[k] = rnd(2, 8) + rnd(0, 4); });
     const add = m => Object.entries(m || {}).forEach(([k, v]) => { s[k] = (s[k] || 0) + v; });
     add(ORIGIN[dr.o][3]); add(RACE[dr.r][2]);
@@ -712,31 +1001,38 @@
     if (Math.random() < .12) { tr.push('sick'); s.y += 1; }
     if (dr.o === 'mount') tr.push('orph');
     if (s.van >= 12) tr.push('lucky'); if (s.tri >= 12) tr.push('genius'); if (s.mi >= 12) tr.push('beauty');
+    if (s.the >= 12 && Math.random() < .5) tr.push('iron'); if (Math.random() < .08) tr.push('oldsoul');
+    if ((['tribe', 'border'].includes(dr.o) && Math.random() < .4) || Math.random() < .06) tr.push('beastf');
+    if (Math.random() < .07) tr.push('chaos'); if (Math.random() < .08) tr.push('longev');
     STATS.forEach(([k]) => { s[k] = clamp(s[k], 1, 20); });
     const tot = s.the + s.tri + s.mi + s.van;
     const nm = Math.max(0, Math.round((34 - tot) / 4)) + (tr.includes('empty') ? 1 : 0) + (G.legacy && G.legacy.k === 'nm' ? 1 : 0);
-    dr.roll = { s, omen, tr, nm, tot, al:{ g:rnd(-15, 15), l:rnd(-15, 15), b:rnd(-15, 15) } };
+    dr.roll = { s, omen, tr, nm, tot, al:{ g:rnd(-15, 15), l:tr.includes('chaos') ? rnd(-45, -30) : rnd(-15, 15), b:rnd(-15, 15) } };
   }
   function birth(dr) {
     const r = dr.roll, lg = G.legacy;
     const C = { n:String(dr.n || 'Vô Danh').slice(0, 24), g:dr.g, o:dr.o, r:dr.r, s:{ ...r.s }, omen:r.omen, tr:r.tr, nm:r.nm,
       hp:r.tr.includes('sick') ? 70 : 100, gold:ORIGIN[dr.o][4] + (lg && lg.k === 'gold' ? 40 : 0), hum:100, fame:0, want:0, mut:0,
       en:{ thanh:0, hac:0, co:0, thu:0 }, genes:[], line:null, car:null, spouse:'', kids:0, kidn:[], flags:{ lorecount:G.lore.length }, seen:[], log:[], deeds:[],
-      al:{ ...r.al }, npc:{ ban:{ n:npcName(), aff:rnd(5, 25), st:'ok' }, dich:{ n:npcName(), aff:rnd(-15, 0), st:'ok' } }, eras:makeEras(),
-      age:0, turn:0, hair:dr.hair != null ? dr.hair : rnd(0, 5), ph:'act', ev:null, born:new Date().toISOString().slice(0, 10) };
-    if (r.tr.includes('orph')) C.npc.ban.n = npcName();
-    C.lifeMax = 62 + Math.round(C.s.the * 1.5) + rnd(-4, 10) + RACE[dr.r][3];
-    if (dr.r === 'beast') C.genes.push(pick(['g_cat', 'g_rabbit', 'g_wolf']));
+      al:{ ...r.al }, npc:{ ban:{ n:npcName(), aff:rnd(5, 25), st:'ok' }, dich:{ n:npcName(), aff:rnd(-15, 0), st:'ok' } },
+      age:0, turn:0, hair:dr.hair != null ? dr.hair : rnd(0, 5), ph:'act', ev:null, born:new Date().toISOString().slice(0, 10),
+      days:0, since:0, segs:makeSegs(0, 130), sk:[], inv:[], offers:[], innate:[], fruit:0 };
+    if (r.tr.includes('orph')) { C.npc.ban.n = npcName(); C.npc.su = { n:npcName(), aff:15, st:'ok', role:'người lạ dẫn lối' }; }
+    C.lifeMax = 62 + Math.round(C.s.the * 1.5) + rnd(-4, 10) + RACE[dr.r][3] + (r.tr.includes('longev') ? 15 : 0);
+    const inn = INNATE[dr.r]; if (inn) { const g0 = dr.r === 'beast' ? pick(inn) : inn[0]; C.genes.push(g0); C.innate.push(g0); }
+    C.gap = gapOf(C); C.lastEra = eraOf(C);
+    if (r.tr.includes('oldsoul')) apply(C, { lore:'any' }, []);
     log(C, `Chào đời tại ${ORIGIN[C.o][1]} – ${OMEN[C.omen][1]}. Thời thế: ${ERAS[eraOf(C)][1]}.`);
-    if (lg && lg.k === 'gene' && GENE[lg.v]) { C.genes = C.genes.filter(x => GENE[x][1] !== GENE[lg.v][1]); C.genes.push(lg.v); log(C, `Thừa hưởng ${GENE[lg.v][0]} từ ${lg.from || 'kiếp trước'}.`); }
-    G.legacy = null; G.life = C; G.lives++; UI.cre = null; UI.res = null; save(G);
+    if (lg && lg.k === 'gene' && GENE[lg.v] && !C.genes.includes(lg.v) && !innateOf(C).some(g => GENE[g][1] === GENE[lg.v][1])) {
+      C.genes = C.genes.filter(x => GENE[x][1] !== GENE[lg.v][1]); C.genes.push(lg.v); log(C, `Thừa hưởng ${GENE[lg.v][0]} từ ${lg.from || 'kiếp trước'}.`); }
+    G.legacy = null; G.draft = null; G.life = C; G.lives++; UI.cre = null; UI.res = null; UI.note = null; save(G);
   }
   const log = (C, t) => C.log.push([C.age, String(t).slice(0, 140)]);
   const stageOf = a => a < 13 ? ['Ấu thơ', 0] : a < 20 ? ['Thiếu niên', 1] : a < 40 ? ['Trưởng thành', 2] : a < 60 ? ['Trung niên', 3] : a < 120 ? ['Tuổi già', 4] : ['Vĩnh hằng', 5];
   const npcOk = (C, k) => C.npc[k] && C.npc[k].st === 'ok';
   function persona(C) { const a = C.al, t = [];
     t.push(a.g >= 40 ? ['😇', 'Hiệp nghĩa'] : a.g <= -40 ? ['😈', 'Tàn nhẫn'] : a.g >= 15 ? ['🙂', 'Tử tế'] : a.g <= -15 ? ['😏', 'Ích kỷ'] : ['😐', 'Trung dung']);
-    if (a.l >= 30) t.push(['⚖', 'Kỷ cương']); else if (a.l <= -30) t.push(['🌀', 'Phóng túng']);
+    if (a.l >= 30) t.push(['⚖', 'Kỷ cương']); else if (a.l <= -30) t.push(['🌀', 'Hỗn loạn']);
     if (a.b >= 30) t.push(['🔥', 'Liều lĩnh']); else if (a.b <= -30) t.push(['🛡', 'Thận trọng']);
     return t; }
 
@@ -744,19 +1040,6 @@
   function synCheck(C, chips) {
     SYN.forEach(([id, n, gs, mods, desc]) => { if (C.flags[id] || !gs.every(g => C.genes.includes(g))) return;
       C.flags[id] = 1; apply(C, mods, chips); chips.push(['lore', `✦ Cộng hưởng: ${n}`]); log(C, `Cộng hưởng gene ${n}: ${desc}`); });
-  }
-  function gainGene(C, id, chips) {
-    if (id === 'beast') { const L_ = BEASTS.filter(x => !C.genes.includes(x)); id = pick(L_.length ? L_ : BEASTS); }
-    if (id === 'any') id = pick(Object.keys(GENE).filter(x => x !== 'g_virus' && !C.genes.includes(x)));
-    if (!id || !GENE[id] || C.genes.includes(id)) return;
-    const gd = GENE[id], rej = id === 'g_virus' ? (C.tr.includes('sick') ? 60 : 0) : clamp(34 - C.s.gen * 3 - (C.tr.includes('empty') ? 30 : 0), 3, 60);
-    if (rnd(1, 100) <= rej) { C.hp -= 15; chips.push(['bad', id === 'g_virus' ? '🛡 Kháng được virus' : `💥 Đào thải ${gd[0]}`]); return; }
-    const old = C.genes.find(x => GENE[x][1] === gd[1]); if (old) { C.genes = C.genes.filter(x => x !== old); chips.push(['', `♻ thay ${GENE[old][0]}`]); }
-    C.genes.push(id); Object.entries(gd[2]).forEach(([k, v]) => { C.s[k] = clamp(C.s[k] + v, 1, 20); });
-    C.mut = clamp(C.mut + gd[3], 0, 100); C.hum = clamp(C.hum - Math.round(gd[3] / 2), 0, 100); C.en[gd[4]] = Math.min(100, C.en[gd[4]] + 5);
-    if (id === 'g_virus') C.lifeMax -= 10;
-    chips.push(['gene', `🧬 ${gd[0]}`]); log(C, `Dung nhập ${gd[0]}.`);
-    synCheck(C, chips);
   }
   function removeGene(C, id, chips) {
     if (id === 'last') id = C.genes[C.genes.length - 1]; if (!id || !C.genes.includes(id)) return;
@@ -783,7 +1066,13 @@
       else if (k === 'flag' || k === 'flag2') C.flags[v] = 1;
       else if (k === 'lore') { const id = v === 'any' ? pick(LORE.map(l => l[0])) : v; C.flags.ll = (C.flags.ll || 0) + 1;
         if (!G.lore.includes(id)) { G.lore.push(id); C.flags.lorecount = G.lore.length; chips.push(['lore', `📜 Huyết Sử: ${LORE_N[id]}`]); } }
-      else if (k === 'line') { const [lk, sub] = v; if (C.line && lk !== 'hybrid') continue; const d = LINE[lk].sub[sub];
+      else if (k === 'line') { const [lk, sub] = v; if (!LINE[lk] || !LINE[lk].sub[sub]) continue;
+        if (C.line && lk !== 'hybrid') {   // đã có huyết mạch: chỉ dung hợp được khi đã ăn Vạn Huyết Quả
+          if (C.line.k === lk || C.line2 || !(C.fruit > 0 || C.flags.fuse)) { if (C.line.k !== lk) chips.push(['bad', '🩸 Dòng máu cũ kháng cự dòng máu mới']); continue; }
+          const d2 = LINE[lk].sub[sub]; C.line2 = { k:lk, sub }; Object.entries(d2[1]).forEach(([s, x]) => { C.s[s] = clamp(C.s[s] + x, 1, 20); }); C.lifeMax += Math.round(d2[2] / 2);
+          Object.entries(d2[4]).forEach(([e, x]) => { C.en[e] = clamp(C.en[e] + x, 0, 100); }); C.mut = clamp(C.mut + 15, 0, 100); C.hum = clamp(C.hum + d2[3], 0, 100);
+          chips.push(['line', `🧬 Dung hợp huyết mạch: ${fuseName(C.line.k, lk)}`]); log(C, `Dung hợp huyết mạch ${d2[0]} – trở thành ${fuseName(C.line.k, lk)}.`); continue; }
+        const d = LINE[lk].sub[sub];
         C.line = { k:lk, sub }; Object.entries(d[1]).forEach(([s, x]) => { C.s[s] = clamp(C.s[s] + x, 1, 20); }); C.lifeMax += d[2]; C.hum = clamp(C.hum + d[3], 0, 100);
         Object.entries(d[4]).forEach(([e, x]) => { C.en[e] = clamp(C.en[e] + x, 0, 100); }); C.mut = clamp(C.mut + (lk === 'witch' || sub === 'dao' ? 5 : 20), 0, 100);
         chips.push(['line', `${LINE[lk].ic} Huyết mạch: ${d[0]}`]); log(C, `Thức tỉnh huyết mạch ${d[0]}.`); }
@@ -795,6 +1084,11 @@
       else if (k === 'aff') Object.entries(v).forEach(([nk, x]) => { if (!C.npc[nk]) return; C.npc[nk].aff = clamp(C.npc[nk].aff + x, -100, 100); chips.push([x > 0 ? 'up' : 'down', `${NPCR[nk][0]} ${C.npc[nk].n} ${x > 0 ? '+' : '−'}${Math.abs(x)}`]); })
       else if (k === 'npcst') Object.entries(v).forEach(([nk, st]) => { if (!C.npc[nk]) return; C.npc[nk].st = st; chips.push(['down', `${NPCR[nk][0]} ${C.npc[nk].n}: ${st === 'dead' ? 'qua đời' : 'rời xa'}`]); })
       else if (k === 'deed') { const [adj, txt] = String(v).split('|'); C.deeds.push(adj + '|' + tx(C, txt || adj)); if (C.deeds.length > 12) C.deeds.shift(); chips.push(['lore', `🏅 ${tx(C, txt || adj)}`]); }
+      else if (k === 'fruit') { C.fruit = (C.fruit || 0) + v; chips.push(['gene', '🍏 Vạn Huyết Quả: +5 ô ghép gene mọi chủng tộc']); log(C, 'Ăn Vạn Huyết Quả – có thể ghép gene mọi chủng tộc và dung hợp huyết mạch.'); }
+      else if (k === 'bao') gainBao(C, v, chips);
+      else if (k === 'sk') offerSkill(C, v, chips);
+      else if (k === 'chaos') { C.al.l = clamp(C.al.l - v, -100, 100); chips.push(['al', `+${v} Hỗn loạn`]); }
+      else if (k === 'mut') { C.mut = clamp(C.mut + v, 0, 100); chips.push(['down', `+${v}% dị hóa`]); }
       else if (k === 'die') { C.death = v; } else if (k === 'ending') { C.ending = v; }
     }
     if (EN.every(e => C.en[e[0]] >= 25) && !C.flags.origin) { C.flags.origin = 1; chips.push(['lore', '✴ Mở nhánh ẩn: Bản Nguyên']); log(C, 'Cân bằng bốn nhánh năng lượng – mở nhánh Bản Nguyên.'); }
@@ -810,28 +1104,221 @@
     return t;
   }
 
+  // ---------- v3: ô gene (lấy hay bỏ), dị năng thức tỉnh qua biến cố / bảo vật, túi bảo vật ----------
+  // thú hồn tự kết được, giới hạn theo Tương thích gen; gene khác loài (cơ giới, hạt nhân, tinh tú) phải ăn Vạn Huyết Quả mới ghép
+  const FUSE_ONLY = ['g_meteor', 'g_gear', 'g_star', 'g_corep', 'g_coreh', 'g_corev'];
+  const PHYS = ['back', 'shell', 'legs', 'legs2', 'tail', 'blade', 'arm'], MIND = ['eyes', 'core', 'halo', 'aura'];
+  const innateOf = C => C.innate || [];
+  const fusedOf = C => C.genes.filter(g => !innateOf(C).includes(g));
+  const geneCap = C => 1 + Math.floor(C.s.gen / 8) + (C.fruit > 0 ? 5 : 0) + (C.tr.includes('empty') ? 1 : 0) + (carRk(C, 'scholar') >= 2 ? 1 : 0);
+  const isMutant = C => lk_(C) === 'mutant' || !!(C.line2 && C.line2.k === 'mutant');
+  const skillCap = C => (isMutant(C) ? 5 : 2) + (C.s.y >= 14 ? 1 : 0);
+  // lý do chưa dung nhập được gene (rỗng = được)
+  function geneBlock(C, id) {
+    const gd = GENE[id]; if (!gd) return 'Không rõ gene';
+    if (innateOf(C).some(g => GENE[g][1] === gd[1])) return 'Vị trí này đã có bộ phận bẩm sinh';
+    if (FUSE_ONLY.includes(id) && !(C.fruit > 0)) return 'Gene khác loài – phải ăn Vạn Huyết Quả mới ghép được';
+    const need = 6 + Math.floor(gd[3] / 4);
+    if (PHYS.includes(gd[1]) && C.s.the < need) return `Thể chất chưa chịu nổi (cần Thể ≥ ${need})`;
+    if (MIND.includes(gd[1]) && C.s.tri < need) return `Trí tuệ chưa chịu nổi (cần Trí ≥ ${need})`;
+    return '';
+  }
+  function gainGene(C, id, chips, force) {
+    if (id === 'beast') { const L_ = BEASTS.filter(x => !C.genes.includes(x)); id = pick(L_.length ? L_ : BEASTS); }
+    if (id === 'any') id = pick(Object.keys(GENE).filter(x => x !== 'g_virus' && !C.genes.includes(x)));
+    if (!id || !GENE[id] || C.genes.includes(id)) return;
+    if (force || id === 'g_virus' || id === 'g_spore') return fuseGene(C, id, chips);      // nhiễm bệnh: không được chọn
+    C.offers = (C.offers || []).filter(o => !(o.k === 'gene' && o.id === id)).concat([{ k:'gene', id }]).slice(-4);
+    chips.push(['gene', `🧬 Cơ hội dung nhập: ${GENE[id][0]}`]);
+  }
+  function fuseGene(C, id, chips, drop) {
+    const gd = GENE[id], rej = id === 'g_virus' ? (C.tr.includes('sick') ? 60 : 0) : clamp(34 - C.s.gen * 3 - (C.tr.includes('empty') ? 30 : 0) - (C.tr.includes('beastf') && BEASTS.includes(id) ? 20 : 0)
+      - (carRk(C, 'scholar') >= 1 ? 10 : 0) - (C.flags.chimbook ? 10 : 0), 3, 60);
+    if (rnd(1, 100) <= rej) { C.hp -= 15; chips.push(['bad', id === 'g_virus' ? '🛡 Kháng được virus' : `💥 Đào thải ${gd[0]}`]); log(C, id === 'g_virus' ? 'Kháng được Virus Thượng Cổ.' : `Cơ thể đào thải ${gd[0]}.`); return false; }
+    if (drop) removeGene(C, drop, chips);
+    const old = C.genes.find(x => GENE[x][1] === gd[1] && !innateOf(C).includes(x)); if (old) { removeGene(C, old, chips); }
+    C.genes.push(id); Object.entries(gd[2]).forEach(([k, v]) => { C.s[k] = clamp(C.s[k] + v, 1, 20); });
+    C.mut = clamp(C.mut + gd[3], 0, 100); C.hum = clamp(C.hum - Math.round(gd[3] / 2), 0, 100); C.en[gd[4]] = Math.min(100, C.en[gd[4]] + 5);
+    if (id === 'g_virus') C.lifeMax -= 10;
+    chips.push(['gene', `🧬 ${gd[0]}`]); log(C, `Dung nhập ${gd[0]}.`);
+    synCheck(C, chips); return true;
+  }
+  const skReq = (C, s) => { try { return !!s[5](C); } catch (err) { return false; } };   // tư chất để biến cố đánh thức dị năng
+  // dị năng: 'crisis' = biến cố đánh thức một dị năng hợp tư chất; hoặc id cụ thể (từ bảo vật)
+  function offerSkill(C, v, chips) {
+    C.sk = C.sk || []; let id = v;
+    if (v === 'crisis') { const ok = SKILLS.filter(s => !C.sk.includes(s[0]) && skReq(C, s)), tier = s => ({ SSR:1, SR:3, R:6 }[s[4]] || 3);
+      const L_ = ok.length ? ok : Math.random() < .5 ? SKILLS.filter(s => s[3] === 'Đời Thường' && !C.sk.includes(s[0])) : [];
+      if (!L_.length) return; let r = Math.random() * L_.reduce((a, s) => a + tier(s), 0); id = L_[L_.length - 1][0]; for (const s of L_) { r -= tier(s); if (r <= 0) { id = s[0]; break; } } }
+    const s = SKM[id]; if (!s || C.sk.includes(id)) return;
+    if (C.sk.length < skillCap(C)) { C.sk.push(id); chips.push(['en', `⚡ Thức tỉnh: ${s[2]}`]); log(C, `Thức tỉnh dị năng ${s[2]}.`); return; }
+    C.offers = (C.offers || []).filter(o => !(o.k === 'skill' && o.id === id)).concat([{ k:'skill', id }]).slice(-4);
+    chips.push(['en', `⚡ Dị năng muốn thức tỉnh: ${s[2]} (ô đầy)`]);
+  }
+  const crisis = (C, chips, p) => { if (C.hp > 0 && Math.random() < p + (C.tr.includes('chaos') ? .15 : 0)) offerSkill(C, 'crisis', chips); };
+  function gainBao(C, v, chips) {
+    let id = v;
+    if (v === 'any' || v === 'rare') { const L_ = BAO.filter(b => b[0] !== 'b_fruit' && (v === 'any' || b[4] !== 'Thường')); let r = Math.random() * L_.reduce((a, b) => a + BAO_W[b[4]], 0);
+      id = L_[0][0]; for (const b of L_) { r -= BAO_W[b[4]]; if (r <= 0) { id = b[0]; break; } } }
+    const b = BAOM[id]; if (!b) return;
+    C.inv = C.inv || []; if (C.inv.length >= 8) { chips.push(['bad', `🎒 Túi đầy – đành bỏ lại ${b[2]}`]); return; }
+    C.inv.push(id); chips.push(['lore', `🎒 Bảo vật: ${b[1]} ${b[2]}`]); log(C, `Có được bảo vật ${b[2]}.`);
+  }
+  // nuốt / dung hợp bảo vật (chỉ lúc đang chọn hoạt động)
+  function useBao(i) {
+    const C = G.life, id = C.inv[i], b = BAOM[id]; if (!b || C.ph !== 'act') return;
+    const chips = []; C.inv.splice(i, 1);
+    apply(C, b[7], chips); if (id === 'b_stake') C.flags.stake = 1;
+    if (b[8]) offerSkill(C, b[8], chips);
+    log(C, `${b[6] === 'nuot' ? 'Nuốt' : 'Dung hợp'} ${b[2]}.`);
+    UI.note = { txt:`${b[6] === 'nuot' ? 'Bạn nuốt' : 'Bạn dung hợp'} ${b[2]}.`, chips };
+    if (deathCheck(C)) return; save(G); render();
+  }
+  // trả lời một lời mời: take / skip / drop:<id> (bỏ gene hoặc dị năng cũ để nhận cái mới)
+  function resolveOffer(k) {
+    const C = G.life, o = C.offers && C.offers[0]; if (!o) return;
+    const chips = [];
+    if (k !== 'skip') {
+      const drop = k.startsWith('drop:') ? k.slice(5) : '';
+      if (o.k === 'gene') { if (geneBlock(C, o.id)) return; const same = fusedOf(C).find(x => GENE[x][1] === GENE[o.id][1]);
+        if (!same && !drop && fusedOf(C).length >= geneCap(C)) return; fuseGene(C, o.id, chips, same ? '' : drop); }
+      else if (o.k === 'skill') { if (C.sk.length >= skillCap(C)) { if (!drop || !C.sk.includes(drop)) return; C.sk = C.sk.filter(x => x !== drop); chips.push(['', `✖ Quên ${SKM[drop][2]}`]); }
+        C.sk.push(o.id); chips.push(['en', `⚡ Thức tỉnh: ${SKM[o.id][2]}`]); log(C, `Thức tỉnh dị năng ${SKM[o.id][2]}.`); }
+    } else log(C, `Từ chối ${o.k === 'gene' ? 'gene ' + GENE[o.id][0] : 'dị năng ' + SKM[o.id][2]}.`);
+    C.offers.shift(); UI.note = chips.length ? { txt:'', chips } : UI.note;
+    if (deathCheck(C)) return; save(G); render();
+  }
+
+  // ---------- v3: thời gian theo ngày / tháng / năm, hoạt cảnh tự chạy, tình huống đời thường ----------
+  const ACT_DUR = { study:[60, 180], train:[30, 120], work:[90, 330], explore:[7, 40], social:[2, 12], blood:[120, 540], rest:[14, 75], scheme:[5, 25] };
+  const longLived = C => C.lifeMax > 200 && C.age >= 30;
+  const durOf = (C, k) => { const [a, b] = ACT_DUR[k] || [30, 90], m = longLived(C) && ['blood', 'rest', 'study', 'train'].includes(k) ? 6 : 1; return [a * m, b * m]; };
+  const gapOf = C => Math.round(365 * (longLived(C) && C.age >= 60 ? rnd(8, 20) : C.age < 20 ? 1 + Math.random() : C.age < 40 ? 1.5 + Math.random() * 1.5 : C.age < 60 ? 2 + Math.random() * 2 : 3 + Math.random() * 2));
+  const fmtDur = d => d < 30 ? `${d} ngày` : d < 365 ? `${Math.round(d / 30)} tháng` : `${(d / 365).toFixed(d < 3650 ? 1 : 0).replace(/\.0$/, '').replace('.', ',')} năm`;
+  const calOf = days => { const r = ((days % 365) + 365) % 365; return { y:Math.floor(days / 365), m:Math.min(12, Math.floor(r / 30.42) + 1), d:Math.floor(r % 30.42) + 1 }; };
+  const SCN = {
+    study:['Bạn chép lại mấy chục trang sách cổ dưới ngọn đèn dầu.', 'Thầy gõ thước xuống bàn: “Lại ngủ gật!”', 'Bạn giải được bài toán làm cả lớp bó tay.', 'Một con mọt sách bò ra từ cuốn “Ấn Mã sơ giải”.',
+      'Bạn thức trắng đêm học thuộc bảng chữ cổ.', 'Thư viện Học Viện cho mượn một cuốn sách bìa da cũ.'],
+    train:['Bạn chạy quanh núi mỗi sáng khi sương còn dày.', 'Tay bạn chai sần sau mấy trăm lần vung kiếm gỗ.', 'Bạn gánh nước từ suối lên đồi, mỗi ngày một chuyến nhiều hơn.', 'Một lão võ sư dừng lại xem bạn tập rồi gật gù.',
+      'Bạn ngã, đứng dậy, lại ngã – rồi đứng vững.'],
+    explore:['Bạn đi theo một con suối lạ vào sâu trong rừng.', 'Đêm ngủ ngoài trời, bạn đếm được ba ngôi sao băng.', 'Bạn tìm thấy dấu chân to bằng cái nia trên bùn.', 'Một hang động thở ra hơi ấm như có ai sống bên trong.',
+      'Bạn trèo lên đỉnh đồi, thấy cả vùng đất trải ra như tấm bản đồ.', 'Bạn đi lạc hai ngày rồi lần theo tiếng chuông chùa mà về.'],
+    social:['Bạn ngồi quán trà nghe đủ thứ chuyện trên trời dưới đất.', 'Đám cưới hàng xóm, bạn được mời làm phù dâu / phù rể.', 'Bạn làm quen một người bán hàng rong nói giọng phương xa.', 'Cả xóm kéo nhau đi xem hát chèo.'],
+    blood:['Bạn ngồi thiền giữa vòng tròn vẽ bằng máu của chính mình.', 'Dòng máu trong người bạn chảy ngược trong đêm trăng.', 'Bạn bế quan trong một hang đá kín, không thấy mặt trời.', 'Bạn nghe được tiếng gọi của tổ tiên trong giấc ngủ.'],
+    rest:['Bạn ngủ một giấc dài, tỉnh dậy thấy người nhẹ hẳn.', 'Bạn ngồi câu cá cả buổi mà không cần cá cắn câu.', 'Bạn trồng một chậu hoa nhỏ bên cửa sổ.', 'Bạn nằm võng nghe ve kêu suốt buổi trưa.'],
+    scheme:['Bạn ngồi trong góc quán, lắng nghe những cuộc mặc cả mờ ám.', 'Bạn vẽ lại sơ đồ một ngôi nhà giàu trong đầu.', 'Một tờ giấy nhỏ được nhét vào tay bạn rồi người kia biến mất.', 'Bạn dựng một vở kịch nhỏ để lừa kẻ còn ranh ma hơn.'],
+    kid:['Bạn chơi trốn tìm với lũ trẻ trong xóm tới tối mịt.', 'Bạn bắt được một con dế mèn cánh óng.', 'Mẹ dạy bạn đếm đến một trăm.', 'Bạn ngã xe trâu, khóc một trận rồi lại cười.', 'Bạn thả diều trên đê, diều bay cao hơn cả đàn cò.'],
+    work:{ farmer:['Mùa cấy, chân bạn ngâm bùn từ sáng tới tối.', 'Bạn gặt lúa dưới nắng như đổ lửa.', 'Con trâu già bỏ ăn, bạn thức cả đêm trông nó.'],
+      fisher:['Bạn ra khơi lúc trời còn tối đen.', 'Lưới nặng trĩu cá bạc, cả thuyền reo hò.', 'Sóng lớn đánh lật mạn thuyền – một phen hú vía.'],
+      merchant:['Bạn mặc cả từng đồng với khách quen.', 'Hàng về muộn, cả tiệm thức trắng xếp kho.', 'Bạn ghi sổ sách tới khuya, tính đi tính lại một khoản lỗ.'],
+      soldier:['Bạn gác cổng thành dưới mưa rét.', 'Tiếng trống luyện quân vang từ sáng sớm.', 'Bạn khâu lại tấm áo giáp rách cho người đồng đội.'],
+      scholar:['Bạn soi Ấn Mã dưới kính hiển vi tới mỏi mắt.', 'Một mẫu gene phát sáng rồi tắt ngấm – thí nghiệm thất bại.', 'Bạn viết xong một bài luận được cả Học Viện bàn tán.'],
+      hunter:['Bạn nằm phục cả đêm chờ con hươu sừng bạc.', 'Bạn lần theo vết máu của một con dị thú bị thương.', 'Bạn lột da thú, phơi khô trước cửa.'],
+      thief:['Bạn lướt qua đám đông, túi người khác nhẹ dần.', 'Bạn nằm trên mái nhà, đợi lính canh đổi gác.', 'Bạn bán lại món đồ “tình cờ nhặt được” ở chợ đen.'],
+      king:['Bạn nghe các quan cãi nhau cả buổi chầu.', 'Bạn ký hàng chồng chiếu chỉ tới khuya.', 'Bạn cải trang đi xem dân tình ngoài chợ.'],
+      none:['Bạn làm thuê đủ việc lặt vặt trong làng.', 'Bạn khuân vác ở bến sông, mồ hôi ướt đẫm lưng.', 'Bạn bán nước chè ở đầu chợ.'] },
+    era:{ war:['Đoàn quân đi ngang qua làng, bụi mù cả con đường.'], tribes:['Tiếng tù và của một tộc lạ vọng về từ phía chiến trường.'], plague:['Nhà nhà treo lá ngải trước cửa để xua dịch.'],
+      famine:['Người ta xếp hàng dài nhận cháo loãng ở cổng chùa.'], moon:['Trăng lại đỏ như máu, chó trong làng tru suốt đêm.'], gold:['Chợ phiên đông nghịt, thương thuyền nối đuôi nhau về bến.'],
+      cold:['Tuyết phủ trắng mái nhà, nước giếng đóng băng.'], magic:['Học Viện treo bảng tuyển học trò mới khắp thành.'], steam:['Một cỗ máy hơi nước khổng lồ phì khói ở đầu phố.'],
+      eclipse:['Trời tối như đêm giữa trưa; người ta thắp đuốc đi chợ.'], flood:['Nước lên tới ngang thềm nhà; cả làng kéo thuyền đi.'], peace:['Trời yên biển lặng, ai nấy lo làm ăn.'] },
+    npc:{ ban:'{ban} ghé chơi, hai người ngồi kể chuyện tới khuya.', dich:'{dich} lại khoe khoang trước mặt mọi người.', su:'{su} gửi thư dặn bạn giữ gìn sức khỏe.', tinh:'{tinh} để lại một bông hoa trước cửa nhà bạn.' },
+    auto:['Ngày tháng trôi qua lặng lẽ.', 'Bạn sống những ngày bình thường nhất – mà sau này nhớ lại thấy quý nhất.', 'Mùa nối mùa, cây trước sân cao thêm một khúc.'],
+  };
+  // hoạt cảnh: vài dòng ghi ngày tháng, chạy tự động khi thời gian trôi
+  function makeScenes(C, k, days) {
+    const pool = C.age < 12 && k !== 'work' ? SCN.kid.concat(SCN[k] || []) : k === 'work' || (k === 'auto' && C.car) ? (SCN.work[C.car ? C.car.k : 'none'] || SCN.work.none) : SCN[k] || SCN.auto;
+    const n = days < 15 ? 1 : days < 120 ? 2 : 3, out = [], used = new Set(), t0 = C.days != null ? C.days : C.age * 365;
+    for (let i = 0; i < n; i++) { let s = pick(pool); for (let j = 0; j < 4 && used.has(s); j++) s = pick(pool); used.add(s);
+      if (i === n - 1 && n > 1 && Math.random() < .5) { const ks = ['ban', 'dich', 'su', 'tinh'].filter(x => npcOk(C, x)); if (ks.length && Math.random() < .5) s = SCN.npc[pick(ks)]; else s = pick(SCN.era[eraOf(C)] || SCN.auto); }
+      const c = calOf(t0 + Math.round(days * (i + 1) / (n + 1))); out.push([`Tháng ${c.m} · ${c.y} tuổi`, tx(C, s)]); }
+    return out;
+  }
+  function deathCheck(C) {
+    const er = eraOf(C);
+    if (C.hp <= 0) { die(C.want >= 85 ? 'Bị thợ săn tiền thưởng hạ sát' : er === 'plague' ? 'Gục ngã trong đại dịch' : ['war', 'tribes'].includes(er) ? 'Tử nạn trong chiến loạn' : 'Kiệt sức vì thương tích và bệnh tật'); return true; }
+    if (C.age >= C.lifeMax) { die('Thọ chung chính tẩm'); return true; }
+    if (C.turn >= (C.lifeMax > 300 ? 160 : 100)) { die('Mỏi mệt sau một đời quá dài'); return true; }
+    return false;
+  }
+  // mỗi năm trôi qua: thời thế, tuổi tác, tin tức nhân vật phụ, lợi ích nghề
+  function yearTick(C, chips) {
+    const er = eraOf(C);
+    if (er !== C.lastEra) { if (C.lastEra) log(C, `${ERAS[er][0]} Thời thế đổi: ${ERAS[er][1]} – ${ERAS[er][2]}`); C.lastEra = er; }
+    if (er === 'plague' && !C.tr.includes('sick') && Math.random() < .12) { C.hp -= 10; log(C, 'Nhiễm dịch nhẹ.'); crisis(C, chips, .2); }
+    if (er === 'famine' && carRk(C, 'farmer') < 1) C.gold = Math.max(0, Math.round(C.gold * .95));
+    if (er === 'flood' && carRk(C, 'fisher') < 1) { C.gold = Math.max(0, Math.round(C.gold * .95)); C.hp = clamp(C.hp - 1, 0, 100); }
+    if (er === 'cold') C.hp = clamp(C.hp - 1, 0, 100);
+    if (er === 'moon') { C.en.thu = Math.min(100, C.en.thu + 1); C.en.hac = Math.min(100, C.en.hac + 1); }
+    if (er === 'eclipse') C.en.hac = Math.min(100, C.en.hac + 2);
+    if (er === 'magic') C.en.thanh = Math.min(100, C.en.thanh + 1);
+    if ((er === 'war' || er === 'tribes') && carRk(C, 'soldier') < 1 && Math.random() < .07) { C.hp -= 8; log(C, 'Bị cuốn vào binh lửa.'); crisis(C, chips, .25); }
+    if (Math.random() < .4) npcTick(C);
+    if (C.age >= 50 && C.lifeMax < 200) { const loss = (C.age - 45) / 24; C.hp = clamp(C.hp - Math.floor(loss) - (Math.random() < loss % 1 ? 1 : 0), 0, 100); }
+    C.want = Math.max(0, C.want - 1 - (carRk(C, 'thief') >= 1 ? 2 : 0) - (carRk(C, 'merchant') >= 3 ? 2 : 0));
+    if (C.want >= 85 && Math.random() < .1) { C.hp -= 25; log(C, 'Bị thợ săn tiền thưởng phục kích.'); crisis(C, chips, .3); }
+    const rk = C.car ? C.car.rk : -1, ck = C.car ? C.car.k : '';
+    if ((ck === 'farmer' || ck === 'soldier') && rk >= 2) C.fame = Math.min(100, C.fame + 1);
+    if (ck === 'king' && rk >= 1) C.fame = Math.min(100, C.fame + 2);
+    if ((ck === 'farmer' && rk >= 3) || (ck === 'king' && rk >= 2)) C.hp = clamp(C.hp + 3, 0, 100);
+  }
+  function passTime(C, days, chips) {
+    C.days = (C.days != null ? C.days : C.age * 365) + days; C.since = (C.since || 0) + days;
+    const to = Math.floor(C.days / 365);
+    while (C.age < to) { C.age++; yearTick(C, chips); if (C.hp <= 0 || C.age >= C.lifeMax) break; }
+  }
+  // sau một quãng thời gian: biến cố lớn, tình huống đời thường hoặc chỉ là những ngày bình yên
+  function afterTime(C, force) {
+    if (force || C.since >= C.gap || Math.random() < (C.since / C.gap) * .3) { C.since = 0; C.gap = gapOf(C); C.turn++; nextEvent(C); return; }
+    const L_ = EV.filter(e => e.dl && C.age >= e.a[0] && C.age <= e.a[1] && (!e.if || e.if(C)));
+    if (L_.length && Math.random() < .6) { let r = Math.random() * L_.reduce((a, e) => a + e.w, 0), ev = L_[L_.length - 1]; for (const e of L_) { r -= e.w; if (r <= 0) { ev = e; break; } }
+      C.ev = { id:ev.id }; C.ph = 'ev'; return; }
+    C.ph = 'res'; UI.res.quiet = 1;
+  }
+  function careerXp(C, days, chips) {
+    if (!C.car) return; C.car.xp = (C.car.xp || 0) + days / 365;
+    while (C.car.rk < CAREER[C.car.k][1].length - 1 && C.car.xp >= CAR_XP[Math.min(C.car.rk, CAR_XP.length - 1)] * (C.car.k === 'king' ? 2 : 1)) {
+      C.car.rk++; chips.push(['up', `⬆ ${careerName(C)}`]); log(C, `Nhờ bao năm làm việc, thăng lên ${careerName(C)}.`); }
+  }
+  // để thời gian trôi tới biến cố lớn kế tiếp (tự chạy hoạt cảnh theo nghề / thời thế)
+  function autoLive() {
+    const C = G.life, chips = [], days = Math.max(20, (C.gap || 365) - (C.since || 0)), scenes = makeScenes(C, 'auto', days);
+    if (C.car) { const inc = C.car.k === 'king' ? 60 : 8 + C.car.rk * 12; apply(C, { gold:Math.round(inc * (1 + C.car.rk * CAR_PERK[C.car.k][1]) * days / 365 * .8) }, chips); careerXp(C, days * .8, chips); }
+    apply(C, { hp:Math.min(10, Math.round(days / 60)) }, chips);
+    passTime(C, days, chips);
+    UI.res = { act:'auto', chips, scenes, days }; UI.pend = null; UI.note = null;
+    if (deathCheck(C)) return; afterTime(C, true); save(G); render();
+  }
+
   // ---------- vòng lặp ----------
   function doAct(k) {
-    const C = G.life, chips = [];
-    const inc = (s, p) => { if (Math.random() < p) apply(C, { [s]:1 }, chips); };
-    if (k === 'study') { inc('tri', .75); if (C.car && C.car.k === 'scholar') inc('tri', .4); }
+    const C = G.life, chips = [], days = rnd(...durOf(C, k)), f = Math.min(1.2, days / 300 + .1);
+    const inc = (st, p) => { if (Math.random() < p * f) apply(C, { [st]:1 }, chips); };
+    const scenes = makeScenes(C, k, days), er = eraOf(C);
+    if (k === 'study') { inc('tri', (C.tr.includes('genius') ? 1.1 : .75) * (er === 'magic' ? 1.4 : 1)); if (C.car && C.car.k === 'scholar') inc('tri', .4); }
     else if (k === 'train') { inc('the', .7); apply(C, { hp:5 }, chips); }
-    else if (k === 'work') { const base = C.age < 14 ? 2 : !C.car ? 6 : C.car.k === 'king' ? 60 : 8 + C.car.rk * 12; apply(C, { gold:Math.round(base * (C.car && C.car.k === 'merchant' ? 1.5 : 1) * (0.8 + Math.random() * .5) * (eraOf(C) === 'gold' ? 1.4 : eraOf(C) === 'famine' ? .6 : 1)) }, chips); }
-    else if (k === 'explore') { const e = pick(EN); apply(C, { [e[0]]:rnd(4, 9) }, chips);
-      const r = Math.random(); if (r < .22) apply(C, { gene:'beast' }, chips); else if (r < .32) apply(C, { lore:pick(['L1', 'L2', 'L11']) }, chips); else if (r < .42) apply(C, { hp:-10 }, chips); }
-    else if (k === 'social') { inc('mi', .6); apply(C, { fame:2 }, chips); const nk = pick(['ban', 'dich', 'su', 'tinh'].filter(x => npcOk(C, x))); if (nk) apply(C, { aff:{ [nk]:6 } }, chips); }
-    else if (k === 'blood') { if (C.line) { const d = LINE[C.line.k].sub[C.line.sub]; const e = Object.keys(d[4])[0]; apply(C, { [e]:8 }, chips); inc('y', .5); } }
-    else if (k === 'rest') apply(C, { hp:15, hum:3 }, chips);
-    else if (k === 'scheme') { const r = Math.random(); apply(C, r < .45 ? { gold:rnd(20, 50), good:-4 } : r < .75 ? { want:10, good:-4 } : { bold:6, lore:'any' }, chips); }
-    if (C.line && C.line.k === 'shin') apply(C, { hp:6 }, chips);                    // Ảnh Mã: hồi phục nhanh
-    UI.res = { act:k, chips }; UI.pend = null; nextEvent(C); save(G); render();
+    else if (k === 'work') { const base = C.age < 14 ? 2 : !C.car ? 6 : C.car.k === 'king' ? 60 : 8 + C.car.rk * 12, mul = C.car ? 1 + C.car.rk * CAR_PERK[C.car.k][1] : 1;
+      apply(C, { gold:Math.max(1, Math.round(base * mul * days / 150 * (C.car && C.car.k === 'merchant' ? 1.5 : 1) * (0.8 + Math.random() * .5) * (er === 'gold' ? 1.4 : er === 'steam' ? 1.2 : er === 'famine' ? .6 : 1))) }, chips);
+      careerXp(C, days, chips); }
+    else if (k === 'explore') { const e = pick(EN); apply(C, { [e[0]]:rnd(3, 8) }, chips);
+      const r = Math.random(), bao = .08 + (carRk(C, 'hunter') >= 1 ? .06 : 0) + (carRk(C, 'fisher') >= 2 ? .05 : 0), soul = .12 + (C.tr.includes('beastf') ? .06 : 0) + (carRk(C, 'hunter') >= 2 ? .05 : 0);
+      if (r < soul) apply(C, { gene:'beast' }, chips); else if (r < soul + bao) apply(C, { bao:'any' }, chips); else if (r < soul + bao + .08) apply(C, { lore:pick(['L1', 'L2', 'L11']) }, chips);
+      else if (r < soul + bao + .18) apply(C, { hp:-(C.tr.includes('iron') ? 6 : 10) }, chips); }
+    else if (k === 'social') { inc('mi', .6); apply(C, { fame:1 }, chips); const nk = pick(['ban', 'dich', 'su', 'tinh'].filter(x => npcOk(C, x))); if (nk) apply(C, { aff:{ [nk]:C.tr.includes('beauty') ? 8 : 4 } }, chips); }
+    else if (k === 'blood') { if (C.line) { const d = LINE[C.line.k].sub[C.line.sub]; const e = Object.keys(d[4])[0]; apply(C, { [e]:Math.round(4 + 8 * f) }, chips); inc('y', .5); } }
+    else if (k === 'rest') apply(C, { hp:Math.round(8 + 10 * f), hum:2 }, chips);
+    else if (k === 'scheme') { const r = Math.random() - (carRk(C, 'thief') >= 3 ? .3 : 0); apply(C, r < .45 ? { gold:rnd(15, 45), good:-3, chaos:2 } : r < .75 ? { want:8, good:-3 } : { bold:5, lore:'any' }, chips); }
+    if (C.line && C.line.k === 'shin') apply(C, { hp:3 }, chips);                    // Ảnh Mã: hồi phục nhanh
+    passTime(C, days, chips);
+    UI.res = { act:k, chips, scenes, days }; UI.pend = null; UI.note = null;
+    if (deathCheck(C)) return;
+    afterTime(C); save(G); render();
   }
   function eligible(C) {
     const er = eraOf(C);
-    return EV.filter(e => C.age >= e.a[0] && C.age <= e.a[1] && !(e.once && C.seen.includes(e.id)) && (!e.era || e.era === er) && (!e.if || e.if(C)));
+    return EV.filter(e => !e.dl && C.age >= e.a[0] && C.age <= e.a[1] && !(e.once && C.seen.includes(e.id)) && (!e.era || e.era === er) && (!e.if || e.if(C)));
   }
   function nextEvent(C) {
-    if (C.age >= 12 && Math.random() < .22) { C.ev = makeEnc(C); C.ph = 'ev'; return; }      // gặp gỡ ngẫu nhiên
+    if (C.age >= 12 && Math.random() < (C.tr.includes('orph') ? .3 : .22)) { C.ev = makeEnc(C); C.ph = 'ev'; return; }      // gặp gỡ ngẫu nhiên
     const L_ = eligible(C), lucky = C.tr.includes('lucky'), w = e => e.w + (lucky && e.once ? 1 : 0) + (e.once ? 1 : 0);
     let r = Math.random() * L_.reduce((s, e) => s + w(e), 0), ev = L_[L_.length - 1];
     for (const e of L_) { r -= w(e); if (r <= 0) { ev = e; break; } }
@@ -852,14 +1339,15 @@
   function choose(i, useNm) {
     const C = G.life, ev = evOf(C), c = ev && ev.c[i]; if (!c || (c.if && !c.if(C))) return;
     const chips = []; let ok = true, roll = null;
-    if (c.chk) { const [s, dc] = c.chk, d6 = rnd(1, 6), bonus = Math.floor(C.s.van / 5);
+    if (c.chk) { const [s, dc] = c.chk, d6 = rnd(1, 6), bonus = Math.floor(C.s.van / 5) + chkBonus(C, s);
       roll = UI.pend && UI.pend.i === i ? UI.pend.roll : { s, dc, v:C.s[s], d6, bonus, sum:C.s[s] + d6 + bonus }; ok = roll.sum >= dc;   // đã gieo thì dùng lại, không gieo lại
       if (!ok && useNm && C.nm > 0) { C.nm--; ok = true; roll = Object.assign({}, roll, { nm:1 }); } }
     if (!ok && c.chk && C.nm > 0 && useNm === undefined) { UI.pend = { i, roll }; render(); return; }
     UI.pend = null;
     let eff = ok ? c.ok : c.no, txt = tx(C, ok ? c.r : (c.rf || c.r));
     if (ok && c.alt) for (const a of c.alt) if (Math.random() < a.p) { eff = a.ok; txt = tx(C, a.r); break; }     // nhánh ngẫu nhiên
-    apply(C, eff, chips);
+    const hp0 = C.hp; apply(C, eff, chips);
+    if (C.hp < hp0 && C.hp > 0) crisis(C, chips, C.hp < 30 ? .4 : !ok ? .12 : .05);      // biến cố có thể đánh thức dị năng
     if (ev.once || /^[ct]_/.test(ev.id)) if (!C.seen.includes(ev.id)) C.seen.push(ev.id);
     log(C, `${tx(C, ev.t)}: ${txt}`);
     UI.res = Object.assign(UI.res || {}, { ev:tx(C, ev.t), pick:tx(C, c.t), ok, roll, txt, chips2:chips, sk:0 });
@@ -882,20 +1370,8 @@
   function advance() {
     const C = G.life;
     if (C.death) return die(C.death);
-    const before = eraOf(C), step = C.age < 13 ? 3 : C.age < 40 ? 2 : C.age < 60 ? 4 : C.lifeMax > 200 ? 15 : 5;
-    C.age += step; C.turn++;
-    const er = eraOf(C); if (er !== before) log(C, `${ERAS[er][0]} Thời thế đổi: ${ERAS[er][1]} – ${ERAS[er][2]}`);
-    if (er === 'plague' && !C.tr.includes('sick') && Math.random() < .3) { C.hp -= 10; log(C, 'Nhiễm dịch nhẹ.'); }
-    if (er === 'famine') C.gold = Math.max(0, Math.round(C.gold * .9));
-    if (er === 'cold') C.hp = clamp(C.hp - 3, 0, 100);
-    if (er === 'moon') { C.en.thu = Math.min(100, C.en.thu + 3); C.en.hac = Math.min(100, C.en.hac + 3); }
-    npcTick(C);
-    if (C.age >= 50 && C.lifeMax < 200) C.hp = clamp(C.hp - Math.round((C.age - 45) / 6), 0, 100);
-    if (C.want >= 85 && Math.random() < .3) { C.hp -= 25; log(C, 'Bị thợ săn tiền thưởng phục kích.'); }
-    if (C.hp <= 0) return die(C.want >= 85 ? 'Bị thợ săn tiền thưởng hạ sát' : er === 'plague' ? 'Gục ngã trong đại dịch' : er === 'war' ? 'Tử nạn trong chiến loạn' : 'Kiệt sức vì thương tích và bệnh tật');
-    if (C.age >= C.lifeMax) return die('Thọ chung chính tẩm');
-    if (C.turn >= 70) return die('Mỏi mệt sau một đời quá dài');
-    C.ph = 'act'; C.ev = null; UI.res = null; save(G); render();
+    if (deathCheck(C)) return;
+    C.ph = 'act'; C.ev = null; UI.res = null; UI.note = null; save(G); render();
   }
   function die(cause) { const C = G.life; C.death = cause; C.ph = 'dying'; UI.res = null; save(G); render(); }
   function revive(how) {
@@ -904,6 +1380,7 @@
     if (how === 'jiang') { C.line = null; apply(C, { line:['jiang', 'corpse'] }, []); C.hp = 60; log(C, 'Tỉnh dậy trong quan tài – thành Cương Thi Tỉnh Trí.'); }
     else if (how === 'phoenix') { C.hp = 70; C.flags.reborn = 1; log(C, 'Phượng Hoàng Niết Bàn: tro tàn bùng cháy, bạn sống lại.'); }
     else { C.hp = 35; log(C, 'Nghịch Mệnh: thoát chết trong gang tấc.'); }
+    const chips = []; crisis(C, chips, .6); UI.note = chips.length ? { txt:'Cận kề cái chết đánh thức điều gì đó trong bạn.', chips } : null;
     C.ph = 'act'; C.ev = null; save(G); render();
   }
   function ending(C) {
@@ -931,7 +1408,7 @@
   }
   function title(C) {
     const end = ending(C), gx = C.genes.map(g => GENE[g][1]);
-    const who = C.line ? { vamp:'Huyết Tộc', wolf:'Sói Trăng', witch:'Phù Thủy', jiang:C.line.sub === 'corpse' ? 'Cương Thi' : 'Đạo Sĩ', shin:'Ninja Bóng Tối', hybrid:'Huyết Lang' }[C.line.k]
+    const who = C.line ? (C.line2 && LINE[C.line2.k] ? fuseName(C.line.k, C.line2.k) : { vamp:'Huyết Tộc', wolf:'Sói Trăng', witch:'Phù Thủy', jiang:C.line.sub === 'corpse' ? 'Cương Thi' : 'Đạo Sĩ', shin:'Ninja Bóng Tối', hybrid:'Huyết Lang', mutant:'Dị Nhân' }[C.line.k] || LINE[C.line.k].n)
       : C.genes.includes('g_rabbit') ? 'Con Thỏ' : C.genes.includes('g_dragon') ? 'Kẻ Đuôi Rồng' : gx.includes('back') ? 'Người Có Cánh' : C.genes.includes('g_fox') ? 'Hồ Ly' : gx.includes('core') ? 'Kẻ Mang Hạch' : C.car ? careerName(C) : 'Người';
     const deed = C.deeds.length ? C.deeds[C.deeds.length - 1].split('|')[0] : '';
     const adj = /Bạo Chúa/.test(end) ? ' Bạo Ngược' : /Minh Quân/.test(end) ? ' Anh Minh' : end === 'Hạnh Phúc Giản Dị' ? ' Hạnh Phúc' : /Ma Đầu/.test(end) ? ' Tàn Độc'
@@ -948,8 +1425,13 @@
     [0, 1, 2, 3, 4, 5].forEach(k => { const L_ = C.log.filter(l => stageOf(l[0])[1] === k); if (L_.length) ch.push([stageOf(L_[0][0])[0], L_.filter((_, i) => i < 2 || i >= L_.length - 2).map(l => `${l[0]} tuổi – ${l[1]}`.slice(0, 120))]); });
     const book = { t:title(C), n:C.n, g:C.g, o:C.o, r:C.r, ln:lineName(C), car:careerName(C), age:C.age, end:ending(C), cause:C.death, ep:String(ep || '').slice(0, 120),
       av:{ r:C.r, g:C.g, line:C.line, genes:C.genes.slice(), hair:C.hair, car:C.car ? C.car.k : '', mut:C.mut, age:C.lifeMax > 200 ? Math.min(C.age, 40) : C.age }, st:{ ...C.s }, fame:C.fame, hum:C.hum, mut:C.mut, kids:C.kids, sp:C.spouse,
-      sum:bookSummary(C).slice(0, 300), ps:persona(C).map(p => p[1]).join(' · '), deeds:C.deeds.map(d => d.split('|')[1]).slice(-5), ch, at:new Date().toISOString().slice(0, 10) };
-    G.books.unshift(book); G.books = G.books.slice(0, 12);
+      sum:bookSummary(C).slice(0, 300), ps:persona(C).map(p => p[1]).join(' · '), deeds:C.deeds.map(d => d.split('|')[1]).slice(-5), ch, at:new Date().toISOString().slice(0, 10),
+      sk:skillsOf(C).map(x => x[2]).slice(0, 6), gold:C.gold, fruit:C.fruit || 0, kn:C.kidn.slice(0, 6),
+      eras:[...new Set((C.segs || []).filter(x => x[1] <= C.age).map(x => ERAS[x[0]] ? ERAS[x[0]][1] : ''))].filter(Boolean).slice(0, 10) };
+    // phúc duyên tích lũy cho kiếp sau (lượt gieo lại)
+    const ph = (C.age >= 60 ? 1 : 0) + (C.fame >= 50 ? 1 : 0) + (C.al.g >= 40 ? 1 : 0) + (book.end !== 'Một Đời Bình Thường Mà Đáng Nhớ' ? 1 : 0) + ((C.flags.ll || 0) >= 2 ? 1 : 0);
+    book.phuc = ph; G.phuc = Math.min(6, (G.phuc || 0) + ph);
+    G.books.unshift(book);
     G.legacy = leg === 'gene' && C.genes.length ? { k:'gene', v:pick(C.genes), from:C.n } : leg === 'rr' ? { k:'rr' } : leg === 'gold' ? { k:'gold' } : leg === 'nm' ? { k:'nm' } : null;
     G.life = null; UI.tab = 'books'; UI.book = 0; save(G); render();
   }
@@ -966,7 +1448,7 @@
   // (lông, vảy, xương cánh, đinh tán…) kèm ĐƯỜNG KHÂU ở chỗ nối; dị hóa càng cao càng nhiều gân phát sáng, ≥ 60% mọc mắt thứ ba.
   // A = { r, g, line, genes, hair, car, mut?, hp?, age? } (sách cũ thiếu mut / hp / age vẫn vẽ được).
   const HAIR = ['#4a3426', '#2b2530', '#c08a2e', '#d9467f', '#e8e4ef', '#7c4dcc'];
-  const SKIN = { human:'#ffe2cc', beast:'#f9d3a8', elf:'#fff0e3', dwarf:'#f3c8a2' };
+  const SKIN = { human:'#ffe2cc', beast:'#f9d3a8', elf:'#fff0e3', dwarf:'#f3c8a2', merrow:'#dcedf2', drake:'#f6d7ae', avian:'#fde3cc', foxkin:'#fde6d2', stone:'#c3bfb7' };
   const INK = '#2b2530';
   const mir = s => `<g transform="translate(160 0) scale(-1 1)">${s}</g>`;           // lật đối xứng qua trục giữa (x = 80)
   function stitch(x1, y1, x2, y2, n, col) {                                          // đường khâu: nét đứt + các mũi khâu ngang
@@ -1110,7 +1592,7 @@
   // ---------- nhân vật trưởng thành (≥ 13 tuổi): tỉ lệ người thật, nét doodle viền đậm, trang phục & bộ phận ghép chi tiết ----------
   // Khung 200 × 310 (gốc y = −24). Thứ tự vẽ: hào quang → sau lưng (tóc dài, áo choàng, mai, cánh, đuôi, chân nhện, vũ khí đeo lưng)
   // → chân → thân + trang phục → tay → cổ, đầu, mặt → tóc → tai / sừng / mũ.
-  const SKIN_A = { human:'#f6d3bb', beast:'#efc49b', elf:'#fbe3d2', dwarf:'#eabb93' };
+  const SKIN_A = { human:'#f6d3bb', beast:'#efc49b', elf:'#fbe3d2', dwarf:'#eabb93', merrow:'#d3e8ee', drake:'#efcda1', avian:'#f8dcc4', foxkin:'#f9dfca', stone:'#b8b3aa' };
   function avatarAdult(A, px) {
     const lk = A.line ? A.line.k : '', sub = A.line ? A.line.sub : '', GS = A.genes || [], has = g => GS.includes(g);
     const mut = +A.mut || 0, tired = A.hp != null && A.hp < 30, old = (A.age || 25) >= 60, fem = A.g === 'f';
@@ -1377,6 +1859,21 @@
   @media (max-width:980px){ .gx-life,.gx-dna,.gx-two{grid-template-columns:minmax(0,1fr)} .gx-g3{grid-template-columns:minmax(0,1fr)} }
   @media (max-width:760px){ .gx-main{padding:10px} .gx-hud{grid-template-columns:repeat(3,minmax(0,1fr))} .gx-g2{grid-template-columns:minmax(0,1fr)} .gx-tiles{grid-template-columns:repeat(3,minmax(0,1fr))}
     .gx-in{font-size:16px} .gx-opt,.gx-btn{min-height:46px} .gx-badge{display:none} }
+  /* v3: hoạt cảnh, lời mời gene / dị năng, trục tính cách, trang sách, kho lưu trữ */
+  .gx-scn{display:grid;gap:6px;margin:0 0 10px}
+  .gx-scn div{padding:8px 12px;border-left:3px solid var(--cy);border-radius:0 10px 10px 0;background:#141622;color:#d6dbe6;font-size:13.5px;line-height:1.5;opacity:.15;animation:gxIn .4s ease forwards}
+  .gx-scn small{display:block;font-size:11px;color:var(--cy)}
+  @keyframes gxIn{from{opacity:.15;transform:translateY(6px)}to{opacity:1;transform:none}}
+  @media (prefers-reduced-motion:reduce){ .gx-scn div{animation:none;opacity:1} .gx-logo i{animation:none} }
+  .gx-offer{margin:10px 0;padding:12px;border-radius:12px;background:rgba(0,229,255,.05);border:1px solid rgba(0,229,255,.35)}
+  .gx-warn{margin:6px 0;padding:6px 10px;border-radius:8px;background:rgba(244,63,94,.1);color:#fda4af;font-size:12.5px}
+  .gx-axes{display:grid;gap:7px;margin-top:10px}
+  .gx-axis{display:grid;grid-template-columns:70px minmax(0,1fr) 70px;align-items:center;gap:8px;font-size:11.5px;color:var(--mu)} .gx-axis span:last-child{text-align:right}
+  .gx-axis i{position:relative;height:6px;border-radius:9px;background:linear-gradient(90deg,#3a2030,#23263a 50%,#1d3a2c)}
+  .gx-axis b{position:absolute;top:-4px;width:14px;height:14px;margin-left:-7px;border-radius:50%;border:2px solid #0f1016}
+  .gx-pager{display:flex;align-items:center;justify-content:center;gap:12px;margin-top:14px;color:var(--mu);font-size:12.5px}
+  .gx-arch{margin-top:8px;font-size:12.5px} .gx-arch summary{cursor:pointer;color:var(--go)} .gx-arch ul{margin:8px 0 0;padding-left:18px;color:#cbd5e1;line-height:1.6}
+  button.gx-chip{cursor:pointer;font:inherit;font-size:12px} button.gx-chip:hover{border-color:var(--go)} button.gx-chip:disabled{opacity:.4;cursor:default}
   .gx-ic{flex:none;display:grid;place-items:center;width:38px;height:38px;border:1px solid var(--ln);border-radius:10px;background:#1f2233;color:var(--tx);font-size:16px}
   .gx-ic:hover{border-color:var(--cy);color:var(--cy)}
   .gx-nav button i{font-style:normal;margin-right:6px} .gx-nav .s{display:none}
@@ -1419,7 +1916,7 @@
     .gx-sks{grid-template-columns:minmax(0,1fr)} .gx-logs{grid-template-columns:repeat(2,minmax(0,1fr))}
     .gx-seg{flex-wrap:wrap} .gx-tiles b{font-size:16px}
   }`;
-  function ensureCss() { const old = document.getElementById('gx-css'); if (old && old.dataset.v === '3') return; if (old) old.remove(); const st = document.createElement('style'); st.id = 'gx-css'; st.dataset.v = '3'; st.textContent = CSS; document.head.appendChild(st); }
+  function ensureCss() { const old = document.getElementById('gx-css'); if (old && old.dataset.v === '4') return; if (old) old.remove(); const st = document.createElement('style'); st.id = 'gx-css'; st.dataset.v = '4'; st.textContent = CSS; document.head.appendChild(st); }
 
   const TAGVI = { escape:'chạy trốn', travel:'đi xa', explore:'khám phá', fight:'giao đấu', nature:'thiên nhiên', beast:'dã thú', social:'giao tiếp', love:'tình cảm', trade:'buôn bán',
     mystery:'bí ẩn', stealth:'lén lút', work:'làm việc', danger:'hiểm nguy', heal:'cứu chữa', plague:'dịch bệnh', undead:'xác sống', war:'chiến tranh', famine:'nạn đói' };
@@ -1446,22 +1943,26 @@
   function statBars(s) { return `<div class="gx-bars">${STATS.map(([k, n, ic]) => bar(`${ic} ${n}`, s[k], 20, SCOL[k])).join('')}</div>`; }
 
   function viewCreate() {
-    if (!UI.cre) UI.cre = newDraft(); const d = UI.cre, lg = G.legacy, r = d.roll, lc = r ? luck(r.tot) : null;
-    return `<div class="gx-two"><div class="gx-pn"><div class="gx-h"><h4>🎲 Khởi Tạo Nhân Vật · Gacha Định Mệnh</h4>
-        <button class="gx-btn" data-g="roll" ${r && d.rr <= 0 ? 'disabled' : ''}>🎲 ${r ? `Gieo lại (${d.rr})` : 'Gieo Quẻ Định Mệnh'}</button></div>
+    if (!UI.cre) UI.cre = G.draft || newDraft(); const d = UI.cre, lg = G.legacy, r = d.roll, lc = r ? luck(r.tot) : null, O = ORIGIN[d.o], Rc = RACE[d.r];
+    const first = G.lives === 0, inn = d.r && INNATE[d.r] ? (d.r === 'beast' ? ['g_cat'] : INNATE[d.r]) : [];
+    return `<div class="gx-two"><div class="gx-pn"><div class="gx-h"><h4>🎲 Gieo Quẻ Định Mệnh</h4>
+        ${!r ? `<button class="gx-btn" data-g="roll">🎲 Gieo quẻ</button>` : `<button class="gx-btn ghost" data-g="roll" ${d.rr <= 0 ? 'disabled' : ''}>🎲 Gieo lại (${d.rr})</button>`}</div>
+      <p class="gx-note" style="margin:0 0 8px">Nơi sinh, chủng tộc, chỉ số và thiên phú do trời định. ${first ? 'Kiếp đầu tiên chỉ được gieo <b style="color:var(--go)">một lần</b>.' : `Lượt gieo lại đến từ <b style="color:var(--go)">phúc duyên</b> tích lũy các kiếp trước (đang có ${G.phuc}).`}</p>
       ${lg ? `<div class="gx-chips" style="margin:0 0 6px"><span class="gx-chip lore">🎁 Di sản đang chờ: ${lg.k === 'gene' ? `gene ${E(GENE[lg.v] ? GENE[lg.v][0] : '')} từ ${E(lg.from || '')}` : lg.k === 'rr' ? '+2 lượt gieo lại' : lg.k === 'gold' ? '+40 vàng khởi đầu' : '+1 Nghịch Mệnh'}</span></div>` : ''}
       <div class="gx-two" style="gap:10px"><div><span class="gx-lab mono" style="margin-top:0">Tên nhân vật</span><input class="gx-in" id="gxName" maxlength="24" value="${E(d.n)}"></div>
         <div><span class="gx-lab mono" style="margin-top:0">Giới tính</span><div class="gx-seg">${[['m', 'Nam'], ['f', 'Nữ'], ['x', 'Phi nhị nguyên']].map(([k, t]) => `<button data-g="sex" data-k="${k}" class="${d.g === k ? 'on' : ''}">${t}</button>`).join('')}</div></div></div>
-      <span class="gx-lab mono">Nơi sinh (Origin)</span><div class="gx-pick">${Object.entries(ORIGIN).map(([k, o]) => `<button class="gx-pk${d.o === k ? ' on' : ''}" data-g="org" data-k="${k}"><b>${o[0]} ${E(o[1])}</b><small>${E(o[5])}</small></button>`).join('')}</div>
-      <span class="gx-lab mono">Chủng tộc gốc (Base race)</span><div class="gx-pick">${Object.entries(RACE).map(([k, x]) => `<button class="gx-pk${d.r === k ? ' on' : ''}" data-g="race" data-k="${k}"><b>${x[0]} ${E(x[1])}</b><small>${E(x[4])}</small></button>`).join('')}</div>
       <span class="gx-lab mono">Màu tóc</span><div class="gx-seg">${HAIR.map((h, i) => `<button data-g="hair" data-k="${i}" class="${d.hair === i ? 'on' : ''}" title="Màu ${i + 1}"><span style="display:inline-block;width:14px;height:14px;border-radius:50%;background:${h};border:1px solid #fff4"></span></button>`).join('')}</div>
+      <div class="gx-pick" style="margin-top:12px"><div class="gx-pk${O ? ' on' : ''}"><small class="mono">NƠI SINH</small><b>${O ? `${O[0]} ${E(O[1])}` : '???'}</b><small>${O ? E(O[5]) : 'Gieo quẻ để biết bạn sinh ra ở đâu.'}</small></div>
+        <div class="gx-pk${Rc ? ' on' : ''}"><small class="mono">CHỦNG TỘC</small><b>${Rc ? `${Rc[0]} ${E(Rc[1])}` : '???'}</b><small>${Rc ? E(Rc[4]) : 'Nhân loại, Bán thú, Tinh linh, Người lùn, Ngư Nhân, Long Duệ, Vũ Tộc, Hồ Tộc, Thạch Nhân…'}</small></div></div>
       <div class="gx-dk" style="margin-top:12px"><span class="mono" style="font-size:10.5px;color:var(--mu)">THIÊN PHÚ TRỜI SINH & ĐIỀM BÁO</span>
-        ${r ? `<div class="gx-chips"><span class="gx-chip lore">${OMEN[r.omen][0]} ${E(OMEN[r.omen][1])}</span>${r.tr.map(t => `<span class="gx-chip line" title="${E(TRAITS[t][2])}">${TRAITS[t][0]} ${E(TRAITS[t][1])}</span>`).join('')}${r.nm ? `<span class="gx-chip gene">☯ ${r.nm} Nghịch Mệnh</span>` : ''}</div>
-          <p class="gx-note" style="margin-top:6px">${E(OMEN[r.omen][3])} ${r.tr.map(t => E(TRAITS[t][2])).join(' ')}</p>` : `<p class="gx-note">Bấm “Gieo Quẻ Định Mệnh” để nhận chỉ số, điềm báo và thiên phú. Mỗi người có 3 lượt gieo lại.</p>`}</div></div>
-    <div class="gx-pn"><div class="gx-h"><div><p class="gx-nm">${E(d.n)}</p><div class="gx-sub mono">${E(RACE[d.r][1])} · ${E(ORIGIN[d.o][1])}</div></div>${lc ? `<span class="gx-luck ${lc[0]} mono">LUCK: ${lc[1]} (${r.tot})</span>` : ''}</div>
-      <div class="gx-stage">${avatar({ r:d.r, g:d.g, genes:d.r === 'beast' ? ['g_cat'] : [], hair:d.hair, age:22 }, 220)}</div>
+        ${r ? `<div class="gx-chips"><span class="gx-chip lore">${OMEN[r.omen][0]} ${E(OMEN[r.omen][1])}</span>${r.nm ? `<span class="gx-chip gene">☯ ${r.nm} Nghịch Mệnh</span>` : ''}</div>
+          <p class="gx-note" style="margin-top:6px">${E(OMEN[r.omen][3])}</p>
+          ${r.tr.map(t => `<div class="gx-slot" style="margin-top:6px"><i>${TRAITS[t][0]}</i><div class="t"><b>${E(TRAITS[t][1])}</b><span class="gx-note" style="margin:0;display:block">${E(TRAITS[t][2])} <b style="color:var(--gr)">${E(TRAIT_FX[t] || '')}</b></span></div></div>`).join('')}`
+          : `<p class="gx-note">Bấm “Gieo quẻ” để nhận nơi sinh, chủng tộc, chỉ số, điềm báo và thiên phú.</p>`}</div></div>
+    <div class="gx-pn"><div class="gx-h"><div><p class="gx-nm">${E(d.n)}</p><div class="gx-sub mono">${Rc ? E(Rc[1]) : '???'} · ${O ? E(O[1]) : '???'}</div></div>${lc ? `<span class="gx-luck ${lc[0]} mono">LUCK: ${lc[1]} (${r.tot})</span>` : ''}</div>
+      <div class="gx-stage">${avatar({ r:d.r || 'human', g:d.g, genes:inn, hair:d.hair, age:22 }, 220)}</div>
       ${r ? statBars(r.s) : `<p class="gx-note" style="text-align:center">Hình thái trưởng thành dự kiến</p>`}
-      <p class="gx-note">* Chỉ số ban đầu ảnh hưởng tỉ lệ dung nhập gene, các lần kiểm tra trong sự kiện và những ngã rẽ cuộc đời. Kẻ kém may có nhiều Nghịch Mệnh và Khoảng Trắng lớn hơn.</p>
+      <p class="gx-note">* Chỉ số ảnh hưởng tỉ lệ dung nhập gene, sức chứa gene (Thể, Trí, Tương thích gen), các lần kiểm tra và những ngã rẽ cuộc đời. Kẻ kém may có nhiều Nghịch Mệnh hơn.</p>
       <div class="gx-row"><button class="gx-btn gold" data-g="born" ${r ? '' : 'disabled'} style="flex:1">👶 Chào đời</button></div></div></div>`;
   }
   function liveBook(C) {
@@ -1471,27 +1972,58 @@
       <h6>✒ Tóm tắt tự truyện</h6><p><i>“${E(bookSummary(C))}”</i></p>
       ${C.deeds.length ? `<h6>🏅 Dấu ấn</h6><ul>${C.deeds.slice(-4).map(d => `<li>${E(d.split('|')[1])}</li>`).join('')}</ul>` : ''}</div>`;
   }
+  const axis = (l, r, v, col) => `<div class="gx-axis"><span>${l}</span><i><b style="left:${(clamp(v, -100, 100) + 100) / 2}%;background:${col}"></b></i><span>${r}</span></div>`;
+  const scenesHtml = sc => !sc || !sc.length ? '' : `<div class="gx-scn">${sc.map((x, i) => `<div style="animation-delay:${(i * .35).toFixed(2)}s"><small>${E(x[0])}</small>${E(x[1])}</div>`).join('')}</div>`;
+  const statTxt = o => Object.entries(o || {}).map(([k, v]) => `${SN[k] || (EN.find(e => e[0] === k) || [])[1] || k} ${v > 0 ? '+' : ''}${v}`).join(', ');
+  function noteHtml() { const n = UI.note; return n && (n.txt || (n.chips && n.chips.length)) ? `<div class="gx-dk" style="margin-bottom:10px">${n.txt ? `<p class="gx-note" style="margin:0 0 4px;color:#e2e8f0">${E(n.txt)}</p>` : ''}<div class="gx-chips" style="margin:0">${chipsHtml(n.chips)}</div></div>` : ''; }
+  // lời mời dung nhập gene / thức tỉnh dị năng: lấy, bỏ, hoặc đổi cái cũ
+  function offerBox(C) {
+    const o = C.offers && C.offers[0]; if (!o) return '';
+    const more = C.offers.length > 1 ? ` · còn ${C.offers.length - 1} lời mời` : '';
+    if (o.k === 'gene') { const gd = GENE[o.id], blk = geneBlock(C, o.id), fu = fusedOf(C), same = fu.find(x => GENE[x][1] === gd[1]), full = !same && fu.length >= geneCap(C);
+      return `<div class="gx-offer"><div class="gx-h" style="margin-bottom:8px"><h4>🧬 Cơ hội dung nhập gene</h4><small class="mono">Ô gene ${fu.length}/${geneCap(C)}${C.fruit ? ' · 🍏 Vạn Huyết Quả' : ''}${more}</small></div>
+        <b style="color:#fff">${E(gd[0])}</b> <span class="gx-chip">${E((SLOT.find(x => x[0] === gd[1]) || ['', '', gd[1]])[2])}</span>
+        <p class="gx-note" style="margin:6px 0">${E(gd[5])} · ${E(statTxt(gd[2]))} · dị hóa +${gd[3]}%</p>
+        ${blk ? `<p class="gx-warn">⛔ ${E(blk)}</p>` : same ? `<p class="gx-note">♻ Sẽ thay ${E(GENE[same][0])} (cùng vị trí)</p>` : full ? `<p class="gx-warn">Ô gene đã đầy – bỏ một gene cũ để nhận gene này, hoặc bỏ qua.</p>` : ''}
+        <div class="gx-row">${!blk && !full ? `<button class="gx-btn" data-g="offer" data-k="take">🧬 Dung nhập</button>` : ''}
+          ${!blk && full ? fu.map(x => `<button class="gx-btn ghost" data-g="offer" data-k="drop:${x}">✂ Bỏ ${E(GENE[x][0])}</button>`).join('') : ''}
+          <button class="gx-btn ghost" data-g="offer" data-k="skip">Bỏ qua</button></div></div>`; }
+    const sk = SKM[o.id], full = (C.sk || []).length >= skillCap(C);
+    return `<div class="gx-offer"><div class="gx-h" style="margin-bottom:8px"><h4>⚡ Dị năng muốn thức tỉnh</h4><small class="mono">Ô dị năng ${(C.sk || []).length}/${skillCap(C)}${more}</small></div>
+      <b style="color:#fff">${sk[1]} ${E(sk[2])}</b> <span class="gx-tier ${sk[4]} mono">${sk[4]}</span><p class="gx-note" style="margin:6px 0">${E(sk[8])}</p>
+      ${full ? `<p class="gx-warn">Ô dị năng đã đầy (Dị Nhân chứa được 5) – quên một dị năng cũ hoặc bỏ qua.</p>` : ''}
+      <div class="gx-row">${!full ? `<button class="gx-btn" data-g="offer" data-k="take">⚡ Thức tỉnh</button>` : C.sk.map(x => `<button class="gx-btn ghost" data-g="offer" data-k="drop:${x}">✖ Quên ${E(SKM[x][2])}</button>`).join('')}
+        <button class="gx-btn ghost" data-g="offer" data-k="skip">Bỏ qua</button></div></div>`;
+  }
   function viewLife() {
     const C = G.life, er = ERAS[eraOf(C)]; let main;
-    const hud = `<div class="gx-hud mono"><div><small>Tuổi</small><b style="color:var(--cy)">${C.age}</b></div><div><small>Vàng</small><b style="color:var(--go)">${C.gold}</b></div>
+    const cal = calOf(C.days || C.age * 365);
+    const hud = `<div class="gx-hud mono"><div><small>Tuổi</small><b style="color:var(--cy)">${C.age}<span style="font-size:11px;color:var(--mu)"> · th.${cal.m}</span></b></div><div><small>Vàng</small><b style="color:var(--go)">${C.gold}</b></div>
       <div><small>Danh vọng</small><b style="color:var(--gr)">${C.fame}</b></div><div><small>Hình thái</small><b style="color:var(--pu)">${E(C.line ? LINE[C.line.k].n : C.mut >= 30 ? 'Dị nhân' : 'Người')}</b></div><div><small>Thời thế</small><b>${er[0]} ${E(er[1])}</b></div></div>`;
-    if (C.ph === 'act') main = `<div class="gx-ev"><div class="yr mono"><span>📅 Năm ${C.age} tuổi · ${stageOf(C.age)[0]}</span><span>${er[0]} ${E(er[1])}</span></div><h5>Năm nay bạn dành thời gian cho…</h5>
-        <div class="gx-acts">${ACTS.map(([k, ic, n, sub]) => `<button class="gx-act" data-g="act" data-k="${k}" ${k === 'blood' && !C.line ? 'disabled title="Cần có huyết mạch"' : ''}><b>${ic} ${C.age < 13 && k === 'work' ? 'Phụ việc nhà' : n}</b><small>${sub}</small></button>`).join('')}</div>
-        ${C.age >= 60 ? `<div class="gx-row"><button class="gx-btn ghost" data-g="endlife">📕 Khép lại cuốn sách đời mình</button></div>` : ''}</div>`;
+    const wait = C.offers && C.offers.length, left = Math.max(20, (C.gap || 365) - (C.since || 0));
+    if (C.ph === 'act') main = `${noteHtml()}${offerBox(C)}<div class="gx-ev"><div class="yr mono"><span>📅 Tháng ${cal.m} · ${C.age} tuổi · ${stageOf(C.age)[0]}</span><span>${er[0]} ${E(er[1])}</span></div><h5>Sắp tới bạn dành thời gian cho…</h5>
+        <div class="gx-acts">${ACTS.map(([k, ic, n, sub]) => `<button class="gx-act" data-g="act" data-k="${k}" ${wait || (k === 'blood' && !C.line) ? `disabled title="${wait ? 'Trả lời lời mời phía trên trước' : 'Cần có huyết mạch'}"` : ''}><b>${ic} ${C.age < 13 && k === 'work' ? 'Phụ việc nhà' : n}</b><small>${sub}</small><small style="color:var(--cy)">⏱ ${fmtDur(durOf(C, k)[0])} – ${fmtDur(durOf(C, k)[1])}</small></button>`).join('')}</div>
+        <div class="gx-row"><button class="gx-btn ghost" data-g="auto" ${wait ? 'disabled' : ''} style="flex:1">⏩ Để thời gian trôi (≈ ${fmtDur(left)} tới biến cố kế tiếp)</button>
+          ${C.age >= 60 ? `<button class="gx-btn ghost" data-g="endlife">📕 Khép lại cuốn sách đời mình</button>` : ''}</div>
+        ${C.inv && C.inv.length ? `<span class="gx-lab mono">🎒 Túi bảo vật – nuốt / dung hợp để thức tỉnh dị năng</span><div class="gx-chips">${C.inv.map((id, i) => { const b = BAOM[id];
+          return `<button class="gx-chip lore" data-g="use" data-k="${i}" ${wait ? 'disabled' : ''} title="${E(b[5])}">${b[1]} ${b[6] === 'nuot' ? 'Nuốt' : 'Dung hợp'} ${E(b[2])}</button>`; }).join('')}</div>` : ''}</div>`;
     else if (C.ph === 'ev') {
       const ev = evOf(C), p = UI.pend, sks = skillOpts(C, ev);
-      main = `${UI.res && UI.res.chips && UI.res.chips.length ? `<div class="gx-chips" style="margin:0 0 8px">${chipsHtml(UI.res.chips)}</div>` : ''}
-        <div class="gx-ev"><div class="yr mono"><span>📅 Năm ${C.age} tuổi${ev.enc ? ' · Gặp gỡ ngẫu nhiên' : ''}</span><span>${stageOf(C.age)[0]}</span></div><h5>${E(tx(C, ev.t))}</h5><p>${E(tx(C, ev.d))}</p>
+      main = `${scenesHtml(UI.res && UI.res.scenes)}${UI.res && UI.res.chips && UI.res.chips.length ? `<div class="gx-chips" style="margin:0 0 8px">${chipsHtml(UI.res.chips)}</div>` : ''}
+        <div class="gx-ev"><div class="yr mono"><span>📅 Tháng ${cal.m} · ${C.age} tuổi${ev.enc ? ' · Gặp gỡ ngẫu nhiên' : ev.dl ? ' · Đời thường' : ''}</span><span>${stageOf(C.age)[0]}</span></div><h5>${E(tx(C, ev.t))}</h5><p>${E(tx(C, ev.d))}</p>
         ${p ? `<div class="gx-res"><b style="color:var(--re)">Thất bại!</b><div class="gx-dice mono">Kiểm tra ${SN[p.roll.s]}: <b>${p.roll.v}</b> + 🎲${p.roll.d6}${p.roll.bonus ? ` + 🍀${p.roll.bonus}` : ''} = <b>${p.roll.sum}</b> &lt; ${p.roll.dc}</div>
             <div class="gx-row"><button class="gx-btn" data-g="nm" data-k="${p.i}">☯ Dùng 1 Nghịch Mệnh lật kèo (còn ${C.nm})</button><button class="gx-btn ghost" data-g="nmno" data-k="${p.i}">Chấp nhận số phận</button></div></div>`
           : `<div class="gx-opts">${ev.c.map((c, i) => c.if && !c.if(C) ? '' : `<button class="gx-opt" data-g="pick" data-k="${i}"><span>${E(tx(C, c.t))}</span>${c.chk ? `<small class="mono">🎲 ${SN[c.chk[0]]} ${C.s[c.chk[0]]}/${c.chk[1]}</small>` : ''}</button>`).join('')}
             ${sks.map(s => `<button class="gx-opt sk" data-g="skill" data-k="${s[0]}"><span>⚡ Dùng dị năng: ${s[1]} ${E(s[2])}</span><small class="mono">${s[4]} · chắc thắng</small></button>`).join('')}</div>`}</div>`;
     } else if (C.ph === 'res') {
       const r = UI.res || {};
-      main = `<div class="gx-ev"><div class="yr mono"><span>📅 Năm ${C.age} tuổi · ${E(r.ev || '')}</span><span>${r.ok === false ? '✗ Thất bại' : '✓ Kết quả'}</span></div><h5>${E(r.pick || '')}</h5>
+      if (r.quiet) main = `${scenesHtml(r.scenes)}<div class="gx-ev"><div class="yr mono"><span>📅 Tháng ${cal.m} · ${C.age} tuổi</span><span>⏱ ${fmtDur(r.days || 0)}</span></div>
+        <h5>Những ngày bình yên</h5><div class="gx-chips">${chipsHtml(r.chips)}</div>${offerBox(C)}
+        <div class="gx-row"><button class="gx-btn" data-g="next">Tiếp tục ▸</button></div></div>`;
+      else main = `<div class="gx-ev"><div class="yr mono"><span>📅 Tháng ${cal.m} · ${C.age} tuổi · ${E(r.ev || '')}</span><span>${r.ok === false ? '✗ Thất bại' : '✓ Kết quả'}</span></div><h5>${E(r.pick || '')}</h5>
         ${r.roll ? `<div class="gx-dice mono">Kiểm tra ${SN[r.roll.s]}: <b>${r.roll.v}</b> + 🎲${r.roll.d6}${r.roll.bonus ? ` + 🍀${r.roll.bonus}` : ''} = <b>${r.roll.sum}</b> ${r.roll.sum >= r.roll.dc ? '≥' : '<'} ${r.roll.dc} ${r.roll.nm ? '· ☯ Nghịch Mệnh lật kèo!' : r.ok ? '✓' : '✗'}</div>` : ''}
-        <p>${E(r.txt || '')}</p><div class="gx-chips">${chipsHtml(r.chips2)}</div>
-        <div class="gx-row"><button class="gx-btn" data-g="next">${C.death ? '🕯 Tiếp…' : 'Năm tiếp theo ▸'}</button></div></div>`;
+        <p>${E(r.txt || '')}</p><div class="gx-chips">${chipsHtml(r.chips2)}</div>${offerBox(C)}
+        <div class="gx-row"><button class="gx-btn" data-g="next">${C.death ? '🕯 Tiếp…' : 'Tiếp tục ▸'}</button></div></div>`;
     } else if (C.ph === 'dying') {
       const canJ = !C.ending && C.nm > 0 && (C.o === 'east' || (C.line && C.line.k === 'jiang' && C.line.sub === 'dao')) && !(C.line && C.line.sub === 'corpse');
       const canP = !C.ending && C.flags.syn_rebirth && !C.flags.reborn, canR = !C.ending && C.nm > 0 && C.age < C.lifeMax;
@@ -1520,6 +2052,9 @@
           <span class="gx-luck ${C.hp < 30 ? 'lo' : C.hp < 60 ? 'md' : 'hi'} mono">HP ${C.hp}</span></div>
         <div class="gx-stage">${avatar(avOf(C), 230)}</div>
         <div class="gx-chips">${persona(C).map(p => `<span class="gx-chip al">${p[0]} ${p[1]}</span>`).join('')}<span class="gx-chip">🧑 Nhân tính ${C.hum}</span><span class="gx-chip ${C.want >= 50 ? 'down' : ''}">🚨 Truy nã ${C.want}</span><span class="gx-chip gene">☯ ${C.nm}</span><span class="gx-chip">⏳ Thọ ${C.lifeMax > 300 ? '∞' : C.lifeMax}</span></div>
+        <div class="gx-axes">${axis('Tàn ác', 'Thiện', C.al.g, '#34d399')}${axis('Hỗn loạn', 'Trật tự', C.al.l, '#60a5fa')}${axis('Thận trọng', 'Liều lĩnh', C.al.b, '#fb923c')}</div>
+        <div class="gx-chips"><span class="gx-chip gene">🧬 Ô gene ${fusedOf(C).length}/${geneCap(C)}${C.fruit ? ' · 🍏' : ''}</span><span class="gx-chip en">⚡ Dị năng ${(C.sk || []).length}/${skillCap(C)}</span><span class="gx-chip lore">🎒 ${(C.inv || []).length}/8</span></div>
+        ${C.car && CAR_PERK[C.car.k] ? `<p class="gx-note">⚒ <b style="color:var(--go)">${E(careerName(C))}</b>: ${CAR_PERK[C.car.k][2].slice(0, C.car.rk + 1).map(E).join(' · ')}${C.car.rk < CAREER[C.car.k][1].length - 1 ? ` <span style="color:var(--mu)">(bậc kế: ${E(CAREER[C.car.k][1][C.car.rk + 1])})</span>` : ''}</p>` : ''}
         ${statBars(C.s)}<div class="gx-bars">${EN.map(([k, n, col]) => bar(n, C.en[k], 100, col)).join('')}</div>
         ${rel ? `<div class="gx-rel mono">${rel}</div>` : ''}${C.spouse ? `<p class="gx-note">💍 Bạn đời: ${E(C.spouse)} · 👶 ${C.kidn.length ? E(C.kidn.join(', ')) : C.kids + ' con'}</p>` : ''}</div>
         <div style="margin-top:14px">${liveBook(C)}</div></div></div>`;
@@ -1528,11 +2063,15 @@
     const C = G.life;
     if (!C) return `<div class="gx-pn"><p class="gx-note">Hãy chào đời trước – Phòng Gene hiển thị cơ thể của nhân vật đang sống.</p></div>`;
     const bySlot = Object.fromEntries(C.genes.map(g => [GENE[g][1], g]));
+    const free = carRk(C, 'scholar') >= 3;
     return `<div class="gx-dna"><div class="gx-pn"><div class="gx-h"><h4>🔬 Các vị trí dung nhập cơ thể</h4><span class="gx-luck ${C.mut >= 60 ? 'lo' : C.mut >= 30 ? 'md' : 'hi'} mono">Ổn định gene ${100 - C.mut}%</span></div>
-      <div class="gx-slots">${SLOT.filter(x => bySlot[x[0]]).map(([k, ic, n]) => { const g = bySlot[k]; return `<div class="gx-slot" style="border-color:rgba(0,229,255,.3)"><i>${ic}</i><div class="t"><small class="mono">${n}</small><b>${E(GENE[g][0])}</b><span class="gx-note" style="margin:0;display:block">${E(GENE[g][5])}</span></div>
-        ${C.ph === 'act' ? `<button class="gx-btn ghost" data-g="cut" data-k="${g}" ${C.gold < 30 ? 'disabled title="Cần 30 vàng"' : ''} style="min-height:32px;padding:0 10px;font-size:12px">✂ Tách</button>` : ''}</div>`; }).join('') || '<p class="gx-note" style="margin:0">Cơ thể còn nguyên bản – chưa dung nhập gene nào.</p>'}</div>
+      <div class="gx-dk" style="margin-bottom:10px"><b style="color:#fff">🧬 Ô gene: ${fusedOf(C).length}/${geneCap(C)}</b>
+        <p class="gx-note" style="margin:4px 0 0">= 1 + Tương thích gen ÷ 8 (${Math.floor(C.s.gen / 8)})${C.tr.includes('empty') ? ' + 1 Phế Thể' : ''}${carRk(C, 'scholar') >= 2 ? ' + 1 phòng thí nghiệm' : ''}${C.fruit ? ' + <b style="color:var(--gr)">5 Vạn Huyết Quả</b>' : ''}.
+        Gene có cánh, đuôi, mai, chi cần đủ <b>Thể</b>; mắt, hạt nhân, hào quang cần đủ <b>Trí</b>. ${C.fruit ? 'Đã ăn Vạn Huyết Quả: ghép được gene mọi chủng tộc và dung hợp thêm một huyết mạch.' : 'Gene khác loài (cơ giới, hạt nhân, tinh tú) và dung hợp huyết mạch cần <b style="color:var(--go)">Vạn Huyết Quả</b> – chỉ mọc ở Chiến Trường Vạn Tộc.'}</p></div>
+      <div class="gx-slots">${SLOT.filter(x => bySlot[x[0]]).map(([k, ic, n]) => { const g = bySlot[k], inn = innateOf(C).includes(g); return `<div class="gx-slot" style="border-color:${inn ? 'rgba(234,179,8,.35)' : 'rgba(0,229,255,.3)'}"><i>${ic}</i><div class="t"><small class="mono">${n}${inn ? ' · bẩm sinh' : ''}</small><b>${E(GENE[g][0])}</b><span class="gx-note" style="margin:0;display:block">${E(GENE[g][5])}</span></div>
+        ${C.ph === 'act' && !inn ? `<button class="gx-btn ghost" data-g="cut" data-k="${g}" ${!free && C.gold < 30 ? 'disabled title="Cần 30 vàng"' : ''} style="min-height:32px;padding:0 10px;font-size:12px">✂ Tách</button>` : ''}</div>`; }).join('') || '<p class="gx-note" style="margin:0">Cơ thể còn nguyên bản – chưa dung nhập gene nào.</p>'}</div>
       <span class="gx-lab mono">Vị trí còn trống</span><div class="gx-chips" style="margin:0">${SLOT.filter(x => !bySlot[x[0]]).map(([, ic, n]) => `<span class="gx-chip" style="color:#7b8499">${ic} ${n}</span>`).join('')}</div>
-      <p class="gx-note">Gene có được qua sự kiện, khám phá, thú hồn, chợ đen… Tách gene tốn 30 vàng và 10 sinh lực (chỉ khi đang chọn hoạt động trong năm).</p></div>
+      <p class="gx-note">Gene đến qua sự kiện, khám phá, thú hồn, chợ đen… Mỗi lần có cơ hội bạn chọn <b>lấy hay bỏ</b>. Tách gene tốn 30 vàng và 10 sinh lực${free ? ' (Đại Hiền Giả: miễn phí)' : ''}; gene bẩm sinh không tách được.</p></div>
     <div><div class="gx-pn"><div class="gx-h"><h4 style="font-size:13px">👁 Live mutation preview</h4><small class="mono">${C.genes.length} gene · dị hóa ${C.mut}%</small></div>
         <div class="gx-stage" style="min-height:360px">${avatar(avOf(C), 260)}</div>
         <div class="gx-tiles mono"><div class="gx-tile"><small>LỰC CHIẾN</small><b style="color:var(--gr)">${power(C).toLocaleString('en-US')}</b></div><div class="gx-tile"><small>ĐỘ DỊ BIẾN</small><b style="color:var(--pu)">${C.mut}%</b></div><div class="gx-tile"><small>SINH LỰC</small><b style="color:var(--cy)">${C.hp}</b></div></div></div>
@@ -1543,14 +2082,21 @@
         ${(n => n ? `<p class="gx-note">◇ Còn <b style="color:#fff">${n}</b> cộng hưởng chưa lộ diện – dung nhập thêm gene để khám phá.</p>` : '')(SYN.filter(([id, , gs]) => !C.flags[id] && !gs.some(g => C.genes.includes(g))).length)}</div></div></div>`;
   }
   function viewSkills() {
-    const C = G.life, q = (UI.skq || '').toLowerCase(), cats = [...new Set(SKILLS.map(s => s[3]))];
+    const C = G.life, q = (UI.skq || '').toLowerCase(), cats = [...new Set(SKILLS.map(s => s[3]))], own = C ? skillsOf(C) : [];
     const L_ = SKILLS.filter(s => (!UI.skc || s[3] === UI.skc) && (!q || (s[2] + ' ' + s[6] + ' ' + s[8]).toLowerCase().includes(q)));
-    return `<div class="gx-pn" style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between"><input class="gx-in" id="gxSkq" placeholder="🔎 Tìm dị năng…" value="${E(UI.skq || '')}" style="max-width:280px">
+    const card = s => { const on = own.includes(s), apt = C && !on && skReq(C, s), src = BAO.filter(b => b[8] === s[0]).map(b => b[2]);
+      return `<div class="gx-sk${on ? ' on' : ''}"><div class="hd"><span class="ic">${s[1]}</span><div style="flex:1;min-width:0"><h5>${E(s[2])}</h5><div class="meta">${E(s[3])} · dùng khi: ${s[7].map(t => TAGVI[t] || t).join(', ')}</div></div><span class="gx-tier ${s[4]} mono">${s[4]}</span></div>
+        <p>${E(s[8])}</p><p class="gx-note" style="margin-top:6px">${on ? '<b style="color:var(--gr)">✓ Đã thức tỉnh</b>' : `${apt ? '<b style="color:var(--go)">✦ Có tư chất</b> – ' : ''}Tư chất: ${E(s[6])}${src.length ? ` · Bảo vật: ${E(src.join(', '))}` : ''}`}</p></div>`; };
+    const bag = C && C.inv && C.inv.length ? `<div class="gx-pn"><div class="gx-h"><h4>🎒 Túi bảo vật (${C.inv.length}/8)</h4><small class="mono">${C.ph === 'act' ? 'Dùng lúc đang chọn hoạt động' : 'Quay lại màn chọn hoạt động để dùng'}</small></div>
+      <div class="gx-sks">${C.inv.map((id, i) => { const b = BAOM[id]; return `<div class="gx-sk"><div class="hd"><span class="ic">${b[1]}</span><div style="flex:1;min-width:0"><h5>${E(b[2])}</h5><div class="meta">${E(b[3])} · ${E(b[4])}</div></div></div>
+        <p>${E(b[5])}</p><p class="gx-note">${E(statTxt(Object.fromEntries(Object.entries(b[7]).filter(([k]) => SN[k] || EN.some(e => e[0] === k)))))}${b[8] ? ` · thức tỉnh <b style="color:var(--cy)">${E(SKM[b[8]][2])}</b>` : ''}</p>
+        <div class="gx-row"><button class="gx-btn" data-g="use" data-k="${i}" ${C.ph !== 'act' || (C.offers && C.offers.length) ? 'disabled' : ''}>${b[6] === 'nuot' ? '🍽 Nuốt' : '🔗 Dung hợp'}</button></div></div>`; }).join('')}</div></div>` : '';
+    return `${bag}<div class="gx-pn" style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between"><input class="gx-in" id="gxSkq" placeholder="🔎 Tìm dị năng…" value="${E(UI.skq || '')}" style="max-width:280px">
         <div class="gx-seg" style="flex-wrap:wrap">${[['', 'Tất cả'], ...cats.map(c => [c, c])].map(([k, n]) => `<button data-g="skc" data-k="${E(k)}" class="${(UI.skc || '') === k ? 'on' : ''}">${E(n)}</button>`).join('')}</div></div>
-      <p class="gx-note" style="margin:10px 2px">Dị năng tự thức tỉnh khi đủ điều kiện. Trong sự kiện phù hợp, dị năng hiện thành lựa chọn ⚡ chắc chắn thành công.${C ? ` Đang có <b style="color:var(--cy)">${skillsOf(C).length}/${SKILLS.length}</b>.` : ''}</p>
-      <div class="gx-sks">${L_.map(s => { const on = C && skillsOf(C).includes(s);
-        return `<div class="gx-sk${on ? ' on' : ''}"><div class="hd"><span class="ic">${s[1]}</span><div style="flex:1;min-width:0"><h5>${E(s[2])}</h5><div class="meta">${E(s[3])} · dùng khi: ${s[7].map(t => TAGVI[t] || t).join(', ')}</div></div><span class="gx-tier ${s[4]} mono">${s[4]}</span></div>
-          <p>${E(s[8])}</p><p class="gx-note" style="margin-top:6px">${on ? '<b style="color:var(--gr)">✓ Đã thức tỉnh</b>' : `🔒 Điều kiện: ${E(s[6])}`}</p></div>`; }).join('')}</div>`;
+      <p class="gx-note" style="margin:10px 2px">Dị năng <b>không tự có</b>: chỉ thức tỉnh khi gặp biến cố (cận kề cái chết, chiến loạn, dịch bệnh…) – ưu tiên dị năng bạn có tư chất – hoặc khi nuốt / dung hợp bảo vật. Mỗi người chứa được 2 dị năng (Ý chí ≥ 14: 3), Dị Nhân chứa được 5.${C ? ` Đang có <b style="color:var(--cy)">${own.length}/${skillCap(C)}</b>.` : ''}</p>
+      <div class="gx-sks">${L_.map(card).join('')}</div>
+      <div class="gx-pn" style="margin-top:14px"><div class="gx-h"><h4>📦 Bảng bảo vật</h4><small class="mono">${BAO.length} món · thực vật · động vật · vũ khí · năng lượng</small></div>
+        ${['Thực vật', 'Động vật', 'Vũ khí', 'Năng lượng'].map(kd => `<span class="gx-lab mono">${kd}</span><div class="gx-sks">${BAO.filter(b => b[3] === kd).map(b => `<div class="gx-sk"><div class="hd"><span class="ic">${b[1]}</span><div style="flex:1;min-width:0"><h5>${E(b[2])}</h5><div class="meta">${b[6] === 'nuot' ? 'Nuốt' : 'Dung hợp'}${b[8] ? ` → ${E(SKM[b[8]][2])}` : ''}</div></div><span class="gx-tier ${b[4] === 'Thần' ? 'SSR' : ''} mono">${E(b[4])}</span></div><p>${E(b[5])}</p></div>`).join('')}</div>`).join('')}</div>`;
   }
   function viewLore() {
     const sel = LORE.find(l => l[0] === UI.lore), opened = sel && G.lore.includes(sel[0]);
@@ -1564,18 +2110,35 @@
         <div class="gx-logs">${LORE.map(([id, t, , hint], i) => { const on = G.lore.includes(id); return `<button class="gx-lg${on ? '' : ' lock'}${UI.lore === id ? ' on' : ''}" data-g="lore" data-k="${id}"><small class="mono">LOG_#${String(i + 1).padStart(3, '0')}${on ? '' : ' · LOCKED'}</small><b>${on ? E(t) : '🔒 ???'}</b></button>`; }).join('')}</div>
         <div class="gx-term mono">${sel ? (opened ? `<span style="color:var(--cy)">[GIẢI MÃ THÀNH CÔNG: ${E(sel[1])}]</span>\n\n${E(sel[2])}` : `<span style="color:var(--re)">[ACCESS DENIED]</span>\nGợi ý mở khóa: ${E(sel[3])}`) : '<span style="color:#5b6377">// Chọn một bản ghi ở trên để giải mã…</span>'}</div></div>`;
   }
-  function viewBooks() {
-    if (!G.books.length) return `<div class="gx-hero"><h4>📚 Thư Viện Nhân Sinh</h4><p>Chưa có cuốn sách nào. Hãy sống trọn một đời!</p></div>`;
-    const b = G.books[UI.book || 0] || G.books[0];
-    return `<div class="gx-books">${G.books.map((x, i) => `<button class="gx-bk${x === b ? ' on' : ''}" data-g="book" data-k="${i}"><b>${E(x.t)}</b><small class="mono">${E(x.n)} · ${x.age} tuổi</small><small>${E(x.end)}</small><small class="mono">${E(x.at)}</small></button>`).join('')}</div>
-      <div class="gx-book"><div class="gx-two" style="grid-template-columns:200px minmax(0,1fr)"><div class="gx-stage">${avatar(b.av, 180)}</div><div>
+  // Thư viện: mỗi cuốn sách nhiều trang (bìa + bảng nhân sinh → tự truyện → từng giai đoạn đời → văn bia); sách cũ hơn 12 cuốn lưu tóm tắt
+  function bookPages(b) {
+    const kv = (k, v, col) => v === '' || v == null ? '' : `<div><span>${k}</span><b${col ? ` style="color:${col}"` : ''}>${E(v)}</b></div>`;
+    const genes = ((b.av && b.av.genes) || []).map(g => GENE[g] ? GENE[g][0] : '').filter(Boolean);
+    const P = [`<div class="gx-two" style="grid-template-columns:200px minmax(0,1fr)"><div class="gx-stage">${avatar(b.av || {}, 180)}</div><div>
         <span class="kick mono" style="text-align:left">— THỦ BẢN HUYỀN THOẠI —</span><h3 style="text-align:left">${E(b.t)}</h3><div class="by mono" style="text-align:left">Tác giả: ${E(b.n)} · ${E(b.at)}</div>
-        <div class="kv mono"><div><span>Chủng tộc / huyết mạch:</span><b>${E(RACE[b.r] ? RACE[b.r][1] : '')} · ${E(b.ln)}</b></div><div><span>Chức vị cao nhất:</span><b style="color:var(--go)">${E(b.car)}</b></div>
-          <div><span>Thọ mệnh:</span><b style="color:#fff">${b.age} tuổi</b></div><div><span>Kết cục:</span><b style="color:#fff">${E(b.end)}</b></div>${b.ps ? `<div><span>Tính cách:</span><b style="color:#93c5fd">${E(b.ps)}</b></div>` : ''}</div></div></div>
-        ${b.sum ? `<h6>✒ Tóm tắt tự truyện</h6><p><i>“${E(b.sum)}”</i></p>` : ''}
-        ${(b.ch || []).map(([t, ls]) => `<h6>${E(t)}</h6><ul>${ls.map(l => `<li>${E(l)}</li>`).join('')}</ul>`).join('')}
-        ${b.ep ? `<p class="gx-ep">“${E(b.ep)}”</p>` : ''}
-        <div class="gx-row"><button class="gx-btn gold" data-g="export" data-k="${G.books.indexOf(b)}">⤓ Xuất sách (.txt)</button></div></div>`;
+        <h6>📊 Bảng nhân sinh</h6><div class="kv mono">${kv('Chủng tộc', RACE[b.r] ? RACE[b.r][1] : '')}${kv('Nơi sinh', ORIGIN[b.o] ? ORIGIN[b.o][1] : '')}${kv('Huyết mạch', b.ln)}${kv('Chức vị cao nhất', b.car, 'var(--go)')}
+          ${kv('Thọ mệnh', b.age + ' tuổi', '#fff')}${kv('Kết cục', b.end, '#fff')}${kv('Nguyên nhân', b.cause || '')}${kv('Tính cách', b.ps || '', '#93c5fd')}${kv('Danh vọng · Nhân tính · Dị hóa', `${b.fame || 0} · ${b.hum != null ? b.hum : '?'} · ${b.mut || 0}%`)}
+          ${kv('Gene', genes.join(', ') || '—')}${kv('Dị năng', (b.sk || []).join(', ') || '—', 'var(--cy)')}${kv('Bạn đời', b.sp || '—')}${kv('Con cái', (b.kn && b.kn.length ? b.kn.join(', ') : b.kids ? b.kids + ' con' : '—'))}
+          ${kv('Vàng để lại', b.gold != null ? b.gold : '')}${kv('Thời thế đã sống qua', (b.eras || []).join(' → '))}${b.fruit ? kv('Vạn Huyết Quả', 'đã nếm', 'var(--gr)') : ''}${b.phuc ? kv('Phúc duyên để lại', '+' + b.phuc, 'var(--go)') : ''}</div></div></div>`];
+    P.push(`<h6>✒ Tóm tắt tự truyện</h6><p><i>“${E(b.sum || b.end)}”</i></p>${(b.deeds || []).length ? `<h6>🏅 Dấu ấn</h6><ul>${b.deeds.map(d => `<li>${E(d)}</li>`).join('')}</ul>` : ''}`);
+    (b.ch || []).forEach(([t, ls]) => P.push(`<h6>${E(t)}</h6><ul>${ls.map(l => `<li>${E(l)}</li>`).join('')}</ul>`));
+    P.push(`<h6>🪦 Văn bia</h6>${b.ep ? `<p class="gx-ep">“${E(b.ep)}”</p>` : '<p class="gx-note">Không ai khắc gì lên mộ.</p>'}<p class="gx-note" style="text-align:center">— Hết —</p>`);
+    return P;
+  }
+  function viewBooks() {
+    if (!G.books.length && !G.arch.length) return `<div class="gx-hero"><h4>📚 Thư Viện Nhân Sinh</h4><p>Chưa có cuốn sách nào. Hãy sống trọn một đời!</p></div>`;
+    const srt = UI.bks || 'new', idx = G.books.map((x, i) => i);
+    if (srt === 'age') idx.sort((a, b) => G.books[b].age - G.books[a].age); else if (srt === 'fame') idx.sort((a, b) => (G.books[b].fame || 0) - (G.books[a].fame || 0));
+    const bi = G.books[UI.book || 0] ? UI.book || 0 : 0, b = G.books[bi];
+    let body = '';
+    if (b) { const P = bookPages(b), pg = Math.min(UI.bp || 0, P.length - 1); UI.bp = pg;
+      body = `<div class="gx-book">${P[pg]}<div class="gx-pager"><button class="gx-btn ghost" data-g="bp" data-k="-1" ${pg === 0 ? 'disabled' : ''}>◀</button><span class="mono">Trang ${pg + 1}/${P.length}</span>
+        <button class="gx-btn ghost" data-g="bp" data-k="1" ${pg >= P.length - 1 ? 'disabled' : ''}>▶</button></div>
+        <div class="gx-row"><button class="gx-btn gold" data-g="export" data-k="${bi}">⤓ Xuất sách (.txt)</button></div></div>`; }
+    return `<div class="gx-pn"><div class="gx-h"><h4>📚 Thư Viện Nhân Sinh</h4><div class="gx-seg">${[['new', 'Mới nhất'], ['age', 'Thọ lâu'], ['fame', 'Danh vọng']].map(([k, n]) => `<button data-g="bks" data-k="${k}" class="${srt === k ? 'on' : ''}">${n}</button>`).join('')}</div></div>
+      <div class="gx-books">${idx.map(i => { const x = G.books[i]; return `<button class="gx-bk${i === bi ? ' on' : ''}" data-g="book" data-k="${i}"><b>${E(x.t)}</b><small class="mono">${E(x.n)} · ${x.age} tuổi</small><small>${E(x.end)}</small><small class="mono">${E(x.at)}</small></button>`; }).join('')}</div>
+      ${G.arch.length ? `<details class="gx-arch"><summary>🗄 Kho lưu trữ: ${G.arch.length} cuốn cũ (tóm tắt)</summary><ul>${G.arch.map(x => `<li><b>${E(x.t)}</b> – ${E(x.n)}, ${x.age} tuổi · ${E(x.end)} <span class="mono" style="color:var(--mu)">${E(x.at || '')}</span></li>`).join('')}</ul></details>` : ''}</div>
+      ${body}`;
   }
   let root = null;
   // cuộn về đầu khung game (khung toàn màn hình tự cuộn riêng)
@@ -1595,21 +2158,29 @@
     if (g === 'tab') { UI.tab = k; render(); return toTop(); }
     if (g === 'max') { UI.max = !UI.max; return render(); }
     if (g === 'exit') { UI.max = false; const bx = root.closest('#fnBox'); if (bx) { bx.classList.remove('gx-max', 'gx-wide'); const c = bx.querySelector('[data-f="close"]'); if (c) c.click(); } return; }
-    if (g === 'book') { UI.book = +k; return render(); }
+    if (g === 'book') { UI.book = +k; UI.bp = 0; return render(); }
     if (g === 'export') { const bk = G.books[+k]; if (bk) exportBook(bk); return; }
     if (g === 'lore') { UI.lore = k; return render(); }
     if (g === 'skc') { UI.skc = k; return render(); }
-    if (g === 'cut') { const C = G.life; if (!C || C.gold < 30) return; const chips = []; removeGene(C, k, chips); apply(C, { gold:-30, hp:-10, hum:5 }, chips); save(G); return render(); }
+    if (g === 'cut') { const C = G.life, free = carRk(C, 'scholar') >= 3; if (!C || C.ph !== 'act' || innateOf(C).includes(k) || (!free && C.gold < 30)) return;
+      const chips = []; removeGene(C, k, chips); apply(C, free ? { hum:5 } : { gold:-30, hp:-10, hum:5 }, chips); UI.note = { txt:'', chips }; save(G); return render(); }
+    if (g === 'use' && G.life) return useBao(+k);
+    if (g === 'offer' && G.life) return resolveOffer(k);
+    if (g === 'bp') { UI.bp = Math.max(0, (UI.bp || 0) + (+k)); return render(); }
+    if (g === 'bks') { UI.bks = k; return render(); }
     if (!G.life || UI.tab !== 'life') {
       if (UI.tab !== 'life') return;
       const d = UI.cre || (UI.cre = newDraft()), nm = root.querySelector('#gxName'); if (nm) d.n = nm.value.trim() || d.n;
-      if (g === 'sex') d.g = k; else if (g === 'hair') d.hair = +k; else if (g === 'org') { d.o = k; d.roll = null; } else if (g === 'race') { d.r = k; d.roll = null; }
-      else if (g === 'roll') { if (d.roll) d.rr--; roll(d); }
+      if (g === 'sex') d.g = k; else if (g === 'hair') d.hair = +k;
+      else if (g === 'roll') { if (d.roll) { if (d.rr <= 0) return; d.rr--; if (d.lg > 0) d.lg--; else G.phuc = Math.max(0, (G.phuc || 0) - 1); }
+        roll(d); G.draft = d; save(G); }
       else if (g === 'born' && d.roll) { birth(d); UI.tab = 'life'; }
       return render();
     }
     const C = G.life;
+    if ((g === 'act' || g === 'auto') && C.ph === 'act' && C.offers && C.offers.length) return;      // trả lời lời mời gene / dị năng trước
     if (g === 'act' && C.ph === 'act') return doAct(k);
+    if (g === 'auto' && C.ph === 'act') return autoLive();
     if (g === 'pick' && C.ph === 'ev') return choose(+k);
     if (g === 'skill' && C.ph === 'ev') return useSkill(k);
     if (g === 'nm') return choose(+k, true);
@@ -1626,6 +2197,6 @@
   window.GenesisGame = {
     mount(el) { root = el; const bx = el.closest('#fnBox'); if (bx) bx.classList.add('gx-wide'); ensureCss(); G = load(); render(); },
     summary() { const g = load(); return g.life ? `${g.life.n} · ${g.life.age} tuổi` : g.books.length ? `${g.books.length} cuốn sách · ${g.lives} kiếp` : 'Chưa bắt đầu'; },
-    debug: () => ({ G:load(), UI, EV, LORE, avatar, avatarAdult, avatarKid, eligible, SKILLS, skillsOf }),
+    debug: () => ({ G:load(), UI, EV, LORE, avatar, avatarAdult, avatarKid, eligible, SKILLS, skillsOf, BAO, geneCap, skillCap, fusedOf, eraOf }),
   };
 })();
