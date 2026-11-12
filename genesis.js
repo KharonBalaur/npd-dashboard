@@ -42,7 +42,7 @@
     ['🌸', 'Hoa nở trái mùa', { mi:2 }, 'Ai thấy bạn cũng muốn bế.'], ['🦉', 'Cú đậu đầu nôi', { tri:1, van:1 }, 'Người già bảo: đứa bé này nhìn thấu ban đêm.'],
   ];
   const TRAITS = {
-    empty: ['🫙', 'Phế Thể · Bình Chứa Rỗng', 'Thể yếu, nhưng gene gần như không bị đào thải.'],
+    empty: ['🏺', 'Phế Thể · Bình Chứa Rỗng', 'Thể yếu, nhưng gene gần như không bị đào thải.'],
     sick:  ['🤒', 'Bệnh từ nhỏ · Kháng Dịch', 'Sinh lực thấp lúc nhỏ, nhưng kháng virus cổ rất cao.'],
     orph:  ['🍂', 'Mồ côi · Kẻ Lữ Hành', 'Không gia tộc ràng buộc, người lạ dẫn lối đến sớm.'],
     lucky: ['✨', 'Thiên Mệnh', 'Vận trên trời – sự kiện may đến thường hơn.'],
@@ -148,14 +148,14 @@
     ['🐾', 'Liên Minh Vạn Thú', 'Hoang dã', 'Thú tộc và dị nhân tự trị trong rừng sâu; chào đón ai có độ dị hóa cao.', '#00ff88'],
     ['🔬', 'Học Viện Gen', 'Khoa học', 'Nghiên cứu Ấn Mã, ghép gene thuê; coi dị nhân là mẫu vật quý.', '#a855f7'],
     ['☣', 'Con Cháu Mầm Dịch', 'Giáo phái', 'Thờ Virus Thượng Cổ, muốn dùng “bút xóa” viết lại thế giới.', '#f43f5e'],
-    ['🪙', 'Thương Hội Kim Lân', 'Tiền tài', 'Buôn bán mọi thứ – kể cả gene quái vật ở chợ đen.', '#eab308'],
+    ['💰', 'Thương Hội Kim Lân', 'Tiền tài', 'Buôn bán mọi thứ – kể cả gene quái vật ở chợ đen.', '#eab308'],
     ['🩸', 'Gia Tộc Valcrest', 'Huyết Tộc Khởi Thủy', 'Năm người con bất tử của Mẫu Thân Veyra; cai trị bóng đêm sau màn nhung.', '#f43f5e'],
     ['🥷', 'Ảnh Môn Núi Sương', 'Sát thủ', 'Nhận trẻ mồ côi, cấy Ảnh Mã; kẻ phản môn bị truy sát đến cùng.', '#94a3b8'],
   ];
   // dị năng: tự thức tỉnh khi đủ điều kiện; trong sự kiện có thẻ (tg) phù hợp sẽ hiện thêm lựa chọn “⚡ dùng dị năng”
   const has_ = (C, g) => C.genes.includes(g), lk_ = C => C.line ? C.line.k : '';
   const SKILLS = [
-    ['sk_fly', '🪽', 'Phi Hành', 'Hoang Dã', 'SR', C => ['g_eagle', 'g_bat', 'g_fly', 'g_phoenix'].some(g => has_(C, g)), 'Có cánh (đại bàng, dơi, bướm, phượng)', ['escape', 'travel', 'explore'], 'Bạn tung cánh bay vút lên, bỏ lại mọi thứ phía dưới.', { van:1 }],
+    ['sk_fly', '🦅', 'Phi Hành', 'Hoang Dã', 'SR', C => ['g_eagle', 'g_bat', 'g_fly', 'g_phoenix'].some(g => has_(C, g)), 'Có cánh (đại bàng, dơi, bướm, phượng)', ['escape', 'travel', 'explore'], 'Bạn tung cánh bay vút lên, bỏ lại mọi thứ phía dưới.', { van:1 }],
     ['sk_claw', '🐾', 'Liệt Trảo', 'Hoang Dã', 'R', C => has_(C, 'g_wolf') || has_(C, 'g_mantis') || ['wolf', 'hybrid'].includes(lk_(C)), 'Vuốt sói, lưỡi bọ ngựa hoặc máu sói', ['fight'], 'Móng vuốt xé gió – đối thủ lùi lại khiếp sợ.', { fame:3 }],
     ['sk_beast', '🦊', 'Thú Ngữ', 'Hoang Dã', 'R', C => C.en.thu >= 30 || C.o === 'tribe', 'Vạn Thú ≥ 30 hoặc lớn lên ở bộ lạc', ['nature', 'beast'], 'Bạn khẽ gọi – muông thú hiểu và đáp lời.', { thu:5 }],
     ['sk_dash', '💨', 'Phong Tốc', 'Hoang Dã', 'R', C => has_(C, 'g_cheetah'), 'Chân Báo Phong', ['escape', 'fight'], 'Bạn lao đi nhanh như một vệt gió.', { van:1 }],
@@ -698,7 +698,7 @@
     let s = JSON.stringify(g); while (s.length > 30000 && g.books.length > 3) { g.books.pop(); s = JSON.stringify(g); }   // ô Sheet tối đa ~45 000 ký tự cho cả npdFun
     d.gen = g; d.plays = d.plays && typeof d.plays === 'object' ? d.plays : {}; lsSet(KEY(), d);
   }
-  let G = null, UI = { tab:'life', cre:null, res:null, pend:null, book:0, lore:'', skq:'', skc:'' };
+  let G = null, UI = { tab:'life', cre:null, res:null, pend:null, book:0, lore:'', skq:'', skc:'', max:false };
 
   // ---------- tạo nhân vật ----------
   function newDraft() { return { n:npcName(), g:pick(['m', 'f']), o:'fish', r:'human', roll:null, rr:3 + (G.legacy && G.legacy.k === 'rr' ? 2 : 0), hair:rnd(0, 5) }; }
@@ -1261,15 +1261,17 @@
   const CSS = `
   #fnBox.gx-wide{max-width:none;width:auto}
   .gx{--bg:#0f1016;--pn:#181926;--pn2:#1e2133;--ln:#2a2e45;--tx:#cbd5e1;--mu:#8590a6;--cy:#00e5ff;--gr:#00ff88;--pu:#a855f7;--go:#eab308;--re:#f43f5e;
-    background:var(--bg);color:var(--tx);border-radius:16px;overflow:hidden;font:14px/1.5 Inter,"Segoe UI",Arial,sans-serif;border:1px solid #23263a}
+    background:var(--bg);color:var(--tx);border-radius:16px;overflow:hidden;font:14px/1.55 Inter,"Segoe UI",Roboto,Arial,sans-serif;border:1px solid #23263a;
+    -webkit-text-size-adjust:100%;text-size-adjust:100%;-webkit-font-smoothing:antialiased}
   :where(.gx) button{white-space:normal;font-family:inherit;font-size:inherit;line-height:1.3;cursor:pointer}
   .gx-btn{font-size:14px}
-  .gx .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+  /* không dùng font monospace: Menlo / Consolas thiếu chữ Việt có dấu → trình duyệt ghép font khác, chữ nhảy hoặc mất dấu */
+  .gx .mono{font-family:inherit;font-variant-numeric:tabular-nums;letter-spacing:.2px}
   .gx-top{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:12px 16px;background:rgba(24,25,38,.95);border-bottom:1px solid #23263a}
   .gx-logo{width:42px;height:42px;border-radius:12px;padding:2px;background:linear-gradient(45deg,var(--pu),var(--cy),var(--gr));box-shadow:0 0 15px rgba(0,229,255,.25);flex:none}
   .gx-logo i{display:grid;place-items:center;width:100%;height:100%;border-radius:10px;background:var(--bg);font-style:normal;font-size:20px;animation:gxSpin 12s linear infinite}
   @keyframes gxSpin{to{transform:rotate(360deg)}}
-  .gx-tt{flex:1;min-width:180px} .gx-tt h3{margin:0;font-size:17px;font-weight:800;letter-spacing:.5px;background:linear-gradient(90deg,var(--cy),var(--gr),var(--pu));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .gx-tt{flex:1;min-width:180px} .gx-tt h3{margin:0;padding-top:3px;line-height:1.45;font-size:17px;font-weight:800;letter-spacing:.5px;background:linear-gradient(90deg,var(--cy),var(--gr),var(--pu));-webkit-background-clip:text;background-clip:text;color:transparent}
   .gx-tt small{display:block;font-size:11px;color:var(--mu);letter-spacing:1px}
   .gx-badge{padding:5px 10px;border-radius:8px;background:#1f2233;border:1px solid var(--ln);font-size:11.5px;color:var(--tx)}
   .gx-nav{display:flex;overflow-x:auto;gap:2px;padding:0 10px;background:rgba(24,25,38,.95);border-bottom:1px solid #23263a;scrollbar-width:none}
@@ -1310,7 +1312,7 @@
   .gx-bar i{display:block;height:7px;border-radius:9px;background:#23263a;overflow:hidden} .gx-bar i b{display:block;height:100%;border-radius:9px}
   .gx-hud{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;margin-bottom:12px}
   .gx-hud div{padding:7px 4px;border-radius:9px;background:var(--bg);border:1px solid #262a3d;text-align:center;min-width:0}
-  .gx-hud small{display:block;font-size:10px;color:var(--mu);letter-spacing:.6px;text-transform:uppercase} .gx-hud b{display:block;font-size:13.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .gx-hud small{display:block;font-size:10px;color:var(--mu);letter-spacing:.6px;text-transform:uppercase} .gx-hud b{display:block;font-size:13.5px;line-height:1.7;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .gx-ev{padding:14px;border-radius:12px;background:var(--bg);border:1px solid #262a3d}
   .gx-ev .yr{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;font-size:12px;color:var(--go)}
   .gx-ev .yr span:last-child{padding:1px 8px;border-radius:6px;background:rgba(234,179,8,.12);border:1px solid rgba(234,179,8,.35)}
@@ -1374,8 +1376,50 @@
   .gx-rel span{color:var(--mu)} .gx-rel b{color:#fff;font-weight:600}
   @media (max-width:980px){ .gx-life,.gx-dna,.gx-two{grid-template-columns:minmax(0,1fr)} .gx-g3{grid-template-columns:minmax(0,1fr)} }
   @media (max-width:760px){ .gx-main{padding:10px} .gx-hud{grid-template-columns:repeat(3,minmax(0,1fr))} .gx-g2{grid-template-columns:minmax(0,1fr)} .gx-tiles{grid-template-columns:repeat(3,minmax(0,1fr))}
-    .gx-in{font-size:16px} .gx-opt,.gx-btn{min-height:46px} .gx-top{padding:10px} .gx-badge{display:none} }`;
-  function ensureCss() { const old = document.getElementById('gx-css'); if (old && old.dataset.v === '2') return; if (old) old.remove(); const st = document.createElement('style'); st.id = 'gx-css'; st.dataset.v = '2'; st.textContent = CSS; document.head.appendChild(st); }
+    .gx-in{font-size:16px} .gx-opt,.gx-btn{min-height:46px} .gx-badge{display:none} }
+  .gx-ic{flex:none;display:grid;place-items:center;width:38px;height:38px;border:1px solid var(--ln);border-radius:10px;background:#1f2233;color:var(--tx);font-size:16px}
+  .gx-ic:hover{border-color:var(--cy);color:var(--cy)}
+  .gx-nav button i{font-style:normal;margin-right:6px} .gx-nav .s{display:none}
+  .gx-mini{display:none}
+  /* toàn màn hình (nút ⛶ trên máy tính; luôn bật trên điện thoại) */
+  #fnBox.gx-wide.gx-max{position:fixed;inset:0;z-index:2000;max-width:none;margin:0;padding:0;border:0;border-radius:0;background:#0f1016;overflow-y:auto;overscroll-behavior:contain}
+  #fnBox.gx-max>.fn-h{display:none} #fnBox.gx-max .gx{border:0;border-radius:0;min-height:100%}
+  #fnBox.gx-max .gx-top{position:sticky;top:0;z-index:5}
+  @media (max-width:760px){
+    #fnBox.gx-wide{position:fixed;inset:0;z-index:2000;max-width:none;margin:0;padding:0;border:0;border-radius:0;background:#0f1016;
+      overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+    #fnBox.gx-wide>.fn-h{display:none}
+    #fnBox.gx-wide .gx{border:0;border-radius:0;min-height:100%;overflow:visible}
+    .gx-max-b{display:none}
+    .gx-top{position:sticky;top:0;z-index:5;gap:10px;flex-wrap:nowrap;padding:calc(8px + env(safe-area-inset-top)) max(12px,env(safe-area-inset-right)) 8px max(12px,env(safe-area-inset-left));
+      background:rgba(15,16,22,.96);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+    .gx-logo{width:34px;height:34px;border-radius:10px} .gx-logo i{font-size:16px;border-radius:8px}
+    .gx-tt{min-width:0} .gx-tt h3{font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis} .gx-tt small{font-size:10.5px;letter-spacing:.3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .gx-nav{position:fixed;left:0;right:0;bottom:0;z-index:6;gap:0;justify-content:space-around;overflow:visible;
+      padding:4px max(4px,env(safe-area-inset-right)) calc(4px + env(safe-area-inset-bottom)) max(4px,env(safe-area-inset-left));
+      background:rgba(15,16,22,.97);border-top:1px solid #2a2e45;border-bottom:0;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+    .gx-nav button{flex:1 1 0;min-width:0;min-height:52px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:4px 0;border:0;border-radius:10px;font-size:11px;line-height:1.2}
+    .gx-nav button i{margin:0;font-size:19px;line-height:1} .gx-nav button.on{background:rgba(0,229,255,.1)}
+    .gx-nav .l{display:none} .gx-nav .s{display:block;white-space:nowrap}
+    .gx-main{padding:10px max(10px,env(safe-area-inset-right)) calc(76px + env(safe-area-inset-bottom)) max(10px,env(safe-area-inset-left))}
+    .gx-pn{padding:12px;border-radius:12px} .gx-h{margin-bottom:10px;padding-bottom:8px} .gx-h h4{font-size:14px}
+    .gx-hud div{padding:6px 2px} .gx-hud b{font-size:13px}
+    .gx-ev{padding:12px} .gx-ev h5{font-size:16px;line-height:1.35} .gx-ev p{font-size:14.5px}
+    .gx-opt{font-size:14.5px;line-height:1.4} .gx-opt small{white-space:normal;text-align:right}
+    .gx-acts{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .gx-pick{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .gx-mini{display:flex;align-items:center;gap:10px;margin:0 0 10px;padding:8px 10px;border-radius:12px;background:var(--bg);border:1px solid #262a3d}
+    .gx-mini .av{flex:none;width:58px;height:58px;border-radius:12px;overflow:hidden;background:radial-gradient(circle at 50% 40%,rgba(0,229,255,.15),transparent 70%),#141622}
+    .gx-mini .av svg{display:block;margin:-2px 0 0 -12px}
+    .gx-mini b{display:block;color:#fff;font-size:15px} .gx-mini small{display:block;color:var(--mu);font-size:12px;line-height:1.4}
+    .gx-mini .hp{height:5px;margin-top:5px;border-radius:9px;background:#23263a;overflow:hidden} .gx-mini .hp i{display:block;height:100%;border-radius:9px}
+    .gx-stage svg{max-width:100%;height:auto}
+    .gx-books{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .gx-book .gx-two{grid-template-columns:minmax(0,1fr)!important} .gx-book{padding:14px}
+    .gx-sks{grid-template-columns:minmax(0,1fr)} .gx-logs{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .gx-seg{flex-wrap:wrap} .gx-tiles b{font-size:16px}
+  }`;
+  function ensureCss() { const old = document.getElementById('gx-css'); if (old && old.dataset.v === '3') return; if (old) old.remove(); const st = document.createElement('style'); st.id = 'gx-css'; st.dataset.v = '3'; st.textContent = CSS; document.head.appendChild(st); }
 
   const TAGVI = { escape:'chạy trốn', travel:'đi xa', explore:'khám phá', fight:'giao đấu', nature:'thiên nhiên', beast:'dã thú', social:'giao tiếp', love:'tình cảm', trade:'buôn bán',
     mystery:'bí ẩn', stealth:'lén lút', work:'làm việc', danger:'hiểm nguy', heal:'cứu chữa', plague:'dịch bệnh', undead:'xác sống', war:'chiến tranh', famine:'nạn đói' };
@@ -1386,16 +1430,18 @@
   const avOf = C => ({ r:C.r, g:C.g, line:C.line, genes:C.genes, hair:C.hair, car:C.car ? C.car.k : '', mut:C.mut, hp:C.hp, age:C.lifeMax > 200 ? Math.min(C.age, 40) : C.age });
   const luck = tot => tot >= 40 ? ['hi', 'GREAT'] : tot >= 30 ? ['md', 'NORMAL'] : ['lo', 'POOR'];
   const power = C => Math.round(C.s.the * 40 + C.s.tri * 25 + C.s.y * 30 + C.s.van * 15 + C.mut * 12 + EN.reduce((a, e) => a + C.en[e[0]], 0) * 3 + skillsOf(C).length * 60);
-  const SLOT = [['ears', '👂', 'Tai'], ['eyes', '👁', 'Mắt'], ['horn', '🦌', 'Sừng'], ['halo', '😇', 'Hào quang'], ['back', '🪽', 'Lưng / cánh'], ['shell', '🐢', 'Mai'], ['arm', '🦾', 'Tay'],
+  const SLOT = [['ears', '👂', 'Tai'], ['eyes', '👁', 'Mắt'], ['horn', '🦌', 'Sừng'], ['halo', '😇', 'Hào quang'], ['back', '🦅', 'Lưng / cánh'], ['shell', '🐢', 'Mai'], ['arm', '🦾', 'Tay'],
     ['blade', '🗡', 'Lưỡi cẳng tay'], ['legs', '🦵', 'Chân'], ['legs2', '🕷', 'Chi phụ'], ['tail', '🦎', 'Đuôi'], ['skin', '🐟', 'Da'], ['core', '⚛', 'Hạt nhân'], ['spore', '🍄', 'Bào tử'], ['aura', '☣', 'Virus / khí']];
 
   function topBar() {
     const C = G.life;
-    return `<div class="gx-top"><div class="gx-logo"><i>🧬</i></div><div class="gx-tt"><h3>BẢN NGUYÊN KỲ DUYÊN</h3><small class="mono">GENESIS CODEX · TIẾN HÓA THƯ</small></div>
+    return `<div class="gx-top"><div class="gx-logo"><i>🧬</i></div><div class="gx-tt"><h3>BẢN NGUYÊN KỲ DUYÊN</h3><small class="mono">GENESIS CODEX · TIẾN HÓA THƯ${C ? ` · ${E(C.n)}, ${C.age} tuổi` : ''}</small></div>
       <span class="gx-badge mono">☯ Kiếp thứ ${G.lives + (C ? 0 : 1)}</span><span class="gx-badge mono" style="color:var(--go)">📜 Huyết Sử ${G.lore.length}/${LORE.length}</span>
-      ${C ? `<span class="gx-badge mono" style="color:var(--gr)">${ERAS[eraOf(C)][0]} ${ERAS[eraOf(C)][1]}</span>` : ''}</div>
-      <nav class="gx-nav">${[['life', G.life ? '⏳ 1. Cuộc Đời' : '👶 1. Chào Đời'], ['dna', '🧪 2. Phòng Gene'], ['skills', '⚡ 3. Dị Năng'], ['lore', '📜 4. Thế Giới & Huyết Sử'], ['books', `📚 5. Thư Viện ${G.books.length}`]]
-        .map(([k, n]) => `<button data-g="tab" data-k="${k}" class="${UI.tab === k ? 'on' : ''}">${n}</button>`).join('')}</nav>`;
+      ${C ? `<span class="gx-badge mono" style="color:var(--gr)">${ERAS[eraOf(C)][0]} ${ERAS[eraOf(C)][1]}</span>` : ''}
+      <button class="gx-ic gx-max-b" data-g="max" title="${UI.max ? 'Thu nhỏ' : 'Toàn màn hình'}">${UI.max ? '🗗' : '⛶'}</button><button class="gx-ic" data-g="exit" title="Thoát game">✕</button></div>
+      <nav class="gx-nav">${[['life', G.life ? '⏳' : '👶', G.life ? '1. Cuộc Đời' : '1. Chào Đời', G.life ? 'Cuộc đời' : 'Chào đời'], ['dna', '🧪', '2. Phòng Gene', 'Gene'], ['skills', '⚡', '3. Dị Năng', 'Dị năng'],
+        ['lore', '📜', '4. Thế Giới & Huyết Sử', 'Thế giới'], ['books', '📚', `5. Thư Viện ${G.books.length}`, 'Thư viện']]
+        .map(([k, ic, n, sh]) => `<button data-g="tab" data-k="${k}" class="${UI.tab === k ? 'on' : ''}"><i>${ic}</i><span class="l">${n}</span><span class="s">${sh}</span></button>`).join('')}</nav>`;
   }
   function statBars(s) { return `<div class="gx-bars">${STATS.map(([k, n, ic]) => bar(`${ic} ${n}`, s[k], 20, SCOL[k])).join('')}</div>`; }
 
@@ -1459,13 +1505,16 @@
       main = `<div class="gx-ev"><h5>📕 ${E(title(C))}</h5><p>Kết cục: <b style="color:var(--go)">${E(ending(C))}</b> · ${E(C.death || '')}</p>
         <span class="gx-lab mono">Văn bia (một câu khắc lên mộ)</span><input class="gx-in" id="gxEp" maxlength="120" placeholder="vd: Tôi đã sống, đã thương, đã mọc đuôi rồng.">
         <span class="gx-lab mono">Di sản cho đời sau (chọn 1)</span>
-        <div class="gx-pick">${[['gene', '🧬 Một gene của đời này', C.genes.length ? 'Đời sau thừa hưởng ngẫu nhiên 1 gene bạn đang có.' : 'Đời này chưa có gene nào.'], ['rr', '🎲 +2 lượt gieo lại', 'Chọn định mệnh kỹ hơn.'], ['gold', '🪙 +40 vàng', 'Khởi đầu khá giả hơn.'], ['nm', '☯ +1 Nghịch Mệnh', 'Thêm một lần lật kèo số phận.']]
+        <div class="gx-pick">${[['gene', '🧬 Một gene của đời này', C.genes.length ? 'Đời sau thừa hưởng ngẫu nhiên 1 gene bạn đang có.' : 'Đời này chưa có gene nào.'], ['rr', '🎲 +2 lượt gieo lại', 'Chọn định mệnh kỹ hơn.'], ['gold', '💰 +40 vàng', 'Khởi đầu khá giả hơn.'], ['nm', '☯ +1 Nghịch Mệnh', 'Thêm một lần lật kèo số phận.']]
           .map(([k, n, sub]) => `<button class="gx-pk${UI.leg === k ? ' on' : ''}" data-g="leg" data-k="${k}" ${k === 'gene' && !C.genes.length ? 'disabled' : ''}><b>${n}</b><small>${sub}</small></button>`).join('')}</div>
         <div class="gx-row"><button class="gx-btn gold" data-g="close">📚 Đóng sách & cất vào thư viện</button></div></div>`;
     }
     const rel = Object.entries(C.npc || {}).filter(([, v]) => v).map(([k, v]) => `<div><span>${NPCR[k][0]} ${NPCR[k][1]}</span><b>${E(v.n)}${v.st === 'dead' ? ' ✝' : v.st === 'gone' ? ' (đã xa)' : ` · ${v.aff >= 40 ? 'thân thiết' : v.aff >= 10 ? 'quý mến' : v.aff > -10 ? 'bình thường' : v.aff > -40 ? 'không ưa' : 'thù hận'}`}</b></div>`).join('');
     const lgs = C.log.slice(-18).reverse();
-    return `<div class="gx-life"><div style="min-width:0"><div class="gx-pn"><div class="gx-h"><h4>⏳ Mô Phỏng Cuộc Đời</h4><small class="mono">Mỗi lựa chọn viết thêm một dòng vào Bản Nguyên Thư</small></div>${hud}${main}</div>
+    const mini = `<div class="gx-mini"><div class="av">${avatar(avOf(C), 82)}</div><div style="min-width:0;flex:1"><b>${E(C.n)}</b>
+      <small>${C.age} tuổi · ${E(lineName(C))} · ${E(careerName(C))}</small><small>${persona(C).map(p => p[0] + ' ' + p[1]).join(' · ')} · ☯ ${C.nm}</small>
+      <div class="hp"><i style="width:${clamp(C.hp, 0, 100)}%;background:${C.hp < 30 ? 'var(--re)' : C.hp < 60 ? 'var(--go)' : 'var(--gr)'}"></i></div></div></div>`;
+    return `<div class="gx-life"><div style="min-width:0">${mini}<div class="gx-pn"><div class="gx-h"><h4>⏳ Mô Phỏng Cuộc Đời</h4><small class="mono">Mỗi lựa chọn viết thêm một dòng vào Bản Nguyên Thư</small></div>${hud}${main}</div>
         <div class="gx-pn"><div class="gx-h" style="margin-bottom:8px"><h4 style="font-size:13px">📜 Dòng lịch sử cuộc đời</h4></div><ul class="gx-log mono">${lgs.map(l => `<li><b>[${l[0]}t]</b>${E(l[1])}</li>`).join('')}</ul></div></div>
       <div style="min-width:0"><div class="gx-pn"><div class="gx-h"><div><p class="gx-nm">${E(C.n)}</p><div class="gx-sub mono">${E(RACE[C.r][1])} · ${E(lineName(C))} · ${E(careerName(C))}</div></div>
           <span class="gx-luck ${C.hp < 30 ? 'lo' : C.hp < 60 ? 'md' : 'hi'} mono">HP ${C.hp}</span></div>
@@ -1529,17 +1578,23 @@
         <div class="gx-row"><button class="gx-btn gold" data-g="export" data-k="${G.books.indexOf(b)}">⤓ Xuất sách (.txt)</button></div></div>`;
   }
   let root = null;
+  // cuộn về đầu khung game (khung toàn màn hình tự cuộn riêng)
+  function toTop() { const bx = root && root.closest('#fnBox'); if (!bx) return; const st = window.getComputedStyle(bx).position === 'fixed';
+    if (st) bx.scrollTop = 0; else { const r = bx.getBoundingClientRect(); if (r.top < 0) window.scrollBy(0, r.top - 70); } }
   function render() {
     if (!root || !root.isConnected) return;
     G = load(); ensureCss();
     const t = UI.tab;
+    const bx = root.closest('#fnBox'); if (bx) bx.classList.toggle('gx-max', !!UI.max);
     root.innerHTML = `<div class="gx">${topBar()}<div class="gx-main">${t === 'lore' ? viewLore() : t === 'books' ? viewBooks() : t === 'dna' ? viewDna() : t === 'skills' ? viewSkills() : G.life ? viewLife() : viewCreate()}
       <p class="gx-note">Lưu tự động theo tài khoản. Thế giới, tên riêng và cốt truyện là nội dung tự viết, lấy cảm hứng từ mô-típ dân gian / thể loại.</p></div></div>`;
   }
   function onClick(e) {
     const b = e.target.closest('[data-g]'); if (!b || !root || !root.contains(b) || b.disabled) return;
     const g = b.dataset.g, k = b.dataset.k; G = load();
-    if (g === 'tab') { UI.tab = k; return render(); }
+    if (g === 'tab') { UI.tab = k; render(); return toTop(); }
+    if (g === 'max') { UI.max = !UI.max; return render(); }
+    if (g === 'exit') { UI.max = false; const bx = root.closest('#fnBox'); if (bx) { bx.classList.remove('gx-max', 'gx-wide'); const c = bx.querySelector('[data-f="close"]'); if (c) c.click(); } return; }
     if (g === 'book') { UI.book = +k; return render(); }
     if (g === 'export') { const bk = G.books[+k]; if (bk) exportBook(bk); return; }
     if (g === 'lore') { UI.lore = k; return render(); }

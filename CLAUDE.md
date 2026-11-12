@@ -100,7 +100,11 @@ Ngôn ngữ giao diện: tiếng Anh / tiếng Việt; trao đổi với chủ d
   Nhân vật = SVG: avatar() → dưới 13 tuổi avatarKid (doodle: viền đậm, thân tròn, mắt chấm), từ 13 tuổi avatarAdult (tỉ lệ người
   lớn, mắt hạnh nhân, lông mày, mũi, môi; áo choàng / quan phục / áo đạo sĩ / trang phục nghề; mọi gene vẽ chi tiết + đường khâu
   stitch(); dị hóa ≥ 40 gân, ≥ 60 mắt thứ ba, ≥ 80 nét xoáy; HP < 30 băng bó; tuổi ≥ 60 tóc bạc + gậy, trừ huyết mạch bất tử
-  – thọ > 200 thì hình dừng ở 40 tuổi). Nút data-g; CSS tự chèn (#gx-css, data-v).
+  – thọ > 200 thì hình dừng ở 40 tuổi). Nút data-g; CSS tự chèn (#gx-css, data-v – sửa CSS thì tăng data-v).
+  Điện thoại (≤ 760 px): #fnBox.gx-wide phủ toàn màn hình (fixed, z-index 2000, tự cuộn), thanh trên dính, tab chuyển xuống
+  đáy (nhãn ngắn), thẻ nhân vật thu gọn .gx-mini, nút ✕ (data-g="exit") đóng game. Máy tính: nút ⛶ (UI.max → #fnBox.gx-max).
+  Không dùng font monospace cho chữ Việt (Menlo / Consolas thiếu dấu → chữ nhảy, mất dấu); .mono = cùng font + số đều.
+  Chỉ dùng emoji ≤ Unicode 12 (máy cũ / Windows hiện ô vuông với emoji mới).
   Lưu npdFun@user.gen {v:1, life, books (≤ 12), lore, lives, legacy} – giữ dưới 30 000 ký tự (ô Sheet ≤ 45 000 cho cả npdFun;
   C.log giữ 70 dòng). Đời đang dở từ bản cũ: upgrade(C) chỉ thêm trường (al, npc, eras, deeds, kidn), không đổi id sự kiện cũ.
   Nội dung tự viết, chỉ lấy cảm hứng mô-típ dân gian / thể loại (không dùng tên riêng / nhân vật của tác phẩm có bản quyền).
