@@ -87,7 +87,7 @@ Ngôn ngữ giao diện: tiếng Anh / tiếng Việt; trao đổi với chủ d
   thế lực FACTIONS, nhánh huyết mạch, nhật ký mật mã LORE), books (Thư Viện + xuất .txt exportBook).
   Gieo định mệnh (7 nơi sinh, 4 chủng tộc, giới tính, màu tóc, 6 chỉ số, điềm sinh, đặc điểm, Nghịch Mệnh cho người kém may)
   → mỗi lượt chọn hoạt động ACTS + sự kiện đời (EV: {id, a:[tuổi], w, if, once, tg:[thẻ], t, d, c:[{t, if, chk:[chỉ số, độ khó],
-  ok, no, r, rf}]}; t / d có chỗ trống {ban} {dich} {su} {tinh} {spouse} {kid} {place} – tx()) hoặc gặp gỡ ngẫu nhiên ENC (22% từ
+  ok, no, r, rf}]}; chữ có chỗ trống {ban} {dich} {su} {tinh} {con} {o} {banx} {dichx} {kidgene} – tx(); ENC dùng {p}) hoặc gặp gỡ ngẫu nhiên ENC (22% từ
   12 tuổi, C.ev = {enc, p, who}). Đời khác nhau nhờ: thời thế 40 thập kỷ C.eras (ERAS: thái bình, chiến loạn, đại dịch, nạn đói,
   Huyết Nguyệt, thịnh thế, đại hàn – lọc sự kiện, nhân hệ số hoạt động), nhân vật phụ C.npc {ban, dich, su, tinh: {n, aff, st, role}}
   (npcTick có tin tức / sự kiện riêng), tính cách C.al {g thiện, l trật tự, b liều lĩnh} → persona(), dấu ấn C.deeds, con C.kidn,
