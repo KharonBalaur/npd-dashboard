@@ -1874,6 +1874,8 @@
   .gx-pager{display:flex;align-items:center;justify-content:center;gap:12px;margin-top:14px;color:var(--mu);font-size:12.5px}
   .gx-arch{margin-top:8px;font-size:12.5px} .gx-arch summary{cursor:pointer;color:var(--go)} .gx-arch ul{margin:8px 0 0;padding-left:18px;color:#cbd5e1;line-height:1.6}
   button.gx-chip{cursor:pointer;font:inherit;font-size:12px} button.gx-chip:hover{border-color:var(--go)} button.gx-chip:disabled{opacity:.4;cursor:default}
+  .gx-sync{flex:none;padding:5px 10px;border-radius:8px;font-size:11.5px;font-weight:600;background:#1f2233;border:1px solid var(--ln);color:var(--cy);white-space:nowrap}
+  .gx-sync.ok{color:var(--gr);border-color:rgba(0,255,136,.3)} .gx-sync.warn{color:#fda4af;border-color:rgba(244,63,94,.5);background:rgba(244,63,94,.1)}
   .gx-ic{flex:none;display:grid;place-items:center;width:38px;height:38px;border:1px solid var(--ln);border-radius:10px;background:#1f2233;color:var(--tx);font-size:16px}
   .gx-ic:hover{border-color:var(--cy);color:var(--cy)}
   .gx-nav button i{font-style:normal;margin-right:6px} .gx-nav .s{display:none}
@@ -1887,7 +1889,7 @@
       overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
     #fnBox.gx-wide>.fn-h{display:none}
     #fnBox.gx-wide .gx{border:0;border-radius:0;min-height:100%;overflow:visible}
-    .gx-max-b{display:none}
+    .gx-max-b{display:none} .gx-sync{padding:4px 8px;font-size:10.5px} .gx-sync.ok{font-size:0;padding:0;width:10px;height:10px;border-radius:50%;background:var(--gr);border:0}
     .gx-top{position:sticky;top:0;z-index:5;gap:10px;flex-wrap:nowrap;padding:calc(8px + env(safe-area-inset-top)) max(12px,env(safe-area-inset-right)) 8px max(12px,env(safe-area-inset-left));
       background:rgba(15,16,22,.96);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
     .gx-logo{width:34px;height:34px;border-radius:10px} .gx-logo i{font-size:16px;border-radius:8px}
@@ -1916,7 +1918,7 @@
     .gx-sks{grid-template-columns:minmax(0,1fr)} .gx-logs{grid-template-columns:repeat(2,minmax(0,1fr))}
     .gx-seg{flex-wrap:wrap} .gx-tiles b{font-size:16px}
   }`;
-  function ensureCss() { const old = document.getElementById('gx-css'); if (old && old.dataset.v === '4') return; if (old) old.remove(); const st = document.createElement('style'); st.id = 'gx-css'; st.dataset.v = '4'; st.textContent = CSS; document.head.appendChild(st); }
+  function ensureCss() { const old = document.getElementById('gx-css'); if (old && old.dataset.v === '5') return; if (old) old.remove(); const st = document.createElement('style'); st.id = 'gx-css'; st.dataset.v = '5'; st.textContent = CSS; document.head.appendChild(st); }
 
   const TAGVI = { escape:'chạy trốn', travel:'đi xa', explore:'khám phá', fight:'giao đấu', nature:'thiên nhiên', beast:'dã thú', social:'giao tiếp', love:'tình cảm', trade:'buôn bán',
     mystery:'bí ẩn', stealth:'lén lút', work:'làm việc', danger:'hiểm nguy', heal:'cứu chữa', plague:'dịch bệnh', undead:'xác sống', war:'chiến tranh', famine:'nạn đói' };
@@ -1930,12 +1932,24 @@
   const SLOT = [['ears', '👂', 'Tai'], ['eyes', '👁', 'Mắt'], ['horn', '🦌', 'Sừng'], ['halo', '😇', 'Hào quang'], ['back', '🦅', 'Lưng / cánh'], ['shell', '🐢', 'Mai'], ['arm', '🦾', 'Tay'],
     ['blade', '🗡', 'Lưỡi cẳng tay'], ['legs', '🦵', 'Chân'], ['legs2', '🕷', 'Chi phụ'], ['tail', '🦎', 'Đuôi'], ['skin', '🐟', 'Da'], ['core', '⚛', 'Hạt nhân'], ['spore', '🍄', 'Bào tử'], ['aura', '☣', 'Virus / khí']];
 
+  // trạng thái lưu tiến độ lên máy chủ (sheets-bridge.js: window.npdMineStatus + sự kiện "npd:mine")
+  function syncInfo() {
+    const st = (window.npdMineStatus || {}).npdFun, unsaved = window.npdPersonalUnsaved ? window.npdPersonalUnsaved().includes('npdFun') : false;
+    if (!window.NPD || !window.NPD.user()) return ['warn', '⚠ Chưa đăng nhập – chỉ lưu trên máy này', ''];
+    if (st && st.st === 'expired') return ['warn', '⚠ Hết phiên – đăng nhập lại để lưu', st.msg];
+    if (st && st.st === 'err') return ['warn', '⚠ Chưa lưu được, đang thử lại', st.msg];
+    if (st && (st.st === 'pending' || st.st === 'sending') || unsaved) return ['', '☁ Đang lưu…', 'Tiến độ đang được gửi lên máy chủ'];
+    return ['ok', '☁ Đã lưu', 'Tiến độ đã lưu theo tài khoản – mở trên máy khác vẫn chơi tiếp được'];
+  }
+  const syncHtml = () => { const [c, t, m] = syncInfo(); return `<span class="gx-sync ${c}" id="gxSync" title="${E(m || t)}">${t}</span>`; };
+  document.addEventListener('npd:mine', e => { if (!e.detail || e.detail.key !== 'npdFun') return; const el = document.getElementById('gxSync'); if (!el) return;
+    const [c, t, m] = syncInfo(); el.className = 'gx-sync ' + c; el.textContent = t; el.title = m || t; });
   function topBar() {
     const C = G.life;
     return `<div class="gx-top"><div class="gx-logo"><i>🧬</i></div><div class="gx-tt"><h3>BẢN NGUYÊN KỲ DUYÊN</h3><small class="mono">GENESIS CODEX · TIẾN HÓA THƯ${C ? ` · ${E(C.n)}, ${C.age} tuổi` : ''}</small></div>
       <span class="gx-badge mono">☯ Kiếp thứ ${G.lives + (C ? 0 : 1)}</span><span class="gx-badge mono" style="color:var(--go)">📜 Huyết Sử ${G.lore.length}/${LORE.length}</span>
       ${C ? `<span class="gx-badge mono" style="color:var(--gr)">${ERAS[eraOf(C)][0]} ${ERAS[eraOf(C)][1]}</span>` : ''}
-      <button class="gx-ic gx-max-b" data-g="max" title="${UI.max ? 'Thu nhỏ' : 'Toàn màn hình'}">${UI.max ? '🗗' : '⛶'}</button><button class="gx-ic" data-g="exit" title="Thoát game">✕</button></div>
+      ${syncHtml()}<button class="gx-ic gx-max-b" data-g="max" title="${UI.max ? 'Thu nhỏ' : 'Toàn màn hình'}">${UI.max ? '🗗' : '⛶'}</button><button class="gx-ic" data-g="exit" title="Thoát game">✕</button></div>
       <nav class="gx-nav">${[['life', G.life ? '⏳' : '👶', G.life ? '1. Cuộc Đời' : '1. Chào Đời', G.life ? 'Cuộc đời' : 'Chào đời'], ['dna', '🧪', '2. Phòng Gene', 'Gene'], ['skills', '⚡', '3. Dị Năng', 'Dị năng'],
         ['lore', '📜', '4. Thế Giới & Huyết Sử', 'Thế giới'], ['books', '📚', `5. Thư Viện ${G.books.length}`, 'Thư viện']]
         .map(([k, ic, n, sh]) => `<button data-g="tab" data-k="${k}" class="${UI.tab === k ? 'on' : ''}"><i>${ic}</i><span class="l">${n}</span><span class="s">${sh}</span></button>`).join('')}</nav>`;

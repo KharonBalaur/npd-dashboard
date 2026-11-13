@@ -130,9 +130,16 @@ Ngôn ngữ giao diện: tiếng Anh / tiếng Việt; trao đổi với chủ d
   từ tab English / Chinese của Sheet.
 - `sheets-auth.js` – đăng nhập / tạo tài khoản, menu tài khoản (đổi mật khẩu, đăng xuất), gọi API, lưu phiên (token 6h):
   mặc định trong sessionStorage (tab mới / người khác mở link = phải đăng nhập); tick "Ghi nhớ" → localStorage.
-  window.NPD: refresh(), logout(), user(), call(action, payload), apply(kết quả), expired(), menu()
+  window.NPD: refresh(), logout(), user(), call(action, payload, {keepalive}), apply(kết quả), expired(), menu().
+  Đăng xuất: gửi nốt dữ liệu cá nhân; còn phần chưa lưu được thì hỏi trước khi xóa khỏi máy.
 - `sheets-bridge.js` – Sheet → S (settingsOf, libraryOf, studyOf); thay saveFile() bằng lưu vào Sheet (TABS: Cài đặt,
-  Thư viện; makePlan() so với BASE lúc tải; tab/cột thiếu → máy chủ tự tạo); dữ liệu cá nhân (npdPersonal → "mine")
+  Thư viện; makePlan() so với BASE lúc tải; tab/cột thiếu → máy chủ tự tạo); dữ liệu cá nhân (npdPersonal → "mine").
+  Dữ liệu cá nhân đồng bộ 3 chiều (KHÔNG để bản máy chủ đè thay đổi chưa gửi): npdMineSync@user = hash bản đã khớp máy chủ
+  lần cuối. Trên máy đổi mà chưa gửi được → giữ + gửi lại (thử lại 5 s → 5 phút; hết phiên → NPD.expired() mở đăng nhập,
+  đăng nhập xong gửi; pagehide / ẩn trang → gửi keepalive). Chỉ máy chủ đổi → nhận. Cả hai cùng đổi (hoặc lần đầu chưa có
+  hash) → giữ bản tiến xa hơn (progressOf: npdFun theo số kiếp / sách / ngày sống, npdLib theo số bí kíp đạt; khóa khác giữ bản
+  máy chủ), bản kia cất ở <khóa>~bak@user. Trạng thái: window.npdMineStatus {khóa: {st: pending|sending|ok|err|expired, msg}},
+  sự kiện "npd:mine", npdPersonalUnsaved(), npdPersonalFlush(keepalive). Game hiện trạng thái này ở huy hiệu #gxSync.
 - Home (2D): ảnh nền rừng trúc + Ngọc Nhi = ảnh trong `<script id="home-img">` (JSON: bg, fy, tranh điện p_*, lv*).
   Ngọc Nhi: fairyStart / fairyPlace (ảnh bên phải, thẻ tên "Ngọc Nhi · trợ lý", bong bóng nhắc việc / chào theo tài khoản).
   Cảnh 3D (Three.js, thánh thú) đã gỡ – còn trong lịch sử Git.
@@ -140,7 +147,9 @@ Ngôn ngữ giao diện: tiếng Anh / tiếng Việt; trao đổi với chủ d
   Apps Script rồi Deploy → Manage deployments → Edit → New version (link API giữ nguyên)
 
 ## API (POST, body JSON dạng text/plain để tránh CORS preflight)
-- {action:"login", username, password} → {ok, token, user, expiresIn}
+- {action:"login", username, password} → {ok, token, user, expiresIn}. Token = "s.<nội dung base64>.<HMAC-SHA256>" ký bằng
+  TOKEN_KEY (Script Properties, tự tạo, không ở repo): bộ nhớ đệm CacheService bị Google xóa sớm vẫn kiểm tra được (đọc lại tab
+  Tài khoản). Token cũ 64 hex (chỉ trong cache) vẫn dùng được tới khi hết hạn.
 - {action:"register", username, password, name} → {ok, pending, message} (Trạng thái = "Chờ duyệt" nếu SIGNUP_APPROVAL)
 - {action:"password", token, old, password} → {ok}
 - {action:"data", token} → {ok, user, mine, tabs:{TênTab:{headers, rows}}, history:[500 dòng Lịch sử], fetchedAt}
