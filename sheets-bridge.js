@@ -193,27 +193,90 @@
   });
   window.addEventListener('beforeunload', e => { if (dirty && canEdit()) { e.preventDefault(); e.returnValue = ''; } });
 
-  /* ---------- Dữ liệu cá nhân (Động Phủ, Training, sổ OT, lời nhắc, học Anh / Trung): theo tài khoản, lưu ở tab "Cá nhân" ---------- */
-  const MINE = ['npdCave', 'npdLib', 'npdOT', 'npdFairy', 'npdEng', 'npdZh', 'npdFun'], mineT = {};
+  /* ---------- Dữ liệu cá nhân (Động Phủ, Training, sổ OT, lời nhắc, học Anh / Trung, game): theo tài khoản, lưu ở tab "Cá nhân" ----------
+   * Đồng bộ 3 chiều để không bao giờ mất tiến độ:
+   *   npdMineSync@user = { khóa: dấu vân tay (hash) của bản đã khớp với máy chủ lần cuối }.
+   *   - bản trên máy khác dấu vân tay = có thay đổi chưa gửi được → KHÔNG để bản máy chủ đè lên, gửi lại (tự thử lại khi lỗi,
+   *     hỏi đăng nhập lại khi hết phiên, gửi nốt khi đóng / ẩn trang);
+   *   - chỉ bản máy chủ đổi (vừa dùng trên máy khác) → nhận bản máy chủ;
+   *   - cả hai cùng đổi → giữ bản tiến xa hơn (game: nhiều kiếp / ngày sống hơn; tu luyện: nhiều bí kíp đạt hơn), bản kia cất ở
+   *     <khóa>~bak@user (không gửi đi; đăng xuất thì xóa như mọi dữ liệu cá nhân). Trạng thái từng khóa: window.npdMineStatus + sự kiện "npd:mine".
+   */
+  const MINE = ['npdCave', 'npdLib', 'npdOT', 'npdFairy', 'npdEng', 'npdZh', 'npdFun'], mineT = {}, mineSt = {};
   let mineFor = '';                                                        // tài khoản đã nhận bản từ máy chủ: trước đó chỉ ghi trên máy, không gửi
   const me = () => (window.NPD && NPD.user() || {}).username || '';
   const readLocal = base => { try { return JSON.parse(localStorage.getItem(base + '@' + me())); } catch (e) { return null; } };
-  const sendMine = base => { mineT[base] = 0; const v = readLocal(base);   // gửi bản mới nhất trong trình duyệt lúc gửi
-    return v ? NPD.call('mine', { key: base, value: v }).then(r => { if (r && !r.ok && !r.expired) console.warn('Personal data not saved:', r.error); }).catch(() => {}) : null; };
+  const writeLocal = (base, v, suf = '') => { try { localStorage.setItem(base + suf + '@' + me(), JSON.stringify(v)); } catch (e) { /* đầy bộ nhớ */ } };
+  const hashOf = v => { const s = JSON.stringify(v === undefined ? null : v); let h = 5381; for (let i = 0; i < s.length; i++) h = (h * 33 + s.charCodeAt(i)) >>> 0; return h.toString(36) + '.' + s.length.toString(36); };
+  const syncAll = () => { try { return JSON.parse(localStorage.getItem('npdMineSync@' + me())) || {}; } catch (e) { return {}; } };
+  const syncSet = (base, h) => { const o = syncAll(); o[base] = h; try { localStorage.setItem('npdMineSync@' + me(), JSON.stringify(o)); } catch (e) { /* bỏ qua */ } };
+  const unsynced = base => { const v = readLocal(base); return v != null && hashOf(v) !== syncAll()[base]; };
+  const mineStatus = (base, st, msg) => { mineSt[base] = { st, msg: msg || '', at: Date.now() }; window.npdMineStatus = mineSt;
+    document.dispatchEvent(new CustomEvent('npd:mine', { detail: { key: base, st, msg: msg || '' } })); };
+  // mức tiến độ để chọn khi cả máy này lẫn máy chủ cùng đổi
+  const progressOf = (base, v) => {
+    if (!v || typeof v !== 'object') return 0;
+    if (base === 'npdFun') { const g = v.gen || {}, L = g.life || {}; return (+g.lives || 0) * 1e6 + ((g.books || []).length + (g.arch || []).length) * 1e4 + (+L.days || (+L.age || 0) * 365) / 100 + Object.values(v.plays || {}).reduce((a, b) => a + (+b || 0), 0) / 1e3; }
+    if (base === 'npdLib') return Object.keys(v.done || {}).length * 1e4 + (+v.answered || 0) + (+v.stones || 0) / 1e3;
+    return -1;                                                             // khóa khác: không đoán, giữ bản máy chủ
+  };
+  const schedule = (base, ms, tries) => { clearTimeout(mineT[base]); mineT[base] = setTimeout(() => sendMine(base, tries || 0), ms); };
+  function sendMine(base, tries = 0, keepalive = false) {                  // gửi bản mới nhất trong trình duyệt lúc gửi
+    mineT[base] = 0; const v = readLocal(base);
+    if (v == null) return Promise.resolve(true);
+    const h = hashOf(v);
+    if (h === syncAll()[base]) { mineStatus(base, 'ok'); return Promise.resolve(true); }   // đã khớp máy chủ
+    mineStatus(base, 'sending');
+    return NPD.call('mine', { key: base, value: v }, keepalive ? { keepalive: true } : undefined).then(r => {
+      if (r && r.ok) { syncSet(base, h); mineStatus(base, 'ok'); if (unsynced(base)) schedule(base, 800); return true; }
+      if (r && r.expired) {                                                // hết phiên: giữ nguyên trên máy, mở màn đăng nhập; đăng nhập xong sẽ gửi lại
+        mineStatus(base, 'expired', 'Phiên đăng nhập đã hết hạn – đăng nhập lại để lưu tiến độ');
+        if (NPD.user() && NPD.expired) NPD.expired();
+        return false;
+      }
+      throw new Error((r && r.error) || 'Máy chủ không trả lời');
+    }).catch(e => {
+      console.warn('Personal data not saved:', base, e.message);
+      mineStatus(base, 'err', e.message);
+      if (tries < 6) schedule(base, [5, 15, 30, 60, 120, 300][tries] * 1000, tries + 1);
+      return false;
+    });
+  }
   // trang gọi khi ghi một khóa cá nhân (lsSet): gửi lên máy chủ sau 1,2 s không sửa nữa
   window.npdPersonal = k => {
-    const [base, who] = String(k).split('@'); if (!MINE.includes(base) || !who || who !== me() || mineFor !== who) return;
-    clearTimeout(mineT[base]); mineT[base] = setTimeout(() => sendMine(base), 1200);
+    const [base, who] = String(k).split('@'); if (!MINE.includes(base) || !who || who !== me()) return;
+    mineStatus(base, 'pending');
+    if (mineFor !== who) return;                                           // chưa nhận bản máy chủ: giữ trên máy, gửi sau khi tải xong
+    schedule(base, 1200);
   };
-  window.npdPersonalFlush = () => Promise.all(Object.keys(mineT).filter(b => mineT[b]).map(b => { clearTimeout(mineT[b]); return sendMine(b); }));   // trước khi đăng xuất
-  function applyMine(mine) {                                               // máy chủ → bộ nhớ trình duyệt (bản trên máy chủ là bản chính)
+  // gửi ngay mọi thay đổi chưa lưu (đăng xuất, đóng / ẩn trang); true = đã lưu hết
+  window.npdPersonalFlush = keepalive => {
+    if (!me() || mineFor !== me()) return Promise.resolve(!MINE.some(unsynced));
+    return Promise.all(MINE.filter(unsynced).map(b => { clearTimeout(mineT[b]); return sendMine(b, 6, !!keepalive); })).then(a => a.every(Boolean));
+  };
+  window.npdPersonalUnsaved = () => MINE.filter(unsynced);
+  const flushHidden = () => { if (window.npdPersonalUnsaved().length) window.npdPersonalFlush(true).catch(() => {}); };
+  window.addEventListener('pagehide', flushHidden);
+  document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden') flushHidden(); });
+  function applyMine(mine) {                                               // máy chủ → bộ nhớ trình duyệt (không đè thay đổi chưa gửi)
     const u = me(); if (!u || !mine) return;
+    const sync = syncAll(), push = [];
     MINE.forEach(k => {
       clearTimeout(mineT[k]); mineT[k] = 0;
-      if (mine[k] !== undefined) { try { localStorage.setItem(k + '@' + u, JSON.stringify(mine[k])); } catch (e) {} }
+      const srv = mine[k], loc = readLocal(k), hb = sync[k];
+      if (srv === undefined) { if (loc != null) push.push(k); return; }    // máy chủ chưa có: gửi bản trên máy
+      const hs = hashOf(srv), hl = loc == null ? null : hashOf(loc);
+      if (hl === null || hl === hs) { writeLocal(k, srv); syncSet(k, hs); return; }
+      const localChanged = hl !== hb, serverChanged = hs !== hb;
+      if (hb && !localChanged) { writeLocal(k, srv); syncSet(k, hs); return; }          // chỉ máy chủ đổi (máy khác vừa dùng)
+      if (hb && !serverChanged) { push.push(k); return; }                                // chỉ máy này đổi mà chưa gửi được
+      // cả hai cùng đổi (hoặc lần đầu sau bản cập nhật này): giữ bản tiến xa hơn, cất bản kia
+      const pl = progressOf(k, loc), ps = progressOf(k, srv);
+      if (pl >= 0 && pl > ps) { writeLocal(k, srv, '~bak'); push.push(k); console.warn('Personal data: keeping this device copy of', k); }
+      else { writeLocal(k, loc, '~bak'); writeLocal(k, srv); syncSet(k, hs); }
     });
     mineFor = u;
-    MINE.forEach(k => { if (mine[k] === undefined && readLocal(k)) sendMine(k); });   // có trên máy này mà máy chủ chưa có: gửi lên
+    push.forEach(k => { mineStatus(k, 'pending'); schedule(k, 300); });
     if (typeof CAVE !== 'undefined') CAVE = null;
   }
 

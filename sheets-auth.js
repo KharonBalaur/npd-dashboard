@@ -20,7 +20,7 @@
   /* ---------- Gọi API ---------- */
   // Gửi body dạng chuỗi (text/plain) để trình duyệt không gửi preflight CORS,
   // Apps Script mới nhận được.
-  async function api(action, payload = {}) {
+  async function api(action, payload = {}, opts = {}) {
     if (!API_URL.startsWith('https://script.google.com/')) {
       throw new Error('Chưa dán link Web App vào API_URL trong sheets-auth.js');
     }
@@ -31,6 +31,7 @@
         method: 'POST',
         body: JSON.stringify({ action, ...payload }),
         signal: ctrl.signal,
+        keepalive: !!opts.keepalive,                                      // gửi nốt khi đóng / ẩn trang
       });
       if (!res.ok) throw new Error('Máy chủ trả lỗi ' + res.status);
       return await res.json();
@@ -259,7 +260,11 @@
 
   async function logout(reload = true) {
     const s = getSession();
-    if (s && reload && window.npdPersonalFlush) await window.npdPersonalFlush().catch(() => {});   // gửi nốt dữ liệu cá nhân vừa sửa
+    if (s && reload && window.npdPersonalFlush) {                       // gửi nốt dữ liệu cá nhân vừa sửa; chưa gửi được thì hỏi trước khi xóa
+      const saved = await window.npdPersonalFlush().catch(() => false);
+      if (!saved && !confirm('Một số dữ liệu cá nhân (tiến độ game, tu luyện, hồ sơ…) chưa lưu lên máy chủ được.\n'
+        + 'Đăng xuất bây giờ sẽ xóa bản trên máy này và mất phần chưa lưu.\n\nVẫn đăng xuất?')) return;
+    }
     if (s) api('logout', { token: s.token }).catch(() => {});
     if (s && s.user && reload) {                                         // máy dùng chung: xóa dữ liệu cá nhân của người này khỏi trình duyệt
       try { Object.keys(localStorage).filter(k => k.endsWith('@' + s.user.username)).forEach(k => localStorage.removeItem(k)); } catch (e) { /* bỏ qua */ }
@@ -286,10 +291,10 @@
   window.NPD = {
     refresh: loadData, logout, apply, menu: userMenu,
     user: () => getSession()?.user || null,
-    call: (action, payload) => {
+    call: (action, payload, opts) => {
       const s = getSession();
       if (!s) { showLogin('Phiên đã hết hạn, vui lòng đăng nhập lại'); return Promise.resolve({ ok: false, expired: true, error: 'Phiên đã hết hạn' }); }
-      return api(action, { ...payload, token: s.token });
+      return api(action, { ...payload, token: s.token }, opts || {});
     },
     expired: () => { logout(false); showLogin('Phiên đã hết hạn, vui lòng đăng nhập lại'); },
   };

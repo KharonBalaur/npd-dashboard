@@ -138,19 +138,80 @@ function login_(username, password) {
     name: idx.name >= 0 && row[idx.name] ? String(row[idx.name]) : String(row[idx.user]),
     role: idx.role >= 0 ? String(row[idx.role]) : '',
   };
-  const token = Utilities.getUuid().replace(/-/g, '') + Utilities.getUuid().replace(/-/g, '');
-  cache.put('tk_' + token, JSON.stringify(user), CFG.TOKEN_TTL);
+  const token = signToken_(user);
+  cache.put(tkKey_(token), JSON.stringify(user), CFG.TOKEN_TTL);
   return { ok: true, token, user, expiresIn: CFG.TOKEN_TTL };
 }
 
+/* ---------- Phiên đăng nhập: token có chữ ký ----------
+ * Trước đây phiên chỉ nằm trong CacheService. Google có thể xóa bộ nhớ đệm bất kỳ lúc nào (sớm hơn 6 giờ): người dùng bị
+ * "hết phiên" âm thầm và dữ liệu cá nhân (tiến độ game, tu luyện…) gửi lên bị từ chối.
+ * Token mới = "s." + nội dung (base64) + "." + HMAC-SHA256 bằng khóa bí mật TOKEN_KEY trong Script Properties (tự tạo lần đầu,
+ * không nằm trong repo). Mất bộ nhớ đệm vẫn kiểm tra được chữ ký + hạn dùng, rồi đọc lại tab Tài khoản (Khóa / Quyền mới nhất).
+ * Token cũ (64 ký tự hex, chỉ có trong bộ nhớ đệm) vẫn dùng được tới khi hết hạn.
+ */
+function tokenKey_() {
+  const props = PropertiesService.getScriptProperties();
+  let k = props.getProperty('TOKEN_KEY');
+  if (!k) { k = Utilities.getUuid() + Utilities.getUuid(); props.setProperty('TOKEN_KEY', k); }
+  return k;
+}
+function hex_(bytes) { return bytes.map(b => ((b + 256) % 256).toString(16).padStart(2, '0')).join(''); }
+function sign_(text) { return hex_(Utilities.computeHmacSha256Signature(text, tokenKey_(), Utilities.Charset.UTF_8)); }
+function signToken_(user) {
+  const body = JSON.stringify({ u: user.username, e: Math.floor(Date.now() / 1000) + CFG.TOKEN_TTL, n: Utilities.getUuid().slice(0, 8) });
+  const p = Utilities.base64EncodeWebSafe(body, Utilities.Charset.UTF_8).replace(/=+$/, '');
+  return 's.' + p + '.' + sign_(p);
+}
+// khóa bộ nhớ đệm của một phiên (token có chữ ký dài: dùng phần chữ ký 64 ký tự)
+function tkKey_(token) { token = String(token || ''); return 'tk_' + (token.indexOf('s.') === 0 ? token.split('.')[2] : token); }
+// kiểm tra chữ ký + hạn dùng; trả về tên đăng nhập hoặc null
+function verifyToken_(token) {
+  const m = /^s\.([A-Za-z0-9_-]+)\.([0-9a-f]{64})$/.exec(String(token || ''));
+  if (!m || sign_(m[1]) !== m[2]) return null;
+  let p;
+  try {
+    const b64 = m[1] + '==='.slice((m[1].length + 3) % 4);
+    p = JSON.parse(Utilities.newBlob(Utilities.base64DecodeWebSafe(b64)).getDataAsString('UTF-8'));
+  } catch (e) { return null; }
+  if (!p || !p.u || !(p.e * 1000 > Date.now())) return null;
+  return String(p.u);
+}
+// đọc tài khoản đang hoạt động từ tab Tài khoản (null nếu không có / bị Khóa / Chờ duyệt)
+function activeUser_(username) {
+  const values = sheet_(CFG.SHEET_USERS).getDataRange().getValues();
+  const idx = headerIndex_(values[0]);
+  const row = values.find((r, i) => i > 0 && norm_(r[idx.user]) === norm_(username));
+  if (!row || !isActive_(row, idx)) return null;
+  return {
+    username: String(row[idx.user]).trim(),
+    name: idx.name >= 0 && row[idx.name] ? String(row[idx.name]) : String(row[idx.user]),
+    role: idx.role >= 0 ? String(row[idx.role]).trim() : '',
+  };
+}
+
 function logout_(token) {
-  if (token) CacheService.getScriptCache().remove('tk_' + token);
+  if (token) {
+    const cache = CacheService.getScriptCache();
+    cache.remove(tkKey_(token));
+    if (String(token).indexOf('s.') === 0) cache.put('out' + tkKey_(token), '1', CFG.TOKEN_TTL);   // token đã ký: ghi nhớ là đã đăng xuất
+  }
   return { ok: true };
 }
 
 function auth_(token) {
-  if (!token || !/^[0-9a-f]{64}$/.test(token)) return null;
+  if (!token) return null;
   const cache = CacheService.getScriptCache();
+  if (String(token).indexOf('s.') === 0) {
+    const username = verifyToken_(token);
+    if (!username || cache.get('out' + tkKey_(token))) return null;
+    const raw = cache.get(tkKey_(token));
+    if (raw) return JSON.parse(raw);
+    const user = activeUser_(username);                     // bộ nhớ đệm bị xóa: dựng lại phiên từ token đã ký
+    if (user) cache.put(tkKey_(token), JSON.stringify(user), CFG.TOKEN_TTL);
+    return user;
+  }
+  if (!/^[0-9a-f]{64}$/.test(token)) return null;
   const raw = cache.get('tk_' + token);
   if (!raw) return null;
   cache.put('tk_' + token, raw, CFG.TOKEN_TTL); // còn dùng thì gia hạn phiên
@@ -167,7 +228,7 @@ function authFresh_(token) {
   if (!row || !isActive_(row, idx)) { logout_(token); return null; }
   user.role = idx.role >= 0 ? String(row[idx.role]).trim() : '';
   if (idx.name >= 0 && row[idx.name]) user.name = String(row[idx.name]);
-  CacheService.getScriptCache().put('tk_' + token, JSON.stringify(user), CFG.TOKEN_TTL);
+  CacheService.getScriptCache().put(tkKey_(token), JSON.stringify(user), CFG.TOKEN_TTL);
   return user;
 }
 
