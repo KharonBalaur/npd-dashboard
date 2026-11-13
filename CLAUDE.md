@@ -128,8 +128,9 @@ Ngôn ngữ giao diện: tiếng Anh / tiếng Việt; trao đổi với chủ d
   tiến độ S.course[id] trong dữ liệu zh; từ của bài đã mở vào thẻ ôn Vocabulary; Dictation có nguồn "Hán ngữ")
   (window.ENG_BANK / ZH_BANK). Chạy riêng thì lưu localStorage; trong web thì lưu theo tài khoản + nhận thêm dữ liệu
   từ tab English / Chinese của Sheet.
-- `sheets-auth.js` – đăng nhập / tạo tài khoản, menu tài khoản (đổi mật khẩu, đăng xuất), gọi API, lưu phiên (token 6h):
-  mặc định trong sessionStorage (tab mới / người khác mở link = phải đăng nhập); tick "Ghi nhớ" → localStorage.
+- `sheets-auth.js` – đăng nhập / tạo tài khoản, menu tài khoản (đổi mật khẩu, đăng xuất), gọi API, lưu phiên:
+  mặc định token 6h trong sessionStorage (tab mới / người khác mở link = phải đăng nhập); tick "Ghi nhớ" → localStorage +
+  token 30 ngày (gửi remember khi login), mỗi lần tải dữ liệu nếu còn dưới 15 ngày thì renew() đổi token mới 30 ngày.
   window.NPD: refresh(), logout(), user(), call(action, payload, {keepalive}), apply(kết quả), expired(), menu().
   Đăng xuất: gửi nốt dữ liệu cá nhân; còn phần chưa lưu được thì hỏi trước khi xóa khỏi máy.
 - `sheets-bridge.js` – Sheet → S (settingsOf, libraryOf, studyOf); thay saveFile() bằng lưu vào Sheet (TABS: Cài đặt,
@@ -147,9 +148,11 @@ Ngôn ngữ giao diện: tiếng Anh / tiếng Việt; trao đổi với chủ d
   Apps Script rồi Deploy → Manage deployments → Edit → New version (link API giữ nguyên)
 
 ## API (POST, body JSON dạng text/plain để tránh CORS preflight)
-- {action:"login", username, password} → {ok, token, user, expiresIn}. Token = "s.<nội dung base64>.<HMAC-SHA256>" ký bằng
-  TOKEN_KEY (Script Properties, tự tạo, không ở repo): bộ nhớ đệm CacheService bị Google xóa sớm vẫn kiểm tra được (đọc lại tab
-  Tài khoản). Token cũ 64 hex (chỉ trong cache) vẫn dùng được tới khi hết hạn.
+- {action:"login", username, password, remember} → {ok, token, user, expiresIn} (6 giờ; remember = 30 ngày). Token =
+  "s.<nội dung base64>.<HMAC-SHA256>" ký bằng TOKEN_KEY (Script Properties, tự tạo, không ở repo): bộ nhớ đệm CacheService bị
+  Google xóa sớm vẫn kiểm tra được (đọc lại tab Tài khoản). Token cũ 64 hex (chỉ trong cache) vẫn dùng được tới khi hết hạn.
+- {action:"renew", token} → {ok, token, user, expiresIn} – token mới 30 ngày, token cũ bị thu hồi. Thu hồi (đăng xuất, gia hạn):
+  cache "out…" + Script Properties REVOKED {chữ ký: hạn} cho token còn sống quá 6 giờ (tự dọn mục hết hạn).
 - {action:"register", username, password, name} → {ok, pending, message} (Trạng thái = "Chờ duyệt" nếu SIGNUP_APPROVAL)
 - {action:"password", token, old, password} → {ok}
 - {action:"data", token} → {ok, user, mine, tabs:{TênTab:{headers, rows}}, history:[500 dòng Lịch sử], fetchedAt}

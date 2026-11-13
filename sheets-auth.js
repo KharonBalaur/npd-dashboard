@@ -135,9 +135,9 @@
           showLogin('✓ ' + r.message, 'in'); const f = document.querySelector('#npd-login form'); if (f) f.u.value = username;
           return;
         }
-        const r = await api('login', { username, password });
-        if (!r.ok) throw new Error(r.error);
         const remember = !!(form.r && form.r.checked);
+        const r = await api('login', { username, password, remember });    // Ghi nhớ: máy chủ cấp token 30 ngày
+        if (!r.ok) throw new Error(r.error);
         store.set(STORE_KEY, { token: r.token, user: r.user, exp: Date.now() + r.expiresIn * 1000, remember }, remember);
         wrap.remove();
         userMenu();
@@ -239,6 +239,7 @@
         throw new Error(r.error);
       }
       apply(r);
+      renew();
     } catch (ex) {
       if (!cached) alert('Không tải được dữ liệu: ' + ex.message);
       else console.warn('Không cập nhật được, đang hiển thị dữ liệu cũ:', ex.message);
@@ -246,6 +247,17 @@
       bar.remove();
       loading = false;
     }
+  }
+
+  // Phiên "Ghi nhớ": còn dưới 15 ngày thì đổi lấy token mới 30 ngày – dùng thường xuyên thì không phải đăng nhập lại.
+  // (Máy chủ chưa cập nhật thì trả lỗi "action" lạ: bỏ qua, phiên vẫn dùng tới khi hết hạn như cũ.)
+  async function renew() {
+    const s = getSession(); if (!s || !s.remember || s.exp - Date.now() > 15 * 864e5) return;
+    try {
+      const r = await api('renew', { token: s.token });
+      const cur = getSession();
+      if (r && r.ok && r.token && cur && cur.token === s.token) store.set(STORE_KEY, { ...cur, token: r.token, user: r.user || cur.user, exp: Date.now() + r.expiresIn * 1000 }, true);
+    } catch (e) { /* thử lại lần mở trang sau */ }
   }
 
   // Kết quả "data" / "save" từ máy chủ → cập nhật phiên (Quyền có thể vừa đổi), lưu bản tạm, vẽ lại

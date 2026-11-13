@@ -23,6 +23,7 @@
 const CFG = {
   SHEET_USERS: 'Tài khoản',
   TOKEN_TTL: 6 * 60 * 60,  // phiên đăng nhập 6 giờ (tối đa của CacheService)
+  REMEMBER_TTL: 30 * 24 * 60 * 60,   // tick "Ghi nhớ đăng nhập trên máy này": token có chữ ký sống 30 ngày, mở trang thì tự gia hạn
   MAX_FAIL: 5,             // sai 5 lần → khóa tạm
   LOCK_SEC: 10 * 60,       // khóa 10 phút
   SHEET_HISTORY: 'Lịch sử',
@@ -71,7 +72,8 @@ function doPost(e) {
   try {
     const req = JSON.parse((e && e.postData && e.postData.contents) || '{}');
     switch (req.action) {
-      case 'login':  out = login_(req.username, req.password); break;
+      case 'login':  out = login_(req.username, req.password, req.remember === true); break;
+      case 'renew':  out = renew_(req.token); break;
       case 'register': out = register_(req.username, req.password, req.name); break;
       case 'password': out = changePassword_(req.token, req.old, req.password); break;
       case 'data':   out = getData_(req.token); break;
@@ -100,7 +102,7 @@ function doGet() {
 
 /* ---------------- Đăng nhập / phiên ---------------- */
 
-function login_(username, password) {
+function login_(username, password, remember) {
   username = norm_(username);
   password = String(password || '');
   if (!username || !password) return { ok: false, error: 'Vui lòng nhập tài khoản và mật khẩu' };
@@ -138,9 +140,23 @@ function login_(username, password) {
     name: idx.name >= 0 && row[idx.name] ? String(row[idx.name]) : String(row[idx.user]),
     role: idx.role >= 0 ? String(row[idx.role]) : '',
   };
-  const token = signToken_(user);
+  const ttl = remember ? CFG.REMEMBER_TTL : CFG.TOKEN_TTL;
+  const token = signToken_(user, ttl);
   cache.put(tkKey_(token), JSON.stringify(user), CFG.TOKEN_TTL);
-  return { ok: true, token, user, expiresIn: CFG.TOKEN_TTL };
+  return { ok: true, token, user, expiresIn: ttl };
+}
+
+// Phiên "Ghi nhớ": đổi token còn hạn lấy token mới 30 ngày (trang gọi khi token còn dưới nửa hạn)
+function renew_(token) {
+  const user = auth_(token);
+  if (!user) return { ok: false, expired: true, error: 'Phiên đăng nhập đã hết hạn' };
+  const fresh = activeUser_(user.username);
+  if (!fresh) return { ok: false, expired: true, error: 'Tài khoản đã bị khóa' };
+  const t = signToken_(fresh, CFG.REMEMBER_TTL);
+  CacheService.getScriptCache().put(tkKey_(t), JSON.stringify(fresh), CFG.TOKEN_TTL);
+  if (String(token).indexOf('s.') === 0) revoke_(token);              // token cũ thôi dùng
+  else CacheService.getScriptCache().remove('tk_' + token);
+  return { ok: true, token: t, user: fresh, expiresIn: CFG.REMEMBER_TTL };
 }
 
 /* ---------- Phiên đăng nhập: token có chữ ký ----------
@@ -158,8 +174,8 @@ function tokenKey_() {
 }
 function hex_(bytes) { return bytes.map(b => ((b + 256) % 256).toString(16).padStart(2, '0')).join(''); }
 function sign_(text) { return hex_(Utilities.computeHmacSha256Signature(text, tokenKey_(), Utilities.Charset.UTF_8)); }
-function signToken_(user) {
-  const body = JSON.stringify({ u: user.username, e: Math.floor(Date.now() / 1000) + CFG.TOKEN_TTL, n: Utilities.getUuid().slice(0, 8) });
+function signToken_(user, ttl) {
+  const body = JSON.stringify({ u: user.username, e: Math.floor(Date.now() / 1000) + (ttl || CFG.TOKEN_TTL), n: Utilities.getUuid().slice(0, 8) });
   const p = Utilities.base64EncodeWebSafe(body, Utilities.Charset.UTF_8).replace(/=+$/, '');
   return 's.' + p + '.' + sign_(p);
 }
@@ -177,6 +193,32 @@ function verifyToken_(token) {
   if (!p || !p.u || !(p.e * 1000 > Date.now())) return null;
   return String(p.u);
 }
+// hạn dùng (giây) ghi trong token đã ký, 0 nếu không đọc được
+function tokenExp_(token) {
+  const m = /^s\.([A-Za-z0-9_-]+)\./.exec(String(token || '')); if (!m) return 0;
+  try { return +JSON.parse(Utilities.newBlob(Utilities.base64DecodeWebSafe(m[1] + '==='.slice((m[1].length + 3) % 4))).getDataAsString('UTF-8')).e || 0; } catch (e) { return 0; }
+}
+// Thu hồi token đã ký (đăng xuất / gia hạn): bộ nhớ đệm có thể bị xóa sớm nên token sống lâu (Ghi nhớ) được ghi vào
+// Script Properties "REVOKED" {chữ ký: hạn dùng}, tự dọn mục đã hết hạn
+function revoke_(token) {
+  const key = tkKey_(token), exp = tokenExp_(token), now = Math.floor(Date.now() / 1000);
+  const cache = CacheService.getScriptCache();
+  cache.remove(key); cache.put('out' + key, '1', CFG.TOKEN_TTL);
+  if (exp - now <= CFG.TOKEN_TTL) return;
+  const props = PropertiesService.getScriptProperties(), lock = LockService.getScriptLock();
+  if (!lock.tryLock(5000)) return;
+  try {
+    let r = {}; try { r = JSON.parse(props.getProperty('REVOKED') || '{}'); } catch (e) { r = {}; }
+    Object.keys(r).forEach(k => { if (r[k] < now) delete r[k]; });
+    r[key.slice(3)] = exp;
+    props.setProperty('REVOKED', JSON.stringify(r));
+  } finally { lock.releaseLock(); }
+}
+function revoked_(token) {
+  const key = tkKey_(token);
+  if (CacheService.getScriptCache().get('out' + key)) return true;
+  try { return !!JSON.parse(PropertiesService.getScriptProperties().getProperty('REVOKED') || '{}')[key.slice(3)]; } catch (e) { return false; }
+}
 // đọc tài khoản đang hoạt động từ tab Tài khoản (null nếu không có / bị Khóa / Chờ duyệt)
 function activeUser_(username) {
   const values = sheet_(CFG.SHEET_USERS).getDataRange().getValues();
@@ -192,9 +234,8 @@ function activeUser_(username) {
 
 function logout_(token) {
   if (token) {
-    const cache = CacheService.getScriptCache();
-    cache.remove(tkKey_(token));
-    if (String(token).indexOf('s.') === 0) cache.put('out' + tkKey_(token), '1', CFG.TOKEN_TTL);   // token đã ký: ghi nhớ là đã đăng xuất
+    if (String(token).indexOf('s.') === 0) { if (verifyToken_(token)) revoke_(token); }   // token đã ký: thu hồi tới hết hạn
+    else CacheService.getScriptCache().remove('tk_' + token);
   }
   return { ok: true };
 }
@@ -207,6 +248,7 @@ function auth_(token) {
     if (!username || cache.get('out' + tkKey_(token))) return null;
     const raw = cache.get(tkKey_(token));
     if (raw) return JSON.parse(raw);
+    if (revoked_(token)) return null;                        // đã đăng xuất / đã gia hạn sang token mới
     const user = activeUser_(username);                     // bộ nhớ đệm bị xóa: dựng lại phiên từ token đã ký
     if (user) cache.put(tkKey_(token), JSON.stringify(user), CFG.TOKEN_TTL);
     return user;
