@@ -65,16 +65,19 @@ Ngôn ngữ giao diện: tiếng Anh / tiếng Việt; trao đổi với chủ d
     Cpk và Gage R&R có nút "Xuất báo cáo PDF" (tlReport: A4, thông tin rp_* tùy chọn, kết quả, biểu đồ SVG, số liệu, phương pháp, ô ký).
     Nhóm "a" (Riêng Admin) chỉ hiện khi Quyền thuộc TL_ADMIN (= ADMIN_ROLES của Code.gs): toolsVis() lọc TOOLS; #tool/<key> của
     người khác bị bỏ qua. Chỉ là ẩn giao diện – quyền thật kiểm tra ở Apps Script.
-    "Luyện Phỏng Vấn" (key iv, `interview.js` → window.IVTool.html(), nút data-iv, CSS #iv-css tông sáng chàm / ngọc / cam):
-    ôn thẻ Leitner (ô 1–5, ôn lại sau 1 / 2 / 4 / 7 / 15 ngày, ô ≥ 4 = đã thuộc, Space lật, phím 1 / 2 / 3), luyện nói (Web Speech
-    en-US + ghi âm MediaRecorder; không có thì gõ; chấm = 60 % từ khóa kw + 25 % thời gian + 15 % tốc độ 100–165 từ/phút; bài gõ
-    ước ~140 từ/phút), phỏng vấn thử 5 câu, thư viện (lọc nguồn / nhóm / mức / sao, ghi chú, Admin thêm / sửa / xóa câu), kiến thức,
-    từ vựng (+ kiểm tra 10 từ), khung & mẹo, Dữ liệu (nạp file .json → iv_save theo lô 60 dòng, tải bản sao lưu).
+    "Luyện Phỏng Vấn" (key iv, `interview.js` → window.IVTool.html(), nút data-iv, CSS #iv-css tông sáng chàm / ngọc / cam) – chỉ
+    HIỂN THỊ để học thuộc (chủ dự án không cần thu âm / luyện nói): 📖 Học thuộc (mặc định; cfg.view "one" từng câu – ← / → hoặc
+    Trước / Tiếp, mở = đã xem read[id] – hoặc "all" cả danh sách 20 câu / lần; cfg.hide 0 tô sáng từ khóa kw, 1 che từ khóa thành ô
+    bấm để hiện, 2 che đáp án (mờ) + gợi ý hook / kw; nút "Đã thuộc" = box ≥ 4), ôn thẻ Leitner (ô 1–5, ôn lại sau 1 / 2 / 4 / 7 / 15
+    ngày, ô ≥ 4 = đã thuộc, Space lật, phím 1 / 2 / 3), thư viện (lọc nguồn / nhóm / mức / sao, ghi chú, Admin thêm / sửa / xóa câu),
+    kiến thức, từ vựng (+ kiểm tra 10 từ, 🔊 máy đọc phát âm), khung & mẹo, Dữ liệu (kéo thả / chọn file .json → iv_save theo lô
+    60 dòng, tải bản sao lưu). Sheet chưa có câu nào → chỉ hiện hướng dẫn nạp 3 bước.
     NỘI DUNG (câu trả lời theo CV) KHÔNG ở repo: tab "Phỏng vấn" của Sheet. File .json do Claude dựng từ tài liệu Word:
     {v, groups[{id, n, src}], cats[[id, icon, tên]], q[{id, src, g, lv 1–3, en, vi, ans[], key, hook, voc[[en, vi]], tip, kw[], short (số ý
     bản 30 giây), rel[], k[]}], k[{id, cat, n, en, what, why, how[], ex, pit[], kw[], qs[]}], voc[[en, vi, nhóm, [id câu]]], fw, std, tips{use, prep}}.
     Dòng Sheet: meta:groups, meta:extra (fw / std / tips), meta:voc:N (120 từ / dòng), q (id câu), k (id thẻ).
-    Tiến độ npdIv@user {v:1, box, due (số ngày), seen, sp:{id:{best, last, n}}, star[], notes, log:{ngày:số thẻ}, cfg:{newDay, sec}}.
+    Tiến độ npdIv@user {v:1, box, due (số ngày), seen, read:{id:ngày xem}, star[], notes, log:{ngày:số lượt}, cfg:{newDay, view, hide}}
+    (sp / cfg.sec của bản có luyện nói: giữ nguyên, không dùng).
     "Chuỗi Dung Sai" (key stack) = trang riêng `tools/stackup.html` (QE Tolerance Stackup & Vector Chain Analyzer, JS thuần + Canvas 2D)
     nhúng bằng iframe .tl-fr (?embed=1&k=uKey("npdStack")); trang con gửi chiều cao qua postMessage {stackH}. Chuỗi kích thước
     {id, part, desc, nom, up, lo (có dấu), type plane / cyl / sph, hole, dia, dUp, dLo, dir ±1, on, bal} lưu localStorage theo khóa k
@@ -150,7 +153,7 @@ Ngôn ngữ giao diện: tiếng Anh / tiếng Việt; trao đổi với chủ d
   Dữ liệu cá nhân đồng bộ 3 chiều (KHÔNG để bản máy chủ đè thay đổi chưa gửi): npdMineSync@user = hash bản đã khớp máy chủ
   lần cuối. Trên máy đổi mà chưa gửi được → giữ + gửi lại (thử lại 5 s → 5 phút; hết phiên → NPD.expired() mở đăng nhập,
   đăng nhập xong gửi; pagehide / ẩn trang → gửi keepalive). Chỉ máy chủ đổi → nhận. Cả hai cùng đổi (hoặc lần đầu chưa có
-  hash) → giữ bản tiến xa hơn (progressOf: npdFun theo số kiếp / sách / ngày sống, npdLib theo số bí kíp đạt, npdIv theo số lần ôn / nói / ghi chú; khóa khác giữ bản
+  hash) → giữ bản tiến xa hơn (progressOf: npdFun theo số kiếp / sách / ngày sống, npdLib theo số bí kíp đạt, npdIv theo số lần ôn / xem / nói / ghi chú; khóa khác giữ bản
   máy chủ), bản kia cất ở <khóa>~bak@user. Trạng thái: window.npdMineStatus {khóa: {st: pending|sending|ok|err|expired, msg}},
   sự kiện "npd:mine", npdPersonalUnsaved(), npdPersonalFlush(keepalive). Game hiện trạng thái này ở huy hiệu #gxSync.
 - Home (2D): ảnh nền rừng trúc + Ngọc Nhi = ảnh trong `<script id="home-img">` (JSON: bg, fy, tranh điện p_*, lv*).
