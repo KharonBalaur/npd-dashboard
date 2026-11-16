@@ -1746,7 +1746,7 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%} body{-webkit-tap-highl
 <script src="fun.js?v=20261111b"></script>
 <script src="notebook.js?v=20261111b"></script>
 <script src="library-builtin.js?v=20261111b"></script>
-<script src="interview.js?v=20261116a"></script>
+<script src="interview.js?v=20261116b"></script>
 <script id="board-data" type="application/json">
 {"version":1,"projects":[],"history":[]}
 </script>
@@ -3394,7 +3394,7 @@ const TOOLS = [
   ["unit", "d", "Đổi Đơn Vị", "Unit converter", "Quy đổi theo hệ SI: chiều dài, khối lượng, lực, mô-men, áp suất, nhiệt độ…"],
   ["link", "d", "Truyền Tống Trận", "Quick links", "Đường tắt tới TeamCenter, OT, TTi Dashboard, K2 SER, Cadena…"],
   ["mail", "d", "Mẫu Thư", "Email templates", "Mẫu email gửi khách hàng / supplier / nội bộ."],
-  ["iv", "a", "Luyện Phỏng Vấn", "Interview coach", "Ôn thẻ câu hỏi phỏng vấn QE theo lịch, luyện nói tiếng Anh có chấm ý chính, phỏng vấn thử, kiến thức & từ vựng."]];
+  ["iv", "a", "Luyện Phỏng Vấn", "Interview coach", "Học thuộc câu hỏi phỏng vấn QE: xem từng câu, tô sáng / che từ khóa để tự kiểm tra, ôn thẻ theo lịch, kiến thức & từ vựng."]];
 const TOOL_GROUPS = [["q", "Pháp khí chất lượng", "Quality tools"], ["d", "Tiện ích hằng ngày", "Daily utilities"], ["a", "Riêng Admin", "Admin only"]];
 // Nhóm "a" chỉ hiện cho tài khoản Admin (cùng danh sách quyền ADMIN_ROLES trong Code.gs). Đây chỉ là ẩn giao diện: dữ liệu của
 // công cụ do Apps Script kiểm tra quyền và chỉ trả cho Admin (action iv_data / iv_save).
@@ -4539,6 +4539,6 @@ window.addEventListener("pagehide", () => { try { sessionStorage.setItem(VKEY, J
 </script>
 
 
-<script src="sheets-bridge.js?v=20261116a"></script>
+<script src="sheets-bridge.js?v=20261116b"></script>
 <script src="sheets-auth.js?v=20261113b"></script>
 </body></html>
