@@ -202,7 +202,7 @@
    *   - cả hai cùng đổi → giữ bản tiến xa hơn (game: nhiều kiếp / ngày sống hơn; tu luyện: nhiều bí kíp đạt hơn), bản kia cất ở
    *     <khóa>~bak@user (không gửi đi; đăng xuất thì xóa như mọi dữ liệu cá nhân). Trạng thái từng khóa: window.npdMineStatus + sự kiện "npd:mine".
    */
-  const MINE = ['npdCave', 'npdLib', 'npdOT', 'npdFairy', 'npdEng', 'npdZh', 'npdFun'], mineT = {}, mineSt = {};
+  const MINE = ['npdCave', 'npdLib', 'npdOT', 'npdFairy', 'npdEng', 'npdZh', 'npdFun', 'npdIv'], mineT = {}, mineSt = {};
   let mineFor = '';                                                        // tài khoản đã nhận bản từ máy chủ: trước đó chỉ ghi trên máy, không gửi
   const me = () => (window.NPD && NPD.user() || {}).username || '';
   const readLocal = base => { try { return JSON.parse(localStorage.getItem(base + '@' + me())); } catch (e) { return null; } };
@@ -218,6 +218,7 @@
     if (!v || typeof v !== 'object') return 0;
     if (base === 'npdFun') { const g = v.gen || {}, L = g.life || {}; return (+g.lives || 0) * 1e6 + ((g.books || []).length + (g.arch || []).length) * 1e4 + (+L.days || (+L.age || 0) * 365) / 100 + Object.values(v.plays || {}).reduce((a, b) => a + (+b || 0), 0) / 1e3; }
     if (base === 'npdLib') return Object.keys(v.done || {}).length * 1e4 + (+v.answered || 0) + (+v.stones || 0) / 1e3;
+    if (base === 'npdIv') return Object.values(v.seen || {}).reduce((a, b) => a + (+b || 0), 0) + Object.values(v.sp || {}).reduce((a, b) => a + (+(b || {}).n || 0), 0) + Object.keys(v.notes || {}).length;
     return -1;                                                             // khóa khác: không đoán, giữ bản máy chủ
   };
   const schedule = (base, ms, tries) => { clearTimeout(mineT[base]); mineT[base] = setTimeout(() => sendMine(base, tries || 0), ms); };
