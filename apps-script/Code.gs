@@ -30,6 +30,7 @@ const CFG = {
   HISTORY_SEND: 500,       // số dòng Lịch sử mới nhất gửi về trang (Change log)
   MAX_CHANGES: 5000,       // tối đa số thay đổi trong một lần lưu (nhập cả file SER)
   SHEET_MINE: 'Cá nhân',
+  SHEET_IV: 'Phỏng vấn',      // câu hỏi phỏng vấn (có CV): chỉ Admin đọc / ghi, không bao giờ gửi trong "data"
   MINE_MAX: 45000,         // ký tự / ô (giới hạn của Sheet là 50.000)
   IMG_MAX: 4 * 1024 * 1024,
   PRESENCE_SEC: 120,       // "đang sửa" còn hiệu lực bao lâu sau lần báo cuối
@@ -47,7 +48,7 @@ const READ_TABS = ['Cài đặt', 'Thư viện', 'English', 'Chinese'];
 // Tab được phép sửa từ web (tab chưa có thì tự tạo, cột chưa có thì tự thêm vào cuối)
 const EDIT_TABS = ['Cài đặt', 'Thư viện'];
 const MINE_HEAD = ['Tên đăng nhập', 'Khóa', 'Dữ liệu', 'Cập nhật'];
-const MINE_KEYS = ['npdCave', 'npdLib', 'npdOT', 'npdFairy', 'npdEng', 'npdZh', 'npdFun'];
+const MINE_KEYS = ['npdCave', 'npdLib', 'npdOT', 'npdFairy', 'npdEng', 'npdZh', 'npdFun', 'npdIv'];
 const HISTORY_HEAD = ['Thời gian', 'Người sửa', 'Tab', 'TTi model', 'Dòng', 'Cột', 'Giá trị cũ', 'Giá trị mới'];
 const VIEW_ROLES = ['viewer', 'view', 'xem', 'chỉ xem', 'chi xem'];
 const ADMIN_ROLES = ['admin', 'administrator', 'quản trị', 'quan tri', 'quản trị viên', 'quan tri vien'];
@@ -79,6 +80,8 @@ function doPost(e) {
       case 'data':   out = getData_(req.token); break;
       case 'save':   out = save_(req.token, req.changes, req.ensure); break;
       case 'mine':   out = mine_(req.token, req.key, req.value); break;
+      case 'iv_data': out = ivData_(req.token); break;
+      case 'iv_save': out = ivSave_(req.token, req.items, req.replace === true, req.del); break;
       case 'practice': out = practice_(req.token, req.realm, req.topic, req.text); break;
       case 'review': out = review_(req.token, req.user, req.realm, req.topic, req.status, req.note); break;
       case 'rank':   out = rank_(req.token); break;
@@ -724,6 +727,69 @@ function mineSheet_() {
     sh.getRange('A:C').setNumberFormat('@');
   }
   return sh;
+}
+
+/* ---------------- Luyện phỏng vấn (chỉ Admin) ----------------
+ * Tab "Phỏng vấn": ID | Loại | Nhóm | Tiêu đề | Dữ liệu (JSON) | Cập nhật. Có câu trả lời theo CV nên KHÔNG nằm trong READ_TABS /
+ * EDIT_TABS, chỉ trả cho tài khoản Admin (đọc lại tab Tài khoản mỗi lần gọi). Loại: q = câu hỏi, k = thẻ kiến thức, meta = nhóm,
+ * từ vựng (chia nhiều dòng cho vừa ô), khung trả lời, mẹo.
+ */
+const IV_HEAD = ['ID', 'Loại', 'Nhóm', 'Tiêu đề', 'Dữ liệu (JSON)', 'Cập nhật'];
+function ivAdmin_(token) {
+  const user = authFresh_(token);
+  if (!user) return { err: { ok: false, expired: true, error: 'Phiên đăng nhập đã hết hạn' } };
+  if (!isAdmin_(user)) return { err: { ok: false, error: 'Chỉ tài khoản Admin được dùng công cụ này' } };
+  return { user };
+}
+function ivData_(token) {
+  const a = ivAdmin_(token); if (a.err) return a.err;
+  const sh = SpreadsheetApp.getActive().getSheetByName(CFG.SHEET_IV);
+  if (!sh || sh.getLastRow() < 2) return { ok: true, items: [] };
+  const items = [];
+  sh.getRange(2, 1, sh.getLastRow() - 1, IV_HEAD.length).getValues().forEach(r => {
+    if (!r[0]) return;
+    let d = null; try { d = JSON.parse(r[4]); } catch (e) { return; }
+    items.push({ id: String(r[0]), t: String(r[1]), g: String(r[2]), data: d, at: r[5] instanceof Date ? r[5].toISOString() : String(r[5] || '') });
+  });
+  return { ok: true, items };
+}
+// items: [{id, t, g, title, data}] – thêm / sửa theo ID; replace = xóa hết rồi ghi lại; del = [ID] cần xóa
+function ivSave_(token, items, replace, del) {
+  const a = ivAdmin_(token); if (a.err) return a.err;
+  items = Array.isArray(items) ? items : []; del = Array.isArray(del) ? del.map(String) : [];
+  if (items.length > 400 || del.length > 400) return { ok: false, error: 'Mỗi lần gửi tối đa 400 dòng' };
+  const rows = [];
+  for (const it of items) {
+    const id = String(it && it.id || '');
+    if (!/^[\w:.-]{1,40}$/.test(id)) return { ok: false, error: 'ID không hợp lệ: ' + id.slice(0, 40) };
+    if (!['q', 'k', 'meta'].includes(it.t)) return { ok: false, error: 'Loại không hợp lệ ở ' + id };
+    if (!it.data || typeof it.data !== 'object') return { ok: false, error: 'Thiếu dữ liệu ở ' + id };
+    const json = JSON.stringify(it.data);
+    if (json.length > CFG.MINE_MAX) return { ok: false, error: 'Dòng ' + id + ' quá lớn (' + json.length + ' ký tự)' };
+    rows.push([id, it.t, String(it.g || '').slice(0, 20), String(it.title || '').slice(0, 300), json, new Date()]);
+  }
+  const lock = LockService.getScriptLock();
+  if (!lock.tryLock(15000)) return { ok: false, error: 'Máy chủ bận, thử lại sau' };
+  try {
+    const ss = SpreadsheetApp.getActive();
+    let sh = ss.getSheetByName(CFG.SHEET_IV);
+    if (!sh) {
+      sh = ss.insertSheet(CFG.SHEET_IV);
+      sh.getRange(1, 1, 1, IV_HEAD.length).setValues([IV_HEAD]).setFontWeight('bold');
+      sh.setFrozenRows(1);
+    }
+    sh.getRange('A:E').setNumberFormat('@');
+    // đọc cả bảng, sửa trong bộ nhớ rồi ghi lại một lần (không xóa dòng: Sheet báo lỗi khi xóa hết dòng dưới hàng cố định)
+    const n = Math.max(0, sh.getLastRow() - 1);
+    let table = n > 0 && !replace ? sh.getRange(2, 1, n, IV_HEAD.length).getValues().filter(r => r[0] !== '' && !del.includes(String(r[0]))) : [];
+    const pos = {}; table.forEach((r, i) => { pos[String(r[0])] = i; });
+    rows.forEach(r => { if (pos[r[0]] >= 0) table[pos[r[0]]] = r; else { pos[r[0]] = table.length; table.push(r); } });
+    if (n > 0) sh.getRange(2, 1, n, IV_HEAD.length).clearContent();
+    if (table.length) sh.getRange(2, 1, table.length, IV_HEAD.length).setValues(table);
+    return { ok: true, saved: rows.length, deleted: del.length };
+  } finally {
+    lock.releaseLock();
+  }
 }
 
 /* ---------------- Tu luyện: bài thực hành và duyệt đột phá ---------------- */

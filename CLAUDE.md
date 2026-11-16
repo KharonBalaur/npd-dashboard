@@ -63,6 +63,18 @@ Ngôn ngữ giao diện: tiếng Anh / tiếng Việt; trao đổi với chủ d
     Đang mở 1 công cụ (máy tính): danh sách thu thành thanh biểu tượng 68px (.tl-app.rail, nút » / «, nhớ ở localStorage npdToolRail).
     Ô nhập / nút / tab dạng segmented dùng chung CSS "#tool .tl-main …".
     Cpk và Gage R&R có nút "Xuất báo cáo PDF" (tlReport: A4, thông tin rp_* tùy chọn, kết quả, biểu đồ SVG, số liệu, phương pháp, ô ký).
+    Nhóm "a" (Riêng Admin) chỉ hiện khi Quyền thuộc TL_ADMIN (= ADMIN_ROLES của Code.gs): toolsVis() lọc TOOLS; #tool/<key> của
+    người khác bị bỏ qua. Chỉ là ẩn giao diện – quyền thật kiểm tra ở Apps Script.
+    "Luyện Phỏng Vấn" (key iv, `interview.js` → window.IVTool.html(), nút data-iv, CSS #iv-css tông sáng chàm / ngọc / cam):
+    ôn thẻ Leitner (ô 1–5, ôn lại sau 1 / 2 / 4 / 7 / 15 ngày, ô ≥ 4 = đã thuộc, Space lật, phím 1 / 2 / 3), luyện nói (Web Speech
+    en-US + ghi âm MediaRecorder; không có thì gõ; chấm = 60 % từ khóa kw + 25 % thời gian + 15 % tốc độ 100–165 từ/phút; bài gõ
+    ước ~140 từ/phút), phỏng vấn thử 5 câu, thư viện (lọc nguồn / nhóm / mức / sao, ghi chú, Admin thêm / sửa / xóa câu), kiến thức,
+    từ vựng (+ kiểm tra 10 từ), khung & mẹo, Dữ liệu (nạp file .json → iv_save theo lô 60 dòng, tải bản sao lưu).
+    NỘI DUNG (câu trả lời theo CV) KHÔNG ở repo: tab "Phỏng vấn" của Sheet. File .json do Claude dựng từ tài liệu Word:
+    {v, groups[{id, n, src}], cats[[id, icon, tên]], q[{id, src, g, lv 1–3, en, vi, ans[], key, hook, voc[[en, vi]], tip, kw[], short (số ý
+    bản 30 giây), rel[], k[]}], k[{id, cat, n, en, what, why, how[], ex, pit[], kw[], qs[]}], voc[[en, vi, nhóm, [id câu]]], fw, std, tips{use, prep}}.
+    Dòng Sheet: meta:groups, meta:extra (fw / std / tips), meta:voc:N (120 từ / dòng), q (id câu), k (id thẻ).
+    Tiến độ npdIv@user {v:1, box, due (số ngày), seen, sp:{id:{best, last, n}}, star[], notes, log:{ngày:số thẻ}, cfg:{newDay, sec}}.
     "Chuỗi Dung Sai" (key stack) = trang riêng `tools/stackup.html` (QE Tolerance Stackup & Vector Chain Analyzer, JS thuần + Canvas 2D)
     nhúng bằng iframe .tl-fr (?embed=1&k=uKey("npdStack")); trang con gửi chiều cao qua postMessage {stackH}. Chuỗi kích thước
     {id, part, desc, nom, up, lo (có dấu), type plane / cyl / sph, hole, dia, dUp, dLo, dir ±1, on, bal} lưu localStorage theo khóa k
@@ -138,7 +150,7 @@ Ngôn ngữ giao diện: tiếng Anh / tiếng Việt; trao đổi với chủ d
   Dữ liệu cá nhân đồng bộ 3 chiều (KHÔNG để bản máy chủ đè thay đổi chưa gửi): npdMineSync@user = hash bản đã khớp máy chủ
   lần cuối. Trên máy đổi mà chưa gửi được → giữ + gửi lại (thử lại 5 s → 5 phút; hết phiên → NPD.expired() mở đăng nhập,
   đăng nhập xong gửi; pagehide / ẩn trang → gửi keepalive). Chỉ máy chủ đổi → nhận. Cả hai cùng đổi (hoặc lần đầu chưa có
-  hash) → giữ bản tiến xa hơn (progressOf: npdFun theo số kiếp / sách / ngày sống, npdLib theo số bí kíp đạt; khóa khác giữ bản
+  hash) → giữ bản tiến xa hơn (progressOf: npdFun theo số kiếp / sách / ngày sống, npdLib theo số bí kíp đạt, npdIv theo số lần ôn / nói / ghi chú; khóa khác giữ bản
   máy chủ), bản kia cất ở <khóa>~bak@user. Trạng thái: window.npdMineStatus {khóa: {st: pending|sending|ok|err|expired, msg}},
   sự kiện "npd:mine", npdPersonalUnsaved(), npdPersonalFlush(keepalive). Game hiện trạng thái này ở huy hiệu #gxSync.
 - Home (2D): ảnh nền rừng trúc + Ngọc Nhi = ảnh trong `<script id="home-img">` (JSON: bg, fy, tranh điện p_*, lv*).
@@ -165,7 +177,10 @@ Ngôn ngữ giao diện: tiếng Anh / tiếng Việt; trao đổi với chủ d
 - {action:"rank", token} → {ok, rank:[{name, dh, rid, ord, done, fails, wrong, answered, lives, started, lc, stones, pills, fun:{spot, react, memo, math, calm}|null, me}]} – tóm tắt tu
   luyện mọi tài khoản đang hoạt động (không tên đăng nhập, không dữ liệu cá nhân khác), cache 1 phút
 - "data" trả thêm practice: dòng Tu luyện của chính mình (Admin: mọi dòng Chờ duyệt + 400 dòng mới nhất)
-- {action:"mine", token, key, value} – dữ liệu cá nhân (npdCave, npdLib, npdOT, npdFairy, npdEng, npdZh, npdFun) của chính mình
+- {action:"mine", token, key, value} – dữ liệu cá nhân (npdCave, npdLib, npdOT, npdFairy, npdEng, npdZh, npdFun, npdIv) của chính mình
+- {action:"iv_data", token} → {ok, items:[{id, t (q / k / meta), g, data, at}]} và {action:"iv_save", token, items:[{id, t, g, title, data}],
+  replace, del:[id]} → {ok, saved, deleted} – tab "Phỏng vấn", CHỈ Quyền = Admin (authFresh_ đọc lại tab Tài khoản); id /^[\w:.-]{1,40}$/,
+  ≤ 400 dòng / lần, mỗi data ≤ MINE_MAX. Không nằm trong READ_TABS / EDIT_TABS (action "data" / "save" không bao giờ gửi tab này).
 - img_put / img_get / presence – còn trong Code.gs, hiện trang không dùng
 - {action:"logout", token}
 
@@ -174,6 +189,7 @@ Ngôn ngữ giao diện: tiếng Anh / tiếng Việt; trao đổi với chủ d
   Trạng thái (Khóa / Chờ duyệt = chặn) → KHÔNG bao giờ gửi tab này về trình duyệt
 - Lịch sử (tự tạo): Thời gian | Người sửa | Tab | TTi model | Dòng | Cột | Giá trị cũ | Giá trị mới
 - Cá nhân (tự tạo, chỉ chủ tài khoản đọc được): Tên đăng nhập | Khóa | Dữ liệu (JSON) | Cập nhật
+- Phỏng vấn (tự tạo, chỉ Admin đọc / ghi qua iv_data / iv_save): ID | Loại | Nhóm | Tiêu đề | Dữ liệu (JSON) | Cập nhật
 - Tu luyện (tự tạo): Thời gian | Tên đăng nhập | Họ tên | Cảnh giới | Bí kíp | Bài làm | Trạng thái (Chờ duyệt / Đã duyệt /
   Trả lại) | Người duyệt | Nhận xét | Cập nhật – chỉ máy chủ ghi; người học không tự duyệt được
 - Cài đặt: Khóa | Giá trị (address; links dạng JSON)
