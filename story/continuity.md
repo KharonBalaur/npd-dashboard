@@ -47,6 +47,13 @@ mục **Cần sửa**, không sửa chương cũ ngay.
   = bậc 9: Võ Thần, Nhục Thân Thành Thần, Chiến Thần, Nhẫn Thần, Kim tiên, Thần sư, Thi Thần, Nguyên Sơ). Nơi họp: Vân Đài.
 - **Thiên Thiết:** kim loại Thiên giới rơi khi vải rách; về sau gọi chung với xương thần là Thần Cốt. **Bão Lôi Chủ**
   (Đông: Lôi Vân Lạc): cơn bão sấm không mưa trôi trên trời từ năm 1, vài chục năm hiện một lần; người bị sét của nó đánh mà sống thì thay đổi.
+- **Đấu khí:** năng lượng của Chiến Giới (pháp sư gọi Nếp Nhàu – nếp gấp bị Lôi Chủ vò nát trong Thần Chiến, nằm sát
+  Nhân gian). Cửa vào = Đấu Hạch sau tim, mở bằng cách bị đẩy tới bờ vực trong trận đánh nhiều lần (không có bí kíp / đan dược).
+  Nội lực như sông, đấu khí như lửa rừng (mạnh gấp đôi nhưng chỉ giữ được một trận). Hỏa Giáp (từ Đấu tông); cháy mạch.
+  Bậc: Đấu sĩ · Đại đấu sĩ · Đấu tông · Đấu tôn · Đấu thánh · Đấu đế (thắp lửa cho người cạnh) · Chiến Vương · Chiến Hoàng · Chiến Thần.
+- **Thành Bang Đồng Thuẫn:** đồi đá phía tây thành Corrath (đồng bằng nam Phương Tây). Không vua; Luật Khiên; khiên gỗ từ khi
+  biết đi → Sân Cát (7 tuổi) → Thử Lửa (16 tuổi); Hội Đồng Khiên 30 cựu binh > 50 tuổi; Thủ Thuẫn nhiệm kỳ 10 năm, đứng hàng
+  đầu; Tường Khiên treo khiên người chết; cho Vương Triều thuê quân đoàn.
 - **Lịch:** Kỷ Huyết Nguyệt năm 1 = đêm Huyền Nguyệt chết, trăng đỏ lần đầu. Hiện tại ≈ năm 1203.
 
 ## Dòng thời gian
@@ -58,9 +65,11 @@ mục **Cần sửa**, không sửa chương cũ ngay.
 - ~270 Veyra sinh · 301 Dịch Tro Xám · 302 phép cướp lửa → Valcrest; Veyra biến mất · 318 Edric uống máu Malgrath,
   thắng Azhar ở Thornfield · 330 nhẫn của Rhen nứt, Torvald chết, Rhen bị phong trong mộ băng; Lão Thú (ông lão mù)
   nói lời tiên tri · ~335 Học Viện mua hạt Bạch Tâm.
+- ~180 Theron sinh ở Corrath · 200 sét Bão Lôi Chủ đánh Theron · 205 nổi dậy ở Corrath · 212 hòa ước, lập Đồng Thuẫn ·
+  248 Bão Lôi Chủ trở lại, Theron (68) đi vào sét, mất tích.
 - 412 Hạn bạt (nam Thanh Vân) · ~440 Lão Thú ở làng của Iris · 450 Edric thôi uống máu người · 452 Edric gặp Iris ·
   470 Liên Minh Vạn Thú · ~487 Lysa sinh · 520 Iris mất · 562 Hiệp ước Tuyết Trắng.
-- ~600 Lang Dịch · 640 Virus Thượng Cổ · 702 Đêm Trăm Xác (Mộ Vân Khê) · 810 lập Học Viện Gen · 893 bẫy của Ambrose Kell ·
+- ~600 Lang Dịch · 651 trận Hẻm Núi Lửa (Kael, 300 đấu sĩ; 9 ngày) · 640 Virus Thượng Cổ · 702 Đêm Trăm Xác (Mộ Vân Khê) · 810 lập Học Viện Gen · 893 bẫy của Ambrose Kell ·
   ~900 "đứa trẻ ở Vực Sâu" · 903 Ảnh Tổ bị trục xuất · 905 lập Ảnh Môn.
 - 998–1010 mùa Huyết Nguyệt dài nhất · 1006 lần thử thứ bảy → Vesper, Lycan · 1023 Hạn bạt trên biển · 1041 Vesper
   tàn sát làng Moonborn · 1043 Tuyết Ảnh phản môn · 1087 Đêm Trăng Máu · 1088 Thánh Đường · 1090 Hội Thợ Săn ·
@@ -170,6 +179,14 @@ mục **Cần sửa**, không sửa chương cũ ngay.
 - Thuật ngữ: Thần tộc hậu sinh, thần trời sinh / thần thành tựu, Thần cấp, Vân Đài, Thiên Thiết, Đêm Sét Đầu, Bão Lôi Chủ / Lôi Vân Lạc, Mảnh Gene Thần (máu thần kết tinh như hạt muối, mở gene ẩn hoặc làm tan thành ánh sáng).
 - Ràng buộc: Huyền Nguyệt đỡ tia sét cho Thái Hư; Thái Hư buông nửa mũi khâu rồi ngủ (Đêm Dài = ông trở mình); xương Lôi Chủ vẫn ở trong Bão Lôi Chủ; Phán Quan chỉ gọi Chúa Ngục về (không đứng phe); "trận thần chiến nhỏ" thời nay khi có người đạt Thần cấp muốn lên Thiên giới.
 - Ràng buộc cho c18: Theron là một trong số ít người sống sót sau khi bị sét Bão Lôi Chủ đánh.
+
+### c18 · L18 Đấu Khí (200 – nay)
+- Mốc: Theron nô lệ đấu trường Corrath (bán năm 5 tuổi) → 200 bị sét Bão Lôi Chủ đánh, mê 14 ngày → 205 mở Đấu Hạch cho 11 người, nổi dậy → 7 năm vây ở đồi đá → 212 lập Đồng Thuẫn, làm Thủ Thuẫn 30 năm → 248 đi vào sét trên tháp, để lại khiên đồng thủng (treo cao nhất Tường Khiên).
+- Mốc 651: Azhar lên phía bắc lần 2 qua Hẻm Núi Lửa (khe 10 dặm giữa 2 núi lửa ngủ); quân đoàn Đồng Thuẫn đang ở phương bắc; Thủ Thuẫn Kael (nữ, 43 tuổi, Đấu đế) dẫn 300 người (≥ Đại đấu sĩ), giữ 9 ngày; đêm thứ 6 ông lão chăn dê mắt vàng mang nước; ngày 9 Kael đẩy đấu khí xuống đất làm 2 núi lửa phun, hẻm thành tường đá đen cao trăm trượng.
+- Nhân vật: Theron, Kael, Bren (17 tuổi, người duy nhất về, mang khiên Kael; sau làm Thủ Thuẫn từ 50 tới 70 tuổi), Lão Thú (ông lão ở khán đài Sân Cát hỏi Theron "lúc nào thì nên nằm xuống").
+- Thuật ngữ: Chiến Giới / Nếp Nhàu, Đấu Hạch, Hỏa Giáp, cháy mạch, Luật Khiên, Sân Cát, Thử Lửa, Tường Khiên, Thủ Thuẫn.
+- Ràng buộc: xác ướp Azhar sợ lửa (băng vải tẩm nhựa thơm), xác khô mất băng vải thì không cháy; Azhar có "phù thủy cát" gọi gió nóng; vị vua cát cầm quân năm 651 chưa nêu tên (để c20); từ 651 Azhar không qua lối Hẻm Núi Lửa nữa.
+- Ràng buộc: mỗi năm vào ngày thứ 9 của trận, Đồng Thuẫn đứng im lặng trước phiến đá khắc 300 tên; người Đồng Thuẫn tin Theron thành Chiến Thần, sang Chiến Giới.
 
 ## Đề cương chương còn lại
 
