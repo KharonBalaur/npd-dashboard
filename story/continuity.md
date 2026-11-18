@@ -73,6 +73,13 @@ mục **Cần sửa**, không sửa chương cũ ngay.
 - **Lycan / Vesper (nguồn gốc):** Lycan = gene sói nhiễm Lang Dịch, không phải lời nguyền Morwen → không cần trăng, hóa giải lời
   nguyền không cứu được Lycan; Lycan sinh con được, gene sói ngủ tới tuổi dậy thì. Vesper = máu Huyết nô qua bầy dơi → khát máu,
   sợ nắng, hóa dơi nhưng không mang khế ước với Malgrath. Nightfall là nhánh Huyết tộc riêng, không liên quan Vesper.
+- **Dị nhân (thêm):** thức tỉnh nhiều nhất ở tuổi dậy thì hoặc cận kề cái chết, cần một tác nhân bên ngoài; con của dị nhân mạnh
+  dễ thức tỉnh hơn nhưng không chắc, năng lực thường khác cha mẹ. Học Viện Gen mượn Alpha / Omega từ bảng chữ cổ Phương Tây (Omega =
+  "tận cùng"), ngược nghĩa với bầy sói. Siêu Việt / Nguyên Sơ chưa từng được xác nhận. "Phép màu của mẹ Iris": chỉ xảy ra khi cha
+  hoặc mẹ là dị nhân ≥ Alpha có năng lực gắn với sự sống hoặc nếp gấp (< 20 trường hợp cả Kỷ Huyết Nguyệt). Sổ Kiểm Danh của Vương
+  Triều (đăng ký dị nhân; không cho giết nhưng được gọi đi lính / phu). Đàn áp có tổ chức chỉ từ Thánh Đường 1088.
+- **Liên Minh Vạn Thú:** lập 470 dưới gốc Hội đồng Cây Già (Tinh Linh Sâm Lâm); không vua, mỗi tộc / nhóm cử một người. Hai luật
+  khắc trên rễ cây: không ai bị đuổi đi vì khác biệt (470); không ai được ép người khác thức tỉnh (505). Gọi gene ẩn là "chỗ để dành".
 - **Lịch:** Kỷ Huyết Nguyệt năm 1 = đêm Huyền Nguyệt chết, trăng đỏ lần đầu. Hiện tại ≈ năm 1203.
 
 ## Dòng thời gian
@@ -89,8 +96,9 @@ mục **Cần sửa**, không sửa chương cũ ngay.
   thắng Azhar ở Thornfield · 330 nhẫn của Rhen nứt, Torvald chết, Rhen bị phong trong mộ băng; Lão Thú (ông lão mù)
   nói lời tiên tri · ~335 Học Viện mua hạt Bạch Tâm.
 - ~400 quanh Thanh Vân >30 môn phái · 412–415 Hạn bạt (nam Thanh Vân) → Thủy Chiến · 415 Hội Thanh Vân, lập Liên Minh
-  Võ Lâm Đông Thổ (Minh chủ đầu tiên Cổ Vân Hà) · ~440 Lão Thú ở làng của Iris · 450 Edric thôi uống máu người · 452 Edric gặp Iris ·
-  470 Liên Minh Vạn Thú · ~487 Lysa sinh · 520 Iris mất · 562 Hiệp ước Tuyết Trắng.
+  Võ Lâm Đông Thổ (Minh chủ đầu tiên Cổ Vân Hà) · ~430 Iris sinh · ~440 Lão Thú (ông lão bán hạt dẻ) tới làng của Iris · 445 thiên thạch, Iris thức tỉnh ·
+  449 Iris bị ghi vào Sổ Kiểm Danh · 451 Iris bỏ làng vào rừng · 450 Edric thôi uống máu người · 452 Edric gặp Iris ·
+  470 Liên Minh Vạn Thú · ~487 Lysa sinh · ~460 Iris đạt Alpha · ~490 mắt Iris bắt đầu "cháy" · 505 Iris khắc luật thứ hai · 520 Iris mất (~90 tuổi) · 562 Hiệp ước Tuyết Trắng.
 - ~600 Lang Dịch · 650 ốc đảo cạn, Thầy Ướp đánh thức Khetemu · 651 trận Hẻm Núi Lửa (Kael, 300 đấu sĩ; 9 ngày) · 640 Virus Thượng Cổ · 702 Đêm Trăm Xác (Mộ Vân Khê) · 810 lập Học Viện Gen · 893 bẫy của Ambrose Kell ·
   ~900 "đứa trẻ ở Vực Sâu" · 903 Ảnh Tổ bị trục xuất · 905 lập Ảnh Môn.
 - 991 Halden Crowe làm viện trưởng (41 tuổi) · 998–1010 mùa Huyết Nguyệt dài nhất · 999 triều đình ra lệnh → Dự án Hổ
@@ -233,17 +241,15 @@ mục **Cần sửa**, không sửa chương cũ ngay.
 - Ràng buộc (bí ẩn để ngỏ): cửa lồng mở bằng chìa khóa chính (3 người giữ, cả 3 có chứng cứ ngoại phạm); trang sổ trực đêm 1/12 bị xé, người gác không nhớ gì sau nửa đêm. Không nói ai mở.
 - Ràng buộc: Thánh Đường treo thưởng tìm Crowe (chưa ai nhận); lời đồn con hổ mắt người ở rìa rừng Bắc Nguyên và ông già không cười ở cống ngầm phía tây; dòng chữ khắc trên cửa tầng 7 giống nét chữ Crowe.
 
-## Đề cương chương còn lại
+### c22 · L22 Dị Nhân (430 – nay)
+- Mốc: Iris sinh ~430 ở làng chăn cừu trên đồi rìa Tinh Linh Sâm Lâm (cha chăn cừu thuê, mẹ dệt len; ốm yếu); ~440 ông lão bán hạt dẻ tới làng; 445 (15 tuổi, sau một mùa Huyết Nguyệt) hòn đá đen rơi cách 3 bước → thấy nếp gấp; 449 Sổ Kiểm Danh; 451 vào rừng; 452 gặp Edric; 470 Liên Minh; 505 luật thứ hai; 520 mất dưới gốc Hội đồng Cây Già, Lysa và ông lão mắt vàng bên cạnh.
+- Nhân vật: Iris Kael (cấp Alpha; năng lực "nhìn và vuốt" nếp gấp: vết thương khép, sốt hạ, người lạc quay đúng hướng; thấy sợi chỉ đỏ của Huyết Ước); Lão Thú; Edric, Lysa (kể ở c06).
+- Thuật ngữ: Sổ Kiểm Danh, "chỗ để dành", hai luật trên rễ Hội đồng Cây Già, "phép màu của mẹ Iris" (quy luật Alpha + sự sống / nếp gấp).
+- Ràng buộc: gene ẩn của Iris "cháy" từ năm 60 tuổi (mắt chuyển xanh mờ như ánh hòn đá năm 445) – CHUYỆN RIÊNG CỦA IRIS, Học Viện không thấy trường hợp thứ hai, không phải quy luật dị nhân.
+- Ràng buộc: Iris từng muốn dùng sức mạnh lớn thức tỉnh mọi sinh linh (khớp c14), về sau đổi ý → luật thứ hai năm 505; lời cuối với Lão Thú "Ông vẫn chưa đưa nó cho tôi. Tôi hiểu rồi."; câu nhật ký "Tôi không nhìn thấy quái vật…".
 
-- **c17 · L17 Thần Tộc & Thần Chiến:** Thần tộc là một chủng tộc (trời sinh thuở sơ khai, hiếm muộn, trường thọ) + thần do
-  tu luyện tới trường sinh. Hai phe (khâu: Huyền Nguyệt, Thái Hư · dùng: Lôi Chủ); khoảng cách giữa lúc vải rách và Thần
-  Chiến; diễn biến 300 năm; mưa sao; cái chết từng vị; Thần Cốt, Mảnh Gene Thần; thần tu luyện; cảnh giới T9 (Thần cấp).
-- **c18 · L18 Đấu Khí:** chiều không gian đấu khí (cuồng bạo hơn nội lực); Theron (nô lệ đấu trường) khám phá ~200;
-  Thành Bang Đồng Thuẫn (~212); bậc Đấu sĩ → Chiến Thần; Kael và ba trăm chiến binh ở Hẻm Núi Lửa năm 651 chống Azhar.
-- **c19 · L19 Võ Đạo Phương Đông:** Thạch Kiên; nội lực và luyện thể; các môn phái Thanh Vân; Liên Minh Võ Lâm Đông Thổ.
-- **c20 · L20 Lăng Vua Cát:** Azhar, Sa Vương Khetemu, Sách Tử Thần chép từ luật Phán Quan, xác ướp. Vua cát năm 651 = Khetemu (chủ dự án chọn) – đã viết.
-- **c21 · L21 Phòng Thí Nghiệm Hổ:** lịch sử Học Viện Gen, Halden Crowe, lần thử thứ bảy, Sable / Garr, hồ sơ niêm phong.
-- **c22 · L22 Dị Nhân:** cuộc đời Iris Kael, Liên Minh Vạn Thú, các cấp thức tỉnh, Thánh Đường đàn áp.
+## Đề cương chương còn lại
+Đã viết đủ 22 chương (c01–c22).
 
 ## Cần sửa
 
@@ -257,7 +263,7 @@ mục **Cần sửa**, không sửa chương cũ ngay.
    thời gian có ~2700 năm ở giữa. Chương 17 cần giải thích (tranh cãi kéo dài trước khi thành chiến tranh).
 4. **ĐÃ SỬA – c12 (thuật ngữ):** viết "hút tinh khí trời đất" cho Thạch Kiên; theo c01 võ giả hút Địa khí. Đổi thành "Địa khí trời đất"
    (game cũng dùng "tinh khí trời đất" trong mô tả hệ Nội lực).
-5. **c02 ↔ c12 (quê Iris, nhỏ):** c02 "cô gái chăn cừu vùng đồi phía tây", c12/c06 "làng giữa Tinh Linh Sâm Lâm". Có thể
+5. **c22 đã chốt (chưa sửa chương cũ): làng chăn cừu trên đồi ở rìa Tinh Linh Sâm Lâm – c02 ↔ c12 (quê Iris, nhỏ):** c02 "cô gái chăn cừu vùng đồi phía tây", c12/c06 "làng giữa Tinh Linh Sâm Lâm". Có thể
    giữ nếu hiểu là làng đồi ở rìa rừng; nên thống nhất một câu.
 6. **c12 ↔ c14 (Thạch Kiên, nhỏ):** c12 "nông dân đói khát" (người lớn), c14 "đứa trẻ chăn trâu bị bỏ rơi". Hợp được nếu
    c14 nói "từng là đứa trẻ chăn trâu bị bỏ rơi".
@@ -371,3 +377,20 @@ Crowe bị cách chức rồi tự tiêm và biến mất, Vương Triều đặ
 - Học Viện suýt bị giải tán năm 1007 và 1088.
 - Khoảng năm 1155 có học giả đề xuất lai virus Đêm Dài với máu Vesper, bị bác và bị đuổi.
 - Dòng chữ khắc trên cửa tầng 7 (nét chữ giống Crowe).
+
+### Chương 22
+Ý của chủ dự án: mọi sinh vật có gene ẩn, thức tỉnh khi gặp tác nhân bên ngoài hoặc có cha mẹ là dị nhân mạnh, nối với chiều
+không gian, hấp thu yếu tố bên ngoài; năng lực ngẫu nhiên, mạnh yếu khác nhau; Băng Huyết là con lai Dị nhân × nhánh Huyết Ước.
+Các gợi ý 8–14 đã duyệt (7 cấp + 2 lời đồn, giải thích Alpha / Omega, điều kiện "phép màu", quê Iris, Iris cấp Alpha và mất vì gene
+cháy – chuyện riêng, đàn áp có tổ chức từ 1088, di truyền không chắc chắn) không ghi lại. Mới thêm:
+- Gia cảnh Iris (cha chăn cừu thuê, mẹ dệt len) và năm sinh ~430.
+- Ông lão bán hạt dẻ hỏi Iris những câu lạ; đêm đầu xuân ông nói "món quà này hơi nặng"; Iris thấy quanh ông "những nếp gấp cổ xưa nhất".
+- Hòn đá đen rơi cách 3 bước, tỏa ánh xanh chỉ Iris thấy; dân làng sợ, mẹ giấu cô suốt mùa đông.
+- Năng lực "nhìn và vuốt" nếp gấp của Iris; Iris đạt Alpha ~460.
+- Sổ Kiểm Danh của Vương Triều; Iris bị ghi tên năm 449, bỏ làng năm 451.
+- Học Viện Gen ghi được < 20 trường hợp "phép màu của mẹ Iris".
+- Ví dụ gia đình dị nhân (cha điều khiển gió, mẹ nhìn trong tối, con gái nói chuyện với đá).
+- Liên Minh Vạn Thú: không vua, mỗi tộc / nhóm cử một người; luật thứ nhất năm 470, luật thứ hai năm 505.
+- Lão Thú ở bên Iris 10 năm đầu rồi rời đi (c14 có ý này; năm rời đi và chi tiết là mới).
+- Mắt Iris chuyển xanh mờ từ năm 60 tuổi, đau đầu mỗi lần nhìn; mất năm 520 dưới gốc Hội đồng Cây Già với Lysa và Lão Thú bên cạnh.
+- Lời cuối của Iris với Lão Thú và câu nhật ký "Tôi không nhìn thấy quái vật…".
