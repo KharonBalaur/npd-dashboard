@@ -16,6 +16,13 @@ mục **Cần sửa**, không sửa chương cũ ngay.
   thạch; kim loại sao, virus cổ). **Nguồn thứ năm:** chiều không gian đấu khí. **Phép thuật** = năng lượng tinh thần kéo
   "sợi chỉ" từ nếp gấp bên cạnh (Tinh thần chưa vượt 10 thì không thành phù thủy).
 - **Võ giả:** hấp thu Địa khí qua đồ ăn → có chân khí thì hút thẳng từ đất trời. Không dùng chữ "Tinh khí" cho võ giả.
+  Đan điền = chỗ ấm dưới rốn, nơi gene ẩn gần Nhân gian nhất. Nội lực (dẫn khí theo mạch; gốc Liễu Thanh): Luyện nội lực ·
+  Chân khí · Cương khí · Tiên Thiên · Tông Sư · Hóa Cảnh · Luyện Thần · Phản Hư · Võ Thần. Luyện thể / ngoại gia (nén khí vào
+  thân; gốc Đồ Mãnh): Minh kình · Ám kình · Hóa kình · Bão đan tọa khố · Kiến thần bất hoại · Thần Lực Thông Huyền · Kim Thân
+  Bất Diệt · Pháp Tướng Thiên Địa · Nhục Thân Thành Thần. Ma công / ma đạo = võ giả hút âm khí.
+- **Võ lâm Thanh Vân:** Thạch Am (tượng đá Thạch Kiên) · Thạch Môn (nội lực, lâu đời nhất) · Thiết Cốt Đường (thế gia luyện thể)
+  · kiếm phái, đạo quán, chùa · Liên Minh Võ Lâm Đông Thổ (Minh chủ bầu mỗi 20 năm ở Đại hội Luận Võ; Tam Bất: không dùng võ với
+  người không biết võ, không cướp lương thực và nước, không luyện ma công; đồng minh Phái Huyền Phù; ghét ma đạo và Ảnh Môn).
 - **Gene ẩn / dị nhân:** cấp Tiềm ẩn · Thức tỉnh · Thành thạo · Vượt ngưỡng · Đỉnh phong · Alpha · Omega (Siêu Việt,
   Nguyên Sơ chỉ là lời đồn). Dị nhân giữ tối đa 5 năng lực, người thường 2–3. Phế thể = Bình Chứa Rỗng. Thể chất Kháng Dịch.
 - **Bảy thần sơ khai:** Thái Hư (giữ nếp gấp, Kẻ Gấp Vải; đang ngủ) · Huyền Nguyệt (dẫn linh hồn, ở mặt trăng; chết) ·
@@ -60,14 +67,15 @@ mục **Cần sửa**, không sửa chương cũ ngay.
 
 - Sáng Thế → Thần tộc sơ khai → **Đại Chiến Vạn Tộc** (~200 năm; lớp vải rách ~3000 năm trước năm 1) → ~2700 năm
   thần tranh cãi ở Vân Đài (thần thành tựu tự leo lên qua vết rách) → **Thần Chiến** (~300 năm trước năm 1 – năm 1).
-- Năm ~40 Lão Thú dạy Thạch Kiên thở · ~90 Huyền Chân Tử lập Phái Huyền Phù (mất 168) · 150 lập Học Viện Ngũ Tinh ·
+- ~8 Thạch Kiên sinh · năm 40 (mất mùa 3 vụ) Lão Thú dạy Thạch Kiên thở · ~151 Thạch Kiên mất (>140 tuổi), hóa đá · ~90 Huyền Chân Tử lập Phái Huyền Phù (mất 168) · 150 lập Học Viện Ngũ Tinh ·
   160 Morwen nguyền tộc Hrafn · 197 học trò viện Hư mở khe xuống Địa ngục → Caelum Vane bị đuổi.
 - ~270 Veyra sinh · 301 Dịch Tro Xám · 302 phép cướp lửa → Valcrest; Veyra biến mất · 318 Edric uống máu Malgrath,
   thắng Azhar ở Thornfield · 330 nhẫn của Rhen nứt, Torvald chết, Rhen bị phong trong mộ băng; Lão Thú (ông lão mù)
   nói lời tiên tri · ~335 Học Viện mua hạt Bạch Tâm.
 - ~180 Theron sinh ở Corrath · 200 sét Bão Lôi Chủ đánh Theron · 205 nổi dậy ở Corrath · 212 hòa ước, lập Đồng Thuẫn ·
   248 Bão Lôi Chủ trở lại, Theron (68) đi vào sét, mất tích.
-- 412 Hạn bạt (nam Thanh Vân) · ~440 Lão Thú ở làng của Iris · 450 Edric thôi uống máu người · 452 Edric gặp Iris ·
+- ~400 quanh Thanh Vân >30 môn phái · 412–415 Hạn bạt (nam Thanh Vân) → Thủy Chiến · 415 Hội Thanh Vân, lập Liên Minh
+  Võ Lâm Đông Thổ (Minh chủ đầu tiên Cổ Vân Hà) · ~440 Lão Thú ở làng của Iris · 450 Edric thôi uống máu người · 452 Edric gặp Iris ·
   470 Liên Minh Vạn Thú · ~487 Lysa sinh · 520 Iris mất · 562 Hiệp ước Tuyết Trắng.
 - ~600 Lang Dịch · 651 trận Hẻm Núi Lửa (Kael, 300 đấu sĩ; 9 ngày) · 640 Virus Thượng Cổ · 702 Đêm Trăm Xác (Mộ Vân Khê) · 810 lập Học Viện Gen · 893 bẫy của Ambrose Kell ·
   ~900 "đứa trẻ ở Vực Sâu" · 903 Ảnh Tổ bị trục xuất · 905 lập Ảnh Môn.
@@ -188,6 +196,13 @@ mục **Cần sửa**, không sửa chương cũ ngay.
 - Ràng buộc: xác ướp Azhar sợ lửa (băng vải tẩm nhựa thơm), xác khô mất băng vải thì không cháy; Azhar có "phù thủy cát" gọi gió nóng; vị vua cát cầm quân năm 651 chưa nêu tên (để c20); từ 651 Azhar không qua lối Hẻm Núi Lửa nữa.
 - Ràng buộc: mỗi năm vào ngày thứ 9 của trận, Đồng Thuẫn đứng im lặng trước phiến đá khắc 300 tên; người Đồng Thuẫn tin Theron thành Chiến Thần, sang Chiến Giới.
 
+### c19 · L19 Võ Đạo Phương Đông (40 – nay)
+- Mốc: Thạch Kiên (~8 – ~151) bị bỏ trước nhà chăn trâu, thành tá điền; năm 40 đói 4 ngày, kẻ mắt vàng dạy thở; 3 năm sau hiểu là Địa khí; lên Thanh Vân dựng Thạch Am; mất khi ngồi thở, 7 ngày hóa đá. 412–415 Thủy Chiến; 415 Hội Thanh Vân → Liên Minh.
+- Nhân vật: Thạch Kiên; Liễu Thanh (bà lang, gốc nội lực); Đồ Mãnh (thợ rèn, gốc luyện thể); Cổ Vân Hà (chưởng môn Thạch Môn, hậu duệ đời 9 của Liễu Thanh, Minh chủ đầu tiên).
+- Thuật ngữ: đan điền, nội lực / luyện thể (ngoại gia), Thạch Am, Thạch Môn, Thiết Cốt Đường, Thủy Chiến, Tam Bất, ma công / ma đạo, Minh chủ, Đại hội Luận Võ.
+- Ràng buộc: nhập môn phải 3 tháng chỉ ăn và thở; câu tổ sư "Khí là nước… Hãy xem ruộng ai xanh"; mỗi đầu xuân mọi môn phái dòng Thạch Kiên lên thở chung trước tượng; dưới Thanh Vân là nơi Nham Mẫu nằm xuống.
+- Ràng buộc: Ảnh Tổ là trưởng lão một môn phái dòng Thạch Kiên ở Thanh Vân (lý do bị trục xuất 903 để nguyên như c09); Liên Minh ghét Ảnh Môn hơn cả ma đạo.
+
 ## Đề cương chương còn lại
 
 - **c17 · L17 Thần Tộc & Thần Chiến:** Thần tộc là một chủng tộc (trời sinh thuở sơ khai, hiếm muộn, trường thọ) + thần do
@@ -196,7 +211,7 @@ mục **Cần sửa**, không sửa chương cũ ngay.
 - **c18 · L18 Đấu Khí:** chiều không gian đấu khí (cuồng bạo hơn nội lực); Theron (nô lệ đấu trường) khám phá ~200;
   Thành Bang Đồng Thuẫn (~212); bậc Đấu sĩ → Chiến Thần; Kael và ba trăm chiến binh ở Hẻm Núi Lửa năm 651 chống Azhar.
 - **c19 · L19 Võ Đạo Phương Đông:** Thạch Kiên; nội lực và luyện thể; các môn phái Thanh Vân; Liên Minh Võ Lâm Đông Thổ.
-- **c20 · L20 Lăng Vua Cát:** Azhar, Sa Vương Khetemu, Sách Tử Thần chép từ luật Phán Quan, xác ướp.
+- **c20 · L20 Lăng Vua Cát:** Azhar, Sa Vương Khetemu, Sách Tử Thần chép từ luật Phán Quan, xác ướp. Tên vua cát năm 651: chờ chủ dự án chọn.
 - **c21 · L21 Phòng Thí Nghiệm Hổ:** lịch sử Học Viện Gen, Halden Crowe, lần thử thứ bảy, Sable / Garr, hồ sơ niêm phong.
 - **c22 · L22 Dị Nhân:** cuộc đời Iris Kael, Liên Minh Vạn Thú, các cấp thức tỉnh, Thánh Đường đàn áp.
 
@@ -263,3 +278,16 @@ nội lực; cảm hứng "300"; bậc Đấu sĩ → Đại đấu sĩ → Đ�
 - Lão Thú gặp Theron ở Sân Cát và hỏi "lúc nào thì nên nằm xuống".
 - Hẻm Núi Lửa; trận 9 ngày năm 651; Kael (nữ, Đấu đế, Thủ Thuẫn); Bren (người duy nhất trở về); hai núi lửa phun lấp hẻm thành tường đá đen; ngày tưởng niệm hằng năm.
 - Xác ướp Azhar sợ lửa (băng vải tẩm nhựa thơm); Azhar có phù thủy cát gọi gió nóng.
+
+### Chương 19
+- Tiểu sử Thạch Kiên: bị bỏ trước nhà chăn trâu, tá điền, tên tự đặt, sinh ~8, năm 40 đói 4 ngày, mất ~151 (>140 tuổi), thân hóa đá.
+- Đan điền = nơi đoạn gene ẩn gần Nhân gian nhất.
+- Nhập môn: 3 tháng chỉ học ăn chậm, nhai kỹ và thở; câu "Ăn hết bát cơm, sức nằm trong hạt gạo".
+- Liễu Thanh (bà lang, gốc nội lực) và Đồ Mãnh (thợ rèn, gốc luyện thể); câu tổ sư "Khí là nước…".
+- Mô tả các bậc nội lực (từ Tiên Thiên trở lên, kể cả Phản Hư, Võ Thần) và luyện thể từ bậc 6 (Thần Lực Thông Huyền… Nhục Thân Thành Thần).
+- Núi Thanh Vân có mạch Địa khí ấm vì Nham Mẫu nằm xuống dưới đó.
+- Thạch Am, tượng đá tổ sư, lễ thở chung ngày đầu xuân.
+- Thạch Môn, Thiết Cốt Đường; hơn 30 môn phái quanh Thanh Vân năm 400.
+- Thủy Chiến 412–415 (các môn phái đánh nhau vì nước khi Hạn bạt gây hạn).
+- Hội Thanh Vân 415; Cổ Vân Hà là Minh chủ đầu tiên; Tam Bất; Minh chủ bầu mỗi 20 năm ở Đại hội Luận Võ.
+- Ma công / ma đạo = võ giả hút âm khí (lạnh thân, tối tâm, thèm dương khí).
