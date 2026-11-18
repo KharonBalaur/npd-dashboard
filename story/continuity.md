@@ -61,6 +61,11 @@ mục **Cần sửa**, không sửa chương cũ ngay.
 - **Thành Bang Đồng Thuẫn:** đồi đá phía tây thành Corrath (đồng bằng nam Phương Tây). Không vua; Luật Khiên; khiên gỗ từ khi
   biết đi → Sân Cát (7 tuổi) → Thử Lửa (16 tuổi); Hội Đồng Khiên 30 cựu binh > 50 tuổi; Thủ Thuẫn nhiệm kỳ 10 năm, đứng hàng
   đầu; Tường Khiên treo khiên người chết; cho Vương Triều thuê quân đoàn.
+- **Azhar (Hoang Mạc Tử Thần):** xưa là đồng cỏ hai bên sông Tasir, cháy thành sa mạc vì mưa sao Thần Chiến; ốc đảo, vua cát.
+  Sa Vương Khetemu (xác ướp đầu tiên). Sách Tử Thần = 7 trang vàng khắc Ngục Văn, chỉ có một cuốn thật (lăng Khetemu, Thung Lũng
+  Vua); lăng khác chỉ có trang chép. Thầy Ướp (ướp 70 ngày, đọc sách ngày 71). Xác ướp còn hồn, nhớ, nói được, gọi bão cát; sợ
+  lửa và tiếng mèo (mèo là con vật của Huyền Nguyệt). Xác Khô = lính chết phơi khô, khắc Ngục Văn lên trán, không nhớ, không cháy.
+  Phù thủy cát = người sống. Giấc Ngủ Dài 318–650.
 - **Lịch:** Kỷ Huyết Nguyệt năm 1 = đêm Huyền Nguyệt chết, trăng đỏ lần đầu. Hiện tại ≈ năm 1203.
 
 ## Dòng thời gian
@@ -74,10 +79,12 @@ mục **Cần sửa**, không sửa chương cũ ngay.
   nói lời tiên tri · ~335 Học Viện mua hạt Bạch Tâm.
 - ~180 Theron sinh ở Corrath · 200 sét Bão Lôi Chủ đánh Theron · 205 nổi dậy ở Corrath · 212 hòa ước, lập Đồng Thuẫn ·
   248 Bão Lôi Chủ trở lại, Theron (68) đi vào sét, mất tích.
+- ~105 Khetemu sinh ở Azhar · ~135 làm vua cát · ~150 có Ngục Văn, đúc Sách Tử Thần · 163 chết, sống lại thành xác
+  ướp đầu tiên → Đế quốc Azhar · 318 Khetemu cử 3 vua cát lên bắc, thua ở Thornfield → Giấc Ngủ Dài (318–650).
 - ~400 quanh Thanh Vân >30 môn phái · 412–415 Hạn bạt (nam Thanh Vân) → Thủy Chiến · 415 Hội Thanh Vân, lập Liên Minh
   Võ Lâm Đông Thổ (Minh chủ đầu tiên Cổ Vân Hà) · ~440 Lão Thú ở làng của Iris · 450 Edric thôi uống máu người · 452 Edric gặp Iris ·
   470 Liên Minh Vạn Thú · ~487 Lysa sinh · 520 Iris mất · 562 Hiệp ước Tuyết Trắng.
-- ~600 Lang Dịch · 651 trận Hẻm Núi Lửa (Kael, 300 đấu sĩ; 9 ngày) · 640 Virus Thượng Cổ · 702 Đêm Trăm Xác (Mộ Vân Khê) · 810 lập Học Viện Gen · 893 bẫy của Ambrose Kell ·
+- ~600 Lang Dịch · 650 ốc đảo cạn, Thầy Ướp đánh thức Khetemu · 651 trận Hẻm Núi Lửa (Kael, 300 đấu sĩ; 9 ngày) · 640 Virus Thượng Cổ · 702 Đêm Trăm Xác (Mộ Vân Khê) · 810 lập Học Viện Gen · 893 bẫy của Ambrose Kell ·
   ~900 "đứa trẻ ở Vực Sâu" · 903 Ảnh Tổ bị trục xuất · 905 lập Ảnh Môn.
 - 998–1010 mùa Huyết Nguyệt dài nhất · 1006 lần thử thứ bảy → Vesper, Lycan · 1023 Hạn bạt trên biển · 1041 Vesper
   tàn sát làng Moonborn · 1043 Tuyết Ảnh phản môn · 1087 Đêm Trăng Máu · 1088 Thánh Đường · 1090 Hội Thợ Săn ·
@@ -203,6 +210,13 @@ mục **Cần sửa**, không sửa chương cũ ngay.
 - Ràng buộc: nhập môn phải 3 tháng chỉ ăn và thở; câu tổ sư "Khí là nước… Hãy xem ruộng ai xanh"; mỗi đầu xuân mọi môn phái dòng Thạch Kiên lên thở chung trước tượng; dưới Thanh Vân là nơi Nham Mẫu nằm xuống.
 - Ràng buộc: Ảnh Tổ là trưởng lão một môn phái dòng Thạch Kiên ở Thanh Vân (lý do bị trục xuất 903 để nguyên như c09); Liên Minh ghét Ảnh Môn hơn cả ma đạo.
 
+### c20 · L20 Lăng Vua Cát (105 – nay)
+- Mốc: Khetemu (thợ chép biết Thần Văn) ~135 làm vua cát Azhar; ~150 có 7 trang Ngục Văn (3 truyền thuyết: chép dưới vết nứt đáy sông Tasir · kẻ lạ áo đen đêm trăng máu đọc cho chép · tự hiện trong mơ) → Sách Tử Thần; 163 tự ướp mình, sống lại; 318 cử 3 vua cát, thua; Giấc Ngủ Dài; 650 sống lại lần hai; 651 đứng trên đồi cát ở cửa nam Hẻm Núi Lửa 9 ngày, không vào hẻm, rồi quay về lăng nằm xuống.
+- Nhân vật: Sa Vương Khetemu (tên do chủ dự án chọn cho vua cát năm 651); các vua cát; Thầy Ướp; phù thủy cát; kẻ trộm lăng ở Chợ Cát.
+- Thuật ngữ: sông Tasir, ốc đảo, vua cát / Sa Vương, Sách Tử Thần (7 trang), Thầy Ướp, Xác Khô, Thung Lũng Vua, Giấc Ngủ Dài, xác ướp không chủ.
+- Ràng buộc: câu của Khetemu năm 651 "Họ có ba trăm người… Ta không muốn biết họ sẽ làm gì nếu có ba nghìn"; Azhar nay chỉ còn vài thành ốc đảo do Thầy Ướp cai quản, phần lớn vua cát đang ngủ; Khetemu đang nằm trong lăng (chưa bị tiêu diệt).
+- Ràng buộc: xác ướp ≠ cương thi (xác ướp còn hồn, cương thi là xác không hồn); người chết cạnh Sách Tử Thần có thể tự thành xác ướp (khớp sự kiện hồi sinh trong game); Sổ Tội trang Khetemu ghi "Chưa đến".
+
 ## Đề cương chương còn lại
 
 - **c17 · L17 Thần Tộc & Thần Chiến:** Thần tộc là một chủng tộc (trời sinh thuở sơ khai, hiếm muộn, trường thọ) + thần do
@@ -211,7 +225,7 @@ mục **Cần sửa**, không sửa chương cũ ngay.
 - **c18 · L18 Đấu Khí:** chiều không gian đấu khí (cuồng bạo hơn nội lực); Theron (nô lệ đấu trường) khám phá ~200;
   Thành Bang Đồng Thuẫn (~212); bậc Đấu sĩ → Chiến Thần; Kael và ba trăm chiến binh ở Hẻm Núi Lửa năm 651 chống Azhar.
 - **c19 · L19 Võ Đạo Phương Đông:** Thạch Kiên; nội lực và luyện thể; các môn phái Thanh Vân; Liên Minh Võ Lâm Đông Thổ.
-- **c20 · L20 Lăng Vua Cát:** Azhar, Sa Vương Khetemu, Sách Tử Thần chép từ luật Phán Quan, xác ướp. Tên vua cát năm 651: chờ chủ dự án chọn.
+- **c20 · L20 Lăng Vua Cát:** Azhar, Sa Vương Khetemu, Sách Tử Thần chép từ luật Phán Quan, xác ướp. Vua cát năm 651 = Khetemu (chủ dự án chọn) – đã viết.
 - **c21 · L21 Phòng Thí Nghiệm Hổ:** lịch sử Học Viện Gen, Halden Crowe, lần thử thứ bảy, Sable / Garr, hồ sơ niêm phong.
 - **c22 · L22 Dị Nhân:** cuộc đời Iris Kael, Liên Minh Vạn Thú, các cấp thức tỉnh, Thánh Đường đàn áp.
 
@@ -296,3 +310,18 @@ nội lực; cảm hứng "300"; bậc Đấu sĩ → Đại đấu sĩ → Đ�
 - Thủy Chiến 412–415 (các môn phái đánh nhau vì nước khi Hạn bạt gây hạn).
 - Hội Thanh Vân 415; Cổ Vân Hà là Minh chủ đầu tiên; Tam Bất; Minh chủ bầu mỗi 20 năm ở Đại hội Luận Võ.
 - Ma công / ma đạo = võ giả hút âm khí (lạnh thân, tối tâm, thèm dương khí).
+
+### Chương 20
+- Khetemu chính là vua cát cầm quân năm 651, sống lại lần thứ hai năm 650 (tên do chủ dự án chọn; việc "sống lại để cầm quân" là Claude thêm).
+- Hoang Mạc xưa là đồng cỏ hai bên sông Tasir, cháy thành sa mạc vì mưa sao của Lôi Chủ.
+- Tiểu sử Khetemu: con thợ chép, đọc được Thần Văn, làm vua cát năm ~135, chết năm 163 và tự ướp mình thành xác ướp đầu tiên.
+- Ba truyền thuyết về cách Khetemu có Ngục Văn (vết nứt đáy sông · kẻ lạ áo đen · tự hiện trong mơ).
+- Sách Tử Thần gồm 7 trang vàng; chỉ có một cuốn thật trong lăng Khetemu; các lăng khác chỉ có trang chép.
+- Thầy Ướp: rửa nước muối, ướp 70 ngày bằng muối khoáng và nhựa cây gai thơm, băng vải khắc Ngục Văn bằng mực bột kim loại sao, đọc sách ngày 71.
+- Xác ướp còn linh hồn, trí nhớ, lời nói; cương thi không còn hồn.
+- Mèo là con vật của Huyền Nguyệt; tiếng mèo làm xác ướp khựng lại (game đã có "sợ tiếng mèo", phần lý do là mới).
+- Xác Khô (lính rẻ tiền, không băng vải, không cháy, không nhớ); phù thủy cát là người sống.
+- Giấc Ngủ Dài 318–650; năm 650 các ốc đảo cạn.
+- Khetemu không vào Hẻm Núi Lửa năm 651, đứng xem rồi quay về; câu "nếu có ba nghìn".
+- Thung Lũng Vua, bẫy lăng, tượng mèo mắt đá; xác ướp không chủ ở Chợ Cát.
+- Phán Quan không vội; linh hồn bị giữ thì vết bẩn tích dần; Sổ Tội trang Khetemu ghi "Chưa đến".
