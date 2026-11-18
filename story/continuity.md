@@ -66,6 +66,13 @@ mục **Cần sửa**, không sửa chương cũ ngay.
   Vua); lăng khác chỉ có trang chép. Thầy Ướp (ướp 70 ngày, đọc sách ngày 71). Xác ướp còn hồn, nhớ, nói được, gọi bão cát; sợ
   lửa và tiếng mèo (mèo là con vật của Huyền Nguyệt). Xác Khô = lính chết phơi khô, khắc Ngục Văn lên trán, không nhớ, không cháy.
   Phù thủy cát = người sống. Giấc Ngủ Dài 318–650.
+- **Học Viện Gen:** lập 810 (Odile Varn, chiếu chỉ vua; nghiên cứu "mọi thứ vượt khỏi con người" trừ phép thuật). Tháp Kính ở
+  kinh thành + 9 tầng hầm: 1–3 thư khố (> 10 000 hồ sơ dị nhân) · 4–5 phòng mổ, mẫu vật · 6 giam sinh vật sống · 7 phòng thí
+  nghiệm (xuống cần 3 chữ ký) · 8 kho hồ sơ mật · 9 Kho Lạnh. Hồ Sơ Bảy = hòm sắt ấn vua (viện trưởng + vua cùng mở). Luật từ 1007:
+  không thử nghiệm trên người trong mùa Huyết Nguyệt.
+- **Lycan / Vesper (nguồn gốc):** Lycan = gene sói nhiễm Lang Dịch, không phải lời nguyền Morwen → không cần trăng, hóa giải lời
+  nguyền không cứu được Lycan; Lycan sinh con được, gene sói ngủ tới tuổi dậy thì. Vesper = máu Huyết nô qua bầy dơi → khát máu,
+  sợ nắng, hóa dơi nhưng không mang khế ước với Malgrath. Nightfall là nhánh Huyết tộc riêng, không liên quan Vesper.
 - **Lịch:** Kỷ Huyết Nguyệt năm 1 = đêm Huyền Nguyệt chết, trăng đỏ lần đầu. Hiện tại ≈ năm 1203.
 
 ## Dòng thời gian
@@ -86,9 +93,11 @@ mục **Cần sửa**, không sửa chương cũ ngay.
   470 Liên Minh Vạn Thú · ~487 Lysa sinh · 520 Iris mất · 562 Hiệp ước Tuyết Trắng.
 - ~600 Lang Dịch · 650 ốc đảo cạn, Thầy Ướp đánh thức Khetemu · 651 trận Hẻm Núi Lửa (Kael, 300 đấu sĩ; 9 ngày) · 640 Virus Thượng Cổ · 702 Đêm Trăm Xác (Mộ Vân Khê) · 810 lập Học Viện Gen · 893 bẫy của Ambrose Kell ·
   ~900 "đứa trẻ ở Vực Sâu" · 903 Ảnh Tổ bị trục xuất · 905 lập Ảnh Môn.
-- 998–1010 mùa Huyết Nguyệt dài nhất · 1006 lần thử thứ bảy → Vesper, Lycan · 1023 Hạn bạt trên biển · 1041 Vesper
+- 991 Halden Crowe làm viện trưởng (41 tuổi) · 998–1010 mùa Huyết Nguyệt dài nhất · 999 triều đình ra lệnh → Dự án Hổ
+  (6 lần thử 999–1005) · 1006 lần thử thứ bảy → Vesper, Lycan · 1007 Hồ Sơ Bảy niêm phong; Crowe bị cách chức, tự tiêm
+  huyết thanh hổ sạch, biến mất · 1023 Hạn bạt trên biển · 1041 Vesper
   tàn sát làng Moonborn · 1043 Tuyết Ảnh phản môn · 1087 Đêm Trăng Máu · 1088 Thánh Đường · 1090 Hội Thợ Săn ·
-  1102 Lâm Thanh Phong · 1112 Thánh Đường bẫy Lão Thú · 1151 Đêm Dài Vardholm · ~1171 Con Cháu Mầm Dịch · 1188 đột nhập Kho Lạnh.
+  1102 Lâm Thanh Phong · 1112 Thánh Đường bẫy Lão Thú · 1151 Đêm Dài Vardholm · ~1155 đề xuất lai virus Đêm Dài với máu Vesper bị bác · ~1171 Con Cháu Mầm Dịch · 1188 đột nhập Kho Lạnh.
 
 ## Chương đã viết
 
@@ -217,6 +226,13 @@ mục **Cần sửa**, không sửa chương cũ ngay.
 - Ràng buộc: câu của Khetemu năm 651 "Họ có ba trăm người… Ta không muốn biết họ sẽ làm gì nếu có ba nghìn"; Azhar nay chỉ còn vài thành ốc đảo do Thầy Ướp cai quản, phần lớn vua cát đang ngủ; Khetemu đang nằm trong lăng (chưa bị tiêu diệt).
 - Ràng buộc: xác ướp ≠ cương thi (xác ướp còn hồn, cương thi là xác không hồn); người chết cạnh Sách Tử Thần có thể tự thành xác ướp (khớp sự kiện hồi sinh trong game); Sổ Tội trang Khetemu ghi "Chưa đến".
 
+### c21 · L21 Phòng Thí Nghiệm Hổ (810 – nay)
+- Mốc: 810 Odile Varn lập Học Viện Gen; 991 Crowe làm viện trưởng (làng ở biên giới bắc bị Moonborn tràn qua năm ông 9 tuổi, mẹ chết); 999 lệnh vua tạo lính chống Huyết tộc / Lang tộc → chọn hổ (gene hiền nhất với người, hổ mua từ rừng phía đông); 6 lần thử thất bại; 9/10/1006 lần 7; 1/12/1006 cửa lồng mở; 1007 niêm phong, Crowe biến mất.
+- Nhân vật: Odile Varn; Halden Crowe; phụ tá Aldous Penn (lấy máu sói hôm 8/10 rồi dùng lại kim; vớt 2 con dơi chết trong bình huyết thanh, không báo; nghỉ về quê 3 ngày trước đêm mở lồng, không trở lại); Sable, Garr (như c05).
+- Nguồn nhiễm: con sói "dại" giam ở tầng 6 thật ra mang Lang Dịch; bầy dơi trong ống thông gió từng hút máu một Huyết nô giam ở tầng 6.
+- Ràng buộc (bí ẩn để ngỏ): cửa lồng mở bằng chìa khóa chính (3 người giữ, cả 3 có chứng cứ ngoại phạm); trang sổ trực đêm 1/12 bị xé, người gác không nhớ gì sau nửa đêm. Không nói ai mở.
+- Ràng buộc: Thánh Đường treo thưởng tìm Crowe (chưa ai nhận); lời đồn con hổ mắt người ở rìa rừng Bắc Nguyên và ông già không cười ở cống ngầm phía tây; dòng chữ khắc trên cửa tầng 7 giống nét chữ Crowe.
+
 ## Đề cương chương còn lại
 
 - **c17 · L17 Thần Tộc & Thần Chiến:** Thần tộc là một chủng tộc (trời sinh thuở sơ khai, hiếm muộn, trường thọ) + thần do
@@ -255,6 +271,10 @@ mục **Cần sửa**, không sửa chương cũ ngay.
    đang chém giết nhau" (dòng 19). Nay hắn bị trói vào ngày cuối Đại Chiến, mà theo c16 ngày cuối chính là ngày vải rách, nên
    không còn chỗ cho ba trăm năm cai trị. Hướng gợi ý (chưa làm): (a) Malgrath leo lên qua một vết nứt nhỏ xuất hiện từ sớm,
    trước ngày rách lớn; hoặc (b) bỏ "ba trăm năm", hắn cai trị trong những năm Đại Chiến; hoặc (c) đổi câu trói thành "ba trăm năm sau Đại Chiến".
+11. **c05 ↔ c21 (chưa kiểm tra vì không đọc lại chương cũ):** c05 có câu "Đêm mùng một tháng Mười Hai năm 1006, có kẻ mở cửa
+    lồng. Hồ sơ của Học Viện Gen ghi là…" – cần đối chiếu phần sau câu này với hai manh mối ở c21 (chìa khóa chính, trang sổ
+    trực bị xé). Ghi chú bên lề của Crowe ở c05 cũng nên khớp với dòng chữ trên cửa tầng 7 ở c21 (c21 mở đầu bằng cùng câu
+    "Chúng tôi muốn tạo ra một người lính mạnh như hổ.").
 
 ## Canon mới do Claude thêm – chờ chủ dự án duyệt
 
@@ -325,3 +345,20 @@ nội lực; cảm hứng "300"; bậc Đấu sĩ → Đại đấu sĩ → Đ�
 - Khetemu không vào Hẻm Núi Lửa năm 651, đứng xem rồi quay về; câu "nếu có ba nghìn".
 - Thung Lũng Vua, bẫy lăng, tượng mèo mắt đá; xác ướp không chủ ở Chợ Cát.
 - Phán Quan không vội; linh hồn bị giữ thì vết bẩn tích dần; Sổ Tội trang Khetemu ghi "Chưa đến".
+
+### Chương 21
+Ý của chủ dự án: định ghép gene hổ nhưng vô tình dính gene sói dại và dơi hút máu; người sói có thể từ phù thủy, gene đột
+biến, virus. Các gợi ý 1–7 đã duyệt (Lycan riêng nguồn gốc, sói nhiễm Lang Dịch, dơi hút máu Huyết nô, ai mở lồng để bí ẩn,
+Crowe bị cách chức rồi tự tiêm và biến mất, Vương Triều đặt hàng, Nightfall là nhánh Huyết tộc riêng) không ghi lại. Mới thêm:
+- Odile Varn, nữ thầy thuốc cung đình, lập Học Viện Gen năm 810 sau 30 năm ghi chép hơn 400 trẻ có năng lực lạ.
+- Tháp Kính và 9 tầng hầm (chức năng từng tầng; tầng 7 cần 3 chữ ký để vào).
+- Tiểu sử Crowe: viện trưởng năm 991 lúc 41 tuổi; làng bị Moonborn tràn qua khi ông 9 tuổi; viết hơn 60 cuốn sách; không bao giờ cười.
+- Vì sao chọn hổ: gene hổ "hiền" nhất với người; hổ mua từ rừng phía đông.
+- Sáu lần thử đầu (999–1005) và kết quả từng lần.
+- Phụ tá Aldous Penn: dùng lại kim, vớt dơi chết khỏi bình huyết thanh, biến mất trước đêm mở lồng.
+- Hai manh mối về đêm mở lồng (chìa khóa chính; trang sổ trực bị xé).
+- Hồ Sơ Bảy (hòm sắt ấn vua) và luật "không thử nghiệm trên người trong mùa Huyết Nguyệt".
+- Crowe tự tiêm ở tầng 7 trước mặt người lính; lời đồn con hổ mắt người và ông già ở cống ngầm.
+- Học Viện suýt bị giải tán năm 1007 và 1088.
+- Khoảng năm 1155 có học giả đề xuất lai virus Đêm Dài với máu Vesper, bị bác và bị đuổi.
+- Dòng chữ khắc trên cửa tầng 7 (nét chữ giống Crowe).
