@@ -42,12 +42,17 @@ mục **Cần sửa**, không sửa chương cũ ngay.
   Phái Huyền Phù · Ảnh Môn · Bầy Sói Bắc Nguyên · nhà Winterhale · Con Cháu Mầm Dịch.
 - **Vật phẩm:** Vạn Huyết Quả (quả xám nhỏ như táo dại héo; mở 5 ô dung hợp; nhận biết bằng học / đã từng thấy / nhỏ máu
   giám định) · Thần Cốt · Mảnh Gene Thần · Mảnh trăng máu · Âm Sát Thạch · Cổ Thụ Bạch Tâm · Sách Tử Thần · Sổ Tội.
+- **Thần tộc:** chủng tộc (≤ 40 vị lúc đông nhất; thai ~100 năm; xương vàng nhạt không mục; gene ẩn mở sẵn). Bảy vị sơ khai +
+  Thần tộc hậu sinh (con cháu, ≤ 10 vị còn sống sau Thần Chiến, ở Thiên giới). Thần trời sinh ↔ thần thành tựu (tu tới Thần cấp
+  = bậc 9: Võ Thần, Nhục Thân Thành Thần, Chiến Thần, Nhẫn Thần, Kim tiên, Thần sư, Thi Thần, Nguyên Sơ). Nơi họp: Vân Đài.
+- **Thiên Thiết:** kim loại Thiên giới rơi khi vải rách; về sau gọi chung với xương thần là Thần Cốt. **Bão Lôi Chủ**
+  (Đông: Lôi Vân Lạc): cơn bão sấm không mưa trôi trên trời từ năm 1, vài chục năm hiện một lần; người bị sét của nó đánh mà sống thì thay đổi.
 - **Lịch:** Kỷ Huyết Nguyệt năm 1 = đêm Huyền Nguyệt chết, trăng đỏ lần đầu. Hiện tại ≈ năm 1203.
 
 ## Dòng thời gian
 
-- Sáng Thế → Thần tộc sơ khai → **Đại Chiến Vạn Tộc** (~200 năm; lớp vải rách ~3000 năm trước năm 1) →
-  **Thần Chiến** (~300 năm, kết thúc năm 1).
+- Sáng Thế → Thần tộc sơ khai → **Đại Chiến Vạn Tộc** (~200 năm; lớp vải rách ~3000 năm trước năm 1) → ~2700 năm
+  thần tranh cãi ở Vân Đài (thần thành tựu tự leo lên qua vết rách) → **Thần Chiến** (~300 năm trước năm 1 – năm 1).
 - Năm ~40 Lão Thú dạy Thạch Kiên thở · ~90 Huyền Chân Tử lập Phái Huyền Phù (mất 168) · 150 lập Học Viện Ngũ Tinh ·
   160 Morwen nguyền tộc Hrafn · 197 học trò viện Hư mở khe xuống Địa ngục → Caelum Vane bị đuổi.
 - ~270 Veyra sinh · 301 Dịch Tro Xám · 302 phép cướp lửa → Valcrest; Veyra biến mất · 318 Edric uống máu Malgrath,
@@ -159,6 +164,13 @@ mục **Cần sửa**, không sửa chương cũ ngay.
 - Thuật ngữ: Đêm Diễn Lại; Vực Mẹ; Thiên Ngân Liệt; Trạm Lá Đỏ (tây), Trạm Xương (bắc), Chợ Cát (nam), Bến Ngư (đông); luật người vào Chiến Trường.
 - Ràng buộc: Chiến Trường "mở" vài chục năm một lần, kéo dài 1–2 năm; vết rách lan xuống Vực Sâu, ra Vô Tận Hải và lên trời.
 
+### c17 · L17 Thần Tộc & Thần Chiến (sơ khai → năm 1)
+- Mốc: vải rách → ~2700 năm tranh cãi → ~300 năm trước năm 1 Thái Hư khâu thật → Đêm Sét Đầu (vị thần đầu tiên chết) → 3 giai đoạn: chiến trên trời · mưa sao (năm ~200 của Thần Chiến Nham Mẫu kiệt sức chìm vào đất) · 30 năm Lôi Chủ truy Lão Thú → trận cuối trên Chiến Trường.
+- Nhân vật: Thái Hư, Huyền Nguyệt, Nham Mẫu (phe khâu); Lôi Chủ + hầu hết thần thành tựu + vài Chúa Ngục, Ngục Thú (phe mở); Thương Hải, Phán Quan, Lão Thú đứng ngoài; cô gái chăn dê thành thần (không tên) hỏi Thái Hư.
+- Thuật ngữ: Thần tộc hậu sinh, thần trời sinh / thần thành tựu, Thần cấp, Vân Đài, Thiên Thiết, Đêm Sét Đầu, Bão Lôi Chủ / Lôi Vân Lạc, Mảnh Gene Thần (máu thần kết tinh như hạt muối, mở gene ẩn hoặc làm tan thành ánh sáng).
+- Ràng buộc: Huyền Nguyệt đỡ tia sét cho Thái Hư; Thái Hư buông nửa mũi khâu rồi ngủ (Đêm Dài = ông trở mình); xương Lôi Chủ vẫn ở trong Bão Lôi Chủ; Phán Quan chỉ gọi Chúa Ngục về (không đứng phe); "trận thần chiến nhỏ" thời nay khi có người đạt Thần cấp muốn lên Thiên giới.
+- Ràng buộc cho c18: Theron là một trong số ít người sống sót sau khi bị sét Bão Lôi Chủ đánh.
+
 ## Đề cương chương còn lại
 
 - **c17 · L17 Thần Tộc & Thần Chiến:** Thần tộc là một chủng tộc (trời sinh thuở sơ khai, hiếm muộn, trường thọ) + thần do
@@ -176,10 +188,10 @@ mục **Cần sửa**, không sửa chương cũ ngay.
 1. **c04 ↔ c16 (thời điểm trói Malgrath):** c04 nói Malgrath leo lên khi vải rách, cai trị ~300 năm rồi bị trói "trong những
    năm cuối Đại Chiến"; c16 nói Đại Chiến chấm dứt ngay ngày vải rách. Đề xuất: sửa c04 thành "gần ba trăm năm sau ngày
    lớp vải rách" (hoặc c16 thêm giai đoạn tàn chiến kéo dài).
-2. **c04 (Thần Cốt):** xích trói Malgrath làm từ "Thần Cốt, xương của các vị thần ngã xuống", nhưng thần chỉ ngã xuống trong
+2. **c04 (Thần Cốt) – c17 đã giải thích (Thiên Thiết gọi chung là Thần Cốt), có thể giữ c04:** xích trói Malgrath làm từ "Thần Cốt, xương của các vị thần ngã xuống", nhưng thần chỉ ngã xuống trong
    Thần Chiến, ~2700 năm sau. c04 có chữ "về sau người ta gọi là" nên chưa sai hẳn; cần chương 17 giải thích kim loại rơi từ
    Thiên giới khi vải rách cũng bị gọi chung là Thần Cốt.
-3. **c12 ↔ dòng thời gian (khoảng cách Đại Chiến – Thần Chiến):** c12 kể như Thần Chiến nổ ra ngay sau khi vải rách; dòng
+3. **c12 ↔ dòng thời gian (khoảng cách Đại Chiến – Thần Chiến) – c17 đã giải thích (~2700 năm tranh cãi), có thể giữ c12:** c12 kể như Thần Chiến nổ ra ngay sau khi vải rách; dòng
    thời gian có ~2700 năm ở giữa. Chương 17 cần giải thích (tranh cãi kéo dài trước khi thành chiến tranh).
 4. **c12 (thuật ngữ):** viết "hút tinh khí trời đất" cho Thạch Kiên; theo c01 võ giả hút Địa khí. Đổi thành "Địa khí trời đất"
    (game cũng dùng "tinh khí trời đất" trong mô tả hệ Nội lực).
@@ -190,3 +202,5 @@ mục **Cần sửa**, không sửa chương cũ ngay.
 7. **c09 ↔ c14 (Ảnh Tổ, nhỏ):** c09 là trưởng lão môn phái Thanh Vân; c14 "đứa trẻ mồ côi lang thang trên Núi Sương". Hợp được
    nếu thuở nhỏ ông mồ côi; nên ghi rõ ở c14.
 8. **Dữ liệu game:** thủ lĩnh Hội Thợ Săn "Bram Hollow" chỉ có trong game, chưa có trong chương nào (không mâu thuẫn).
+9. **c12 (con số, nhỏ):** Lão Thú nói lúc Thần Chiến "Ta ngồi cạnh họ đã ba nghìn năm", nhưng các tộc đã sống ở Nhân gian
+   hàng nghìn năm trước Đại Chiến (c16), tức trước Thần Chiến hơn ba nghìn năm. Nên đổi thành "hàng nghìn năm" (c17 không trích con số).
