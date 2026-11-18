@@ -221,3 +221,45 @@ mục **Cần sửa**, không sửa chương cũ ngay.
 8. **Dữ liệu game:** thủ lĩnh Hội Thợ Săn "Bram Hollow" chỉ có trong game, chưa có trong chương nào (không mâu thuẫn).
 9. **c12 (con số, nhỏ):** Lão Thú nói lúc Thần Chiến "Ta ngồi cạnh họ đã ba nghìn năm", nhưng các tộc đã sống ở Nhân gian
    hàng nghìn năm trước Đại Chiến (c16), tức trước Thần Chiến hơn ba nghìn năm. Nên đổi thành "hàng nghìn năm" (c17 không trích con số).
+
+## Canon mới do Claude thêm – chờ chủ dự án duyệt
+
+Repo chưa có `story/bible.md`, nên đối chiếu với file Word / Excel cốt truyện của chủ dự án (chỉ tính các ô ghi "Bạn").
+Ý của chủ dự án có sẵn: thần là một chủng tộc mạnh, trời sinh thuở sơ khai, khó sinh, trường thọ, cũng có thần do tu luyện;
+có cuộc chiến giữa các vị thần; Đại Chiến làm rách ranh giới ba cõi; đấu khí hút từ chiều không gian riêng, cuồng bạo hơn
+nội lực; cảm hứng "300"; bậc Đấu sĩ → Đại đấu sĩ → Đấu tông → Đấu tôn. Mọi thứ dưới đây là Claude thêm.
+
+### Chương 17
+- Thần tộc lúc đông nhất ≤ 40 vị; mang thai ~100 năm; xương vàng nhạt không mục; gene ẩn mở sẵn từ lúc sinh.
+- Tên gọi "Thần tộc hậu sinh" (con cháu bảy vị sơ khai); sau Thần Chiến còn ≤ 10 vị, rút về Thiên giới.
+- Tên gọi "thần trời sinh" / "thần thành tựu"; "Thần cấp" = bậc 9 của mọi hệ (Võ Thần, Kim tiên, Chiến Thần, Nhẫn Thần, Thần sư, Thi Thần, Nguyên Sơ…).
+- Trước khi vải rách chỉ có 3 thần thành tựu (được Thần tộc đón lên); sau đó hơn 30 vị tự leo lên qua vết rách.
+- Thiên Thiết: kim loại Thiên giới rơi khi vải rách, về sau gọi chung với xương thần là Thần Cốt.
+- ~2700 năm thần tranh cãi trước Thần Chiến; nơi họp tên Vân Đài.
+- Cô gái chăn dê thành thần hỏi Thái Hư "những đứa trẻ như tôi sẽ leo lên bằng đường nào?".
+- Đêm Sét Đầu: Thái Hư khâu thật → Lôi Chủ đánh vào sợi chỉ, một Thần tộc hậu sinh chết (vị thần đầu tiên chết).
+- Thành phần hai phe: Nham Mẫu theo phe khâu; hầu hết thần thành tựu, vài Chúa Ngục và Ngục Thú theo Lôi Chủ.
+- Phán Quan gọi các Chúa Ngục về Địa ngục ("không về thì gạch tên khỏi sổ") nhưng không đứng phe nào.
+- Thần Chiến chia 3 giai đoạn: đánh trên trời · mưa sao · 30 năm Lôi Chủ truy đuổi Lão Thú.
+- Nham Mẫu chìm vì kiệt sức che chắn mưa sao; mạch Địa khí ấm dưới chân núi là hơi thở của bà.
+- Thương Hải nổi giận vì sao rơi xuống biển, xuống giữ phần vết rách dưới đáy biển.
+- Huyền Nguyệt chết vì bước ra đỡ tia sét nhắm vào Thái Hư.
+- Thái Hư buông nửa mũi khâu rồi ngủ; vết rách vẫn mở một nửa.
+- Lôi Chủ bị chính cơn bão của mình cuốn và xé thành sấm; xương ông vẫn ở trong bão.
+- Bão Lôi Chủ (phương Đông gọi Lôi Vân Lạc): bão sấm không mưa trôi trên trời, vài chục năm hiện một lần.
+- Mảnh Gene Thần = máu thần kết tinh như hạt muối; nuốt vào thì gene ẩn bật mở, hoặc người nuốt tan thành ánh sáng.
+- Công dụng Thần Cốt: rèn vũ khí, giữ pháp trận, mài bột uống để đột phá (hoặc bị thiêu từ bên trong).
+- "Trận thần chiến nhỏ" thời nay: khi có người đạt Thần cấp muốn lên Thiên giới mà thần ở trên ngăn lại.
+- Câu cuối phần Thần Chiến trong Thần Văn ("Không ai hỏi những kẻ ở dưới có muốn đi lên không") do Lão Thú khắc thêm.
+
+### Chương 18
+- Chiều không gian đấu khí = Chiến Giới (pháp sư gọi Nếp Nhàu): nếp gấp bị Lôi Chủ vò nát khi xé sao.
+- Đấu Hạch: cửa thông sang Chiến Giới ở sau tim; mở bằng cách bị đẩy tới bờ vực trong trận đánh nhiều lần, không có bí kíp hay đan dược.
+- Nội lực như sông, đấu khí như lửa rừng: mạnh gấp đôi nhưng chỉ giữ được trong một trận.
+- Theron: nô lệ thành Corrath, bị sét Bão Lôi Chủ đánh năm 200, nổi dậy năm 205, đi vào sét năm 248.
+- Thành Corrath (đồng bằng nam Phương Tây) và đấu trường 30 000 chỗ.
+- Tên và thể chế Thành Bang Đồng Thuẫn (212): không vua, Luật Khiên, Sân Cát, Thử Lửa, Hội Đồng Khiên, Thủ Thuẫn, Tường Khiên, cho Vương Triều thuê quân đoàn.
+- Mô tả các bậc từ Đấu thánh tới Chiến Thần; Hỏa Giáp; cháy mạch; đấu sĩ phải học cách đóng Đấu Hạch.
+- Lão Thú gặp Theron ở Sân Cát và hỏi "lúc nào thì nên nằm xuống".
+- Hẻm Núi Lửa; trận 9 ngày năm 651; Kael (nữ, Đấu đế, Thủ Thuẫn); Bren (người duy nhất trở về); hai núi lửa phun lấp hẻm thành tường đá đen; ngày tưởng niệm hằng năm.
+- Xác ướp Azhar sợ lửa (băng vải tẩm nhựa thơm); Azhar có phù thủy cát gọi gió nóng.
