@@ -217,7 +217,7 @@ mục **Cần sửa**, không sửa chương cũ ngay.
 
 ## Cần sửa
 
-1. **c04 ↔ c16 (thời điểm trói Malgrath):** c04 nói Malgrath leo lên khi vải rách, cai trị ~300 năm rồi bị trói "trong những
+1. **ĐÃ SỬA câu trói (c04 dòng 23 → "Vào ngày cuối của Đại Chiến") – còn lệch, xem mục 10 – c04 ↔ c16 (thời điểm trói Malgrath):** c04 nói Malgrath leo lên khi vải rách, cai trị ~300 năm rồi bị trói "trong những
    năm cuối Đại Chiến"; c16 nói Đại Chiến chấm dứt ngay ngày vải rách. Đề xuất: sửa c04 thành "gần ba trăm năm sau ngày
    lớp vải rách" (hoặc c16 thêm giai đoạn tàn chiến kéo dài).
 2. **c04 (Thần Cốt) – c17 đã giải thích (Thiên Thiết gọi chung là Thần Cốt), có thể giữ c04:** xích trói Malgrath làm từ "Thần Cốt, xương của các vị thần ngã xuống", nhưng thần chỉ ngã xuống trong
@@ -236,6 +236,11 @@ mục **Cần sửa**, không sửa chương cũ ngay.
 8. **Dữ liệu game:** thủ lĩnh Hội Thợ Săn "Bram Hollow" chỉ có trong game, chưa có trong chương nào (không mâu thuẫn).
 9. **c12 (con số, nhỏ):** Lão Thú nói lúc Thần Chiến "Ta ngồi cạnh họ đã ba nghìn năm", nhưng các tộc đã sống ở Nhân gian
    hàng nghìn năm trước Đại Chiến (c16), tức trước Thần Chiến hơn ba nghìn năm. Nên đổi thành "hàng nghìn năm" (c17 không trích con số).
+10. **c04 (nội bộ chương, sinh ra sau khi sửa mục 1):** c04 vẫn kể Malgrath leo lên khi lớp vải rách rồi làm "vị vua đêm"
+   "suốt gần ba trăm năm" (tiêu đề "Ba trăm năm trên mặt đất", dòng 17; dòng 21) và đi qua Chiến Trường "giữa lúc hàng chục tộc
+   đang chém giết nhau" (dòng 19). Nay hắn bị trói vào ngày cuối Đại Chiến, mà theo c16 ngày cuối chính là ngày vải rách, nên
+   không còn chỗ cho ba trăm năm cai trị. Hướng gợi ý (chưa làm): (a) Malgrath leo lên qua một vết nứt nhỏ xuất hiện từ sớm,
+   trước ngày rách lớn; hoặc (b) bỏ "ba trăm năm", hắn cai trị trong những năm Đại Chiến; hoặc (c) đổi câu trói thành "ba trăm năm sau Đại Chiến".
 
 ## Canon mới do Claude thêm – chờ chủ dự án duyệt
 
