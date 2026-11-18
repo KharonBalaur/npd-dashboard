@@ -271,11 +271,20 @@ mục **Cần sửa**, không sửa chương cũ ngay.
    đang chém giết nhau" (dòng 19). Nay hắn bị trói vào ngày cuối Đại Chiến, mà theo c16 ngày cuối chính là ngày vải rách, nên
    không còn chỗ cho ba trăm năm cai trị. Hướng gợi ý (chưa làm): (a) Malgrath leo lên qua một vết nứt nhỏ xuất hiện từ sớm,
    trước ngày rách lớn; hoặc (b) bỏ "ba trăm năm", hắn cai trị trong những năm Đại Chiến; hoặc (c) đổi câu trói thành "ba trăm năm sau Đại Chiến".
-11. **c05 ↔ c21 (chưa kiểm tra vì không đọc lại chương cũ):** c05 có câu "Đêm mùng một tháng Mười Hai năm 1006, có kẻ mở cửa
-    lồng. Hồ sơ của Học Viện Gen ghi là…" – cần đối chiếu phần sau câu này với hai manh mối ở c21 (chìa khóa chính, trang sổ
-    trực bị xé). Ghi chú bên lề của Crowe ở c05 cũng nên khớp với dòng chữ trên cửa tầng 7 ở c21 (c21 mở đầu bằng cùng câu
-    "Chúng tôi muốn tạo ra một người lính mạnh như hổ.").
-
+11. **c05 ↔ c21 – ĐÃ KIỂM TRA (c05 dòng 17–29, 63–69), chưa sửa:**
+    - (a) Hồ sơ chính thức: c05 ghi Học Viện gọi đêm mở lồng là "sự cố kỹ thuật"; c21 nói hồ sơ niêm phong có 2 manh mối.
+      Không lệch (một bên là lời công bố, một bên là hồ sơ mật); c21 có thể thêm một câu nhắc chữ "sự cố kỹ thuật".
+    - (b) Ai mở lồng: c05 có lời đồn một Huyết tộc dòng Valcrest đột nhập, Valcrest không xác nhận cũng không phủ nhận; c21
+      không nhắc lời đồn này. Cả hai vẫn để BÍ ẨN. Lệch nhẹ: c05 nói "đột nhập", c21 nói cửa không bị phá mà mở bằng chìa khóa
+      chính – vẫn hợp được (người gác mất trí nhớ có thể do kẻ đột nhập), nhưng nên để c21 nhắc lời đồn Valcrest cho liền mạch.
+    - (c) Số người thoát: c05 kể 5 Vesper + 3 Lycan ra khỏi lồng, chết tại hành lang 2 Vesper + 1 Lycan, sau đó "số Lycan tăng
+      từ hai"; nhưng cùng chương lại viết "Garr dẫn hai Lycan" (đọc như Garr + 2 = 3). c21 chép lại câu này. Lệch nội bộ c05,
+      kéo theo c21. Gợi ý: "Garr dẫn Lycan còn lại" hoặc đổi số ban đầu.
+    - (d) Lây lan: c05 nói vết cắn của Vesper / Lycan truyền gene; c21 nói Lycan sinh con được (gene ngủ tới tuổi dậy thì).
+      Không lệch, hai cách cùng tồn tại.
+    - (e) Ghi chú của Crowe: c05 = "Chúng tôi muốn tạo ra một người lính mạnh như hổ. Chúng tôi tạo ra hai đứa trẻ không bao
+      giờ ngừng khóc." Dòng khắc trên cửa tầng 7 ở c21 có câu thứ hai khác ("…hai thứ căm ghét nhau hơn bất cứ thứ gì") và thêm
+      câu thứ ba. c21 chỉ nói nét chữ giống, không nói cùng câu, nên không sai; nhưng nên thống nhất câu thứ hai theo c05.
 ## Canon mới do Claude thêm – chờ chủ dự án duyệt
 
 Repo chưa có `story/bible.md`, nên đối chiếu với file Word / Excel cốt truyện của chủ dự án (chỉ tính các ô ghi "Bạn").
