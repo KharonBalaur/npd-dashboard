@@ -111,7 +111,7 @@ mục **Cần sửa**, không sửa chương cũ ngay.
 - Ràng buộc: thứ lấy từ Địa ngục phải trả bằng một linh hồn → Veyra biến mất, để lại nến cháy mãi và vết tay cháy; Torvald trao Aldric rìu gỗ Bạch Tâm.
 
 ### c04 · L4 Ác Quỷ Dưới Hang Sâu (→ 318)
-- Mốc: Malgrath (Chúa Ngục tầng 14) leo lên qua vết rách, làm "vị vua đêm" ~300 năm, bị xích ở Họng Sắt; 318 Edric (26 tuổi) uống máu → thắng Azhar ở Thornfield (bầy dơi); 450 thôi uống máu người; 1102 Lâm Thanh Phong kiểm tra xích.
+- Mốc: Malgrath (Chúa Ngục tầng 14) leo lên qua khe nứt (máu thấm làm vải nứt dần trước ngày rách hẳn), làm "vị vua đêm" những năm cuối Đại Chiến, bị xích ở Họng Sắt vào ngày cuối Đại Chiến; 318 Edric (26 tuổi) uống máu → thắng Azhar ở Thornfield (bầy dơi); 450 thôi uống máu người; 1102 Lâm Thanh Phong kiểm tra xích.
 - Nhân vật: Malgrath, thái tử Edric của Hollowmere, đạo sĩ Lâm Thanh Phong.
 - Thuật ngữ: Huyết Ước / Pactborn; Huyết nô; khế ước máu (ai uống máu hắn thì hắn được tự do dần); Thần Cốt (xích).
 - Ràng buộc: không giết được Chúa Ngục ở Nhân gian (chỉ đẩy về Địa ngục); tổ tiên Phái Huyền Phù + pháp sư phương Tây cùng trói hắn.
@@ -231,7 +231,7 @@ mục **Cần sửa**, không sửa chương cũ ngay.
 
 ## Cần sửa
 
-1. **ĐÃ SỬA câu trói (c04 dòng 23 → "Vào ngày cuối của Đại Chiến") – còn lệch, xem mục 10 – c04 ↔ c16 (thời điểm trói Malgrath):** c04 nói Malgrath leo lên khi vải rách, cai trị ~300 năm rồi bị trói "trong những
+1. **ĐÃ SỬA (cùng mục 10) – c04 ↔ c16 (thời điểm trói Malgrath):** c04 nói Malgrath leo lên khi vải rách, cai trị ~300 năm rồi bị trói "trong những
    năm cuối Đại Chiến"; c16 nói Đại Chiến chấm dứt ngay ngày vải rách. Đề xuất: sửa c04 thành "gần ba trăm năm sau ngày
    lớp vải rách" (hoặc c16 thêm giai đoạn tàn chiến kéo dài).
 2. **c04 (Thần Cốt) – c17 đã giải thích (Thiên Thiết gọi chung là Thần Cốt), có thể giữ c04:** xích trói Malgrath làm từ "Thần Cốt, xương của các vị thần ngã xuống", nhưng thần chỉ ngã xuống trong
@@ -250,7 +250,7 @@ mục **Cần sửa**, không sửa chương cũ ngay.
 8. **Dữ liệu game:** thủ lĩnh Hội Thợ Săn "Bram Hollow" chỉ có trong game, chưa có trong chương nào (không mâu thuẫn).
 9. **c12 (con số, nhỏ):** Lão Thú nói lúc Thần Chiến "Ta ngồi cạnh họ đã ba nghìn năm", nhưng các tộc đã sống ở Nhân gian
    hàng nghìn năm trước Đại Chiến (c16), tức trước Thần Chiến hơn ba nghìn năm. Nên đổi thành "hàng nghìn năm" (c17 không trích con số).
-10. **c04 (nội bộ chương, sinh ra sau khi sửa mục 1):** c04 vẫn kể Malgrath leo lên khi lớp vải rách rồi làm "vị vua đêm"
+10. **ĐÃ SỬA theo hướng (b) – dòng 15, 17, 19, 21 của c04 – c04 (nội bộ chương, sinh ra sau khi sửa mục 1):** c04 vẫn kể Malgrath leo lên khi lớp vải rách rồi làm "vị vua đêm"
    "suốt gần ba trăm năm" (tiêu đề "Ba trăm năm trên mặt đất", dòng 17; dòng 21) và đi qua Chiến Trường "giữa lúc hàng chục tộc
    đang chém giết nhau" (dòng 19). Nay hắn bị trói vào ngày cuối Đại Chiến, mà theo c16 ngày cuối chính là ngày vải rách, nên
    không còn chỗ cho ba trăm năm cai trị. Hướng gợi ý (chưa làm): (a) Malgrath leo lên qua một vết nứt nhỏ xuất hiện từ sớm,
