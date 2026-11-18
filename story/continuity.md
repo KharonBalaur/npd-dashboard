@@ -225,7 +225,7 @@ mục **Cần sửa**, không sửa chương cũ ngay.
    Thiên giới khi vải rách cũng bị gọi chung là Thần Cốt.
 3. **c12 ↔ dòng thời gian (khoảng cách Đại Chiến – Thần Chiến) – c17 đã giải thích (~2700 năm tranh cãi), có thể giữ c12:** c12 kể như Thần Chiến nổ ra ngay sau khi vải rách; dòng
    thời gian có ~2700 năm ở giữa. Chương 17 cần giải thích (tranh cãi kéo dài trước khi thành chiến tranh).
-4. **c12 (thuật ngữ):** viết "hút tinh khí trời đất" cho Thạch Kiên; theo c01 võ giả hút Địa khí. Đổi thành "Địa khí trời đất"
+4. **ĐÃ SỬA – c12 (thuật ngữ):** viết "hút tinh khí trời đất" cho Thạch Kiên; theo c01 võ giả hút Địa khí. Đổi thành "Địa khí trời đất"
    (game cũng dùng "tinh khí trời đất" trong mô tả hệ Nội lực).
 5. **c02 ↔ c12 (quê Iris, nhỏ):** c02 "cô gái chăn cừu vùng đồi phía tây", c12/c06 "làng giữa Tinh Linh Sâm Lâm". Có thể
    giữ nếu hiểu là làng đồi ở rìa rừng; nên thống nhất một câu.
