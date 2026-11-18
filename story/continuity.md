@@ -74,13 +74,13 @@ mục **Cần sửa**, không sửa chương cũ ngay.
   thần tranh cãi ở Vân Đài (thần thành tựu tự leo lên qua vết rách) → **Thần Chiến** (~300 năm trước năm 1 – năm 1).
 - ~8 Thạch Kiên sinh · năm 40 (mất mùa 3 vụ) Lão Thú dạy Thạch Kiên thở · ~151 Thạch Kiên mất (>140 tuổi), hóa đá · ~90 Huyền Chân Tử lập Phái Huyền Phù (mất 168) · 150 lập Học Viện Ngũ Tinh ·
   160 Morwen nguyền tộc Hrafn · 197 học trò viện Hư mở khe xuống Địa ngục → Caelum Vane bị đuổi.
+- ~105 Khetemu sinh ở Azhar · ~135 làm vua cát · ~150 có Ngục Văn, đúc Sách Tử Thần · 163 chết, sống lại thành xác
+  ướp đầu tiên → Đế quốc Azhar · 318 Khetemu cử 3 vua cát lên bắc, thua ở Thornfield → Giấc Ngủ Dài (318–650).
+- ~180 Theron sinh ở Corrath · 200 sét Bão Lôi Chủ đánh Theron · 205 nổi dậy ở Corrath · 212 hòa ước, lập Đồng Thuẫn ·
+  248 Bão Lôi Chủ trở lại, Theron (68) đi vào sét, mất tích.
 - ~270 Veyra sinh · 301 Dịch Tro Xám · 302 phép cướp lửa → Valcrest; Veyra biến mất · 318 Edric uống máu Malgrath,
   thắng Azhar ở Thornfield · 330 nhẫn của Rhen nứt, Torvald chết, Rhen bị phong trong mộ băng; Lão Thú (ông lão mù)
   nói lời tiên tri · ~335 Học Viện mua hạt Bạch Tâm.
-- ~180 Theron sinh ở Corrath · 200 sét Bão Lôi Chủ đánh Theron · 205 nổi dậy ở Corrath · 212 hòa ước, lập Đồng Thuẫn ·
-  248 Bão Lôi Chủ trở lại, Theron (68) đi vào sét, mất tích.
-- ~105 Khetemu sinh ở Azhar · ~135 làm vua cát · ~150 có Ngục Văn, đúc Sách Tử Thần · 163 chết, sống lại thành xác
-  ướp đầu tiên → Đế quốc Azhar · 318 Khetemu cử 3 vua cát lên bắc, thua ở Thornfield → Giấc Ngủ Dài (318–650).
 - ~400 quanh Thanh Vân >30 môn phái · 412–415 Hạn bạt (nam Thanh Vân) → Thủy Chiến · 415 Hội Thanh Vân, lập Liên Minh
   Võ Lâm Đông Thổ (Minh chủ đầu tiên Cổ Vân Hà) · ~440 Lão Thú ở làng của Iris · 450 Edric thôi uống máu người · 452 Edric gặp Iris ·
   470 Liên Minh Vạn Thú · ~487 Lysa sinh · 520 Iris mất · 562 Hiệp ước Tuyết Trắng.
