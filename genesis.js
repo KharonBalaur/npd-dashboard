@@ -2928,10 +2928,12 @@
   const LSEC = [['book', '📖', 'Huyết Sử'], ['map', '🗺', 'Bản đồ & Ba cõi'], ['ladder', '📶', 'Thang cảnh giới'], ['legend', '👑', 'Nhân vật truyền kỳ'], ['fac', '🛡', 'Thế lực & Dòng máu']];
   function viewLore() {
     if (!window.GX_LORE) loadLore();
-    const sec = UI.lsec || 'book';
+    // tab "Nhân vật truyền kỳ" chỉ hiện khi genesis-lore.js đã tải và có legends (chưa có extras.json thì ẩn)
+    const hasLg = !!(window.GX_LORE && (window.GX_LORE.legends || []).length), secs = LSEC.filter(([k]) => k !== 'legend' || hasLg);
+    const sec = secs.some(x => x[0] === UI.lsec) ? UI.lsec : 'book';
     return `<div class="gx-hero"><span class="gx-pill mono">World Bible · Huyết Sử</span><h4>Vũ trụ nhiều chiều & Ba cõi</h4>
         <p>Đấng Sáng Thế tạo ra vũ trụ vô tận với vô số chiều không gian rồi rải hạt giống sinh mạng xuống các thế giới. Thế giới này có ba cõi chồng lên nhau – <b style="color:#fbbf24">Thiên giới</b>, <b style="color:var(--cy)">Nhân gian</b>, <b style="color:#f43f5e">Địa ngục</b> – và một vết rách ở trung tâm: <b style="color:var(--go)">Chiến Trường Vạn Tộc</b>. Đã mở <b style="color:var(--go)">${G.lore.length}/${LORE.length}</b> chương Huyết Sử; giữ qua mọi kiếp.</p></div>
-      <div class="gx-subnav">${LSEC.map(([k, ic, n]) => `<button data-g="lsec" data-k="${k}" class="${sec === k ? 'on' : ''}">${ic} ${n}</button>`).join('')}</div>
+      <div class="gx-subnav">${secs.map(([k, ic, n]) => `<button data-g="lsec" data-k="${k}" class="${sec === k ? 'on' : ''}">${ic} ${n}</button>`).join('')}</div>
       ${({ book:loreBook, map:loreMap, ladder:loreLadder, legend:loreLegend, fac:loreFac }[sec] || loreBook)()}`;
   }
   // Huyết Sử dạng sách: mỗi chương một lịch sử, lật trang qua lại
