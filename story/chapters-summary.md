@@ -101,7 +101,7 @@
 ### c17 · L17 Thần Tộc & Thần Chiến (sơ khai → năm 1)
 - Mốc: vải rách → ~2700 năm tranh cãi → ~300 năm trước năm 1 Thái Hư khâu thật → Đêm Sét Đầu (vị thần đầu tiên chết) → 3 giai đoạn: chiến trên trời · mưa sao (năm ~200 của Thần Chiến Nham Mẫu kiệt sức chìm vào đất) · 30 năm Lôi Chủ truy Lão Thú → trận cuối trên Chiến Trường.
 - Nhân vật: Thái Hư, Huyền Nguyệt, Nham Mẫu (phe khâu); Lôi Chủ + hầu hết thần thành tựu + vài Chúa Ngục, Ngục Thú (phe mở); Thương Hải, Phán Quan, Lão Thú đứng ngoài; cô gái chăn dê thành thần (không tên) hỏi Thái Hư.
-- Thuật ngữ: Thần tộc hậu sinh, thần trời sinh / thần thành tựu, Thần cấp, Vân Đài, Thiên Thiết, Đêm Sét Đầu, Bão Lôi Chủ / Lôi Vân Lạc, Mảnh Gene Thần (máu thần kết tinh như hạt muối, mở gene ẩn hoặc làm tan thành ánh sáng).
+- Thuật ngữ: Thần tộc hậu sinh, thần trời sinh / thần thành tựu, Thần cấp, Vân Đài, Thiên Thiết, Đêm Sét Đầu, Bão Lôi Chủ / Lôi Vân Lạc, Mảnh Gene Thần (máu thần kết tinh, phát sáng như một đoạn gene, mở gene ẩn hoặc làm tan thành ánh sáng).
 - Ràng buộc: Huyền Nguyệt đỡ tia sét cho Thái Hư; Thái Hư buông nửa mũi khâu rồi ngủ (Đêm Dài = ông trở mình); xương Lôi Chủ vẫn ở trong Bão Lôi Chủ; Phán Quan chỉ gọi Chúa Ngục về (không đứng phe); "trận thần chiến nhỏ" thời nay khi có người đạt Thần cấp muốn lên Thiên giới.
 - Ràng buộc cho c18: Theron là một trong số ít người sống sót sau khi bị sét Bão Lôi Chủ đánh.
 
