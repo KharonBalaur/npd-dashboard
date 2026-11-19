@@ -21,7 +21,7 @@
   // ---------- dữ liệu thế giới ----------
   const STATS = [['the', 'Thể chất', '💪'], ['y', 'Tinh thần', '🔮'], ['tri', 'Trí tuệ', '📘'], ['suc', 'Sức mạnh', '⚔'], ['van', 'Vận khí', '🍀'], ['mi', 'Mị lực', '🌸']];   // v4: Tương thích gen gộp vào Thể chất
   const SN = Object.fromEntries(STATS.map(s => [s[0], s[1]]));
-  const EN = [['thanh', 'Thiên Quang', '#eab308'], ['hac', 'Hắc Uyên', '#7c3aed'], ['co', 'Thiên Thạch', '#64748b'], ['thu', 'Vạn Thú', '#16a34a']];
+  const EN = [['thanh', 'Thiên Quang', '#eab308'], ['hac', 'Ngục khí', '#7c3aed'], ['co', 'Thiên Thạch', '#64748b'], ['thu', 'Vạn Thú', '#16a34a']];
   const ORIGIN = {
     fish:  ['🌊', 'Làng chài ven biển', 'của Làng Chài', { the:1, y:1 }, 10, 'Nghèo mà lương thiện; biển đêm có những con cá phát sáng.'],
     slum:  ['🏚', 'Khu ổ chuột thủ đô', 'của Khu Ổ Chuột', { van:1, mi:1 }, 2, 'Lanh lợi để sống sót; chợ đen bán cả gene quái vật.'],
@@ -145,16 +145,8 @@
     famine:['🌾', 'Mất mùa', 'Đói kém, giá gạo cao hơn vàng.'], moon:['🌕', 'Huyết Nguyệt', 'Trăng đỏ mỗi đêm, dị thú và Huyết Tộc trỗi dậy.'], gold:['✨', 'Thịnh thế', 'Buôn bán phát đạt, học viện mở rộng.'], cold:['❄', 'Đông dài', 'Mùa đông kéo dài nhiều năm.'],
   };
   const eraOf = C => (C.segs && C.segs.length ? eraSeg(C)[0] : C.eras && C.eras[Math.min(Math.floor(C.age / 10), C.eras.length - 1)]) || 'peace';
-  const WORLD_ERAS = [
-    ['Kỷ Huyết Nguyệt', 'Hiện tại. Huyết Tộc, Lang Tộc, Phù Thủy, Cương Thi, Ảnh Môn và dị nhân cùng tồn tại; ai cũng có thể dung nhập thú hồn để viết lại số phận.', '#00ff88'],
-  ];
-  const FACTIONS = [
-    ['👑', 'Vương Triều Loài Người', 'Trật tự & chiến tranh', 'Thu thuế, giữ biên giới; dùng dị nhân làm lính đánh thuê nhưng không cho làm quan.', '#00e5ff'],
-    ['🐾', 'Liên Minh Vạn Thú', 'Hoang dã', 'Thú tộc và dị nhân tự trị trong rừng sâu; chào đón ai có độ dị hóa cao.', '#00ff88'],
-    ['💰', 'Thương Hội Kim Lân', 'Tiền tài', 'Buôn bán mọi thứ – kể cả gene quái vật ở chợ đen.', '#eab308'],
-    ['🩸', 'Gia Tộc Valcrest', 'Huyết Tộc Khởi Thủy', 'Năm người con bất tử của Mẫu Thân Veyra; cai trị bóng đêm sau màn nhung.', '#f43f5e'],
-    ['🥷', 'Ảnh Môn Núi Sương', 'Sát thủ', 'Nhận trẻ mồ côi, cấy Ảnh Mã; kẻ phản môn bị truy sát đến cùng.', '#94a3b8'],
-  ];
+  const WORLD_ERAS = [];   // nạp lại ở khối v4 (dòng "WORLD_ERAS.push")
+  const FACTIONS = [];     // nạp lại ở khối v4 (dòng "FACTIONS.push")
   // dị năng: tự thức tỉnh khi đủ điều kiện; trong sự kiện có thẻ (tg) phù hợp sẽ hiện thêm lựa chọn “⚡ dùng dị năng”
   const has_ = (C, g) => C.genes.includes(g), lk_ = C => C.line ? C.line.k : '';
   const SKILLS = [
