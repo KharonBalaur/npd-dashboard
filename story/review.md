@@ -8,7 +8,7 @@
 2. **ĐÃ XỬ LÝ (giữ chương, không cần sửa) – c04 (Thần Cốt) – c17 đã giải thích (Thiên Thiết gọi chung là Thần Cốt), có thể giữ c04:** xích trói Malgrath làm từ "Thần Cốt, xương của các vị thần ngã xuống", nhưng thần chỉ ngã xuống trong
    Thần Chiến, ~2700 năm sau. c04 có chữ "về sau người ta gọi là" nên chưa sai hẳn; cần chương 17 giải thích kim loại rơi từ
    Thiên giới khi vải rách cũng bị gọi chung là Thần Cốt.
-3. **c12 ↔ dòng thời gian (khoảng cách Đại Chiến – Thần Chiến) – c17 đã giải thích (~2700 năm tranh cãi), có thể giữ c12:** c12 kể như Thần Chiến nổ ra ngay sau khi vải rách; dòng
+3. **ĐÃ XỬ LÝ (giữ chương, không cần sửa) – c12 ↔ dòng thời gian (khoảng cách Đại Chiến – Thần Chiến) – c17 đã giải thích (~2700 năm tranh cãi), có thể giữ c12:** c12 kể như Thần Chiến nổ ra ngay sau khi vải rách; dòng
    thời gian có ~2700 năm ở giữa. Chương 17 cần giải thích (tranh cãi kéo dài trước khi thành chiến tranh).
 4. **ĐÃ SỬA – c12 (thuật ngữ):** viết "hút tinh khí trời đất" cho Thạch Kiên; theo c01 võ giả hút Địa khí. Đổi thành "Địa khí trời đất"
    (game cũng dùng "tinh khí trời đất" trong mô tả hệ Nội lực).
