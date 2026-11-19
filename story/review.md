@@ -69,6 +69,7 @@ nội lực; cảm hứng "300"; bậc Đấu sĩ → Đại đấu sĩ → Đ�
 - Công dụng Thần Cốt: rèn vũ khí, giữ pháp trận, mài bột uống để đột phá (hoặc bị thiêu từ bên trong).
 - "Trận thần chiến nhỏ" thời nay: khi có người đạt Thần cấp muốn lên Thiên giới mà thần ở trên ngăn lại.
 - Câu cuối phần Thần Chiến trong Thần Văn ("Không ai hỏi những kẻ ở dưới có muốn đi lên không") do Lão Thú khắc thêm.
+- (thêm theo C17-19) Sau Thần Chiến thiên địa suy yếu nên muốn lên Thần cấp phải có bảo vật phẩm Thần (Thần Cốt hoặc di vật cùng phẩm); thần thành tựu trước khi vải rách không cần.
 
 ### Chương 18
 - Chiều không gian đấu khí = Chiến Giới (pháp sư gọi Nếp Nhàu): nếp gấp bị Lôi Chủ vò nát khi xé sao.
