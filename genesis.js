@@ -499,7 +499,7 @@
     ['b_vvial', '☣', 'Lọ Virus Đêm Dài', 'Gene', 'Thánh', 'Một ống băng chứa virus cổ lấy từ xác thiên thạch ở Bắc Nguyên. Uống vào: thành Huyết tộc Đêm Dài – hoặc chết.', 'nuot', { life:-10 }, ''],
     ['b_dan', '🟡', 'Tử Kim Đan', 'Đan dược', 'Thánh', 'Kim đan luyện chín chín tám mươi mốt ngày – vừa giúp đột phá vừa kéo dài tuổi thọ.', 'nuot', { life:20, hp:20 }, ''],
     ['b_xgene', '🧬', 'Mảnh Gene Thần', 'Gene', 'Thánh', 'Một đoạn gene phát sáng lấy từ xác một vị thần ngã xuống trong Thần chiến.', 'nuot', { mut:8 }, ''],
-    ['b_death', '📖', 'Sách Tử Thần', 'Bí kíp', 'Thần', 'Cuốn sách vàng trong lăng vua cát Hoang Mạc Tử Thần: đọc đúng trang thì người chết sống lại – thành xác ướp bất tử.', 'dung', { lore:'L20' }, ''],
+    ['b_death', '📖', 'Trang chép Sách Tử Thần', 'Bí kíp', 'Thần', 'Mấy tấm vàng mỏng khắc Ngục Văn, chép từ cuốn sách thật trong lăng Sa Vương. Không đủ để Thầy Ướp ướp ai, nhưng đã dùng thì khi bạn chết, trang chép tự lật một lần – bạn tỉnh dậy thành xác ướp. Dùng một lần.', 'dung', { lore:'L20' }, ''],
     ['b_godbone', '✴', 'Thần Cốt', 'Thần di vật', 'Thần', 'Một đốt xương vàng của vị thần ngã xuống – chạm vào nghe thấy tiếng sấm. Giúp bước vào Thần cấp.', 'dung', { y:1, thanh:15 }, ''],
   );
   BAO.forEach(b => { BAOM[b[0]] = b; });
@@ -1161,7 +1161,7 @@
       { t:'Phá phòng thí nghiệm, thả hết mẫu vật', chk:['suc', 12], ok:{ fame:12, want:15, good:10, lore:'L21' }, no:{ hp:-30, want:20 }, r:'Đêm đó cả kinh thành nghe tiếng tru và tiếng dơi.', rf:'Lính gác bắt được bạn ở cổng sau.' },
       { t:'Bỏ đi', ok:{}, r:'Bạn không ngoái lại.' }] },
     { id:'b_tomb', a:[16, 400], w:3, once:1, if:C => anOk(C) && (C.o === 'desert' || has(C, 'travel') || eraOf(C) === 'godwar'), tg:['explore', 'mystery', 'undead'], t:'Lăng vua cát', d:'Bão cát thổi bay nửa đụn cát, lộ ra cửa đá của một lăng mộ có hình mặt trời bị nuốt.', c:[
-      { t:'Vào lăng, tìm Sách Tử Thần', chk:['tri', 12], ok:{ bao:'b_death', lore:'L20' }, no:{ hp:-25, lore:'L20' }, r:'Trên bệ đá giữa lăng là cuốn sách vàng. Xác ướp trong quan tài khẽ mở mắt.', rf:'Bẫy cát sụt – bạn thoát ra với vết bỏng của những con bọ hung.' },
+      { t:'Vào lăng, tìm Sách Tử Thần', chk:['tri', 12], ok:{ gold:rnd(30, 70), lore:'L20' }, no:{ hp:-25, lore:'L20' }, alt:[{ p:.25, ok:{ bao:'b_death', lore:'L20' }, r:'Trên bệ đá giữa lăng là mấy tấm vàng mỏng khắc chữ lạ – một trang chép Sách Tử Thần. Xác ướp trong quan tài khẽ mở mắt.' }], r:'Bệ đá giữa lăng trống trơn – có kẻ đã tới trước bạn. Bạn chỉ nhặt được ít vàng rơi vãi.', rf:'Bẫy cát sụt – bạn thoát ra với vết bỏng của những con bọ hung.' },
       { t:'Vơ vàng bạc rồi chạy', ok:{ gold:rnd(40, 90), want:5 }, alt:[{ p:.3, ok:{ gold:60, line:['jiang', 'mummy'] }, r:'Bạn chạy không kịp – lời nguyền đóng lại sau lưng bạn. Bạn chết, rồi tỉnh dậy trong băng vải.' }], r:'Cát lấp cửa lăng ngay sau lưng bạn.' },
       { t:'Lấp cửa lăng lại', ok:{ good:5, lore:'L20' }, r:'Có những cánh cửa không nên mở.' }] },
     { id:'b_rift', a:[14, 600], w:2, once:1, if:C => anOk(C), tg:['danger', 'mystery', 'undead'], t:'Vết nứt địa ngục', d:'Trên sườn đồi sau làng, không khí rách ra như tấm vải. Bên kia là lửa đỏ, tiếng xích sắt, và một giọng nói biết tên bạn.', c:[
@@ -1605,7 +1605,7 @@
     if (id === 'b_vvial') { if (rnd(1, 100) <= 65 + (C.tr.includes('sick') ? 25 : 0)) apply(C, { line:['vamp', 'virus'], lore:'L13' }, chips); else { apply(C, { hp:-50 }, chips); chips.push(['bad', '☣ Cơ thể không chịu nổi virus cổ']); } }
     if (id === 'b_vblood' && !(C.paths && (C.paths.vampE || C.paths.vampM))) apply(C, { line:['vamp', 'first'], lore:'L3' }, chips);
     if (id === 'b_moon' && !C.line && Math.random() < .5) apply(C, { line:['wolf', 'curse'] }, chips);
-    if (id === 'b_death') { C.flags.deathbook = 1; chips.push(['lore', '📖 Nếu chết, bạn sẽ tỉnh dậy thành Xác Ướp bất tử']); }
+    if (id === 'b_death') { C.flags.deathbook = 1; chips.push(['lore', '📖 Trang chép đã thấm vào bạn: nếu chết, nó sẽ tự lật một lần – bạn tỉnh dậy thành Xác Ướp']); }
     log(C, `${b[6] === 'nuot' ? 'Nuốt' : 'Dùng'} ${nm}.`);
     UI.note = { txt:`${b[6] === 'nuot' ? 'Bạn nuốt' : 'Bạn dùng'} ${nm}.`, chips };
     if (deathCheck(C)) return; save(G); render();
@@ -2045,7 +2045,7 @@
     const C = G.life; if (C.nm < 1) return;
     C.nm--; C.death = null; C.ending = null;
     if (how === 'jiang') { C.line = null; apply(C, { line:['jiang', 'corpse'] }, []); C.hp = 60; log(C, 'Tỉnh dậy trong quan tài – thành Cương Thi Tỉnh Trí.'); }
-    else if (how === 'mummy') { C.nm++; C.flags.deathbook = 0; C.line = null; apply(C, { line:['jiang', 'mummy'], lore:'L20' }, []); C.hp = 70; log(C, 'Trang Sách Tử Thần tự lật – bạn tỉnh dậy trong lớp băng vải, thành Xác Ướp bất tử.'); }
+    else if (how === 'mummy') { C.nm++; C.flags.deathbook = 0; C.line = null; apply(C, { line:['jiang', 'mummy'], lore:'L20' }, []); C.hp = 70; log(C, 'Trang chép Sách Tử Thần tự lật một lần cuối rồi hóa bụi – bạn tỉnh dậy trong lớp băng vải, thành Xác Ướp bất tử.'); }
     else if (how === 'phoenix') { C.hp = 70; C.flags.reborn = 1; log(C, 'Phượng Hoàng Niết Bàn: tro tàn bùng cháy, bạn sống lại.'); }
     else { C.hp = 35; log(C, 'Nghịch Mệnh: thoát chết trong gang tấc.'); }
     const chips = []; crisis(C, chips, .6); UI.note = chips.length ? { txt:'Cận kề cái chết đánh thức điều gì đó trong bạn.', chips } : null;
@@ -2854,7 +2854,7 @@
       main = `<div class="gx-ev" style="border-color:rgba(244,63,94,.4)"><div class="yr mono"><span>🕯 ${C.age} tuổi</span><span>Hồi kết</span></div><h5>${E(C.death || '')}</h5>
         <p>${C.ending ? `Kết cục: <b style="color:var(--go)">${E(C.ending)}</b>.` : 'Ánh sáng nhòa dần…'}</p>
         <div class="gx-opts">${canP ? `<button class="gx-opt sk" data-g="revive" data-k="phoenix"><span>🔥 Phượng Hoàng Niết Bàn – sống lại từ tro tàn</span><small>1 lần</small></button>` : ''}
-          ${canM ? `<button class="gx-opt sk" data-g="revive" data-k="mummy"><span>📖 Sách Tử Thần tự lật trang – tỉnh dậy thành Xác Ướp</span><small>1 lần</small></button>` : ''}
+          ${canM ? `<button class="gx-opt sk" data-g="revive" data-k="mummy"><span>📖 Trang chép Sách Tử Thần tự lật – tỉnh dậy thành Xác Ướp</span><small>1 lần</small></button>` : ''}
           ${canR ? `<button class="gx-opt" data-g="revive" data-k="nm"><span>☯ Dùng Nghịch Mệnh – thoát chết</span><small>còn ${C.nm}</small></button>` : ''}
           ${canJ ? `<button class="gx-opt" data-g="revive" data-k="jiang"><span>🏮 Tỉnh dậy trong quan tài (Cương Thi Tỉnh Trí)</span><small>1 Nghịch Mệnh</small></button>` : ''}
           <button class="gx-opt" data-g="tobook"><span>📕 Viết Cuốn Sách Nhân Sinh</span></button></div></div>`;
