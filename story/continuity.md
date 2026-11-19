@@ -66,7 +66,7 @@ mục **Cần sửa**, không sửa chương cũ ngay.
 - **Azhar (Hoang Mạc Tử Thần):** xưa là đồng cỏ hai bên sông Tasir, cháy thành sa mạc vì mưa sao Thần Chiến; ốc đảo, vua cát.
   Sa Vương Khetemu (xác ướp đầu tiên). Sách Tử Thần = 7 trang vàng khắc Ngục Văn, chỉ có một cuốn thật (lăng Khetemu, Thung Lũng
   Vua); lăng khác chỉ có trang chép. Thầy Ướp (ướp 70 ngày, đọc sách ngày 71). Xác ướp còn hồn, nhớ, nói được, gọi bão cát; sợ
-  lửa và tiếng mèo (mèo là con vật của Huyền Nguyệt). Xác Khô = lính chết phơi khô, khắc Ngục Văn lên trán, không nhớ, không cháy.
+  lửa và tiếng mèo (mèo là con vật của Huyền Nguyệt). Lính Azhar cũng là xác ướp (quấn băng đơn giản, nhớ ít, vẫn cháy được).
   Phù thủy cát = người sống. Giấc Ngủ Dài 318–650.
 - **Học Viện Gen:** lập 810 (Odile Varn, chiếu chỉ vua; nghiên cứu "mọi thứ vượt khỏi con người" trừ phép thuật). Tháp Kính ở
   kinh thành + 9 tầng hầm: 1–3 thư khố (> 10 000 hồ sơ dị nhân) · 4–5 phòng mổ, mẫu vật · 6 giam sinh vật sống · 7 phòng thí

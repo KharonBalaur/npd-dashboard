@@ -110,7 +110,7 @@
 - Mốc 651: Azhar lên phía bắc lần 2 qua Hẻm Núi Lửa (khe 10 dặm giữa 2 núi lửa ngủ); quân đoàn Đồng Thuẫn đang ở phương bắc; Thủ Thuẫn Kael (nữ, 43 tuổi, Đấu đế) dẫn 300 người (≥ Đại đấu sĩ), giữ 9 ngày; đêm thứ 6 ông lão chăn dê mắt vàng mang nước; ngày 9 Kael đẩy đấu khí xuống đất làm 2 núi lửa phun, hẻm thành tường đá đen cao trăm trượng.
 - Nhân vật: Theron, Kael, Bren (17 tuổi, người duy nhất về, mang khiên Kael; sau làm Thủ Thuẫn từ 50 tới 70 tuổi), Lão Thú (ông lão ở khán đài Sân Cát hỏi Theron "lúc nào thì nên nằm xuống").
 - Thuật ngữ: Chiến Giới / Nếp Nhàu, Đấu Hạch, Hỏa Giáp, cháy mạch, Luật Khiên, Sân Cát, Thử Lửa, Tường Khiên, Thủ Thuẫn.
-- Ràng buộc: xác ướp Azhar sợ lửa (băng vải tẩm nhựa thơm), xác khô mất băng vải thì không cháy; Azhar có "phù thủy cát" gọi gió nóng; vị vua cát cầm quân năm 651 chưa nêu tên (để c20); từ 651 Azhar không qua lối Hẻm Núi Lửa nữa.
+- Ràng buộc: xác ướp Azhar sợ lửa (băng vải tẩm nhựa thơm), Azhar dồn hàng nghìn xác ướp lính lên cùng lúc; Azhar có "phù thủy cát" gọi gió nóng; vị vua cát cầm quân năm 651 chưa nêu tên (để c20); từ 651 Azhar không qua lối Hẻm Núi Lửa nữa.
 - Ràng buộc: mỗi năm vào ngày thứ 9 của trận, Đồng Thuẫn đứng im lặng trước phiến đá khắc 300 tên; người Đồng Thuẫn tin Theron thành Chiến Thần, sang Chiến Giới.
 
 ### c19 · L19 Võ Đạo Phương Đông (40 – nay)
@@ -123,7 +123,7 @@
 ### c20 · L20 Lăng Vua Cát (105 – nay)
 - Mốc: Khetemu (thợ chép biết Thần Văn) ~135 làm vua cát Azhar; ~150 có 7 trang Ngục Văn (3 truyền thuyết: chép dưới vết nứt đáy sông Tasir · kẻ lạ áo đen đêm trăng máu đọc cho chép · tự hiện trong mơ) → Sách Tử Thần; 163 tự ướp mình, sống lại; 318 cử 3 vua cát, thua; Giấc Ngủ Dài; 650 sống lại lần hai; 651 đứng trên đồi cát ở cửa nam Hẻm Núi Lửa 9 ngày, không vào hẻm, rồi quay về lăng nằm xuống.
 - Nhân vật: Sa Vương Khetemu (tên do chủ dự án chọn cho vua cát năm 651); các vua cát; Thầy Ướp; phù thủy cát; kẻ trộm lăng ở Chợ Cát.
-- Thuật ngữ: sông Tasir, ốc đảo, vua cát / Sa Vương, Sách Tử Thần (7 trang), Thầy Ướp, Xác Khô, Thung Lũng Vua, Giấc Ngủ Dài, xác ướp không chủ.
+- Thuật ngữ: sông Tasir, ốc đảo, vua cát / Sa Vương, Sách Tử Thần (7 trang), Thầy Ướp, xác ướp lính, Thung Lũng Vua, Giấc Ngủ Dài, xác ướp không chủ.
 - Ràng buộc: câu của Khetemu năm 651 "Họ có ba trăm người… Ta không muốn biết họ sẽ làm gì nếu có ba nghìn"; Azhar nay chỉ còn vài thành ốc đảo do Thầy Ướp cai quản, phần lớn vua cát đang ngủ; Khetemu đang nằm trong lăng (chưa bị tiêu diệt).
 - Ràng buộc: xác ướp ≠ cương thi (xác ướp còn hồn, cương thi là xác không hồn); người chết cạnh Sách Tử Thần có thể tự thành xác ướp (khớp sự kiện hồi sinh trong game); Sổ Tội trang Khetemu ghi "Chưa đến".
 
