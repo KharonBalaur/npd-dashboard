@@ -404,7 +404,7 @@
     noi:   { ic:'🥋', n:'Võ giả · Nội lực', side:'east', en:'Nội lực', st:'y', T:['Phàm nhân', 'Luyện nội lực', 'Chân khí', 'Cương khí', 'Tiên Thiên', 'Tông Sư', 'Hóa Cảnh', 'Luyện Thần', 'Phản Hư', 'Võ Thần'], up:{ y:1, the:1 }, d:'Hấp thu Địa khí trời đất – lúc đầu qua đồ ăn, có chân khí rồi thì hút thẳng từ đất trời. Nội công, khinh công, điểm huyệt.' },
     body:  { ic:'👊', n:'Võ giả · Luyện thể', side:'east', en:'Khí huyết', st:'suc', T:['Phàm nhân', 'Minh kình', 'Ám kình', 'Hóa kình', 'Bão đan tọa khố', 'Kiến thần bất hoại', 'Thần Lực Thông Huyền', 'Kim Thân Bất Diệt', 'Pháp Tướng Thiên Địa', 'Nhục Thân Thành Thần'], up:{ suc:1, the:1 }, d:'Rèn gân cốt, luyện quyền: sức mạnh nằm trong chính thân thể, không cần phép.' },
     witch: { ic:'🔮', n:'Phù thủy', side:'west', en:'Ma lực', st:'y', T:['Phàm nhân', 'Học đồ', 'Pháp sư', 'Đại ma pháp sư', 'Truyền kỳ pháp sư', 'Chí tôn pháp sư', 'Thánh pháp sư', 'Đại Hiền Giả', 'Bán thần', 'Pháp Thần'], up:{ y:1, tri:1 }, d:'Dùng năng lượng tinh thần điều khiển nguyên tố và lực của các chiều không gian. Cần Tinh thần trên 10.' },
-    dau:   { ic:'🛡', n:'Đấu khí', side:'west', en:'Đấu khí', st:'suc', T:['Phàm nhân', 'Đấu sĩ', 'Đại đấu sĩ', 'Đấu tông', 'Đấu tôn', 'Đấu thánh', 'Đấu đế', 'Chiến Vương', 'Chiến Hoàng', 'Chiến Thần'], up:{ suc:1, the:1 }, d:'Hút năng lượng từ chiều không gian đấu khí – cuồng bạo, bùng nổ hơn nội lực. Rèn ở đấu trường và quân đoàn phương Tây.' },
+    dau:   { ic:'🛡', n:'Đấu khí', side:'west', en:'Đấu khí', st:'suc', T:['Phàm nhân', 'Đấu sĩ', 'Đại đấu sĩ', 'Đấu tông', 'Đấu tôn', 'Đấu thánh', 'Đấu đế', 'Chiến Vương', 'Chiến Hoàng', 'Chiến Thần'], up:{ suc:1, the:1 }, d:'Hút năng lượng từ chiều không gian đấu khí – cuồng bạo, bùng nổ hơn nội lực. Rèn ở đấu trường và quân đoàn phương Tây. Đấu khí đốt cơ thể như lửa đốt củi: đấu sĩ già nhanh hơn – mỗi bậc chỉ cộng một nửa tuổi thọ của các hệ khác.' },
     nin:   { ic:'🥷', n:'Nhẫn thuật', side:'east', en:'Chakra', st:'van', T:['Phàm nhân', 'Hạ nhẫn', 'Trung nhẫn', 'Thượng nhẫn', 'Ám bộ', 'Ảnh nhẫn', 'Nhẫn tông', 'Ảnh Vương', 'Hư Ảnh', 'Nhẫn Thần'], up:{ van:1, the:1 }, d:'Rèn luyện cực đoan để mở khóa tiềm năng, kết hợp bí dược và luyện thần.' },
     dao:   { ic:'☯', n:'Đạo sĩ · Huyền môn', side:'east', en:'Chân nguyên', st:'y', T:['Phàm nhân', 'Đạo đồng', 'Luyện tinh hóa khí', 'Luyện khí hóa thần', 'Luyện thần hoàn hư', 'Chân nhân', 'Thiên sư', 'Địa tiên', 'Thiên tiên', 'Kim tiên'], up:{ y:1, tri:1 }, d:'Bùa chú, trận pháp, trấn thi; tu tâm dưỡng tính để giữ ranh giới âm dương.' },
     phap:  { ic:'🪬', n:'Pháp sư phương Đông', side:'east', en:'Linh lực', st:'tri', T:['Phàm nhân', 'Phù sư', 'Trận sư', 'Linh sư', 'Huyền sư', 'Tông sư pháp thuật', 'Đại tông sư', 'Thánh sư', 'Bán tiên', 'Thần sư'], up:{ tri:1, y:1 }, d:'Lai giữa phù thủy và võ giả: vừa niệm chú vừa vận nội lực. Mở ra khi đã luyện cả phép lẫn võ.' },
@@ -1623,7 +1623,7 @@
   const tierName = (k, t) => PATHS[k] ? PATHS[k].T[clamp(t, 0, 9)] : '';
   const isAnimal = C => C.r === 'animal' && !(C.flags && C.flags.formed);
   const sideOf = C => { const r = ORIGIN_REG[C.o]; return r === 'west' || r === 'elf' || r === 'south' ? 'west' : r === 'north' ? 'north' : 'east'; };
-  const lifeSum = (a, b) => LIFE_T.slice(a + 1, b + 1).reduce((x, y) => x + y, 0);
+  const lifeSum = (a, b, k) => LIFE_T.slice(a + 1, b + 1).reduce((x, y) => x + (k === 'dau' ? Math.round(y / 2) : y), 0);   // đấu khí đốt cơ thể: chỉ cộng một nửa thọ (c18)
   // nhập môn một hệ (hoặc nâng lên bậc khởi đầu nếu đang thấp hơn)
   function joinPath(C, k, t, chips, why) {
     if (!PATHS[k]) return; C.paths = C.paths || {}; t = t == null ? 1 : t;
@@ -1631,7 +1631,7 @@
     const cur = C.paths[k];
     if (cur && cur.t >= t) return;
     if (!cur && !PATHS[k].blood && pathsOf(C).filter(([x]) => !PATHS[x].blood && x !== 'beast').length >= 3 && k !== 'phap') { chips.push(['bad', '🏯 Đã theo đủ 3 con đường tu luyện – không học thêm được']); return; }
-    if (cur) { C.lifeMax += lifeSum(cur.t, t); cur.t = t; } else { C.paths[k] = { t, xp:0 }; C.lifeMax += lifeSum(0, t); }
+    if (cur) { C.lifeMax += lifeSum(cur.t, t, k); cur.t = t; } else { C.paths[k] = { t, xp:0 }; C.lifeMax += lifeSum(0, t, k); }
     if (!C.pk || !C.paths[C.pk] || PATHS[C.pk].blood && !PATHS[k].blood && C.paths[C.pk].t <= t) C.pk = k;
     chips.push(['line', `${PATHS[k].ic} ${PATHS[k].n}: ${tierName(k, t)}`]); log(C, `${why || 'Bước vào con đường'} ${PATHS[k].n} – ${tierName(k, t)}.`);
     if (k === 'dau') apply(C, { lore:'L18' }, chips); if (k === 'noi' || k === 'body') apply(C, { lore:'L19' }, chips); if (k === 'mutant') apply(C, { lore:'L22' }, chips);
@@ -1696,7 +1696,7 @@
     passTime(C, days, chips);
     const p = C.paths[k];
     if (rnd(1, 100) <= odds) {
-      p.t++; p.xp = 0; C.lifeMax += LIFE_T[p.t]; apply(C, PATHS[k].up, chips); C.hp = clamp(C.hp + 20, 0, 100);
+      p.t++; p.xp = 0; C.lifeMax += lifeSum(p.t - 1, p.t, k); apply(C, PATHS[k].up, chips); C.hp = clamp(C.hp + 20, 0, 100);
       if (p.t >= 5) C.fame = clamp(C.fame + 4 * (p.t - 4), 0, 100);
       chips.unshift(['line', `🌟 Đột phá: ${tierName(k, p.t)} (T${p.t} · ${TIER_N[p.t]})`]); log(C, `Bế quan ${fmtDur(days)}, đột phá thành công: ${PATHS[k].n} – ${tierName(k, p.t)}.`);
       scenes.push(['Xuất quan', `Mây quanh nơi bế quan tan ra. Bạn bước ra – ${tierName(k, p.t)}.`]);
@@ -2789,7 +2789,7 @@
   function btPanel(C, k) {
     const P = PATHS[k], inf = btInfo(C, k);
     return `<div class="gx-ev gx-btp"><div class="yr mono"><span>🏯 Bế quan đột phá</span><span>${E(P.n)}</span></div><h5>${P.ic} ${E(tierName(k, inf.t - 1))} → <b style="color:var(--go)">${E(tierName(k, inf.t))}</b> <small class="mono">(T${inf.t} · ${TIER_N[inf.t]})</small></h5>
-      <div class="gx-kv mono"><div><span>${SN[P.st]}</span><b style="color:${inf.st >= inf.need ? 'var(--gr)' : 'var(--re)'}">${inf.st} / cần ${inf.need}</b></div><div><span>Tỉ lệ thành công</span><b style="color:var(--cy)">${inf.odds}%</b></div><div><span>Thọ khi thành công</span><b>+${LIFE_T[inf.t]} năm</b></div><div><span>Thời gian</span><b>vài tháng – vài năm</b></div></div>
+      <div class="gx-kv mono"><div><span>${SN[P.st]}</span><b style="color:${inf.st >= inf.need ? 'var(--gr)' : 'var(--re)'}">${inf.st} / cần ${inf.need}</b></div><div><span>Tỉ lệ thành công</span><b style="color:var(--cy)">${inf.odds}%</b></div><div><span>Thọ khi thành công</span><b>+${lifeSum(inf.t - 1, inf.t, k)} năm</b></div><div><span>Thời gian</span><b>vài tháng – vài năm</b></div></div>
       ${inf.block ? `<p class="gx-warn">⛔ ${E(inf.block)}</p>` : `<p class="gx-note">Thất bại: mất sinh lực, ${E(P.en)} tụt còn 55%, đôi khi tẩu hỏa nhập ma. ${inf.t >= 6 ? 'Từ bậc 6 bắt buộc dùng bảo vật hợp hệ.' : 'Dùng bảo vật hợp hệ: +20% tỉ lệ.'}</p>`}
       <div class="gx-opts">${!inf.block && inf.t < 6 ? `<button class="gx-opt" data-g="btgo" data-k="${k}" data-i=""><span>🧘 Đột phá bằng thực lực</span><small class="mono">${inf.odds}%</small></button>` : ''}
         ${!inf.block ? inf.items.map(([id, i]) => `<button class="gx-opt sk" data-g="btgo" data-k="${k}" data-i="${i}"><span>${BAOM[id][1]} Dùng ${E(baoName(C, id))} <span class="gx-gr" style="color:${GCOL[BAOM[id][4]]}">${E(BAOM[id][4])}</span></span><small class="mono">${Math.min(99, inf.odds + 20)}%</small></button>`).join('') : ''}
@@ -2996,7 +2996,7 @@
   function loreLadder() {
     const C = G.life, ks = Object.keys(PATHS);
     return `<div class="gx-pn"><div class="gx-h"><h4>📶 Thang cảnh giới – cùng hàng là ngang sức</h4><small class="mono">T0–T9 · ${ks.length} hệ</small></div>
-      <p class="gx-note">Ví dụ: Phù thủy Học đồ ≈ Võ giả Minh kình ≈ Đấu sĩ (T1). Mỗi bậc cộng thêm tuổi thọ; từ bậc 6 phải có bảo vật hợp hệ mới đột phá; Đại đế và Chung Cực Lang Vương chỉ đạt được bằng dung hợp.${C ? ' Ô vàng = cảnh giới hiện tại của bạn.' : ''}</p>
+      <p class="gx-note">Ví dụ: Phù thủy Học đồ ≈ Võ giả Minh kình ≈ Đấu sĩ (T1). Mỗi bậc cộng thêm tuổi thọ (riêng đấu khí chỉ cộng một nửa); từ bậc 6 phải có bảo vật hợp hệ mới đột phá; Đại đế và Chung Cực Lang Vương chỉ đạt được bằng dung hợp.${C ? ' Ô vàng = cảnh giới hiện tại của bạn.' : ''}</p>
       <div class="gx-ladw"><table class="gx-ladder"><thead><tr><th>Bậc</th><th>Mốc sức mạnh</th><th>Thọ +</th>${ks.map(k => `<th title="${E(PATHS[k].d)}">${PATHS[k].ic}<br>${E(PATHS[k].n)}</th>`).join('')}</tr></thead>
         <tbody>${[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map(t => `<tr><td class="mono"><b>T${t}</b><br><small>${E(TIER_N[t])}</small></td><td>${E(MOC[t])}</td><td class="mono">${t === 9 ? '∞' : '+' + LIFE_T[t]}</td>${ks.map(k => { const me = C && tierOf(C, k) === t; return `<td class="${me ? 'me' : ''}">${E(PATHS[k].T[t])}</td>`; }).join('')}</tr>`).join('')}</tbody></table></div>
       <div class="gx-g2">${ks.map(k => `<div class="gx-fac"><i style="background:#1f2233;border:1px solid var(--ln)">${PATHS[k].ic}</i><div><b>${E(PATHS[k].n)}</b><small class="mono">${E(PATHS[k].en)} · ${SN[PATHS[k].st]}</small><p>${E(PATHS[k].d)}</p></div></div>`).join('')}</div></div>`;
@@ -3175,6 +3175,6 @@
   window.GenesisGame = {
     mount(el) { root = el; const bx = el.closest('#fnBox'); if (bx) bx.classList.add('gx-wide'); ensureCss(); G = load(); render(); },
     summary() { const g = load(); return g.life ? `${g.life.n} · ${g.life.age} tuổi` : g.books.length ? `${g.books.length} cuốn sách · ${g.lives} kiếp` : 'Chưa bắt đầu'; },
-    debug: () => ({ G:load(), UI, EV, LORE, apply, canKids, avatar, avatarAdult, avatarKid, avatarBeast, eligible, SKILLS, skillsOf, BAO, geneCap, skillCap, fusedOf, eraOf, PATHS, btInfo, btReady, maxTier, mainPath, BD, WEALTH, FATE, upgrade, pathRate }),
+    debug: () => ({ G:load(), UI, EV, LORE, apply, canKids, lifeSum, avatar, avatarAdult, avatarKid, avatarBeast, eligible, SKILLS, skillsOf, BAO, geneCap, skillCap, fusedOf, eraOf, PATHS, btInfo, btReady, maxTier, mainPath, BD, WEALTH, FATE, upgrade, pathRate }),
   };
 })();
