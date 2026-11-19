@@ -16,7 +16,7 @@
    giữ nếu hiểu là làng đồi ở rìa rừng; nên thống nhất một câu.
 6. **ĐÃ SỬA (c14) – c12 ↔ c14 (Thạch Kiên, nhỏ):** c12 "nông dân đói khát" (người lớn), c14 "đứa trẻ chăn trâu bị bỏ rơi". Hợp được nếu
    c14 nói "từng là đứa trẻ chăn trâu bị bỏ rơi".
-7. **c09 ↔ c14 (Ảnh Tổ, nhỏ):** c09 là trưởng lão môn phái Thanh Vân; c14 "đứa trẻ mồ côi lang thang trên Núi Sương". Hợp được
+7. **ĐÃ SỬA (c14) – c09 ↔ c14 (Ảnh Tổ, nhỏ):** c09 là trưởng lão môn phái Thanh Vân; c14 "đứa trẻ mồ côi lang thang trên Núi Sương". Hợp được
    nếu thuở nhỏ ông mồ côi; nên ghi rõ ở c14.
 8. **ĐÃ XỬ LÝ (giữ chương, không cần sửa) – Dữ liệu game:** thủ lĩnh Hội Thợ Săn "Bram Hollow" chỉ có trong game, chưa có trong chương nào (không mâu thuẫn).
 9. **c12 (con số, nhỏ):** Lão Thú nói lúc Thần Chiến "Ta ngồi cạnh họ đã ba nghìn năm", nhưng các tộc đã sống ở Nhân gian
