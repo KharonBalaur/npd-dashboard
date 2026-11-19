@@ -116,9 +116,9 @@
 ### c19 · L19 Võ Đạo Phương Đông (40 – nay)
 - Mốc: Thạch Kiên (~8 – ~151) bị bỏ trước nhà chăn trâu, thành tá điền; năm 40 đói 4 ngày, kẻ mắt vàng dạy thở; 3 năm sau hiểu là Địa khí; lên Thanh Vân dựng Thạch Am; mất khi ngồi thở, 7 ngày hóa đá. 412–415 Thủy Chiến; 415 Hội Thanh Vân → Liên Minh.
 - Nhân vật: Thạch Kiên; Liễu Thanh (bà lang, gốc nội lực); Đồ Mãnh (thợ rèn, gốc luyện thể); Cổ Vân Hà (chưởng môn Thạch Môn, hậu duệ đời 9 của Liễu Thanh, Minh chủ đầu tiên).
-- Thuật ngữ: đan điền, nội lực / luyện thể (ngoại gia), Thạch Am, Thạch Môn, Thiết Cốt Đường, Thủy Chiến, Tam Bất, ma công / ma đạo, Minh chủ, Đại hội Luận Võ.
+- Thuật ngữ: đan điền, nội lực / luyện thể (ngoại gia), Thạch Am, Thạch Môn, Thiết Cốt Đường, Thủy Chiến, Tam Bất, ma đạo (kẻ phản bội võ đạo), Minh chủ, Đại hội Luận Võ.
 - Ràng buộc: nhập môn phải 3 tháng chỉ ăn và thở; câu tổ sư "Khí là nước… Hãy xem ruộng ai xanh"; mỗi đầu xuân mọi môn phái dòng Thạch Kiên lên thở chung trước tượng; dưới Thanh Vân là nơi Nham Mẫu nằm xuống.
-- Ràng buộc: Ảnh Tổ là trưởng lão một môn phái dòng Thạch Kiên ở Thanh Vân (lý do bị trục xuất 903 để nguyên như c09); Liên Minh ghét Ảnh Môn hơn cả ma đạo.
+- Ràng buộc: Ảnh Tổ là trưởng lão một môn phái dòng Thạch Kiên ở Thanh Vân (lý do bị trục xuất 903 để nguyên như c09); Liên Minh coi Ảnh Môn là ma đạo (phá điều thứ ba của Tam Bất).
 
 ### c20 · L20 Lăng Vua Cát (105 – nay)
 - Mốc: Khetemu (thợ chép biết Thần Văn) ~135 làm vua cát Azhar; ~150 có 7 trang Ngục Văn (3 truyền thuyết: chép dưới vết nứt đáy sông Tasir · kẻ lạ áo đen đêm trăng máu đọc cho chép · tự hiện trong mơ) → Sách Tử Thần; 163 tự ướp mình, sống lại; 318 cử 3 vua cát, thua; Giấc Ngủ Dài; 650 sống lại lần hai; 651 đứng trên đồi cát ở cửa nam Hẻm Núi Lửa 9 ngày, không vào hẻm, rồi quay về lăng nằm xuống.

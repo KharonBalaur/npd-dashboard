@@ -21,10 +21,10 @@ mục **Cần sửa**, không sửa chương cũ ngay.
   Đan điền = chỗ ấm dưới rốn, nơi gene ẩn gần Nhân gian nhất. Nội lực (dẫn khí theo mạch; gốc Liễu Thanh): Luyện nội lực ·
   Chân khí · Cương khí · Tiên Thiên · Tông Sư · Hóa Cảnh · Luyện Thần · Phản Hư · Võ Thần. Luyện thể / ngoại gia (nén khí vào
   thân; gốc Đồ Mãnh): Minh kình · Ám kình · Hóa kình · Bão đan tọa khố · Kiến thần bất hoại · Thần Lực Thông Huyền · Kim Thân
-  Bất Diệt · Pháp Tướng Thiên Địa · Nhục Thân Thành Thần. Ma công / ma đạo = võ giả hút âm khí.
+  Bất Diệt · Pháp Tướng Thiên Địa · Nhục Thân Thành Thần. Ma đạo = kẻ phản bội võ đạo (dùng võ giết người theo hợp đồng); Liên Minh coi Ảnh Môn là ma đạo.
 - **Võ lâm Thanh Vân:** Thạch Am (tượng đá Thạch Kiên) · Thạch Môn (nội lực, lâu đời nhất) · Thiết Cốt Đường (thế gia luyện thể)
   · kiếm phái, đạo quán, chùa · Liên Minh Võ Lâm Đông Thổ (Minh chủ bầu mỗi 20 năm ở Đại hội Luận Võ; Tam Bất: không dùng võ với
-  người không biết võ, không cướp lương thực và nước, không luyện ma công; đồng minh Phái Huyền Phù; ghét ma đạo và Ảnh Môn).
+  người không biết võ, không cướp lương thực và nước, không dùng võ để giết người theo hợp đồng; đồng minh Phái Huyền Phù; ghét ma đạo, nhất là Ảnh Môn).
 - **Gene ẩn / dị nhân:** cấp Tiềm ẩn · Thức tỉnh · Thành thạo · Vượt ngưỡng · Đỉnh phong · Alpha · Omega (Siêu Việt,
   Nguyên Sơ chỉ là lời đồn). Dị nhân giữ tối đa 5 năng lực, người thường 2–3. Phế thể = Bình Chứa Rỗng. Thể chất Kháng Dịch.
 - **Bảy thần sơ khai:** Thái Hư (giữ nếp gấp, Kẻ Gấp Vải; đang ngủ) · Huyền Nguyệt (dẫn linh hồn, ở mặt trăng; chết) ·
