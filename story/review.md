@@ -14,7 +14,7 @@
    (game cũng dùng "tinh khí trời đất" trong mô tả hệ Nội lực).
 5. **ĐÃ SỬA (c02, c12, c14) – c22 đã chốt (chưa sửa chương cũ): làng chăn cừu trên đồi ở rìa Tinh Linh Sâm Lâm – c02 ↔ c12 (quê Iris, nhỏ):** c02 "cô gái chăn cừu vùng đồi phía tây", c12/c06 "làng giữa Tinh Linh Sâm Lâm". Có thể
    giữ nếu hiểu là làng đồi ở rìa rừng; nên thống nhất một câu.
-6. **c12 ↔ c14 (Thạch Kiên, nhỏ):** c12 "nông dân đói khát" (người lớn), c14 "đứa trẻ chăn trâu bị bỏ rơi". Hợp được nếu
+6. **ĐÃ SỬA (c14) – c12 ↔ c14 (Thạch Kiên, nhỏ):** c12 "nông dân đói khát" (người lớn), c14 "đứa trẻ chăn trâu bị bỏ rơi". Hợp được nếu
    c14 nói "từng là đứa trẻ chăn trâu bị bỏ rơi".
 7. **c09 ↔ c14 (Ảnh Tổ, nhỏ):** c09 là trưởng lão môn phái Thanh Vân; c14 "đứa trẻ mồ côi lang thang trên Núi Sương". Hợp được
    nếu thuở nhỏ ông mồ côi; nên ghi rõ ở c14.
