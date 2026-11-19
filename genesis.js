@@ -414,7 +414,7 @@
 
   // ---- 13 hệ sức mạnh, thang T0–T9 cân bằng giữa các hệ (cùng bậc = sức mạnh ngang nhau) ----
   const PATHS = {
-    noi:   { ic:'🥋', n:'Võ giả · Nội lực', side:'east', en:'Nội lực', st:'y', T:['Phàm nhân', 'Luyện nội lực', 'Chân khí', 'Cương khí', 'Tiên Thiên', 'Tông Sư', 'Hóa Cảnh', 'Luyện Thần', 'Phản Hư', 'Võ Thần'], up:{ y:1, the:1 }, d:'Hấp thu tinh khí trời đất – lúc đầu qua đồ ăn, có chân khí rồi thì hút thẳng từ đất trời. Nội công, khinh công, điểm huyệt.' },
+    noi:   { ic:'🥋', n:'Võ giả · Nội lực', side:'east', en:'Nội lực', st:'y', T:['Phàm nhân', 'Luyện nội lực', 'Chân khí', 'Cương khí', 'Tiên Thiên', 'Tông Sư', 'Hóa Cảnh', 'Luyện Thần', 'Phản Hư', 'Võ Thần'], up:{ y:1, the:1 }, d:'Hấp thu Địa khí trời đất – lúc đầu qua đồ ăn, có chân khí rồi thì hút thẳng từ đất trời. Nội công, khinh công, điểm huyệt.' },
     body:  { ic:'👊', n:'Võ giả · Luyện thể', side:'east', en:'Khí huyết', st:'suc', T:['Phàm nhân', 'Minh kình', 'Ám kình', 'Hóa kình', 'Bão đan tọa khố', 'Kiến thần bất hoại', 'Thần Lực Thông Huyền', 'Kim Thân Bất Diệt', 'Pháp Tướng Thiên Địa', 'Nhục Thân Thành Thần'], up:{ suc:1, the:1 }, d:'Rèn gân cốt, luyện quyền: sức mạnh nằm trong chính thân thể, không cần phép.' },
     witch: { ic:'🔮', n:'Phù thủy', side:'west', en:'Ma lực', st:'y', T:['Phàm nhân', 'Học đồ', 'Pháp sư', 'Đại ma pháp sư', 'Truyền kỳ pháp sư', 'Chí tôn pháp sư', 'Thánh pháp sư', 'Đại Hiền Giả', 'Bán thần', 'Pháp Thần'], up:{ y:1, tri:1 }, d:'Dùng năng lượng tinh thần điều khiển nguyên tố và lực của các chiều không gian. Cần Tinh thần trên 10.' },
     dau:   { ic:'🛡', n:'Đấu khí', side:'west', en:'Đấu khí', st:'suc', T:['Phàm nhân', 'Đấu sĩ', 'Đại đấu sĩ', 'Đấu tông', 'Đấu tôn', 'Đấu thánh', 'Đấu đế', 'Chiến Vương', 'Chiến Hoàng', 'Chiến Thần'], up:{ suc:1, the:1 }, d:'Hút năng lượng từ chiều không gian đấu khí – cuồng bạo, bùng nổ hơn nội lực. Rèn ở đấu trường và quân đoàn phương Tây.' },
@@ -2993,7 +2993,7 @@
       <div class="gx-pn"><div class="gx-h"><h4>☯ Ba cõi</h4><small class="mono">Chiến Trường Vạn Tộc xuyên qua cả ba</small></div>
         <div class="gx-realms"><div class="pillar">⚔ Chiến Trường<br>Vạn Tộc</div>
           <div class="rz sky"><b>☁ Thiên giới</b><p class="gx-note">Cõi của Thần tộc sơ khai và những người tu luyện tới bất tử. Thiên khí – thánh quang, phép trị liệu – tỏa xuống từ đây.</p></div>
-          <div class="rz mid"><b>🌏 Nhân gian</b><p class="gx-note">Vạn tộc sinh sống: người, thú, tinh linh, phù thủy, dị nhân… Võ giả hút tinh khí đất trời, đấu sĩ kéo năng lượng từ chiều đấu khí, phù thủy dùng tinh thần điều khiển nguyên tố.</p></div>
+          <div class="rz mid"><b>🌏 Nhân gian</b><p class="gx-note">Vạn tộc sinh sống: người, thú, tinh linh, phù thủy, dị nhân… Võ giả hút Địa khí đất trời, đấu sĩ kéo năng lượng từ chiều đấu khí, phù thủy dùng tinh thần điều khiển nguyên tố.</p></div>
           <div class="rz hell"><b>🔥 Địa ngục</b><p class="gx-note">Mười tám tầng chuộc tội của linh hồn và những sinh vật bản địa. Ngục khí – năng lượng tiêu cực, máu tanh – rò lên qua vết nứt không gian và trận pháp của pháp sư.</p></div></div>
         <span class="gx-lab mono">Bốn nguồn khí</span><div class="gx-g2" style="margin-top:4px">${EN.map(([k, n, col]) => `<div class="gx-fac"><i style="background:${col}22;border:1px solid ${col}66">●</i><div><b style="color:${col}">${E(n)}</b><p>${E(EN_D[k])}</p></div></div>`).join('')}</div>
         <p class="gx-note">Cân bằng cả bốn nguồn khí (mỗi loại ≥ 25) mở nhánh ẩn <b style="color:var(--go)">Hỗn Nguyên</b>.</p></div>`;
