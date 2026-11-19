@@ -40,7 +40,7 @@
   const OMEN = [
     ['☄', 'Sao chổi đêm sinh', { tri:1 }, 'Học viện sẽ để ý đến bạn.'], ['🌕', 'Trăng máu đêm sinh', { the:1, y:1 }, 'Máu bạn nóng hơn người thường.'],
     ['🐟', 'Mưa cá giữa trời quang', { van:2 }, 'Điềm may hiếm có.'], ['🌫', 'Sương mù không tan ba ngày', { gen:2 }, 'Cơ thể dễ dung hợp lạ thường.'],
-    ['⚡', 'Sét đánh cây cổ thụ', { the:1, gen:1 }, 'Một mảnh Ấn Mã cháy sém trong thân cây.'], ['🕯', 'Nến tắt hết cùng lúc', { y:2, van:-1 }, 'Điềm gở, nhưng bạn lì hơn số mệnh.'],
+    ['⚡', 'Sét đánh cây cổ thụ', { the:1, gen:1 }, 'Một dòng Thần Văn cháy sém trên thân cây.'], ['🕯', 'Nến tắt hết cùng lúc', { y:2, van:-1 }, 'Điềm gở, nhưng bạn lì hơn số mệnh.'],
     ['🌸', 'Hoa nở trái mùa', { mi:2 }, 'Ai thấy bạn cũng muốn bế.'], ['🦉', 'Cú đậu đầu nôi', { tri:1, van:1 }, 'Người già bảo: đứa bé này nhìn thấu ban đêm.'],
   ];
   const TRAITS = {
@@ -294,7 +294,7 @@
     ['b_void', '🌑', 'Hư Không Thạch', 'Năng lượng', 'Thần', 'Cầm vào thấy bàn tay mình mờ đi.', 'dung', { hac:20 }, 'sk_shadow'],
     ['b_plasma', '⚡', 'Lõi Tinh Thiết', 'Năng lượng', 'Thần', 'Lõi kim loại sao còn ấm, đào từ đáy một hố thiên thạch – tỏa ánh xanh lục.', 'dung', { co:20 }, 'sk_plasma'],
     ['b_storm', '⛈', 'Châu Lôi Vũ', 'Năng lượng', 'Hiếm', 'Viên ngọc chứa cả một cơn giông.', 'dung', { thanh:8, co:8 }, 'sk_storm'],
-    ['b_shard', '📜', 'Mảnh Ấn Mã', 'Năng lượng', 'Thần', 'Một mảnh của Bản Nguyên Thư, chữ trên đó còn chuyển động.', 'dung', { lore:'any' }, 'sk_origin'],
+    ['b_shard', '📜', 'Mảnh Thần Văn', 'Năng lượng', 'Thần', 'Một mảnh đá khắc Thần Văn, chữ trên đó còn chuyển động.', 'dung', { lore:'any' }, 'sk_origin'],
   ];
   const BAOM = Object.fromEntries(BAO.map(b => [b[0], b]));
   const BAO_W = { Thường:10, Hiếm:4, Thần:1 };
@@ -566,8 +566,8 @@
       { t:'Mời thầy lang làng', ok:{ gold:-4, hp:10 }, r:'Thuốc đắng nhưng bạn khỏi bệnh.' },
       { t:'Nhờ bà phù thủy đầu ngõ', ok:{ tri:1, flag:'witch', lore:'L7' }, r:'Bà đọc một câu thần chú lạ. Bạn khỏi bệnh và nhớ luôn câu ấy.' },
       { t:'Cắn răng chịu đựng', chk:['y', 8], ok:{ y:2, gen:1 }, no:{ hp:-15, y:1 }, r:'Bạn tự vượt qua – cơ thể như được viết lại một chút.', rf:'Bạn qua khỏi, nhưng yếu hẳn đi một thời gian.' }] },
-    { id:'c_tale', a:[4, 12], w:3, once:1, t:'Ông lão kể chuyện', d:'Một ông lão bán hạt dẻ kể về thời “những người viết ra sự sống”. Mắt ông vàng như mắt cáo.', c:[
-      { t:'Ngồi nghe đến tối', ok:{ tri:1, lore:'L1', flag:'oldman' }, r:'Bạn nghe về Đại Đứt Gãy. Khi quay lại, ông lão đã biến mất.' },
+    { id:'c_tale', a:[4, 12], w:3, once:1, t:'Ông lão kể chuyện', d:'Một ông lão bán hạt dẻ kể về thuở Đấng Sáng Thế gieo hạt giống sinh mạng. Mắt ông vàng như mắt cáo.', c:[
+      { t:'Ngồi nghe đến tối', ok:{ tri:1, lore:'L1', flag:'oldman' }, r:'Bạn nghe về Đấng Sáng Thế và hạt giống sinh mạng. Khi quay lại, ông lão đã biến mất.' },
       { t:'Xin hạt dẻ rồi chạy', ok:{ van:1 }, r:'Hạt dẻ ngon lạ thường.' }] },
     { id:'c_bully', a:[6, 12], w:3, t:'Bị bắt nạt', d:'Đám trẻ lớn hơn chặn đường, đòi bạn nộp đồ ăn.', c:[
       { t:'Đánh lại', chk:['the', 9], ok:{ the:1, fame:2, bold:2, aff:{ dich:-10 } }, no:{ hp:-10, y:1, aff:{ dich:-5 } }, r:'Bạn thắng, cả xóm kháo nhau.', rf:'Bạn thua, nhưng lì hơn.' },
@@ -707,7 +707,7 @@
     { id:'a_temple', a:[12, 400], w:2, t:'Đền Thiên Quang', d:'Trên đỉnh núi có ngôi đền ngập ánh sáng sao.', c:[
       { t:'Thiền định một mùa', ok:{ thanh:15, y:1, hum:3 }, r:'Bạn hấp thu tinh hoa sao trời.' },
       { t:'Xin một lá bùa bình an', ok:{ hp:10 }, r:'Thấy nhẹ người.' }] },
-    { id:'a_abyss', a:[12, 400], w:2, t:'Vực Hắc Uyên', d:'Một vực sâu thở ra khí đen, có giọng nói hứa hẹn quyền năng.', c:[
+    { id:'a_abyss', a:[12, 400], w:2, t:'Vực Sâu Vô Tận', d:'Một vực sâu thở ra khí đen, có giọng nói hứa hẹn quyền năng.', c:[
       { t:'Hít sâu ma khí', ok:{ hac:15, the:1, hum:-5 }, r:'Bóng của bạn đôi khi tự cử động.' },
       { t:'Lấp vực bằng đá', ok:{ hum:3, fame:3 }, r:'Làng bên yên tâm hơn.' }] },
     { id:'a_codex', a:[25, 400], w:3, if:C => (C.car && C.car.k === 'scholar') || L(C) === 'witch' || C.s.tri >= 13, t:'Giải mã một dòng Thần Văn', d:'Bạn trải bản dập Thần Văn lên bàn. Các ký tự trôi như cá.', c:[
