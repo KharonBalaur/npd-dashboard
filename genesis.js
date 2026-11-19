@@ -146,16 +146,11 @@
   };
   const eraOf = C => (C.segs && C.segs.length ? eraSeg(C)[0] : C.eras && C.eras[Math.min(Math.floor(C.age / 10), C.eras.length - 1)]) || 'peace';
   const WORLD_ERAS = [
-    ['Thượng Cổ Chấp Bút', 'Hội Chấp Bút viết ra vạn vật trong Bản Nguyên Thư. Sinh linh thuần khiết nhưng đứng yên, không tiến hóa.', '#f43f5e'],
-    ['Đại Đứt Gãy', 'Đứa Con Đầu Tiên tự sửa mã của chính mình; cuốn sách vỡ nghìn mảnh, Ấn Mã rơi khắp nhân gian, Hội Chấp Bút biến mất.', '#eab308'],
     ['Kỷ Huyết Nguyệt', 'Hiện tại. Huyết Tộc, Lang Tộc, Phù Thủy, Cương Thi, Ảnh Môn và dị nhân cùng tồn tại; ai cũng có thể dung nhập thú hồn để viết lại số phận.', '#00ff88'],
   ];
   const FACTIONS = [
     ['👑', 'Vương Triều Loài Người', 'Trật tự & chiến tranh', 'Thu thuế, giữ biên giới; dùng dị nhân làm lính đánh thuê nhưng không cho làm quan.', '#00e5ff'],
-    ['⛪', 'Thánh Đường Thuần Huyết', 'Thanh tẩy', 'Truy nã dị nhân để giữ “nhân tính thuần khiết” – nhưng bí mật cất giữ Ấn Mã trong hầm.', '#eab308'],
     ['🐾', 'Liên Minh Vạn Thú', 'Hoang dã', 'Thú tộc và dị nhân tự trị trong rừng sâu; chào đón ai có độ dị hóa cao.', '#00ff88'],
-    ['🔬', 'Học Viện Gen', 'Khoa học', 'Nghiên cứu Ấn Mã, ghép gene thuê; coi dị nhân là mẫu vật quý.', '#a855f7'],
-    ['☣', 'Con Cháu Mầm Dịch', 'Giáo phái', 'Thờ Virus Thượng Cổ, muốn dùng “bút xóa” viết lại thế giới.', '#f43f5e'],
     ['💰', 'Thương Hội Kim Lân', 'Tiền tài', 'Buôn bán mọi thứ – kể cả gene quái vật ở chợ đen.', '#eab308'],
     ['🩸', 'Gia Tộc Valcrest', 'Huyết Tộc Khởi Thủy', 'Năm người con bất tử của Mẫu Thân Veyra; cai trị bóng đêm sau màn nhung.', '#f43f5e'],
     ['🥷', 'Ảnh Môn Núi Sương', 'Sát thủ', 'Nhận trẻ mồ côi, cấy Ảnh Mã; kẻ phản môn bị truy sát đến cùng.', '#94a3b8'],
