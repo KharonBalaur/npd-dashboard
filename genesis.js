@@ -500,7 +500,7 @@
     ['b_dan', '🟡', 'Tử Kim Đan', 'Đan dược', 'Thánh', 'Kim đan luyện chín chín tám mươi mốt ngày – vừa giúp đột phá vừa kéo dài tuổi thọ.', 'nuot', { life:20, hp:20 }, ''],
     ['b_xgene', '🧬', 'Mảnh Gene Thần', 'Gene', 'Thánh', 'Một đoạn gene phát sáng lấy từ xác một vị thần ngã xuống trong Thần chiến.', 'nuot', { mut:8 }, ''],
     ['b_death', '📖', 'Sách Tử Thần', 'Bí kíp', 'Thần', 'Cuốn sách vàng trong lăng vua cát Hoang Mạc Tử Thần: đọc đúng trang thì người chết sống lại – thành xác ướp bất tử.', 'dung', { lore:'L20' }, ''],
-    ['b_godbone', '✴', 'Thần Cốt', 'Thần di vật', 'Thần', 'Một đốt xương vàng của vị thần ngã xuống – chạm vào nghe thấy tiếng sấm. Cần để bước vào Thần cấp.', 'dung', { y:1, thanh:15 }, ''],
+    ['b_godbone', '✴', 'Thần Cốt', 'Thần di vật', 'Thần', 'Một đốt xương vàng của vị thần ngã xuống – chạm vào nghe thấy tiếng sấm. Giúp bước vào Thần cấp.', 'dung', { y:1, thanh:15 }, ''],
   );
   BAO.forEach(b => { BAOM[b[0]] = b; });
   // bảo vật hỗ trợ đột phá theo hệ (+20% tỉ lệ; từ bậc 6 trở lên bắt buộc có bảo vật phẩm Bảo trở lên hợp hệ)
