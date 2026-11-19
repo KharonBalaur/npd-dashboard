@@ -57,7 +57,7 @@ mục **Cần sửa**, không sửa chương cũ ngay.
 - **Thiên Thiết:** kim loại Thiên giới rơi khi vải rách; về sau gọi chung với xương thần là Thần Cốt. **Bão Lôi Chủ**
   (Đông: Lôi Vân Lạc): cơn bão sấm không mưa trôi trên trời từ năm 1, vài chục năm hiện một lần; người bị sét của nó đánh mà sống thì thay đổi.
 - **Đấu khí:** năng lượng của Chiến Giới (pháp sư gọi Nếp Nhàu – nếp gấp bị Lôi Chủ vò nát trong Thần Chiến, nằm sát
-  Nhân gian). Cửa vào = Đấu Hạch sau tim, mở bằng cách bị đẩy tới bờ vực trong trận đánh nhiều lần (không có bí kíp / đan dược).
+  Nhân gian). Cửa vào = Đấu Hạch sau tim, mở bằng cách bị đẩy tới bờ vực trong trận đánh nhiều lần (bí kíp chỉ dạy cách dùng đấu khí, không mở được Đấu Hạch; không có đan dược mở Hạch).
   Nội lực như sông, đấu khí như lửa rừng (mạnh gấp đôi nhưng chỉ giữ được một trận). Hỏa Giáp (từ Đấu tông); cháy mạch.
   Bậc: Đấu sĩ · Đại đấu sĩ · Đấu tông · Đấu tôn · Đấu thánh · Đấu đế (thắp lửa cho người cạnh) · Chiến Vương · Chiến Hoàng · Chiến Thần.
 - **Thành Bang Đồng Thuẫn:** đồi đá phía tây thành Corrath (đồng bằng nam Phương Tây). Không vua; Luật Khiên; khiên gỗ từ khi
