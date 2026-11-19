@@ -2038,10 +2038,10 @@
   }
   function die(cause) { const C = G.life; C.death = cause; C.ph = 'dying'; UI.res = null; save(G); render(); }
   function revive(how) {
-    const C = G.life; if (C.nm < 1) return;
-    C.nm--; C.death = null; C.ending = null;
+    const C = G.life; if (how === 'mummy' ? !C.flags.deathbook : C.nm < 1) return;   // Trang chép Sách Tử Thần không tốn Nghịch Mệnh
+    if (how !== 'mummy') C.nm--; C.death = null; C.ending = null;
     if (how === 'jiang') { C.line = null; apply(C, { line:['jiang', 'corpse'] }, []); C.hp = 60; log(C, 'Tỉnh dậy trong quan tài – thành Cương Thi Tỉnh Trí.'); }
-    else if (how === 'mummy') { C.nm++; C.flags.deathbook = 0; C.line = null; apply(C, { line:['jiang', 'mummy'], lore:'L20' }, []); C.hp = 70; log(C, 'Trang chép Sách Tử Thần tự lật một lần cuối rồi hóa bụi – bạn tỉnh dậy trong lớp băng vải, thành Xác Ướp bất tử.'); }
+    else if (how === 'mummy') { C.flags.deathbook = 0; C.line = null; apply(C, { line:['jiang', 'mummy'], lore:'L20' }, []); C.hp = 70; log(C, 'Trang chép Sách Tử Thần tự lật một lần cuối rồi hóa bụi – bạn tỉnh dậy trong lớp băng vải, thành Xác Ướp bất tử.'); }
     else if (how === 'phoenix') { C.hp = 70; C.flags.reborn = 1; log(C, 'Phượng Hoàng Niết Bàn: tro tàn bùng cháy, bạn sống lại.'); }
     else { C.hp = 35; log(C, 'Nghịch Mệnh: thoát chết trong gang tấc.'); }
     const chips = []; crisis(C, chips, .6); UI.note = chips.length ? { txt:'Cận kề cái chết đánh thức điều gì đó trong bạn.', chips } : null;
