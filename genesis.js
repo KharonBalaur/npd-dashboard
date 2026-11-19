@@ -670,7 +670,7 @@
     { id:'a_wed', a:[20, 45], w:4, once:1, if:C => has(C, 'lover') || C.s.mi >= 8, t:'Lập gia đình', d:'Bạn và người thương quyết định về chung một nhà.', c:[
       { t:'Tổ chức đám cưới', ok:{ spouse:1, hum:8, gold:-10, hp:5 }, r:'Cả làng đến chung vui.' },
       { t:'Chưa sẵn sàng', ok:{ y:1 }, r:'Họ hiểu và chờ.' }] },
-    { id:'a_kid', a:[21, 50], w:4, if:C => C.spouse && C.kids < 4, t:'Đứa con chào đời', d:'Tiếng khóc của một sinh linh mới vang lên trong nhà bạn.', c:[
+    { id:'a_kid', a:[21, 50], w:4, if:C => C.spouse && C.kids < 4 && canKids(C), t:'Đứa con chào đời', d:'Tiếng khóc của một sinh linh mới vang lên trong nhà bạn.', c:[
       { t:'Ôm con vào lòng', ok:{ kids:1, hum:5, gold:-5 }, r:'Bé có đôi mắt giống bạn{kidgene}.' }] },
     { id:'a_job2', a:[22, 70], w:4, if:C => C.car && C.car.k !== 'soldier' && C.car.k !== 'king', t:'Cơ hội thăng tiến', d:'Công việc của bạn đứng trước một bước ngoặt.', c:[
       { t:'Liều một phen', chk:['tri', 11], ok:{ rank:1, gold:30, fame:5 }, no:{ gold:-20 }, r:'Thành công vang dội!', rf:'Thất bại, mất một khoản.' },
@@ -1478,6 +1478,7 @@
       else if (k === 'car') { if (C.car && C.car.k === v) continue; C.car = { k:v, rk:0 }; chips.push(['', `${CAREER[v][0]} ${CAREER[v][1][0]}`]); log(C, `Trở thành ${CAREER[v][1][0]}.`); }
       else if (k === 'rank') { if (C.car) { C.car.rk = Math.min(C.car.rk + v, CAREER[C.car.k][1].length - 1); chips.push(['up', `⬆ ${careerName(C)}`]); log(C, `Thăng lên ${careerName(C)}.`); } }
       else if (k === 'spouse') { C.spouse = npcOk(C, 'tinh') && C.flags.lover ? C.npc.tinh.n : npcName(); chips.push(['up', `💍 Kết duyên với ${C.spouse}`]); log(C, `Kết hôn với ${C.spouse}.`); }
+      else if (k === 'kids' && !canKids(C)) chips.push(['bad', '🩸 Dòng máu Huyết tộc không để lại con nối dõi']);
       else if (k === 'kids') { for (let i = 0; i < v; i++) { C.kids++; const kn = pick(GIVEN); C.kidn.push(kn); (C.kidl = C.kidl || []).push({ n:kn, lk:C.line && Math.random() < .5 ? `${C.line.k}.${C.line.sub}` : '' }); } chips.push(['up', `👶 ${C.kidn[C.kidn.length - 1]} chào đời`]); log(C, `Đón đứa con ${C.kidn[C.kidn.length - 1]}.`); }
       else if (k === 'meet') { if (!C.npc[v] || C.npc[v].st !== 'ok') { C.npc[v] = { n:npcName(), aff:20, st:'ok', role:eff.sudo || '' }; chips.push(['up', `${NPCR[v][0]} ${NPCR[v][1]}: ${C.npc[v].n}`]); log(C, `${NPCR[v][1]}: ${C.npc[v].n}${eff.sudo ? ' (' + eff.sudo + ')' : ''}.`); } }
       else if (k === 'aff') Object.entries(v).forEach(([nk, x]) => { if (!C.npc[nk]) return; C.npc[nk].aff = clamp(C.npc[nk].aff + x, -100, 100); chips.push([x > 0 ? 'up' : 'down', `${NPCR[nk][0]} ${C.npc[nk].n} ${x > 0 ? '+' : '−'}${Math.abs(x)}`]); })
@@ -1646,6 +1647,9 @@
   }
   // các dòng máu đang mang: chính + dung hợp (Vạn Huyết Quả mở 5 ô)
   const blSubs = C => [C.line ? `${C.line.k}.${C.line.sub}` : '', ...(C.bl || [])].filter(Boolean);
+  // Huyết tộc (mọi nhánh vamp.*) không sinh con được (c06); ngoại lệ: có thêm huyết mạch Dị nhân từ cấp Alpha (bậc 6) trở lên (c02, c22)
+  const isVampire = C => blSubs(C).some(s => s.startsWith('vamp.')) || tierOf(C, 'vampE') >= 0 || tierOf(C, 'vampM') >= 0;
+  const canKids = C => !isVampire(C) || tierOf(C, 'mutant') >= 6;
   const blCap = C => (C.fruit > 0 ? 5 : 0) + (C.flags.fuse ? 1 : 0);
   const chimAdd = id => { if (G && G.chim && !G.chim.includes(id)) { G.chim.push(id); if (G.chim.length > 60) G.chim.shift(); } };
   // tốc độ tu luyện: % thanh / năm khổ luyện (chỉ số chính + Trí tuệ, thiên phú, thời thế, tài nguyên gia tộc)
@@ -1956,7 +1960,7 @@
       if (mp) { addXp(C, mp, days / 365 * (isAnimal(C) ? 1.2 : 1), chips); pathsOf(C).forEach(([k2]) => { if (k2 !== mp) addXp(C, k2, days / 365 * .25, chips, true); }); }
       if (C.line) { const d = LINE[C.line.k].sub[C.line.sub]; const e = Object.keys(d[4])[0]; apply(C, { [e]:Math.round(2 + 5 * f) }, chips); } inc('y', .25); }
     else if (k === 'hunt') { inc('suc', .5); inc('the', .3); const r = Math.random(); if (r < .2) apply(C, { hp:-rnd(6, 16) }, chips); else apply(C, { hp:rnd(4, 10) }, chips); if (Math.random() < .12) apply(C, { gene:'beast' }, chips); if (Math.random() < .06) apply(C, { bao:pick(['b_herb', 'b_lingzhi', 'b_core', 'b_beast']) }, chips); addXp(C, 'beast', days / 365 * .4, chips, true); }
-    else if (k === 'family') { if (C.spouse && C.kids < 8 && Math.random() < .35 * Math.min(1, days / 200)) apply(C, { kids:1 }, chips); apply(C, { hum:3, hp:4 }, chips); if (npcOk(C, 'tinh')) apply(C, { aff:{ tinh:5 } }, chips); C.fame = clamp(C.fame + 1, 0, 100); }
+    else if (k === 'family') { if (C.spouse && C.kids < 8 && canKids(C) && Math.random() < .35 * Math.min(1, days / 200)) apply(C, { kids:1 }, chips); apply(C, { hum:3, hp:4 }, chips); if (npcOk(C, 'tinh')) apply(C, { aff:{ tinh:5 } }, chips); C.fame = clamp(C.fame + 1, 0, 100); }
     else if (k === 'rest') apply(C, { hp:Math.round(8 + 10 * f), hum:2 }, chips);
     else if (k === 'scheme') { const r = Math.random() - (carRk(C, 'thief') >= 3 ? .3 : 0); apply(C, r < .45 ? { gold:rnd(15, 45), good:-3, chaos:2 } : r < .75 ? { want:8, good:-3 } : { bold:5, lore:'any' }, chips); }
     if (C.line && C.line.k === 'shin') apply(C, { hp:3 }, chips);                    // Ảnh Mã: hồi phục nhanh
@@ -3171,6 +3175,6 @@
   window.GenesisGame = {
     mount(el) { root = el; const bx = el.closest('#fnBox'); if (bx) bx.classList.add('gx-wide'); ensureCss(); G = load(); render(); },
     summary() { const g = load(); return g.life ? `${g.life.n} · ${g.life.age} tuổi` : g.books.length ? `${g.books.length} cuốn sách · ${g.lives} kiếp` : 'Chưa bắt đầu'; },
-    debug: () => ({ G:load(), UI, EV, LORE, avatar, avatarAdult, avatarKid, avatarBeast, eligible, SKILLS, skillsOf, BAO, geneCap, skillCap, fusedOf, eraOf, PATHS, btInfo, btReady, maxTier, mainPath, BD, WEALTH, FATE, upgrade, pathRate }),
+    debug: () => ({ G:load(), UI, EV, LORE, apply, canKids, avatar, avatarAdult, avatarKid, avatarBeast, eligible, SKILLS, skillsOf, BAO, geneCap, skillCap, fusedOf, eraOf, PATHS, btInfo, btReady, maxTier, mainPath, BD, WEALTH, FATE, upgrade, pathRate }),
   };
 })();
