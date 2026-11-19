@@ -26,7 +26,7 @@
    đang chém giết nhau" (dòng 19). Nay hắn bị trói vào ngày cuối Đại Chiến, mà theo c16 ngày cuối chính là ngày vải rách, nên
    không còn chỗ cho ba trăm năm cai trị. Hướng gợi ý (chưa làm): (a) Malgrath leo lên qua một vết nứt nhỏ xuất hiện từ sớm,
    trước ngày rách lớn; hoặc (b) bỏ "ba trăm năm", hắn cai trị trong những năm Đại Chiến; hoặc (c) đổi câu trói thành "ba trăm năm sau Đại Chiến".
-11. **c05 ↔ c21 – ĐÃ KIỂM TRA (c05 dòng 17–29, 63–69), chưa sửa:**
+11. **ĐÃ SỬA (a, b, c, e; d không cần) – c05 ↔ c21 – ĐÃ KIỂM TRA (c05 dòng 17–29, 63–69), chưa sửa:**
     - (a) Hồ sơ chính thức: c05 ghi Học Viện gọi đêm mở lồng là "sự cố kỹ thuật"; c21 nói hồ sơ niêm phong có 2 manh mối.
       Không lệch (một bên là lời công bố, một bên là hồ sơ mật); c21 có thể thêm một câu nhắc chữ "sự cố kỹ thuật".
     - (b) Ai mở lồng: c05 có lời đồn một Huyết tộc dòng Valcrest đột nhập, Valcrest không xác nhận cũng không phủ nhận; c21
