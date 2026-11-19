@@ -2929,7 +2929,7 @@
         ${[...new Set(BAO.map(b => b[3]))].map(kd => `<span class="gx-lab mono">${kd}</span><div class="gx-sks">${BAO.filter(b => b[3] === kd).map(b => `<div class="gx-sk"><div class="hd"><span class="ic">${b[1]}</span><div style="flex:1;min-width:0"><h5>${E(b[2])}</h5><div class="meta">${b[6] === 'nuot' ? 'Nuốt' : 'Dung hợp'}${b[8] ? ` → ${E(SKM[b[8]][2])}` : ''}</div></div><span class="gx-gr" style="color:${GCOL[b[4]]};border-color:${GCOL[b[4]]}66">${E(b[4])}</span></div><p>${E(b[5])}</p>${BT[b[0]] ? `<p class="gx-note">🏯 Hỗ trợ đột phá: ${BT[b[0]].length > 8 ? 'mọi hệ' : BT[b[0]].map(k => E(PATHS[k].n)).join(', ')}</p>` : ''}</div>`).join('')}</div>`).join('')}</div>`;
   }
   // Huyết Sử đầy đủ (chương dài + nhân vật truyền kỳ) nằm ở genesis-lore.js – chỉ tải khi mở tab Thế Giới
-  const LORE_V = '20261117a';
+  const LORE_V = '20261119a';
   let loreLoading = false;
   function loadLore() {
     if (window.GX_LORE || loreLoading) return; loreLoading = true; UI.loreErr = 0;
