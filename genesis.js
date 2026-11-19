@@ -169,10 +169,10 @@
     ['sk_dash', '💨', 'Phong Tốc', 'Hoang Dã', 'R', C => has_(C, 'g_cheetah'), 'Chân Báo Phong', ['escape', 'fight'], 'Bạn lao đi nhanh như một vệt gió.', { van:1 }],
     ['sk_fox', '🦊', 'Mị Hoặc Hồ Ly', 'Hoang Dã', 'SR', C => has_(C, 'g_fox'), 'Hồn Hồ Ly', ['social', 'love', 'trade'], 'Một cái liếc mắt, đuôi cáo khẽ vẫy – ai cũng mềm lòng.', { mi:1 }],
     ['sk_owl', '🦉', 'Dạ Nhãn', 'Hoang Dã', 'R', C => has_(C, 'g_owl'), 'Mắt Cú Đêm', ['mystery', 'explore', 'stealth'], 'Trong bóng tối, mắt bạn thấy rõ mọi đường đi.', { tri:1 }],
-    ['sk_iron', '🦾', 'Thiết Quyền', 'Cơ Giới', 'SR', C => has_(C, 'g_meteor'), 'Tay Thiên Thạch', ['fight', 'work', 'danger'], 'Nắm đấm kim loại giáng xuống – “KENG!”', { the:1 }],
-    ['sk_scan', '🔍', 'Quét Dung Sai', 'Cơ Giới', 'R', C => has_(C, 'g_gear'), 'Mắt Kim Tinh', ['mystery', 'work', 'trade'], 'Con ngươi kim loại sao xoay tít, đo ra mọi sai lệch trong 0,01 mm.', { tri:1 }],
-    ['sk_plasma', '⚡', 'Phóng Plasma', 'Cơ Giới', 'SSR', C => has_(C, 'g_corep') || C.en.co >= 60, 'Hạch Tinh Thiết hoặc Tinh khí ≥ 60', ['fight', 'danger'], 'Tia plasma xanh lục quét ngang, mọi thứ cháy xém.', { co:5 }],
-    ['sk_shell', '🛡', 'Giáp Mai Băng', 'Cơ Giới', 'R', C => has_(C, 'g_shell'), 'Mai Rùa Băng', ['fight', 'danger'], 'Bạn thụt vào mai băng – đòn đánh trượt đi vô hại.', { hp:5 }],
+    ['sk_iron', '🦾', 'Thiết Quyền', 'Tinh Thiết', 'SR', C => has_(C, 'g_meteor'), 'Tay Thiên Thạch', ['fight', 'work', 'danger'], 'Nắm đấm kim loại giáng xuống – “KENG!”', { the:1 }],
+    ['sk_scan', '🔍', 'Quét Dung Sai', 'Tinh Thiết', 'R', C => has_(C, 'g_gear'), 'Mắt Kim Tinh', ['mystery', 'work', 'trade'], 'Con ngươi kim loại sao xoay tít, đo ra mọi sai lệch trong 0,01 mm.', { tri:1 }],
+    ['sk_plasma', '⚡', 'Phóng Tinh Quang', 'Tinh Thiết', 'SSR', C => has_(C, 'g_corep') || C.en.co >= 60, 'Hạch Tinh Thiết hoặc Tinh khí ≥ 60', ['fight', 'danger'], 'Tia sáng xanh lục từ kim loại sao quét ngang, mọi thứ cháy xém.', { co:5 }],
+    ['sk_shell', '🛡', 'Giáp Mai Băng', 'Tinh Thiết', 'R', C => has_(C, 'g_shell'), 'Mai Rùa Băng', ['fight', 'danger'], 'Bạn thụt vào mai băng – đòn đánh trượt đi vô hại.', { hp:5 }],
     ['sk_heal', '✨', 'Thánh Quang Tịnh Hóa', 'Thần Thánh', 'SSR', C => C.en.thanh >= 40 || has_(C, 'g_coreh') || has_(C, 'g_phoenix'), 'Thiên khí ≥ 40, Hạch Thánh Quang hoặc Lông Phượng', ['heal', 'plague', 'danger'], 'Ánh sáng vàng ấm lan ra, vết thương liền miệng.', { hp:10, good:5 }],
     ['sk_halo', '🌟', 'Thiên Khải', 'Thần Thánh', 'R', C => has_(C, 'g_star'), 'Vầng Tinh Quang', ['mystery', 'social'], 'Vầng sáng trên đầu bạn rực lên – mọi người im lặng lắng nghe.', { fame:3 }],
     ['sk_seal', '📜', 'Phong Ấn Phù', 'Thần Thánh', 'SR', C => lk_(C) === 'witch' || (C.line && C.line.sub === 'dao') || has_(C, 'g_deer'), 'Phù Thủy, Đạo Sĩ hoặc Sừng Linh Lộc', ['undead', 'mystery', 'danger'], 'Lá bùa vàng dán đúng chỗ – tà khí đứng im.', { thanh:5 }],
@@ -1526,7 +1526,7 @@
   }
 
   // ---------- v3: ô gene (lấy hay bỏ), dị năng thức tỉnh qua biến cố / bảo vật, túi bảo vật ----------
-  // thú hồn tự kết được, giới hạn theo Tương thích gen; gene khác loài (cơ giới, hạt nhân, tinh tú) phải ăn Vạn Huyết Quả mới ghép
+  // thú hồn tự kết được, giới hạn theo Tương thích gen; gene khác loài (kim loại sao, hạt nhân, tinh tú) phải ăn Vạn Huyết Quả mới ghép
   const FUSE_ONLY = ['g_meteor', 'g_gear', 'g_star', 'g_corep', 'g_coreh', 'g_corev'];
   const PHYS = ['back', 'shell', 'legs', 'legs2', 'tail', 'blade', 'arm'], MIND = ['eyes', 'core', 'halo', 'aura'];
   const innateOf = C => C.innate || [];
@@ -2895,7 +2895,7 @@
     return `<div class="gx-dna"><div class="gx-pn"><div class="gx-h"><h4>🔬 Các vị trí dung nhập cơ thể</h4><span class="gx-luck ${C.mut >= 60 ? 'lo' : C.mut >= 30 ? 'md' : 'hi'} mono">Ổn định gene ${100 - C.mut}%</span></div>
       <div class="gx-dk" style="margin-bottom:10px"><b style="color:#fff">🧬 Ô gene: ${fusedOf(C).length}/${geneCap(C)}</b>
         <p class="gx-note" style="margin:4px 0 0">= 1 + Thể chất ÷ 8 (${Math.floor(C.s.the / 8)})${C.tr.includes('empty') ? ' + 1 Phế Thể' : ''}${carRk(C, 'scholar') >= 2 ? ' + 1 phòng thí nghiệm' : ''}${C.fruit ? ' + <b style="color:var(--gr)">5 Vạn Huyết Quả</b>' : ''}.
-        Gene có cánh, đuôi, mai, chi cần đủ <b>Thể chất</b>; mắt, hạt nhân, hào quang cần đủ <b>Trí tuệ</b>. ${C.fruit ? 'Đã ăn Vạn Huyết Quả: ghép được gene mọi chủng tộc và dung hợp thêm một huyết mạch.' : 'Gene khác loài (cơ giới, hạt nhân, tinh tú) và dung hợp huyết mạch cần <b style="color:var(--go)">Vạn Huyết Quả</b> – chỉ mọc ở Chiến Trường Vạn Tộc.'}</p></div>
+        Gene có cánh, đuôi, mai, chi cần đủ <b>Thể chất</b>; mắt, hạt nhân, hào quang cần đủ <b>Trí tuệ</b>. ${C.fruit ? 'Đã ăn Vạn Huyết Quả: ghép được gene mọi chủng tộc và dung hợp thêm một huyết mạch.' : 'Gene khác loài (kim loại sao, hạt nhân, tinh tú) và dung hợp huyết mạch cần <b style="color:var(--go)">Vạn Huyết Quả</b> – chỉ mọc ở Chiến Trường Vạn Tộc.'}</p></div>
       <div class="gx-dk" style="margin-bottom:10px"><b style="color:#fff">🩸 Huyết mạch: ${C.line ? E(LINE[C.line.k].sub[C.line.sub][0]) : 'chưa có'} · dung hợp ${(C.bl || []).length}/${blCap(C)}</b>
         <p class="gx-note" style="margin:4px 0 0">${(C.bl || []).length ? (C.bl || []).map(x => { const [a, b] = x.split('.'); return LINE[a] && LINE[a].sub[b] ? E(LINE[a].sub[b][0]) : ''; }).join(' · ') + '. ' : ''}Không có Vạn Huyết Quả chỉ mang được 1 dòng máu gốc; ăn Vạn Huyết Quả mở 5 ô dung hợp mọi tộc. Đủ 5 nhánh Huyết tộc → Đại Đế Ma Cà Rồng; đủ 3 nhánh Lang tộc → Chung Cực Lang Vương. Xem thêm Chimera Chí Thư trong Thư Viện.</p></div>
       <div class="gx-slots">${SLOT.filter(x => bySlot[x[0]]).map(([k, ic, n]) => { const g = bySlot[k], inn = innateOf(C).includes(g); return `<div class="gx-slot" style="border-color:${inn ? 'rgba(234,179,8,.35)' : 'rgba(0,229,255,.3)'}"><i>${ic}</i><div class="t"><small class="mono">${n}${inn ? ' · bẩm sinh' : ''}</small><b>${E(GENE[g][0])}</b><span class="gx-note" style="margin:0;display:block">${E(GENE[g][5])}</span></div>
