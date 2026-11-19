@@ -128,7 +128,7 @@
 - Ràng buộc: xác ướp ≠ cương thi (xác ướp còn hồn, cương thi là xác không hồn); người chết cạnh Sách Tử Thần có thể tự thành xác ướp (khớp sự kiện hồi sinh trong game); Sổ Tội trang Khetemu ghi "Chưa đến".
 
 ### c21 · L21 Phòng Thí Nghiệm Hổ (810 – nay)
-- Mốc: 810 Odile Varn lập Học Viện Gen; 991 Crowe làm viện trưởng (làng ở biên giới bắc bị Moonborn tràn qua năm ông 9 tuổi, mẹ chết); 999 lệnh vua tạo lính chống Huyết tộc / Lang tộc → chọn hổ (gene hiền nhất với người, hổ mua từ rừng phía đông); 6 lần thử thất bại; 9/10/1006 lần 7; 1/12/1006 cửa lồng mở; 1007 niêm phong, Crowe biến mất.
+- Mốc: 810 Odile Varn lập Học Viện Gen; 991 Crowe làm viện trưởng (làng ở biên giới bắc bị Moonborn tràn qua năm ông 9 tuổi, mẹ chết); 999 lệnh vua tạo lính chống Huyết tộc / Lang tộc → chọn hổ (gene heo hiền nhất với người nhưng không cho sức chiến đấu; gene thú dữ nguy hiểm vì thú tính nhưng dung hợp thành công thì mạnh vượt trội; hổ mua từ rừng phía đông); 6 lần thử thất bại; 9/10/1006 lần 7; 1/12/1006 cửa lồng mở; 1007 niêm phong, Crowe biến mất.
 - Nhân vật: Odile Varn; Halden Crowe; phụ tá Aldous Penn (lấy máu sói hôm 8/10 rồi dùng lại kim; vớt 2 con dơi chết trong bình huyết thanh, không báo; nghỉ về quê 3 ngày trước đêm mở lồng, không trở lại); Sable, Garr (như c05).
 - Nguồn nhiễm: con sói "dại" giam ở tầng 6 thật ra mang Lang Dịch; bầy dơi trong ống thông gió từng hút máu một Huyết nô giam ở tầng 6.
 - Ràng buộc (bí ẩn để ngỏ): cửa lồng mở bằng chìa khóa chính (3 người giữ, cả 3 có chứng cứ ngoại phạm); trang sổ trực đêm 1/12 bị xé, người gác không nhớ gì sau nửa đêm. Không nói ai mở.
