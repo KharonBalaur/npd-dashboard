@@ -134,6 +134,10 @@ Ngôn ngữ giao diện: tiếng Anh / tiếng Việt; trao đổi với chủ d
   cả npdFun; C.log giữ 70 dòng). Đời đang dở từ bản cũ: upgrade(C) chỉ thêm trường (al, npc, segs, deeds, kidn, innate, sk = dị năng
   đang đủ điều kiện, inv, offers, fruit, days, since, gap), không đổi id sự kiện cũ.
   Nội dung tự viết, chỉ lấy cảm hứng mô-típ dân gian / thể loại (không dùng tên riêng / nhân vật của tác phẩm có bản quyền).
+- Huyết Sử (sách lore của game): chương nguồn `genesis-lore-src/cNN.txt` (c01–c22) + `story/`:
+  `continuity.md` (thuật ngữ cố định + dòng thời gian), `chapters-summary.md` (tóm tắt từng chương), `review.md` ("Cần sửa" +
+  "Canon mới chờ duyệt"). Mỗi phiên viết CHỈ đọc `story/continuity.md` (+ đề cương chương đang viết), không đọc lại chương cũ;
+  mâu thuẫn ghi vào `review.md`, chưa sửa chương cũ khi chủ dự án chưa duyệt.
 - Điện thoại (≤ 760 px, ưu tiên iPhone 15 Plus 430 × 932): menu #nav thành thanh tab cố định dưới đáy (body chừa
   60px + safe-area), viewport-fit=cover + env(safe-area-inset-*) cho tai thỏ / thanh Home, ô nhập 16px (iOS không tự
   phóng to), nút trong trang ≥ 40px. Khối CSS cuối thẻ <style> ("Điện thoại (ưu tiên iPhone 15 Plus…)").
