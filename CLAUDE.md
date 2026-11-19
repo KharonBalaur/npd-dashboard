@@ -15,194 +15,26 @@ Ngôn ngữ giao diện: tiếng Anh / tiếng Việt; trao đổi với chủ d
 - `JLTN_WEBSITE.html` – app chính (1 file, JS thuần). Trang: home, lib (Training), eng, zh, tool, cave, fun (Relax); showTab(t).
   Biến toàn cục: S (dữ liệu chung: links, address, library, study, history), tabNow. Thẻ `<script id="board-data">`
   PHẢI luôn rỗng: {"version":1,"projects":[],"history":[]}
-  - Training (Tàng Kinh Các): lộ trình = `realms.js` (window.REALMS: 14 cảnh giới + Vị Tế, 3 giới Nhân / Linh / Tiên,
-    mỗi cảnh giới {id, order, name, gioi, hex, que, meaning, icon, gate?, topics:[{id, name, short, P?, Q?}]}).
-    Bài cũ (LIB_CUR, 20 bí kíp) gắn vào bí kíp mới qua LIB_OLD2NEW (Kanban + JIT → jit-kanban); topicOf(id) = nội dung.
-    Bí kíp chưa có P lẫn Q = "Đang biên soạn": không chặn tiểu cảnh giới, không tính là đã đạt. Không còn bài thực hành.
-    Bí kíp đạt = đọc hết trang + qua quiz (5 câu, phải đúng hết; sai 1 câu = tẩu hỏa, fails++, thi lại từ đầu với đề mới).
-    Trang cuối có nút "Thi quiz ngay". Qua trang: libScrollRead đưa bài đọc lên dưới thanh tiêu đề (không nhảy về đầu web).
-    Tiểu cảnh giới (realmState, libLvOf theo số bí kíp đạt d / n): Sơ kỳ ≥ 1 · Trung kỳ > n/3 · Hậu kỳ > 2n/3 ·
-    Đại Viên Mãn = đạt hết → đột phá. Đã đọc hết bài cũ (T.P0) hoặc đã qua quiz cũng tính là đã đọc.
-    Bài đọc (viết lại dễ hiểu, ~5 trang: Hiểu nhanh → Vì sao → Từng bước → Ví dụ số liệu → Lỗi hay gặp & nhớ nhanh):
-    `lessons-nhan-gioi.js`, `lessons-linh-gioi.js`, `lessons-tien-gioi.js` (window.LESSONS {idBíKíp: {P, terms:[[EN, VI, 中文]],
-    src:[[tên, link https]], Q?}}) – đủ 50 bí kíp. topicOf: có LESSONS.P → bài mới + trang "Thực tế TTI" (LIB_TTI, libTtiP) +
-    trang "Thuật ngữ & nguồn" (dòng "@ tên | link" = link nguồn); chưa có → bài cũ LIB_CUR. Chỗ chưa chắc ghi [CẦN KIỂM TRA].
-    Câu hỏi: `quiz-bank.js` (window.QUIZ_BANK {idBíKíp: [[câu, [đúng, sai, sai, sai], 0, giải thích]]}) cộng với Q cũ.
-    Túi càn khôn (libBagHtml): L.stones linh thạch (lần thi đầu của mỗi bài – L.qa[key] / libTried, theo cả log cũ – mỗi câu
-    đúng +10), L.pills Tẩy Tủy Đan (qua ngay lần đầu +1), L.lc linh căn 0–8 (LIB_LC: Phế → Ngụy → Tạp → Song → Địa → Thiên →
-    Lôi (Biến Dị) → Thánh → Hỗn Độn; giá LIB_LC_COST 1, 2, 4, 8, 16, 8, 6, 5 = tổng 50 trên tối đa 52 đan (50 bí kíp + 2 cửa ải);
-    3 bậc trên Thiên còn xét tư chất libLcCheck: tẩu hỏa mọi kiếp ≤ 8 / 4 / 2 và tỉ lệ sai ≤ 15 / 8 / 3 % (cần ≥ 30 câu));
-    bảng mô tả linh căn (libLcTable, nút "📜 Bảng linh căn").
-    Trợ giúp khi thi (LIB_HELP, libHelp, trừ linh thạch, mỗi loại 1 lần / câu): Chưởng môn 100 = chỉ đáp án đúng; Trưởng lão 50
-    = câu lý thuyết chỉ đúng, câu tính toán (Q là hàm sinh số) đúng / sai 50-50; Sư huynh / sư tỷ 10 = gạch 2 đáp án sai.
-    Bù thưởng 1 lần (libBackPay, cờ L.rw0 {at, stones, pills, n, seen}): bài đã vượt trước khi có thưởng (done / seen / quiz đạt,
-    cửa ải, tái chứng nhận; không có trong L.qa) → +10 linh thạch / câu đúng (quiz cũ có ok thì dùng, không thì 5 câu / 8 câu cửa ải)
-    + 1 đan nếu lần thi đầu trong log là đạt (không có log = đạt). Thông báo trong túi càn khôn, bấm ✕ (libRw0) để ẩn.
-    Ôn tập (bí kíp đã đạt, Chiêm nghiệm) không thưởng, không trợ giúp, không ghi tiến độ. Binh Giải giữ túi càn khôn và L.qa.
-    Đột phá: libAdvance → BreakthroughFX.play(id, {icon, verse: lời chúc LIB_WISH của cảnh giới}) (breakthrough-fx.js, không sửa). Cửa ải: gate "binh-canh" (Kết Đan)
-    và "thien-kiep" (Độ Kiếp, phi thăng) = thi 10 câu trộn bí kíp của giới, cần 8. Vị Tế: tái chứng nhận hằng năm.
-    Tiến độ npdLib v3 {v:3, rid (id cảnh giới), ord, read:{bí kíp:[pageKey]}, quiz, done:{bí kíp:ngày đạt}, seen, fails, log,
-    gates, pass, mig, recert, books, lives, past, since, old, prev, v1, wrong, answered, stones, pills, lc, qa, spent, rw0, nb}; libUpgrade nâng v1 → v2 (libMigrate) → v3.
-    Nút "☯ Binh Giải" (libRebirth): tu luyện lại từ Phàm Nhân, kiếp cũ ghi vào past, bí kíp đã đạt vào seen, bài nộp cũ
-    (L.old) không tính nữa. Nút "🪷 Chiêm nghiệm nhân sinh" (libMuse): đọc lại / ôn quiz kiến thức đã qua, không ghi tiến độ.
-    Phong Thần Bảng (tab "rank", renderRank): bảng tu vi (cảnh giới → bí kíp đạt → ít tẩu hỏa) + bảng tư chất
-    (linh căn lc → điểm = 8 × fails + % câu sai; danh hiệu = linh căn, lời phê trêu vui LIB_TC, huy hiệu libBadges).
-    Tab "Duyệt" / bài thực hành đã bỏ (action practice / review và tab "Tu luyện" vẫn còn trong Code.gs, trang không dùng).
-    Sổ tay (tab "📓 Sổ tay QC", libMode "note", `notebook.js` → window.renderNote): sổ ghi chép cho người mới – Thống kê cơ bản,
-    7 công cụ QC (phiếu kiểm tra, Pareto, xương cá, histogram, phân tán, phân tầng, biểu đồ kiểm soát p), SPC X̄–R, Cp · Cpk,
-    Pp · Ppk, Gage R&R, bảng tra cứu. Mỗi chương tự đủ dữ liệu riêng, công thức giải thích từng ký hiệu (fx), ví dụ tính từng
-    bước bằng code, hướng dẫn vẽ biểu đồ (giấy + Excel), bài tập đề ngẫu nhiên (số / số nguyên / chọn) tự chấm + lời giải;
-    làm đúng ghi npdLib.nb {chương: ngày}. Mục lục thu gọn (thanh biểu tượng) / mở, nhớ ở localStorage npdNbToc. Nút data-nb.
-    Thư viện (S.library, tab "Thư viện" của Sheet, sửa trên web: renderBooks / bookAct; mdLite, quizOf)
-    + bài có sẵn `library-builtin.js` (window.LIB_BUILTIN, cờ builtin): libAll() = Sheet + bài có sẵn chưa có id trong Sheet;
-    bài có sẵn không xóa được, bấm Sửa = lưu bản sửa vào Sheet (cùng id, thay bản có sẵn). Chỉ đưa nội dung tự viết / tóm tắt
-    sách công khai vào file này; tài liệu nội bộ (quy trình, đào tạo TTI…) nhập vào Sheet bằng CSV, không vào repo.
-  - Cave: hồ sơ / CV (cave(): profile, skills, exp, edu, cert, lang, proj), việc cần làm, lời nhắc. cavePdf: CV chuẩn
-    Harvard (1 cột, serif đen trắng; bỏ mục / dòng trống; tiêu đề EN hoặc VI theo nội dung; tự co 82–112% cho vừa trang).
-  - Tools: danh sách bên trái (tìm kiếm, phím /) + vùng làm việc; TOOLS / TOOL_RUN; link thẳng #tool/<key> (toolHash).
-    Đang mở 1 công cụ (máy tính): danh sách thu thành thanh biểu tượng 68px (.tl-app.rail, nút » / «, nhớ ở localStorage npdToolRail).
-    Ô nhập / nút / tab dạng segmented dùng chung CSS "#tool .tl-main …".
-    Cpk và Gage R&R có nút "Xuất báo cáo PDF" (tlReport: A4, thông tin rp_* tùy chọn, kết quả, biểu đồ SVG, số liệu, phương pháp, ô ký).
-    Nhóm "a" (Riêng Admin) chỉ hiện khi Quyền thuộc TL_ADMIN (= ADMIN_ROLES của Code.gs): toolsVis() lọc TOOLS; #tool/<key> của
-    người khác bị bỏ qua. Chỉ là ẩn giao diện – quyền thật kiểm tra ở Apps Script.
-    "Luyện Phỏng Vấn" (key iv, `interview.js` → window.IVTool.html(), nút data-iv, CSS #iv-css tông sáng chàm / ngọc / cam) – chỉ
-    HIỂN THỊ để học thuộc (chủ dự án không cần thu âm / luyện nói): 📖 Học thuộc (mặc định; cfg.view "one" từng câu – ← / → hoặc
-    Trước / Tiếp, mở = đã xem read[id] – hoặc "all" cả danh sách 20 câu / lần; cfg.hide 0 tô sáng từ khóa kw, 1 che từ khóa thành ô
-    bấm để hiện, 2 che đáp án (mờ) + gợi ý hook / kw; nút "Đã thuộc" = box ≥ 4), ôn thẻ Leitner (ô 1–5, ôn lại sau 1 / 2 / 4 / 7 / 15
-    ngày, ô ≥ 4 = đã thuộc, Space lật, phím 1 / 2 / 3), thư viện (lọc nguồn / nhóm / mức / sao, ghi chú, Admin thêm / sửa / xóa câu),
-    kiến thức, từ vựng (+ kiểm tra 10 từ, 🔊 máy đọc phát âm), khung & mẹo, Dữ liệu (kéo thả / chọn file .json → iv_save theo lô
-    60 dòng, tải bản sao lưu). Sheet chưa có câu nào → chỉ hiện hướng dẫn nạp 3 bước.
-    NỘI DUNG (câu trả lời theo CV) KHÔNG ở repo: tab "Phỏng vấn" của Sheet. File .json do Claude dựng từ tài liệu Word:
-    {v, groups[{id, n, src}], cats[[id, icon, tên]], q[{id, src, g, lv 1–3, en, vi, ans[], key, hook, voc[[en, vi]], tip, kw[], short (số ý
-    bản 30 giây), rel[], k[]}], k[{id, cat, n, en, what, why, how[], ex, pit[], kw[], qs[]}], voc[[en, vi, nhóm, [id câu]]], fw, std, tips{use, prep}}.
-    Dòng Sheet: meta:groups, meta:extra (fw / std / tips), meta:voc:N (120 từ / dòng), q (id câu), k (id thẻ).
-    Tiến độ npdIv@user {v:1, box, due (số ngày), seen, read:{id:ngày xem}, star[], notes, log:{ngày:số lượt}, cfg:{newDay, view, hide}}
-    (sp / cfg.sec của bản có luyện nói: giữ nguyên, không dùng).
-    "Chuỗi Dung Sai" (key stack) = trang riêng `tools/stackup.html` (QE Tolerance Stackup & Vector Chain Analyzer, JS thuần + Canvas 2D)
-    nhúng bằng iframe .tl-fr (?embed=1&k=uKey("npdStack")); trang con gửi chiều cao qua postMessage {stackH}. Chuỗi kích thước
-    {id, part, desc, nom, up, lo (có dấu), type plane / cyl / sph, hole, dia, dUp, dLo, dir ±1, on, bal} lưu localStorage theo khóa k
-    (clean() kiểm tra dữ liệu, chỉ thêm trường). Bề mặt tròn: thêm vector Ø/2 (trục / cầu −, lỗ +). Worst-Case, RSS (σ = √Σ(T/3)²,
-    Cpk, PPM), Monte Carlo 50 000 mẫu, Pareto % đóng góp (theo kích thước / Part). Bố cục: thanh kết quả (màu PASS / FAIL + KPI)
-    → thanh thiết lập → [danh sách kích thước thu gọn, bấm dòng để mở (openId) | khung tab: Vector Loop, Tiếp xúc tròn – phẳng,
-    Pareto & so sánh, Bản vẽ, 3D]. Nhiều bản vẽ (DWS, tối đa 8, mỗi bản gán 1 Part, xem 1 bản / so sánh cạnh nhau, pan-zoom riêng;
-    ảnh hoặc PDF qua pdf.js 3.11.174 cdnjs; chỉ giữ trong phiên), bóng số d.bal {x, y, pg, dw: tên file}. Tab 3D: Three.js r128
-    (cdnjs, tải khi mở tab) dựng từ chuỗi kích thước – hàng trên vector +, hàng dưới vector −, trụ / cầu theo Ø, khe hở / cấn tô
-    màu, bản vẽ của Part treo trên khối của Part (không đọc hình học từ ảnh bản vẽ). Export PDF = window.print() với #report
-    (kèm ảnh 3D + mọi bản vẽ), Lưu / Mở .json. window.stackDebug cho test.
-  - English / 中文: khung iframe tới study/*.html; window.npdStudy {load, save, extra, user} nối tiến độ theo tài khoản.
-- `fun.js` – Tiêu Dao Các (tab "fun", nút Relax): trò chơi nhỏ tự thiết kế (Soi Lỗi, Phản Xạ, Luyện Đan, Tính Nhẩm),
-  Tĩnh Tâm (thở hộp 4-4-4-4), Gieo Quẻ 5 Phút (việc nhỏ / câu đố / chuyện cười QE). window.renderFun, funStop (rời tab dừng
-  đồng hồ). Nút dùng data-f (không qua data-x). Kỷ lục: npdFun {best:{spot, react, memo, math}, plays, calm} theo tài khoản.
-  Bảng Xếp Hạng (mục "top"): kỷ lục mọi tài khoản từ action "rank" (row.fun do Code.gs funBest_ lọc giá trị hợp lý),
-  dòng của mình dùng kỷ lục trên máy; top 10 mỗi trò + dòng của mình nếu ngoài top.
-- `genesis.js` – game "Bản Nguyên Kỳ Duyên: Tiến Hóa Thư" (ô 'gene' trong Tiêu Dao Các, window.GenesisGame {mount, summary,
-  debug}). Giao diện tông tối kiểu "Genesis Codex" (nền #0f1016, viền phát sáng cyan / xanh lục / tím / vàng), 5 tab UI.tab:
-  life (Chào Đời / Cuộc Đời: HUD, sự kiện, dòng lịch sử, thẻ nhân vật, thủ bản đang viết), dna (Phòng Gene: vị trí SLOT, tách
-  gene data-g="cut" 30 vàng, lực chiến, cộng hưởng SYN), skills (Dị Năng: tìm #gxSkq + lọc nhóm), lore (thời đại WORLD_ERAS,
-  thế lực FACTIONS, nhánh huyết mạch, nhật ký mật mã LORE), books (Thư Viện + xuất .txt exportBook).
-  Gieo quẻ (v3): nơi sinh (11, ORIGIN_W) và chủng tộc (9, RACE_W: + Ngư Nhân, Long Duệ, Vũ Tộc, Hồ Tộc, Thạch Nhân) do trời định;
-  người chơi chỉ chọn tên, giới tính, màu tóc. Kiếp đầu của tài khoản gieo 1 lần; kiếp sau gieo lại bằng phúc duyên G.phuc (cộng khi
-  đóng sách: sống ≥ 60, danh vọng ≥ 50, thiện ≥ 40, kết cục đặc biệt, mở ≥ 2 Huyết Sử; tối đa 6) + 2 nếu di sản "rr"; bản nháp lưu
-  G.draft (tải lại trang không được gieo lại). Thiên phú TRAITS có tác dụng thật (TRAIT_FX, chkBonus). Gene bẩm sinh INNATE (C.innate).
-  Thời gian: C.days (tuổi = days / 365). Mỗi hoạt động ACTS kéo dài ACT_DUR ngày (trường sinh ×6) → passTime (yearTick mỗi năm:
-  thời thế, tuổi, tin tức NPC, lợi ích nghề) → hoạt cảnh makeScenes (SCN, tự hiện dần) → afterTime: biến cố lớn khi C.since ≥ C.gap
-  (gapOf theo tuổi) hoặc tình huống đời thường (EV có dl:1) hoặc chỉ là ngày bình yên; nút ⏩ autoLive = để thời gian trôi tới biến cố.
-  Sự kiện EV: {id, a:[tuổi], w, if, once, dl?, era?, tg:[thẻ], t, d, c:[{t, if, chk:[chỉ số, độ khó], ok, no, r, rf, alt}]};
-  chữ có chỗ trống {ban} {dich} {su} {tinh} {con} {o} {banx} {dichx} {kidgene} – tx(); gặp gỡ ENC dùng {p} (22% / 30% nếu mồ côi).
-  Thời thế C.segs [[khóa, tuổi bắt đầu, số năm]] dài ngắn ngẫu nhiên (ERA_LEN, 12 loại, makeSegs / eraSeg; đời cũ: segsFromDecades).
-  Gene (v3): lời mời C.offers [{k:'gene'|'skill', id}] → lấy / bỏ / đổi cái cũ (resolveOffer). Ô gene geneCap = 1 + Tương thích gen / 8
-  (+1 Phế Thể, +1 học giả bậc 3, +5 Vạn Huyết Quả C.fruit); geneBlock: cánh / đuôi / mai / chi cần Thể, mắt / hạt nhân cần Trí, gene
-  khác loài FUSE_ONLY cần Vạn Huyết Quả. Virus / bào tử nhiễm thẳng. Dị năng: C.sk do biến cố (crisis khi bị thương nặng / Nghịch Mệnh /
-  sự kiện sk:'crisis', ưu tiên dị năng có tư chất skReq) hoặc bảo vật; skillCap 2 (+1 Ý chí ≥ 14), Dị Nhân 5. Bảo vật BAO (25 món:
-  thực vật / động vật / vũ khí / năng lượng; nuốt / dung hợp → hiệu ứng + dị năng), túi C.inv ≤ 8, useBao. Huyết mạch Dị Nhân
-  (LINE.mutant) + dung hợp huyết mạch thứ hai C.line2 (cần Vạn Huyết Quả; tên FUSE_N / fuseName). Nghề: bậc nối thêm ở cuối, lên bậc
-  theo năm làm việc C.car.xp (CAR_XP), lợi ích CAR_PERK (cộng kiểm tra, thu nhập, miễn thiên tai…). Trục tính cách Thiện / Trật tự ↔
-  Hỗn loạn / Liều lĩnh (hiệu ứng good, law, chaos, bold). Hiệu ứng ok / no thêm: fruit, bao ('any' | 'rare' | id), sk, chaos, mut.
-  Đời khác nhau nhờ: thời thế, nhân vật phụ C.npc {ban, dich, su, tinh: {n, aff, st, role}} (npcTick), tính cách C.al → persona(),
-  dấu ấn C.deeds, con C.kidn, ~20 kết cục ending(). Huyết Sử (LORE, 14 chương) mở dần, giữ qua các đời.
-  Thư Viện: sách nhiều trang (bookPages: bìa + bảng nhân sinh → tự truyện → từng giai đoạn → văn bia), sắp xếp; quá 12 cuốn → G.arch
-  (tóm tắt, ≤ 80).
-  Nhân vật = SVG: avatar() → dưới 13 tuổi avatarKid (doodle: viền đậm, thân tròn, mắt chấm), từ 13 tuổi avatarAdult (tỉ lệ người
-  lớn, mắt hạnh nhân, lông mày, mũi, môi; áo choàng / quan phục / áo đạo sĩ / trang phục nghề; mọi gene vẽ chi tiết + đường khâu
-  stitch(); dị hóa ≥ 40 gân, ≥ 60 mắt thứ ba, ≥ 80 nét xoáy; HP < 30 băng bó; tuổi ≥ 60 tóc bạc + gậy, trừ huyết mạch bất tử
-  – thọ > 200 thì hình dừng ở 40 tuổi). Nút data-g; CSS tự chèn (#gx-css, data-v – sửa CSS thì tăng data-v).
-  Điện thoại (≤ 760 px): #fnBox.gx-wide phủ toàn màn hình (fixed, z-index 2000, tự cuộn), thanh trên dính, tab chuyển xuống
-  đáy (nhãn ngắn), thẻ nhân vật thu gọn .gx-mini, nút ✕ (data-g="exit") đóng game. Máy tính: nút ⛶ (UI.max → #fnBox.gx-max).
-  Không dùng font monospace cho chữ Việt (Menlo / Consolas thiếu dấu → chữ nhảy, mất dấu); .mono = cùng font + số đều.
-  Chỉ dùng emoji ≤ Unicode 12 (máy cũ / Windows hiện ô vuông với emoji mới).
-  Lưu npdFun@user.gen {v:1, life, books (≤ 12), arch, lore, lives, legacy, phuc, draft} – giữ dưới 30 000 ký tự (ô Sheet ≤ 45 000 cho
-  cả npdFun; C.log giữ 70 dòng). Đời đang dở từ bản cũ: upgrade(C) chỉ thêm trường (al, npc, segs, deeds, kidn, innate, sk = dị năng
-  đang đủ điều kiện, inv, offers, fruit, days, since, gap), không đổi id sự kiện cũ.
-  Nội dung tự viết, chỉ lấy cảm hứng mô-típ dân gian / thể loại (không dùng tên riêng / nhân vật của tác phẩm có bản quyền).
-- Điện thoại (≤ 760 px, ưu tiên iPhone 15 Plus 430 × 932): menu #nav thành thanh tab cố định dưới đáy (body chừa
-  60px + safe-area), viewport-fit=cover + env(safe-area-inset-*) cho tai thỏ / thanh Home, ô nhập 16px (iOS không tự
-  phóng to), nút trong trang ≥ 40px. Khối CSS cuối thẻ <style> ("Điện thoại (ưu tiên iPhone 15 Plus…)").
-- `study/english.html`, `study/chinese.html` – app học (do chủ dự án viết); `study/*-bank.js` – bài học mỗi ngày;
-  `study/chinese-course.js` – tab "📗 Hán ngữ" (window.ZH_COURSE, 30 bài theo trình tự quyển 1–2 giáo trình Hán ngữ, nội dung
-  tự viết, không chép sách: phát âm, từ mới, ngữ pháp tiếng Việt, hội thoại + đọc to, 10 câu luyện tập, đạt ≥ 8 = hoàn thành;
-  tiến độ S.course[id] trong dữ liệu zh; từ của bài đã mở vào thẻ ôn Vocabulary; Dictation có nguồn "Hán ngữ")
-  (window.ENG_BANK / ZH_BANK). Chạy riêng thì lưu localStorage; trong web thì lưu theo tài khoản + nhận thêm dữ liệu
-  từ tab English / Chinese của Sheet.
-- `sheets-auth.js` – đăng nhập / tạo tài khoản, menu tài khoản (đổi mật khẩu, đăng xuất), gọi API, lưu phiên:
-  mặc định token 6h trong sessionStorage (tab mới / người khác mở link = phải đăng nhập); tick "Ghi nhớ" → localStorage +
-  token 30 ngày (gửi remember khi login), mỗi lần tải dữ liệu nếu còn dưới 15 ngày thì renew() đổi token mới 30 ngày.
-  window.NPD: refresh(), logout(), user(), call(action, payload, {keepalive}), apply(kết quả), expired(), menu().
-  Đăng xuất: gửi nốt dữ liệu cá nhân; còn phần chưa lưu được thì hỏi trước khi xóa khỏi máy.
-- `sheets-bridge.js` – Sheet → S (settingsOf, libraryOf, studyOf); thay saveFile() bằng lưu vào Sheet (TABS: Cài đặt,
-  Thư viện; makePlan() so với BASE lúc tải; tab/cột thiếu → máy chủ tự tạo); dữ liệu cá nhân (npdPersonal → "mine").
-  Dữ liệu cá nhân đồng bộ 3 chiều (KHÔNG để bản máy chủ đè thay đổi chưa gửi): npdMineSync@user = hash bản đã khớp máy chủ
-  lần cuối. Trên máy đổi mà chưa gửi được → giữ + gửi lại (thử lại 5 s → 5 phút; hết phiên → NPD.expired() mở đăng nhập,
-  đăng nhập xong gửi; pagehide / ẩn trang → gửi keepalive). Chỉ máy chủ đổi → nhận. Cả hai cùng đổi (hoặc lần đầu chưa có
-  hash) → giữ bản tiến xa hơn (progressOf: npdFun theo số kiếp / sách / ngày sống, npdLib theo số bí kíp đạt, npdIv theo số lần ôn / xem / nói / ghi chú; khóa khác giữ bản
-  máy chủ), bản kia cất ở <khóa>~bak@user. Trạng thái: window.npdMineStatus {khóa: {st: pending|sending|ok|err|expired, msg}},
-  sự kiện "npd:mine", npdPersonalUnsaved(), npdPersonalFlush(keepalive). Game hiện trạng thái này ở huy hiệu #gxSync.
-- Home (2D): ảnh nền rừng trúc + Ngọc Nhi = ảnh trong `<script id="home-img">` (JSON: bg, fy, tranh điện p_*, lv*).
-  Ngọc Nhi: fairyStart / fairyPlace (ảnh bên phải, thẻ tên "Ngọc Nhi · trợ lý", bong bóng nhắc việc / chào theo tài khoản).
-  Cảnh 3D (Three.js, thánh thú) đã gỡ – còn trong lịch sử Git.
 - `apps-script/Code.gs` – bản gốc code Apps Script. Sau khi sửa: chủ dự án copy sang
   Apps Script rồi Deploy → Manage deployments → Edit → New version (link API giữ nguyên)
 
-## API (POST, body JSON dạng text/plain để tránh CORS preflight)
-- {action:"login", username, password, remember} → {ok, token, user, expiresIn} (6 giờ; remember = 30 ngày). Token =
-  "s.<nội dung base64>.<HMAC-SHA256>" ký bằng TOKEN_KEY (Script Properties, tự tạo, không ở repo): bộ nhớ đệm CacheService bị
-  Google xóa sớm vẫn kiểm tra được (đọc lại tab Tài khoản). Token cũ 64 hex (chỉ trong cache) vẫn dùng được tới khi hết hạn.
-- {action:"renew", token} → {ok, token, user, expiresIn} – token mới 30 ngày, token cũ bị thu hồi. Thu hồi (đăng xuất, gia hạn):
-  cache "out…" + Script Properties REVOKED {chữ ký: hạn} cho token còn sống quá 6 giờ (tự dọn mục hết hạn).
-- {action:"register", username, password, name} → {ok, pending, message} (Trạng thái = "Chờ duyệt" nếu SIGNUP_APPROVAL)
-- {action:"password", token, old, password} → {ok}
-- {action:"data", token} → {ok, user, mine, tabs:{TênTab:{headers, rows}}, history:[500 dòng Lịch sử], fetchedAt}
-  Chỉ gửi các tab trong READ_TABS (Cài đặt, Thư viện, English, Chinese)
-- {action:"save", token, changes:[{tab, op, match, set, old}], ensure:{tab:[cột]}} → {ok, saved, ...như "data"} hoặc
-  {ok:false, conflict:true, conflicts:[...]}. Mọi tài khoản trừ Quyền = Viewer; chỉ EDIT_TABS (Cài đặt, Thư viện)
-- {action:"practice", token, realm, topic, text} – nộp bài thực hành (topic = id bí kíp) hoặc xin duyệt Đại Viên Mãn
-  (topic = "*"); ghi tab Tu luyện, Trạng thái = Chờ duyệt → {ok, practice:[…]}
-- {action:"review", token, user, realm, topic, status:"ok"|"back", note} – chỉ Quyền = Admin → {ok, practice}
-- {action:"rank", token} → {ok, rank:[{name, dh, rid, ord, done, fails, wrong, answered, lives, started, lc, stones, pills, fun:{spot, react, memo, math, calm}|null, me}]} – tóm tắt tu
-  luyện mọi tài khoản đang hoạt động (không tên đăng nhập, không dữ liệu cá nhân khác), cache 1 phút
-- "data" trả thêm practice: dòng Tu luyện của chính mình (Admin: mọi dòng Chờ duyệt + 400 dòng mới nhất)
-- {action:"mine", token, key, value} – dữ liệu cá nhân (npdCave, npdLib, npdOT, npdFairy, npdEng, npdZh, npdFun, npdIv) của chính mình
-- {action:"iv_data", token} → {ok, items:[{id, t (q / k / meta), g, data, at}]} và {action:"iv_save", token, items:[{id, t, g, title, data}],
-  replace, del:[id]} → {ok, saved, deleted} – tab "Phỏng vấn", CHỈ Quyền = Admin (authFresh_ đọc lại tab Tài khoản); id /^[\w:.-]{1,40}$/,
-  ≤ 400 dòng / lần, mỗi data ≤ MINE_MAX. Không nằm trong READ_TABS / EDIT_TABS (action "data" / "save" không bao giờ gửi tab này).
-- img_put / img_get / presence – còn trong Code.gs, hiện trang không dùng
-- {action:"logout", token}
+## Quy tắc khi làm việc (bắt buộc)
+- Truyện / lore: chỉ đọc `story/continuity.md` (+ đề cương chương đang viết); không đọc lại chương cũ. Mâu thuẫn ghi vào `story/review.md`, chưa sửa chương cũ khi chủ dự án chưa duyệt.
+- `genesis.js` rất lớn (~3.200 dòng): không đọc cả file. `grep -n` tên hàm / id rồi đọc đúng đoạn (Read có offset + limit).
+- `genesis-lore.js` do `node genesis-lore-src/build.js` sinh (chạy `--check` trước) từ `genesis-lore-src/cNN.txt` (+ `extras.json`): không sửa tay, không gõ lại chữ chương. Build xong đổi `LORE_V` trong genesis.js và `?v=` của genesis.js.
 
-## Google Sheet – các tab
-- Tài khoản: Tên đăng nhập | Mật khẩu (SHA-256 + SALT) | Họ tên | Quyền (Viewer = chỉ xem, khác = sửa) |
-  Trạng thái (Khóa / Chờ duyệt = chặn) → KHÔNG bao giờ gửi tab này về trình duyệt
-- Lịch sử (tự tạo): Thời gian | Người sửa | Tab | TTi model | Dòng | Cột | Giá trị cũ | Giá trị mới
-- Cá nhân (tự tạo, chỉ chủ tài khoản đọc được): Tên đăng nhập | Khóa | Dữ liệu (JSON) | Cập nhật
-- Phỏng vấn (tự tạo, chỉ Admin đọc / ghi qua iv_data / iv_save): ID | Loại | Nhóm | Tiêu đề | Dữ liệu (JSON) | Cập nhật
-- Tu luyện (tự tạo): Thời gian | Tên đăng nhập | Họ tên | Cảnh giới | Bí kíp | Bài làm | Trạng thái (Chờ duyệt / Đã duyệt /
-  Trả lại) | Người duyệt | Nhận xét | Cập nhật – chỉ máy chủ ghi; người học không tự duyệt được
-- Cài đặt: Khóa | Giá trị (address; links dạng JSON)
-- Thư viện: ID | Chủ đề | Tiêu đề | Tóm tắt | Nội dung | Câu hỏi | Tác giả | Cập nhật
-  (Nội dung: "## tiêu đề", "- ý", "1. bước", "**đậm**"; Câu hỏi: câu hỏi, "- sai", "* đúng", cách nhau 1 dòng trống)
-- English: Loại (word/idiom/phrasal/phrase/mistake) | Từ / câu | Từ loại | Nghĩa (EN) | Tiếng Việt | Ví dụ | Ghi chú
-  (mistake: Từ / câu = câu sai, Ví dụ = câu đúng, Nghĩa (EN) = giải thích; phrase: Ghi chú = ngữ cảnh)
-- Chinese: Loại (word/phrase) | Chữ Hán | Pinyin | Từ loại | Nghĩa (EN) | Tiếng Việt | Ví dụ (Hán) | Ví dụ pinyin |
-  Ví dụ EN | Ví dụ VI | Ngữ cảnh
-- Các tab NPD cũ (Model, Timeline, SER…) có thể còn trong Sheet nhưng không còn được gửi về trình duyệt
+## Việc gì thì sửa file nào (chi tiết trong `docs/`)
+| Việc | File | Chi tiết |
+|---|---|---|
+| Bài học, quiz, lộ trình Training | `lessons-*.js`, `quiz-bank.js`, `realms.js` | training.md |
+| Sổ tay QC, thư viện có sẵn | `notebook.js`, `library-builtin.js` | training.md |
+| Công cụ (Luyện Phỏng Vấn, Chuỗi Dung Sai…) | `JLTN_WEBSITE.html` (TOOLS), `interview.js`, `tools/stackup.html` | tools.md |
+| Trò chơi nhỏ Relax | `fun.js` | relax-genesis.md |
+| Game Bản Nguyên Kỳ Duyên | `genesis.js` | relax-genesis.md, balance-todo.md |
+| Huyết Sử (22 chương) | `genesis-lore-src/cNN.txt` → `build.js` → `genesis-lore.js`; truyện: `story/` | relax-genesis.md |
+| Cave / CV, Home, English / 中文, giao diện điện thoại | `JLTN_WEBSITE.html`, `study/*` | pages.md |
+| Đăng nhập, đồng bộ dữ liệu cá nhân | `sheets-auth.js`, `sheets-bridge.js` | auth-sync.md |
+| API, tab Google Sheet, quyền | `apps-script/Code.gs` | api.md, sheet-tabs.md |
 
 ## Giữ dữ liệu cũ của thành viên khi sửa web (bắt buộc)
 Chủ dự án sửa web thường xuyên; tiến độ tu luyện, hồ sơ… của thành viên (tab "Cá nhân", localStorage) KHÔNG được mất.

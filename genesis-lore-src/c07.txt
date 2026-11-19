@@ -1,0 +1,77 @@
+@@ L7
+# Học Viện Ngũ Tinh
+> Kỷ Huyết Nguyệt năm 150 – nay · phép thuật là gì, ai được học, và vì sao viện thứ năm bị xóa tên
+
+Nếu bạn sinh ra ở Phương Tây và có Tinh thần vượt qua mười, sẽ có một ngày – thường là trong năm bạn mười một tới mười ba tuổi, thường là vào buổi sáng sinh nhật – một con cú thả xuống bậc cửa nhà bạn một lá thư dày, giấy màu ngà, niêm phong bằng sáp tím in năm ngôi sao xếp thành vòng tròn. Lá thư ấy không nói nhiều. Nó chỉ ghi tên bạn, ngày bạn phải có mặt ở bến tàu mây ngoài kinh thành, và một dòng chữ nhỏ ở cuối mà mọi phù thủy học viện đều thuộc lòng: “Phép thuật không chọn người xứng đáng. Nó chọn người dám nhìn.”
+
+Đó là thư nhập học của Học Viện Ngũ Tinh – ngôi trường phép thuật lớn nhất, cổ nhất, và gây tranh cãi nhất Phương Tây.
+
+## Phép thuật là gì
+
+Trước khi kể về Học Viện, cần nói rõ phép thuật trong thế giới này là gì, vì nhiều người, kể cả phù thủy, vẫn hiểu sai.
+
+Phép thuật không phải năng lượng của trời đất như nội lực của võ giả phương Đông. Nó cũng không phải năng lượng từ một chiều không gian riêng như đấu khí của đấu sĩ. Phép thuật là năng lượng tinh thần của chính người phù thủy – một thứ lực vô hình sinh ra từ ý chí, trí nhớ, cảm xúc – dùng để với sang những nếp gấp nằm cạnh thế giới này và kéo một sợi chỉ về. Chương Sáng Thế đã kể rằng vũ trụ là vô số nếp vải gấp chồng lên nhau. Có nếp toàn lửa, có nếp toàn nước, có nếp mà gió thổi không ngừng. Phù thủy không tạo ra lửa; họ kéo một sợi lửa từ nếp lửa sang. Phù thủy không tạo ra gió; họ mở một khe nhỏ cho gió từ nếp bên kia lùa vào.
+
+Vì vậy, sức mạnh của một phù thủy không đo bằng cơ bắp hay khí huyết, mà đo bằng hai thứ. Thứ nhất là Tinh thần – độ vững của ý chí, quyết định bàn tay vô hình ấy với xa được bao nhiêu và giữ chắc được bao lâu. Thứ hai là Trí tuệ – hiểu biết về các nếp gấp, quyết định phù thủy biết kéo sợi chỉ nào, từ đâu, và kéo bao nhiêu thì đủ. Một phù thủy có Tinh thần mạnh nhưng Trí tuệ kém giống một người khỏe mạnh bị bịt mắt vào kho: kéo được nhiều, nhưng không biết mình kéo phải thứ gì. Một phù thủy Trí tuệ cao nhưng Tinh thần yếu giống một học giả biết mọi thứ trong kho nhưng không nhấc nổi một cái thùng.
+
+Ngưỡng của phép thuật là mười. Các giáo sư Học Viện đã đo Tinh thần của hàng nghìn người qua hàng trăm năm, và kết luận rằng dưới mười, bàn tay vô hình của một người không đủ dài để chạm tới nếp gấp gần nhất. Người ấy có thể học thuộc mọi câu thần chú, vẽ đúng mọi ký hiệu, nhưng sợi chỉ sẽ không bao giờ đến. Và Tinh thần là thứ khó tăng nhất trong mọi phẩm chất của con người – không tập luyện, không thuốc men, không bảo vật bình thường nào nâng được nó lên đáng kể. Vì thế mới có câu: phù thủy là do trời sinh, không do người dạy. Học viện chỉ dạy cho những người trời đã sinh ra rồi.
+
+## Năm vì sao
+
+Năm 150 Kỷ Huyết Nguyệt, năm phù thủy có tiếng nhất Phương Tây gặp nhau trên một đảo đá nổi trên mây, phía trên dãy núi phía tây kinh thành. Hòn đảo ấy vốn là một mảnh đất bị hất lên trời trong Thần Chiến, khi một vị thần ngã xuống và sức va chạm làm vỡ cả một ngọn núi. Nó lơ lửng ở đó từ trước khi có Kỷ Huyết Nguyệt, và năm phù thủy chọn nó vì một lý do: ở độ cao ấy, các nếp gấp vũ trụ nằm gần nhau hơn, phép thuật dễ dùng hơn.
+
+Năm người ấy là Aster, phù thủy của ánh sáng, người có thể kéo Thiên khí xuống chữa lành vết thương; Morwen, phù thủy của bóng tối và những gì nằm dưới đáy, người hiểu về lời nguyền hơn ai hết; Doran, phù thủy của đá và kim loại, người dựng lên những bức tường đầu tiên của Học Viện chỉ bằng một cái phất tay; Fenna, phù thủy của muôn thú, người nói chuyện được với chim chóc và là người nghĩ ra việc dùng cú đưa thư; và Caelum Vane, người trẻ nhất, thông minh nhất, phù thủy của những gì nằm xa nhất.
+
+Họ thề với nhau sẽ lập một ngôi trường dạy phép cho mọi đứa trẻ có Tinh thần vượt mười, bất kể xuất thân, để phép thuật không còn là đặc quyền của các gia tộc phù thủy. Mỗi người lập một viện, theo chuyên môn của mình: viện Quang của Aster, viện Uyên của Morwen, viện Thạch của Doran, viện Thú của Fenna, và viện Hư của Caelum. Năm viện, năm vì sao, xếp thành vòng tròn – đó là gốc của cái tên Học Viện Ngũ Tinh và biểu tượng năm ngôi sao trên con dấu sáp tím.
+
+## Lời nguyền của Morwen
+
+Mười năm sau ngày lập Học Viện, một chuyện xảy ra khiến cả Phương Tây biết đến tên Morwen. Một toán cướp phương Bắc – người tộc Hrafn, những kẻ săn sói chuyên đột kích các làng biên giới – đã tấn công một đoàn học trò của Học Viện đang đi thực hành ở chân núi. Chúng giết ba đứa trẻ, trong đó có một học trò mà Morwen nuôi từ năm lên sáu như con ruột.
+
+Morwen đuổi theo toán cướp lên tận Bắc Nguyên. Bà không giết họ. Bà làm một điều tàn nhẫn hơn: đứng trên đỉnh đồi dưới trăng tròn, bà kéo một sợi chỉ từ nếp gấp mà Huyền Nguyệt – vị thần mặt trăng đã chết trong Thần Chiến – để lại, và quấn nó quanh dòng máu của cả tộc Hrafn. Lời nguyền rất đơn giản: các ngươi săn sói, thì mỗi trăng tròn, các ngươi sẽ thành sói. Các ngươi giết trẻ con của ta, thì con cháu các ngươi sẽ mang lời nguyền này mãi mãi.
+
+Tộc Hrafn từ đó trở thành Moonborn – Lang nhân bẩm sinh – tổ tiên của Bầy Sói Bắc Nguyên ngày nay, và của Torvald, người chồng mà phù thủy Veyra về sau đã yêu. Chương Lời Tiên Tri Huyết Lang sẽ kể tiếp câu chuyện ấy. Ở đây chỉ cần biết rằng lời nguyền của Morwen là lần đầu tiên thế giới thấy phép thuật có thể làm được gì khi rơi vào tay một người đau khổ, và các giáo sư Học Viện từ đó thêm vào giáo trình một bài học bắt buộc: không bao giờ làm phép khi đang căm hận.
+
+Morwen sống thêm bốn mươi năm, và trong bốn mươi năm ấy, bà không bao giờ tha thứ cho mình. Người ta kể rằng mỗi đêm trăng tròn, bà ngồi trên tháp cao nhất của viện Uyên, nhìn về phía bắc, và nghe tiếng sói tru.
+
+## Viện thứ năm
+
+Caelum Vane không thích những thứ đã biết. Trong khi các viện khác dạy cách kéo sợi chỉ từ những nếp gấp gần – lửa, nước, đá, ánh sáng – Caelum muốn biết những nếp gấp xa nhất trông thế nào. Ông muốn biết bên kia các vì sao có gì. Ông muốn biết Thiên giới được làm bằng gì. Và hơn tất cả, ông muốn biết linh hồn đi đâu khi chết.
+
+Viện Hư của Caelum là viện nhỏ nhất, chưa bao giờ quá hai mươi học trò. Nhưng những gì họ nghiên cứu khiến bốn viện kia lo ngại ngày càng nhiều. Năm 197, một học trò viện Hư mở thử một khe nhỏ sang nếp gấp dưới cùng – Địa ngục – và không kịp đóng lại. Thứ gì đó từ bên kia lọt qua. Cả học trò ấy lẫn hai người đứng cạnh không bao giờ được tìm thấy. Hòn đảo mây rung lên suốt ba ngày.
+
+Bốn người sáng lập còn lại họp kín. Caelum không phủ nhận việc mình dạy học trò mở cửa xuống Địa ngục. Ông chỉ hỏi một câu: “Nếu chúng ta không hiểu Địa ngục, khi nó tràn lên – và nó sẽ tràn lên, vì ranh giới đã rách từ thời Đại Chiến – ai sẽ biết cách đóng nó lại?” Bốn người kia không trả lời được. Nhưng họ vẫn biểu quyết. Bốn phiếu chống một. Caelum bị trục xuất, viện Hư bị giải tán, mọi tài liệu của viện bị đốt, và tên ông bị xóa khỏi sổ sách của Học Viện. Từ đó, Học Viện Ngũ Tinh chỉ còn bốn viện, dù tên vẫn giữ năm ngôi sao. Ngôi sao thứ năm trên con dấu được khắc rỗng.
+
+Caelum biến mất sau khi rời đảo mây. Có người nói ông xuống Địa ngục thật, để tìm câu trả lời cho câu hỏi của mình. Có người nói ông sống ẩn ở Vực Sâu Vô Tận, nơi đáy vực chạm tới tầng trên của Địa ngục. Không ai biết chắc. Nhưng không phải mọi tài liệu của ông đều bị đốt. Một trăm năm sau, một học trò viện Uyên tên là Veyra tìm thấy ba mươi tờ giấy của ông giữa chồng sổ thuế cũ trong tầng hầm – và chương Veyra & Phép Cướp Lửa Ngục đã kể những gì xảy ra sau đó. Đó là lý do mọi giáo sư Học Viện đều tin rằng tên Caelum Vane bị xóa không phải vì ông sai, mà vì ông đúng quá sớm.
+
+## Đũa phép và cú đưa thư
+
+Những năm đầu, phù thủy Học Viện dùng đủ loại vật để dẫn phép: gậy gỗ sồi, nhẫn bạc, gương đồng, xương thú. Tất cả đều được, nhưng không cái nào thật sự tốt. Mọi chuyện thay đổi vào khoảng năm 335, khi Học Viện mua lại hạt giống Cổ Thụ Bạch Tâm từ các phù thủy gia tộc ở Ashgrove – cây mà phù thủy Veyra đã trồng trước khi biến mất. Gỗ lõi trắng của cây ấy dẫn tinh thần tốt gấp đôi mọi thứ khác. Học Viện trồng cả một rừng Bạch Tâm trên đảo mây, và từ đó, mọi đũa phép đều đẽo từ gỗ ấy.
+
+Một chiếc đũa Bạch Tâm không có phép trong nó. Nó chỉ giống một cây kim tốt giúp người thợ may xâu chỉ dễ hơn. Phù thủy mất đũa vẫn làm phép được, nhưng yếu hẳn đi, chậm hẳn đi – như thợ may phải dùng ngón tay xe chỉ. Vì vậy, phù thủy Học Viện quý đũa như quý mạng. Và vì đũa được đẽo từ chính loại gỗ duy nhất giết được gia tộc Valcrest, nên giữa Học Viện và giới quý tộc đêm luôn có một thứ kính nể đặc biệt, như hai người hàng xóm mà mỗi người cầm một chìa khóa nhà của người kia.
+
+Cú đưa thư là sáng kiến của Fenna. Bà dạy cho một bầy cú cách nhận ra những đứa trẻ có Tinh thần vượt mười – những đứa trẻ mà theo lời bà, “phát sáng nhè nhẹ như đom đóm dưới mắt loài chim đêm”. Mỗi năm, vào mùa thu, hàng trăm con cú bay khỏi đảo mây, tỏa đi khắp Phương Tây, và đậu lên bậc cửa nhà những đứa trẻ ấy. Chúng không bao giờ nhầm. Đó là lý do người Phương Tây có câu: “Cú không đến thì đừng mua đũa.”
+
+## Bốn viện
+
+Ngày nay, học trò Học Viện Ngũ Tinh được xếp vào một trong bốn viện ngay trong đêm đầu tiên, theo một nghi thức mà mỗi viện giữ bí mật một phần. Viện Quang dạy phép trị liệu, phép ánh sáng, phép bảo vệ; học trò viện Quang thường trở thành thầy thuốc, thầy tu, hiệp sĩ phép. Viện Uyên dạy những gì nằm trong bóng tối: lời nguyền, giải nguyền, phép ẩn thân, phép đọc ký ức; học trò viện Uyên bị nghi ngờ nhiều nhất và cũng được thuê nhiều nhất. Viện Thạch dạy phép đá, phép kim loại, phép xây dựng; những cây cầu, tường thành, hầm mỏ lớn nhất Phương Tây đều có bàn tay học trò viện Thạch. Viện Thú dạy phép giao tiếp với muôn thú, phép biến hình nhỏ, phép thuần dưỡng; học trò viện Thú thường về làm việc ở Liên Minh Vạn Thú hay làm thợ săn.
+
+Học trò học bảy năm. Họ bắt đầu là Học đồ – đủ sức kéo những sợi chỉ nhỏ nhất, như thắp nến, làm bay vật nhẹ, mở khóa đơn giản. Ai tốt nghiệp sẽ thành Pháp sư – đủ sức đánh mười người lính bình thường. Phần lớn phù thủy dừng lại ở đó cả đời. Số ít tiếp tục tu luyện sau khi rời Học Viện để lên Đại ma pháp sư, Truyền kỳ pháp sư, Chí tôn pháp sư. Trên nữa là Thánh pháp sư và Đại Hiền Giả – những cái tên mà cả trăm năm mới có một người. Học Viện có một bức tường ghi tên những người đạt tới các bậc ấy. Bức tường dài, nhưng phần lớn chỗ trên đó vẫn trống.
+
+## Phù thủy gia tộc
+
+Không phải phù thủy nào cũng qua Học Viện. Từ trước khi có Học Viện, đã có những gia đình phù thủy truyền phép cho con cháu, mỗi vùng một kiểu: phù thủy Ashgrove giỏi thảo dược, phù thủy vùng đầm lầy phía nam giỏi lời nguyền, phù thủy ven biển giỏi phép gió. Phép của họ không theo giáo trình, mà theo máu – nhiều câu phép chỉ dùng được khi người làm phép có chung dòng máu với người đã nghĩ ra nó. Phép gia tộc thường mạnh hơn phép học viện ở một vài việc rất hẹp, nhưng đòi hỏi trả giá: một giọt máu, một năm tuổi thọ, một ký ức.
+
+Giữa phù thủy gia tộc và Học Viện luôn có một khoảng cách. Phù thủy gia tộc coi phù thủy học viện là “thợ may theo mẫu”. Phù thủy học viện coi phù thủy gia tộc là “thầy lang quê mùa”. Nhưng khi Thánh Đường Thuần Huyết đốt những giàn hỏa đầu tiên vào thế kỷ mười hai, cả hai bên đều nhận ra rằng trong mắt kẻ thù, họ là một.
+
+## Những mùa săn phù thủy
+
+Thánh Đường Thuần Huyết được lập ra năm 1088 sau thảm họa Đêm Trăng Máu, với niềm tin rằng mọi sức mạnh vượt quá con người đều rò ra từ Địa ngục. Với họ, phù thủy là những kẻ mở cửa cho ngục khí – và chuyện của Caelum Vane, chuyện của Veyra, là bằng chứng rõ nhất. Trong hơn một trăm năm qua, đã có ba mùa săn phù thủy lớn, mỗi mùa kéo dài nhiều năm. Sách bị đốt, nhà bị khám, những bà lang làm thuốc bị lôi ra quảng trường. Học Viện Ngũ Tinh không bị động tới – không ai leo lên được đảo mây – nhưng học trò của Học Viện mỗi lần về thăm nhà đều phải giấu đũa trong ống tay áo.
+
+Trong những mùa ấy, Học Viện mở cửa đảo mây cho phù thủy gia tộc chạy nạn. Đó là lần đầu tiên sau gần một nghìn năm, những phù thủy học viện và phù thủy gia tộc ngồi chung bàn ăn. Họ cãi nhau về mọi thứ – từ cách pha thuốc tới cách gọi tên các nếp gấp – nhưng họ ở lại với nhau, và nhiều đứa trẻ sinh ra trong những năm ấy học cả hai kiểu phép.
+
+## Hiệu trưởng Orrin Vale
+
+Hiệu trưởng hiện tại của Học Viện Ngũ Tinh là Orrin Vale, một ông già gầy gò, râu dài, luôn mặc áo choàng màu xám tro thay vì màu tím truyền thống. Ông là hiệu trưởng thứ mười bốn, và là người đầu tiên xuất thân từ một gia đình phù thủy gia tộc. Trong những năm đầu nhiệm kỳ, ông làm hai việc khiến cả Học Viện xôn xao: ông cho mở lại kho sách cấm để các giáo sư cao cấp được đọc những gì còn sót lại của viện Hư, và ông cho khắc thêm một dòng chữ nhỏ dưới ngôi sao thứ năm rỗng trên cổng Học Viện: “Để dành chỗ.”
+
+Không ai biết ông để dành chỗ cho ai. Có người nói ông đang chờ Caelum Vane trở về. Có người nói ông chờ một phù thủy đủ mạnh để làm điều mà Caelum chưa làm được: không mở cửa xuống Địa ngục, mà đóng lại vết rách ba cõi ở Chiến Trường Vạn Tộc. Orrin Vale chỉ cười khi được hỏi, và trả lời bằng chính câu viết ở cuối mọi lá thư nhập học: “Phép thuật không chọn người xứng đáng. Nó chọn người dám nhìn.”
