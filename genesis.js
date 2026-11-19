@@ -711,7 +711,7 @@
       { t:'Hít sâu ma khí', ok:{ hac:15, the:1, hum:-5 }, r:'Bóng của bạn đôi khi tự cử động.' },
       { t:'Lấp vực bằng đá', ok:{ hum:3, fame:3 }, r:'Làng bên yên tâm hơn.' }] },
     { id:'a_codex', a:[25, 400], w:3, if:C => (C.car && C.car.k === 'scholar') || L(C) === 'witch' || C.s.tri >= 13, t:'Giải mã một dòng Thần Văn', d:'Bạn trải bản dập Thần Văn lên bàn. Các ký tự trôi như cá.', c:[
-      { t:'Thức trắng giải mã', chk:['tri', 13], ok:{ lore:'L12', tri:1, flag:'decode' }, no:{ hp:-10 }, r:'Bạn đọc được một cái tên: “Đứa Con Đầu Tiên”.', rf:'Đầu đau như búa bổ.' },
+      { t:'Thức trắng giải mã', chk:['tri', 13], ok:{ lore:'L12', tri:1, flag:'decode' }, no:{ hp:-10 }, r:'Bạn đọc được một dòng Thần Văn còn sót: “Các ngươi đánh nhau vì những sinh linh mà các ngươi chưa bao giờ ngồi cạnh. Ta ngồi cạnh họ đã hàng nghìn năm. Họ không muốn các ngươi khâu hay xé. Họ muốn tự mình quyết định.”', rf:'Đầu đau như búa bổ.' },
       { t:'Gửi Học Viện', ok:{ gold:20 }, r:'Họ trả tiền và mang mảnh mã đi.' }] },
     { id:'a_sun', a:[20, 600], w:3, if:C => C.line && C.line.k === 'vamp' && C.line.sub !== 'cold', t:'Ngày nắng gắt', d:'Bạn bị kẹt ngoài đường giữa trưa hè.', c:[
       { t:'Chạy vào bóng râm', chk:['the', 10], ok:{}, no:{ hp:-20 }, r:'Vừa kịp.', rf:'Da bạn bốc khói.' },
@@ -1292,7 +1292,7 @@
       { t:'Đỡ ông dậy', ok:{ flag:'dao', thanh:8 }, r:'Ông tỉnh dậy, tặng bạn một lá bùa “phòng thân”.' },
       { t:'Lấy trộm xấp bùa', ok:{ gold:10, good:-6 }, alt:[{ p:.4, ok:{ hp:-20 }, r:'Lá bùa tự bốc cháy trong tay bạn!' }], r:'Bán được ít tiền.' }]],
     ['Nhà thám hiểm điên', ['explore', 'mystery'], 'Một ông già râu tóc bù xù vẫy bạn {p}: “Ta tìm được lối vào di tích! Cần một trợ thủ!”', [
-      { t:'Theo ông', chk:['gen', 9], ok:{ en:'any', gene:'any', lore:'L2' }, no:{ gene:'g_virus' }, r:'Bạn mang về một mảnh Ấn Mã.', rf:'Bụi cổ trong di tích làm bạn nhiễm Virus Thượng Cổ.' },
+      { t:'Theo ông', chk:['gen', 9], ok:{ en:'any', gene:'any', lore:'L2' }, no:{ gene:'g_virus' }, r:'Bạn mang về một mảnh thiên thạch nhỏ – cầm lâu, bạn thấy trong người như có một khoảng trống khẽ động.', rf:'Bụi cổ trong di tích làm bạn nhiễm Virus Thượng Cổ.' },
       { t:'Mua bản đồ của ông', if:C => C.gold >= 15, ok:{ gold:-15, flag:'travel', co:8 }, r:'Bản đồ dẫn tới một hố thiên thạch.' }, { t:'Lắc đầu', ok:{}, r:'Ông lại vẫy người khác.' }]],
     ['Kẻ trộm bị đuổi', ['stealth', 'fight', 'escape'], 'Một tên trộm lao qua bạn {p}, lính gác hò hét phía sau.', [
       { t:'Ngáng chân hắn', ok:{ law:10, fame:4, gold:10 }, r:'Lính gác thưởng bạn ít tiền.' },
