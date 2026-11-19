@@ -18,7 +18,7 @@
    c14 nói "từng là đứa trẻ chăn trâu bị bỏ rơi".
 7. **c09 ↔ c14 (Ảnh Tổ, nhỏ):** c09 là trưởng lão môn phái Thanh Vân; c14 "đứa trẻ mồ côi lang thang trên Núi Sương". Hợp được
    nếu thuở nhỏ ông mồ côi; nên ghi rõ ở c14.
-8. **Dữ liệu game:** thủ lĩnh Hội Thợ Săn "Bram Hollow" chỉ có trong game, chưa có trong chương nào (không mâu thuẫn).
+8. **ĐÃ XỬ LÝ (giữ chương, không cần sửa) – Dữ liệu game:** thủ lĩnh Hội Thợ Săn "Bram Hollow" chỉ có trong game, chưa có trong chương nào (không mâu thuẫn).
 9. **c12 (con số, nhỏ):** Lão Thú nói lúc Thần Chiến "Ta ngồi cạnh họ đã ba nghìn năm", nhưng các tộc đã sống ở Nhân gian
    hàng nghìn năm trước Đại Chiến (c16), tức trước Thần Chiến hơn ba nghìn năm. Nên đổi thành "hàng nghìn năm" (c17 không trích con số).
 10. **ĐÃ SỬA theo hướng (b) – dòng 15, 17, 19, 21 của c04 – c04 (nội bộ chương, sinh ra sau khi sửa mục 1):** c04 vẫn kể Malgrath leo lên khi lớp vải rách rồi làm "vị vua đêm"
