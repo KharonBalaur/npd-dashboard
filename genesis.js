@@ -1132,7 +1132,7 @@
     { id:'p_master', a:[3, 16], w:6, once:1, if:C => ['royal', 'noble'].includes(C.w) && C.age >= WEALTH[C.w][4] && !pathsOf(C).length && anOk(C), t:'Gia tộc mời sư phụ', d:'Cha mẹ bày một mâm lễ lớn, mời ba vị thầy nổi tiếng đến thử căn cốt của bạn.', c:[
       { t:'🥋 Theo võ sư nội gia (Nội lực)', ok:{ path:'noi', lore:'L19' }, r:'Võ sư đặt tay lên lưng bạn: “Kinh mạch thông suốt. Bắt đầu từ hơi thở.”' },
       { t:'👊 Theo quyền sư (Luyện thể)', ok:{ path:'body' }, r:'Sáng nào bạn cũng đứng tấn tới khi chân run.' },
-      { t:'🛡 Theo kiếm sư thành bang (Đấu khí)', ok:{ path:'dau' }, r:'Kiếm sư dạy bạn hít một hơi – và cảm thấy một thứ lửa từ nơi khác tràn vào.' },
+      { t:'🛡 Theo kiếm sư thành bang vào Sân Cát (Đấu khí)', ok:{ path:'dau' }, r:'Ở Sân Cát, bạn bị đánh ngã không biết bao nhiêu lần – rồi giữa một trận, có thứ lửa từ nơi khác bùng lên sau tim.' },
       { t:'🔮 Mời gia sư phù thủy', if:C => C.s.y >= 11, ok:{ line:['witch', 'old'] }, r:'Gia sư thắp một ngọn nến bằng ánh mắt rồi gật đầu.' }] },
     { id:'p_bai', a:[8, 30], w:4, once:1, if:C => sideOf(C) === 'east' && !pathsOf(C).some(([k]) => ['noi', 'body', 'dao'].includes(k)) && anOk(C), tg:['fight'], t:'Môn phái thu nhận đệ tử', d:'Đại hội thu nhận đệ tử dưới chân núi. Hàng trăm người xếp hàng chờ thử căn cốt.', c:[
       { t:'Thử nội công', chk:['y', 9], ok:{ path:'noi', lore:'L19' }, no:{ hp:-5 }, r:'Trưởng lão gật đầu: “Căn cốt tạm được. Vào đi.”', rf:'Bạn bị loại ở vòng đầu.' },
@@ -1586,6 +1586,11 @@
   // nuốt / dung hợp bảo vật (chỉ lúc đang chọn hoạt động)
   function useBao(i) {
     const C = G.life, id = C.inv[i], b = BAOM[id]; if (!b || C.ph !== 'act') return;
+    // v4 (canon C18-02): bí kíp chỉ dạy cách dùng đấu khí – chưa mở Đấu Hạch thì đọc không được, sách vẫn giữ lại
+    if (id === 'b_dbook' && !(C.paths && C.paths.dau)) {
+      UI.note = { txt:`📙 ${baoName(C, id)} chỉ dạy cách dùng đấu khí cho người đã mở Đấu Hạch.`, chips:[['bad', '🛡 Chưa mở Đấu Hạch – phải qua đấu trường hoặc quân ngũ']] };
+      render(); return;
+    }
     const chips = [], nm = baoName(C, id); C.inv.splice(i, 1);
     apply(C, b[7], chips); if (id === 'b_stake') C.flags.stake = 1;
     if (b[8]) offerSkill(C, b[8], chips);
