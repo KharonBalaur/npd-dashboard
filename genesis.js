@@ -1768,6 +1768,7 @@
     if (C.age < 1 || C.ph === 'dying') return;
     const van = C.s.van, poor = ['poor', 'orphan'].includes(C.w), an = isAnimal(C);
     const L_ = Object.entries(BD).filter(([k, b]) => C.age >= b[3][0] && C.age <= b[3][1] && (!an || ['item', 'gene', 'none', 'bad'].includes(k)));
+    if (!L_.length) return;                                     // quá mọi khoảng tuổi của bảng quà (huyết mạch trường thọ)
     const wOf = ([k, b]) => b[2] * (k === 'none' ? Math.max(.35, 1 - (van - 10) * .05) * (poor ? .7 : 1) : k === 'bad' ? Math.max(.4, 1 - (van - 10) * .05) : Math.max(.5, 1 + (van - 10) * .05) * (C.tr.includes('lucky') ? 1.3 : 1));
     let r = Math.random() * L_.reduce((a, x) => a + wOf(x), 0), k = L_[L_.length - 1][0];
     for (const x of L_) { r -= wOf(x); if (r <= 0) { k = x[0]; break; } }
