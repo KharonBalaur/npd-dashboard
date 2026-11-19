@@ -5,7 +5,7 @@
 1. **ĐÃ SỬA (cùng mục 10) – c04 ↔ c16 (thời điểm trói Malgrath):** c04 nói Malgrath leo lên khi vải rách, cai trị ~300 năm rồi bị trói "trong những
    năm cuối Đại Chiến"; c16 nói Đại Chiến chấm dứt ngay ngày vải rách. Đề xuất: sửa c04 thành "gần ba trăm năm sau ngày
    lớp vải rách" (hoặc c16 thêm giai đoạn tàn chiến kéo dài).
-2. **c04 (Thần Cốt) – c17 đã giải thích (Thiên Thiết gọi chung là Thần Cốt), có thể giữ c04:** xích trói Malgrath làm từ "Thần Cốt, xương của các vị thần ngã xuống", nhưng thần chỉ ngã xuống trong
+2. **ĐÃ XỬ LÝ (giữ chương, không cần sửa) – c04 (Thần Cốt) – c17 đã giải thích (Thiên Thiết gọi chung là Thần Cốt), có thể giữ c04:** xích trói Malgrath làm từ "Thần Cốt, xương của các vị thần ngã xuống", nhưng thần chỉ ngã xuống trong
    Thần Chiến, ~2700 năm sau. c04 có chữ "về sau người ta gọi là" nên chưa sai hẳn; cần chương 17 giải thích kim loại rơi từ
    Thiên giới khi vải rách cũng bị gọi chung là Thần Cốt.
 3. **c12 ↔ dòng thời gian (khoảng cách Đại Chiến – Thần Chiến) – c17 đã giải thích (~2700 năm tranh cãi), có thể giữ c12:** c12 kể như Thần Chiến nổ ra ngay sau khi vải rách; dòng
