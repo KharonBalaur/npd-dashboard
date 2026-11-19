@@ -42,7 +42,7 @@
       câu thứ ba. c21 chỉ nói nét chữ giống, không nói cùng câu, nên không sai; nhưng nên thống nhất câu thứ hai theo c05.
 ## Canon mới do Claude thêm – chờ chủ dự án duyệt
 
-Trạng thái (2026-11-19): chủ dự án đã duyệt theo ngoại lệ – dòng không nhắc = ĐÃ DUYỆT (giữ mặc định); dòng có SỬA đã sửa trong chương / game; ĐÃ BỎ đã gỡ khỏi chương; chỉ còn C17-22 CHỜ DUYỆT.
+Trạng thái (2026-11-19): chủ dự án đã duyệt theo ngoại lệ – dòng không nhắc = ĐÃ DUYỆT (giữ mặc định); dòng có SỬA đã sửa trong chương / game; ĐÃ BỎ đã gỡ khỏi chương; C17-22 duyệt sau (cùng ngày).
 
 Repo chưa có `story/bible.md`, nên đối chiếu với file Word / Excel cốt truyện của chủ dự án (chỉ tính các ô ghi "Bạn").
 Ý của chủ dự án có sẵn: thần là một chủng tộc mạnh, trời sinh thuở sơ khai, khó sinh, trường thọ, cũng có thần do tu luyện;
@@ -71,7 +71,7 @@ nội lực; cảm hứng "300"; bậc Đấu sĩ → Đại đấu sĩ → Đ�
 - **C17-19** [ĐÃ DUYỆT – SỬA GAME: Thần Cốt chỉ "giúp" bước vào Thần cấp (luật cần bảo vật phẩm Thần giữ nguyên); lore thêm câu C17-22] Công dụng Thần Cốt: rèn vũ khí, giữ pháp trận, mài bột uống để đột phá (hoặc bị thiêu từ bên trong).
 - **C17-20** [ĐÃ DUYỆT (giữ mặc định)] "Trận thần chiến nhỏ" thời nay: khi có người đạt Thần cấp muốn lên Thiên giới mà thần ở trên ngăn lại.
 - **C17-21** [ĐÃ DUYỆT (giữ mặc định)] Câu cuối phần Thần Chiến trong Thần Văn ("Không ai hỏi những kẻ ở dưới có muốn đi lên không") do Lão Thú khắc thêm.
-- **C17-22** [CHỜ DUYỆT – dòng mới thêm theo C17-19] (thêm theo C17-19) Sau Thần Chiến thiên địa suy yếu nên muốn lên Thần cấp phải có bảo vật phẩm Thần (Thần Cốt hoặc di vật cùng phẩm); thần thành tựu trước khi vải rách không cần.
+- **C17-22** [ĐÃ DUYỆT – dòng mới thêm theo C17-19] (thêm theo C17-19) Sau Thần Chiến thiên địa suy yếu nên muốn lên Thần cấp phải có bảo vật phẩm Thần (Thần Cốt hoặc di vật cùng phẩm); thần thành tựu trước khi vải rách không cần.
 
 ### Chương 18
 - **C18-01** [ĐÃ DUYỆT (giữ mặc định)] Chiều không gian đấu khí = Chiến Giới (pháp sư gọi Nếp Nhàu): nếp gấp bị Lôi Chủ vò nát khi xé sao.
