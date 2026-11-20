@@ -3165,10 +3165,24 @@
       ${body}`;
   }
   const LIBS = [['life', '📕', 'Sách Nhân Sinh'], ['era', '⏳', 'Sách Thời Đại'], ['tree', '🌳', 'Gia Phả'], ['chim', '🧬', 'Chimera Chí Thư'], ['bao', '📦', 'Bách khoa Bảo vật']];
+  // Khôi phục từ bản sao: chỉ hiện khi máy còn khóa npdFun~bak@user (sheets-bridge cất khi hai máy lệch nhau). Không bao giờ tự nạp; bấm là hỏi xác nhận.
+  const bakSum = v => { const g = v && v.gen; if (!g || typeof g !== 'object') return null; const L = g.life && typeof g.life === 'object' ? g.life : null;
+    return { n:L ? String(L.n || '') : '', age:L ? Math.floor(+L.age || 0) : 0, lives:+g.lives || 0, books:(Array.isArray(g.books) ? g.books.length : 0) + (Array.isArray(g.arch) ? g.arch.length : 0) }; };
+  const bakEmpty = s => !s || (!s.n && !s.lives && !s.books);
+  const bakTxt = s => s ? `${s.n ? `${s.n} · ${s.age} tuổi` : 'chưa có đời đang sống'} · kiếp ${s.lives} · ${s.books} cuốn sách` : 'không có dữ liệu game';
+  function bakFold() {
+    if (!window.npdBackupGet || !syncReady()) return ''; const b = window.npdBackupGet('npdFun'); if (!b) return '';
+    const s = bakSum(b), c = bakSum({ gen:G });
+    return fold('bak', '🛟 Khôi phục từ bản sao', `<p class="gx-note" style="margin:0 0 8px">Khi hai máy lệch tiến độ, game cất lại bản không được chọn ngay trên máy này và không bao giờ tự nạp lại. Nếu mất đời đang chơi, bạn có thể nạp bản sao làm đời hiện tại.</p>
+      <p class="gx-note" style="margin:0 0 4px"><b>Bản sao:</b> ${E(bakTxt(s))}</p><p class="gx-note" style="margin:0 0 8px"><b>Hiện tại:</b> ${E(bakTxt(c))}</p>
+      ${bakEmpty(s) ? '<p class="gx-note">Bản sao này trống, không có gì để khôi phục.</p>' : `<div class="gx-row" style="margin-top:4px"><button class="gx-btn ghost" data-g="bkgo"${UI.bkBusy ? ' disabled' : ''}>🛟 Khôi phục từ bản sao</button></div><p class="gx-note" style="margin:6px 0 0">Đời hiện tại được cất vào bản sao, bấm lần nữa để quay về.</p>`}
+      ${UI.bkMsg ? `<p class="gx-note" style="margin:8px 0 0;color:var(--go)">${E(UI.bkMsg)}</p>` : ''}`);
+  }
   function viewBooks() {
     const sec = UI.lib || 'life', cnt = { life:G.books.length + G.arch.length, era:G.saga.length, tree:G.tree.length, chim:G.chim.length, bao:`${G.seenB.length}/${BAO.length}` };
     return `<div class="gx-subnav">${LIBS.map(([k, ic, n]) => `<button data-g="lib" data-k="${k}" class="${sec === k ? 'on' : ''}">${ic} ${n} <small class="mono">${cnt[k]}</small></button>`).join('')}</div>
-      ${({ life:libLife, era:libEra, tree:libTree, chim:libChim, bao:libBao }[sec] || libLife)()}`;
+      ${({ life:libLife, era:libEra, tree:libTree, chim:libChim, bao:libBao }[sec] || libLife)()}
+      ${bakFold()}`;
   }
   // Sách Thời Đại: dấu ấn của người chơi trong từng thời thế đã sống qua
   function libEra() {
@@ -3221,7 +3235,8 @@
   const compact = () => !!(window.matchMedia && window.matchMedia('(max-width:760px), (orientation:landscape) and (max-height:500px)').matches);
   const lsc = () => !!(window.matchMedia && window.matchMedia('(orientation:landscape) and (max-height:500px)').matches);   // điện thoại nằm ngang: tab Cuộc đời chia 2 cột, mỗi cột cuộn riêng
   const FOLD_OPEN = { look:0, stats:0, rel:0, book:0, note:0 };   // mặc định trên màn nhỏ: 0 = gập
-  const isOpen = k => { const f = prefs().fold; return f && f[k] != null ? !!f[k] : compact() ? !!FOLD_OPEN[k] : true; };
+  const FOLD_SHUT = { bak:1 };   // luôn gập sẵn kể cả trên máy tính (mục ít dùng)
+  const isOpen = k => { const f = prefs().fold; return f && f[k] != null ? !!f[k] : FOLD_SHUT[k] ? false : compact() ? !!FOLD_OPEN[k] : true; };
   function setOpen(k, v) { const p = prefs(); p.fold = p.fold && typeof p.fold === 'object' ? p.fold : {}; p.fold[k] = v ? 1 : 0; lsSet(UIK(), p); }
   const fold = (k, title, body, sub) => { const o = isOpen(k);
     return `<div class="gx-fd${o ? ' open' : ''}"><button class="gx-fh" data-g="fold" data-k="${k}" aria-expanded="${o}"><span>${title}</span>${sub ? `<small class="mono">${sub}</small>` : ''}<i>${o ? '▾' : '▸'}</i></button>${o ? `<div class="gx-fb">${body}</div>` : ''}</div>`; };
@@ -3313,6 +3328,13 @@
     if (g === 'offer' && G.life) return resolveOffer(k);
     if (g === 'bp') { UI.bp = Math.max(0, (UI.bp || 0) + (+k)); return render(); }
     if (g === 'bks') { UI.bks = k; return render(); }
+    if (g === 'bkgo') {
+      const bs = window.npdBackupGet ? bakSum(window.npdBackupGet('npdFun')) : null; if (UI.bkBusy || bakEmpty(bs)) return;
+      if (!confirm(`Khôi phục từ bản sao?\n\nBản sao: ${bakTxt(bs)}\nHiện tại: ${bakTxt(bakSum({ gen:G }))}\n\nBản sao sẽ thành đời hiện tại và được lưu lên máy chủ. Đời hiện tại không mất: nó được cất vào bản sao, bấm lần nữa để quay về.`)) return;
+      UI.bkBusy = 1; UI.bkMsg = 'Đang khôi phục…'; render();
+      return void window.npdBackupRestore('npdFun', 'gen').then(r => { UI.bkBusy = 0; G = load(); UI.cre = null; UI.res = null; UI.note = null; UI.pend = null; UI.bt = ''; UI.shop = 0; UI.book = 0; UI.bp = 0;
+        UI.bkMsg = r.ok ? `Đã khôi phục: ${bakTxt(bakSum({ gen:G }))}. ${r.saved ? 'Đã lưu lên máy chủ.' : 'Chưa lưu được lên máy chủ, game sẽ tự thử lại.'}` : `Chưa khôi phục được: ${r.error}`; if (root && root.isConnected) render(); });
+    }
     if (!G.life || UI.tab !== 'life') {
       if (UI.tab !== 'life') return;
       const d = UI.cre || (UI.cre = newDraft()), nm = root.querySelector('#gxName');

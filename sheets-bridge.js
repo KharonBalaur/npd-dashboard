@@ -262,6 +262,23 @@
   window.npdPersonalUnsaved = () => MINE.filter(unsynced);
   // true khi đã nhận bản từ máy chủ (hoặc chưa đăng nhập): game chỉ được tạo nhân vật / ghi tiến độ sau lúc này
   window.npdPersonalReady = () => !me() || mineFor === me();
+  // Bản sao <khóa>~bak@user (cất khi hai máy lệch nhau, không bao giờ tự nạp lại). Khôi phục CHỈ chạy khi người dùng bấm (trang tự hỏi xác nhận):
+  // bản đang có (nếu có nội dung) được cất vào chỗ của bản sao – bấm lần nữa là quay về, không bản nào mất – rồi đẩy bản mới lên máy chủ.
+  // part: chỉ thay một phần của bản (game: 'gen'), giữ phần còn lại của bản đang có (kỷ lục, số lượt chơi mini-game…).
+  const bakGet = base => { const u = me(); if (!u || !MINE.includes(base)) return null; try { const v = JSON.parse(localStorage.getItem(base + '~bak@' + u)); return v && typeof v === 'object' ? v : null; } catch (e) { return null; } };
+  window.npdBackupGet = bakGet;
+  window.npdBackupRestore = (base, part) => {
+    const u = me(), bak = bakGet(base), cur = readLocal(base);
+    if (!u || mineFor !== u) return Promise.resolve({ ok: false, error: 'Chưa tải xong tiến độ từ máy chủ' });
+    if (!bak || (part && (!bak[part] || typeof bak[part] !== 'object'))) return Promise.resolve({ ok: false, error: 'Bản sao không có dữ liệu để khôi phục' });
+    const K = (suf = '') => base + suf + '@' + u, put = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); return true; } catch (e) { return false; } }, del = k => { try { localStorage.removeItem(k); } catch (e) { /* bỏ qua */ } };
+    const hasCur = !!cur && typeof cur === 'object' && !(base === 'npdFun' && funEmpty(cur)), next = part && cur && typeof cur === 'object' ? { ...cur, [part]: bak[part] } : bak;
+    if (hasCur && !put(K('~pre'), cur)) return Promise.resolve({ ok: false, error: 'Bộ nhớ trình duyệt đầy, chưa khôi phục' });   // cất tạm bản đang có trước khi đụng tới bất cứ thứ gì
+    if (!put(K(), next)) { del(K('~pre')); return Promise.resolve({ ok: false, error: 'Bộ nhớ trình duyệt đầy, chưa khôi phục' }); }
+    if (hasCur) { if (put(K('~bak'), cur)) del(K('~pre')); } else del(K('~bak'));       // bản cũ vào chỗ bản sao (nếu không cất được thì còn ở ~pre)
+    clearTimeout(mineT[base]); mineStatus(base, 'pending');
+    return sendMine(base, 0).then(saved => ({ ok: true, saved }));                      // gửi ngay; lỗi thì tự thử lại như mọi lần lưu
+  };
   const flushHidden = () => { if (window.npdPersonalUnsaved().length) window.npdPersonalFlush(true).catch(() => {}); };
   window.addEventListener('pagehide', flushHidden);
   document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden') flushHidden(); });
