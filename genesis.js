@@ -1128,13 +1128,13 @@
   EV.push(
     // ----- vận mệnh ẩn -----
     { id:'f_ill', a:[1, 9999], w:1, once:1, fate:1, if:C => fateIs(C, 'ill'), tg:['heal', 'plague'], t:'Căn bệnh định sẵn', d:'Cơn ho kéo dài nhiều tháng, rồi một sáng bạn không ngồi dậy nổi. Thầy lang bắt mạch rất lâu: “Bệnh này đã nằm trong mệnh từ lúc sinh.”', c:[
-      { t:'Dùng bảo vật chữa bệnh trong túi', if:C => (C.inv || []).some(id => CURE.includes(id)), ok:{ usecure:1, fatedone:1, hp:10 }, r:'Hơi ấm từ bảo vật lan khắp người – căn bệnh lui dần.' },
+      { t:'Dùng bảo vật chữa bệnh trong túi', if:C => bagList(C).some(s => CURE.includes(s.id)), ok:{ usecure:1, fatedone:1, hp:10 }, r:'Hơi ấm từ bảo vật lan khắp người – căn bệnh lui dần.' },
       { t:'Bán của cải mời danh y (80 vàng)', if:C => C.gold >= 80, ok:{ gold:-80, hp:-10, fatedone:1 }, r:'Danh y châm cứu chín chín tám mươi mốt ngày – bạn qua khỏi.' },
       { t:'Vận công trục bệnh', if:C => maxTier(C) >= 3, ok:{ hp:-15, fatedone:1, pxp:15 }, r:'Khí trong người cuộn trào, đẩy bệnh khí ra khỏi kinh mạch.' },
       { t:'Tìm Huyết tộc xin một vết cắn', if:C => !C.line && C.age >= 16, ok:{ line:['vamp', 'cold'], fatedone:1, hum:-10 }, r:'Một vết cắn lạnh buốt. Bệnh biến mất – cùng với nhịp tim.' },
       { t:'Cắn răng chống chọi', chk:['the', 14], ok:{ hp:-30, the:1, fatedone:1 }, no:{ die:'Chết bệnh – căn bệnh định sẵn từ lúc sinh' }, r:'Bạn sống sót, gầy rộc nhưng cứng cỏi hơn.', rf:'Ánh đèn dầu chập chờn rồi tắt.' }] },
     { id:'f_acc', a:[1, 9999], w:1, once:1, fate:1, if:C => fateIs(C, 'acc'), tg:['danger', 'escape'], t:'Tai họa bất ngờ', d:'Cây cầu treo bạn đang đi bỗng đứt một bên dây. Dưới kia là vực đá.', c:[
-      { t:'Bảo vật hộ thân lóe sáng', if:C => (C.inv || []).some(id => GUARD.includes(id)), ok:{ fatedone:1, hp:-5 }, r:'Một luồng sáng bọc lấy bạn – bạn đáp xuống bờ vực nhẹ như lá.' },
+      { t:'Bảo vật hộ thân lóe sáng', if:C => bagList(C).some(s => GUARD.includes(s.id)), ok:{ fatedone:1, hp:-5 }, r:'Một luồng sáng bọc lấy bạn – bạn đáp xuống bờ vực nhẹ như lá.' },
       { t:'Vận khí lăng không', if:C => maxTier(C) >= 3, ok:{ fatedone:1 }, r:'Bạn đạp gió ba bước lên lại bờ vực – cảnh giới không phải để trưng.' },
       { t:'Chụp lấy sợi dây', chk:['van', 13], ok:{ fatedone:1, hp:-15 }, no:{ die:'Tai nạn – rơi xuống vực sâu' }, r:'Bạn treo lơ lửng nửa ngày rồi được người qua đường kéo lên.', rf:'Sợi dây tuột khỏi tay.' }] },
     { id:'f_hunt', a:[1, 9999], w:1, once:1, fate:1, if:C => fateIs(C, 'hunt'), tg:['fight', 'escape', 'danger'], t:'Kẻ thù định mệnh', d:'Một kẻ mặc áo choàng xám đã lần theo bạn suốt nhiều năm. Hắn nói hắn được sinh ra chỉ để giết bạn.', c:[
@@ -1347,7 +1347,8 @@
     C.flags = C.flags || {}; C.seen = C.seen || []; C.genes = C.genes || [];
     C.innate = Array.isArray(C.innate) ? C.innate : (C.r === 'beast' && C.genes.length ? [C.genes[0]] : []);
     if (!Array.isArray(C.sk)) C.sk = SKILLS.filter(s => skReq(C, s)).map(s => s[0]);   // v3: giữ dị năng đời cũ đang có
-    C.inv = Array.isArray(C.inv) ? C.inv.filter(x => BAOM[x]) : []; C.offers = Array.isArray(C.offers) ? C.offers.filter(o => o && (o.k === 'gene' ? GENE[o.id] : o.k === 'skill' ? SKM[o.id] : o.k === 'bd' ? BD[o.id] : o.k === 'path' ? PATHS[o.id] : false)) : [];
+    C.inv = Array.isArray(C.inv) ? C.inv.filter(x => BAOM[x]) : []; C.offers = Array.isArray(C.offers) ? C.offers.filter(o => o && (o.k === 'gene' ? GENE[o.id] : o.k === 'skill' ? SKM[o.id] : o.k === 'bd' ? BD[o.id] : o.k === 'path' ? PATHS[o.id] : o.k === 'bag' ? BAOM[o.id] : false)) : [];
+    bagUpgrade(C);
     C.fruit = +C.fruit || 0; if (C.days == null) C.days = C.age * 365; if (C.since == null) C.since = 0; if (!C.gap) C.gap = gapOf(C);
     if (!C.lastEra) C.lastEra = eraOf(C);
     // v4: 6 chỉ số (Sức mạnh mới, Tương thích gen gộp vào Thể chất), gia cảnh, hệ tu luyện suy ra từ huyết mạch, ô dung hợp, vận mệnh, gia tộc
@@ -1433,7 +1434,7 @@
       en:{ thanh:0, hac:0, co:0, thu:0 }, genes:[], line:null, car:null, spouse:'', kids:0, kidn:[], flags:{ lorecount:G.lore.length }, seen:[], log:[], deeds:[],
       al:{ ...r.al }, npc:{},
       age:0, turn:0, hair:dr.hair != null ? dr.hair : rnd(0, 5), ph:'act', ev:null, born:new Date().toISOString().slice(0, 10),
-      days:0, since:0, segs:makeSegs(0, 130), sk:[], inv:[], offers:[], innate:[], fruit:0,
+      days:0, since:0, segs:makeSegs(0, 130), sk:[], inv:[], bag:[], bagv:1, bagx:0, offers:[], innate:[], fruit:0,
       w:WEALTH[dr.w] ? dr.w : 'common', ak:dr.ak || '', paths:{}, pk:'', bl:[], kidl:[], shop:null, clan:'', par:dr.par || null, fate:null, sid:rnd(1, 2147483646) };
     C.npc.ban = { n:npcName(C), aff:rnd(5, 25), st:'ok' }; C.npc.dich = { n:npcName(C), aff:rnd(-15, 0), st:'ok' };
     if (r.tr.includes('orph')) { C.npc.ban.n = npcName(C); C.npc.su = { n:npcName(C), aff:15, st:'ok', role:'người lạ dẫn lối' }; }
@@ -1525,7 +1526,7 @@
       else if (k === 'pxp') { const mp = mainPath(C); if (mp && C.paths[mp].t < 9) { const pp = C.paths[mp], b0 = pp.xp; pp.xp = clamp(pp.xp + v, 0, 100); chips.push(['en', `${v > 0 ? '+' : '−'}${Math.abs(v)}% ${PATHS[mp].en}`]);
         if (b0 < 100 && pp.xp >= 100) chips.push(['lore', `🏯 Đủ điều kiện đột phá ${tierName(mp, pp.t + 1)}`]); } }
       else if (k === 'fatedone') { if (C.fate) C.fate.done = 1; }
-      else if (k === 'usecure') { const ci = (C.inv || []).findIndex(id => CURE.includes(id)); if (ci >= 0) { chips.push(['', `🎒 Dùng ${BAOM[C.inv[ci]][2]}`]); C.inv.splice(ci, 1); } }
+      else if (k === 'usecure') { const ci = bagList(C).findIndex(s => CURE.includes(s.id)); if (ci >= 0) { chips.push(['', `🎒 Dùng ${BAOM[C.bag[ci].id][2]}`]); bagTake(C, ci); } }
       else if (k === 'clanfall') { const cl = C.clan || clanOf(C); G.clans[cl] = Object.assign(G.clans[cl] || { s:0 }, { fall:1 }); C.flags.clanfall = 1; chips.push(['bad', `🏚 Gia tộc ${cl} tan tác`]); log(C, `Gia tộc ${cl} bị diệt trong binh lửa.`); }
       else if (k === 'w') { if (WEALTH[v]) { C.w = v; chips.push(['', `${WEALTH[v][0]} Gia cảnh: ${WEALTH[v][1]}`]); } }
       else if (k === 'sleep') { C.days = (C.days != null ? C.days : C.age * 365) + v * 365; C.age += v; chips.push(['', `💤 Ngủ ${v} năm`]); log(C, `Ngủ một giấc ${v} năm.`); }
@@ -1567,7 +1568,7 @@
     if (id === 'any') id = pick(Object.keys(GENE).filter(x => x !== 'g_virus' && !C.genes.includes(x)));
     if (!id || !GENE[id] || C.genes.includes(id)) return;
     if (force || id === 'g_virus' || id === 'g_spore') return fuseGene(C, id, chips);      // nhiễm bệnh: không được chọn
-    C.offers = (C.offers || []).filter(o => !(o.k === 'gene' && o.id === id)).concat([{ k:'gene', id }]).slice(-4);
+    C.offers = (C.offers || []).filter(o => !(o.k === 'gene' && o.id === id)); C.offers = offerPush(C, { k:'gene', id });
     chips.push(['gene', `🧬 Cơ hội dung nhập: ${GENE[id][0]}`]);
   }
   function fuseGene(C, id, chips, drop) {
@@ -1591,25 +1592,48 @@
       if (!L_.length) return; let r = Math.random() * L_.reduce((a, s) => a + tier(s), 0); id = L_[L_.length - 1][0]; for (const s of L_) { r -= tier(s); if (r <= 0) { id = s[0]; break; } } }
     const s = SKM[id]; if (!s || C.sk.includes(id)) return;
     if (C.sk.length < skillCap(C)) { C.sk.push(id); chips.push(['en', `⚡ Thức tỉnh: ${s[2]}`]); log(C, `Thức tỉnh dị năng ${s[2]}.`); return; }
-    C.offers = (C.offers || []).filter(o => !(o.k === 'skill' && o.id === id)).concat([{ k:'skill', id }]).slice(-4);
+    C.offers = (C.offers || []).filter(o => !(o.k === 'skill' && o.id === id)); C.offers = offerPush(C, { k:'skill', id });
     chips.push(['en', `⚡ Dị năng muốn thức tỉnh: ${s[2]} (ô đầy)`]);
   }
   const crisis = (C, chips, p) => { if (C.hp > 0 && Math.random() < p + (C.tr.includes('chaos') ? .15 : 0)) offerSkill(C, 'crisis', chips); };
+  // ---- túi bảo vật: chồng theo mã vật phẩm. C.bag = [{ id, n }] (mỗi phần tử 1 ô), cờ C.bagv = 1, C.bagx = số cấp Túi trữ vật đã mua. ----
+  // Món trong túi không có trạng thái riêng (không độ bền / cường hóa): cùng id = giống hệt nên chồng. C.inv (mảng id phẳng của bản cũ) giữ nguyên làm bản gốc, mã mới không đọc nữa.
+  const BAG_BASE = 8, BAG_STEP = 4, BAG_LV = [250, 600, 1300, 2800], BAG_STACK = 99;   // ô gốc · ô thêm mỗi cấp · giá từng cấp (vàng) · tối đa mỗi chồng
+  const bagList = C => (C && Array.isArray(C.bag) ? C.bag : []);
+  const bagCap = C => BAG_BASE + BAG_STEP * Math.min(BAG_LV.length, Math.max(0, Math.floor(+C.bagx || 0)));
+  const bagUsed = C => bagList(C).length;
+  const bagSlot = (C, id) => bagList(C).findIndex(x => x.id === id && x.n < BAG_STACK);
+  const bagFits = (C, id) => bagSlot(C, id) >= 0 || bagUsed(C) < bagCap(C);
+  function bagPush(C, id) { C.bag = bagList(C); const i = bagSlot(C, id); if (i >= 0) C.bag[i].n++; else C.bag.push({ id, n:1 }); }
+  function bagTake(C, i) { const x = bagList(C)[i]; if (!x) return ''; x.n--; const id = x.id; if (x.n <= 0) C.bag.splice(i, 1); return id; }   // lấy ra 1 món (hết chồng thì mất ô)
+  function bagUpgrade(C) {
+    if (C.bagv !== 1) {                                       // một lần: mảng id phẳng → chồng, không bỏ món nào (chỉ bỏ id không còn trong dữ liệu game, như trước)
+      const m = []; (Array.isArray(C.inv) ? C.inv : []).forEach(id => { if (!BAOM[id]) return; const x = m.find(y => y.id === id && y.n < BAG_STACK); if (x) x.n++; else m.push({ id, n:1 }); });
+      C.bag = m; C.bagv = 1; }
+    C.bag = bagList(C).filter(x => x && BAOM[x.id] && +x.n > 0).map(x => ({ id:x.id, n:Math.min(BAG_STACK, Math.floor(+x.n)) })); C.bagx = Math.min(BAG_LV.length, Math.max(0, Math.floor(+C.bagx || 0)));
+  }
+  // hàng đợi lời mời tối đa 4: khi tràn bỏ lời mời cũ nhất KHÔNG phải lời mời túi (không để món bảo vật mất vì lời mời khác chen vào)
+  const offerLbl = o => o.k === 'gene' && GENE[o.id] ? 'gene ' + GENE[o.id][0] : o.k === 'skill' && SKM[o.id] ? 'dị năng ' + SKM[o.id][2] : o.k === 'path' && PATHS[o.id] ? 'con đường ' + PATHS[o.id].n : o.k === 'bd' && BD[o.id] ? BD[o.id][1] : o.k === 'bag' && BAOM[o.id] ? BAOM[o.id][2] : 'một cơ hội';
+  function offerPush(C, o) { const L = (C.offers || []).concat([o]); while (L.length > 4) { const i = L.findIndex(x => x.k !== 'bag'); if (i < 0) break; log(C, `Bỏ lỡ cơ hội: ${offerLbl(L.splice(i, 1)[0])} (hàng đợi lời mời đầy).`); } return L; }   // tràn thì bỏ lời mời cũ nhất không phải lời mời túi và GHI nhật ký, không im lặng
+  const gradeOf = (C, id) => id === 'b_fruit' && !fruitKnown(C) ? 'Phàm' : BAOM[id][4];
+  function addBao(C, id, chips) {
+    bagPush(C, id); chips.push(['lore', `🎒 ${gradeOf(C, id)}: ${BAOM[id][1]} ${baoName(C, id)}`]); log(C, `Có được ${baoName(C, id)}.`);
+    if (G.seenB && !G.seenB.includes(id) && (id !== 'b_fruit' || fruitKnown(C))) G.seenB.push(id);
+  }
   function gainBao(C, v, chips) {
     const id = v === 'any' ? pickBao(C, 'any') : v === 'rare' ? pickBao(C, 'rare') : v, b = BAOM[id]; if (!b) return;
-    C.inv = C.inv || []; if (C.inv.length >= 8) { chips.push(['bad', `🎒 Túi đầy – đành bỏ lại ${baoName(C, id)}`]); return; }
-    C.inv.push(id); chips.push(['lore', `🎒 ${id === 'b_fruit' && !fruitKnown(C) ? 'Phàm' : b[4]}: ${b[1]} ${baoName(C, id)}`]); log(C, `Có được ${baoName(C, id)}.`);
-    if (G.seenB && !G.seenB.includes(id) && (id !== 'b_fruit' || fruitKnown(C))) G.seenB.push(id);
+    if (!bagFits(C, id)) { C.offers = offerPush(C, { k:'bag', id }); chips.push(['bad', `🎒 Túi đầy (${bagUsed(C)}/${bagCap(C)} ô) – chọn cách xử lý ${baoName(C, id)}`]); return; }   // không tự mất: hộp thoại lời mời
+    addBao(C, id, chips);
   }
   // nuốt / dung hợp bảo vật (chỉ lúc đang chọn hoạt động)
   function useBao(i) {
-    const C = G.life, id = C.inv[i], b = BAOM[id]; if (!b || C.ph !== 'act') return;
+    const C = G.life, id = (bagList(C)[i] || {}).id, b = BAOM[id]; if (!b || C.ph !== 'act') return;
     // v4 (canon C18-02): bí kíp chỉ dạy cách dùng đấu khí – chưa mở Đấu Hạch thì đọc không được, sách vẫn giữ lại
     if (id === 'b_dbook' && !(C.paths && C.paths.dau)) {
       UI.note = { txt:`📙 ${baoName(C, id)} chỉ dạy cách dùng đấu khí cho người đã mở Đấu Hạch.`, chips:[['bad', '🛡 Chưa mở Đấu Hạch – phải qua đấu trường hoặc quân ngũ']] };
       render(); return;
     }
-    const chips = [], nm = baoName(C, id); C.inv.splice(i, 1);
+    const chips = [], nm = baoName(C, id); bagTake(C, i);
     apply(C, b[7], chips); if (id === 'b_stake') C.flags.stake = 1;
     if (b[8]) offerSkill(C, b[8], chips);
     // v4: công dụng riêng của bảo vật
@@ -1631,6 +1655,7 @@
   // trả lời một lời mời: take / skip / drop:<id> (bỏ gene hoặc dị năng cũ để nhận cái mới)
   function resolveOffer(k) {
     const C = G.life, o = C.offers && C.offers[0]; if (!o) return;
+    if (o.k === 'bag') return resolveBag(k);
     if (o.k === 'bd' || o.k === 'path') return resolveBd(k);
     const chips = [];
     if (k !== 'skip') {
@@ -1705,7 +1730,7 @@
   const btMinG = t => t >= 9 ? 4 : t >= 8 ? 3 : t >= 6 ? 2 : 0;
   function btInfo(C, k) {
     const p = C.paths[k], t = p.t + 1, P = PATHS[k], need = NEED_T[t], st = C.s[P.st] || 0;
-    const items = (C.inv || []).map((id, i) => [id, i]).filter(([id]) => BAOM[id] && (BT[id] || []).includes(k) && GRADES.indexOf(BAOM[id][4]) >= btMinG(t));
+    const items = bagList(C).map((x, i) => [x.id, i]).filter(([id]) => BAOM[id] && (BT[id] || []).includes(k) && GRADES.indexOf(BAOM[id][4]) >= btMinG(t));
     let block = '';
     if (st < need) block = `Cần ${SN[P.st]} ≥ ${need} (đang ${st})`;
     else if (t === 8 && k === 'vampE' && !C.flags.vempire) block = 'Đại đế chỉ đạt được khi dung hợp đủ 5 nhánh Huyết tộc (Vạn Huyết Quả)';
@@ -1719,7 +1744,7 @@
     const C = G.life; if (!C || C.ph !== 'act' || !C.paths || !C.paths[k] || C.paths[k].xp < 100 || (C.offers && C.offers.length)) return;
     const inf = btInfo(C, k); if (inf.block) return;
     let odds = inf.odds, used = '';
-    if (useI != null && useI !== '') { const it = inf.items.find(([, i]) => i === +useI); if (!it) return; used = BAOM[it[0]][2]; C.inv.splice(it[1], 1); odds = Math.min(99, odds + 20); }
+    if (useI != null && useI !== '') { const it = inf.items.find(([, i]) => i === +useI); if (!it) return; used = BAOM[it[0]][2]; bagTake(C, it[1]); odds = Math.min(99, odds + 20); }
     else if (inf.t >= 6) return;
     const chips = [], days = rnd(30, 120) * (inf.t >= 5 ? 3 : 1) * (C.lifeMax > 300 ? 3 : 1);
     const scenes = [[`Bế quan · ${fmtDur(days)}`, `Bạn đóng cửa ${pick(['hang đá', 'mật thất', 'đỉnh núi tuyết', 'đáy hồ lạnh', 'tháp cổ'])}, ${used ? `dùng ${used}, ` : ''}dồn toàn bộ ${PATHS[k].en} xung kích bình cảnh.`]];
@@ -1782,15 +1807,47 @@
     const sh = shopOf(C), sold = sh.sold || [];
     if (!BAOM[id] || !sh.it.includes(id) || sold.includes(id)) { UI.note = { txt:'Món này không còn trong kho năm nay.', chips:[] }; return render(); }
     const pr = priceOf(C, id); if (C.gold < pr) { UI.note = { txt:'Không đủ vàng.', chips:[] }; return render(); }
-    if ((C.inv || []).length >= 8) { UI.note = { txt:'Túi đầy (8 món) – dùng hoặc bán bớt trước.', chips:[] }; save(G); return render(); }
+    if (!bagFits(C, id)) { UI.note = { txt:`Túi đầy (${bagUsed(C)}/${bagCap(C)} ô) – dùng, bán bớt hoặc mua Túi trữ vật trước.`, chips:[] }; save(G); return render(); }
     const chips = []; C.shop = sh; sh.sold = sold.concat(id); C.gold -= pr; chips.push(['down', `−${pr} vàng`]); gainBao(C, id, chips);
     if (sh.black && GRADES.indexOf(BAOM[id][4]) >= 2) apply(C, { want:3 }, chips);
     UI.note = { txt:`Mua ${baoName(C, id)}.`, chips }; save(G); render();
   }
   function sellBao(i) {
-    const C = G.life, id = C && C.inv && C.inv[i]; if (!id || C.ph !== 'act') return;
-    const v = sellOf(C, id), chips = []; C.inv.splice(i, 1); apply(C, { gold:v }, chips); log(C, `Bán ${baoName(C, id)} được ${v} vàng.`);
+    const C = G.life, id = C && (bagList(C)[i] || {}).id; if (!id || C.ph !== 'act') return;
+    const v = sellOf(C, id), chips = []; bagTake(C, i); apply(C, { gold:v }, chips); log(C, `Bán ${baoName(C, id)} được ${v} vàng.`);
     UI.note = { txt:`Bán ${baoName(C, id)}.`, chips }; save(G); render();
+  }
+
+  // Túi trữ vật: dòng riêng luôn có ở chợ (không nằm trong kho theo năm C.shop, không đi qua C.shop.sold / sid); mỗi cấp thêm BAG_STEP ô
+  function buyBagUp() {
+    const C = G.life; if (!C || C.ph !== 'act' || isAnimal(C)) return render();
+    const lv = Math.max(0, Math.floor(+C.bagx || 0));
+    if (lv >= BAG_LV.length) { UI.note = { txt:`Túi trữ vật đã ở cấp tối đa (${bagCap(C)} ô).`, chips:[] }; return render(); }
+    const pr = BAG_LV[lv]; if (C.gold < pr) { UI.note = { txt:'Không đủ vàng.', chips:[] }; return render(); }
+    C.gold -= pr; C.bagx = lv + 1; log(C, `Mua Túi trữ vật cấp ${lv + 1}: túi ${bagCap(C)} ô.`);
+    UI.note = { txt:`Mua Túi trữ vật cấp ${lv + 1}.`, chips:[['down', `−${pr} vàng`], ['up', `🎒 Túi ${bagCap(C)} ô`]] }; save(G); render();
+  }
+  // lời mời túi đầy: nhận (nếu đã có chỗ) / bỏ một chồng trong túi / bán một chồng / bán món mới / mua Túi trữ vật / không nhận
+  function resolveBag(k) {
+    const C = G.life, o = C.offers[0], chips = [], b = BAOM[o.id], an = isAnimal(C);
+    if (!b) { C.offers.shift(); save(G); return render(); }
+    const nm = baoName(C, o.id);
+    if (k === 'take') { if (!bagFits(C, o.id)) return; addBao(C, o.id, chips); }
+    else if (k === 'no') { log(C, `Túi đầy – không nhận ${nm}.`); chips.push(['', `Không nhận ${nm}`]); }
+    else if (k === 'sellnew') { if (an) return; const v = sellOf(C, o.id); apply(C, { gold:v }, chips); log(C, `Túi đầy – bán ${nm} được ${v} vàng.`); }
+    else if (k === 'up') { const lv = Math.max(0, Math.floor(+C.bagx || 0)); if (an || lv >= BAG_LV.length || C.gold < BAG_LV[lv]) return;
+      C.gold -= BAG_LV[lv]; C.bagx = lv + 1; chips.push(['down', `−${BAG_LV[lv]} vàng`], ['up', `🎒 Túi trữ vật cấp ${lv + 1}: ${bagCap(C)} ô`]); log(C, `Mua Túi trữ vật cấp ${lv + 1}: túi ${bagCap(C)} ô.`);
+      if (!bagFits(C, o.id)) return; addBao(C, o.id, chips); }
+    else if (/^(drop|sell):/.test(k)) { const sell = k.startsWith('sell:'), id = k.slice(5), i = bagList(C).findIndex(x => x.id === id); if (i < 0 || (sell && an)) return;
+      const x = C.bag[i], on = baoName(C, id);
+      if (x.n >= 2 && !confirm(sell ? `Bán ×${x.n} ${on} lấy ${sellOf(C, id) * x.n} vàng?` : `Bỏ ×${x.n} ${on}?`)) return;   // cả chồng từ 2 món: hỏi xác nhận, không đi mất chỉ bằng một lần bấm
+      C.bag.splice(i, 1);
+      if (sell) { const v = sellOf(C, id) * x.n; apply(C, { gold:v }, chips); log(C, `Túi đầy – bán ${on} ×${x.n} được ${v} vàng để nhận ${nm}.`); }
+      else { chips.push(['', `✖ Bỏ ${on}${x.n > 1 ? ' ×' + x.n : ''}`]); log(C, `Túi đầy – bỏ ${on}${x.n > 1 ? ' ×' + x.n : ''} để nhận ${nm}.`); }
+      if (!bagFits(C, o.id)) return; addBao(C, o.id, chips); }
+    else return;
+    C.offers.shift(); UI.note = chips.length ? { txt:'', chips } : UI.note;
+    if (deathCheck(C)) return; save(G); render();
   }
 
   // ---- cơ duyên sinh nhật: rút thăm mỗi năm (Vận khí cao → nhiều cơ duyên hơn; nghèo / mồ côi được bù) ----
@@ -2570,7 +2627,12 @@
   .gx-sk h5{margin:0;font-size:14px;color:#fff} .gx-sk .meta{font-size:11px;color:var(--mu)}
   #fnBox .gx-sk .meta{white-space:normal;overflow-wrap:anywhere}   /* dòng 'dùng khi: …' dài không được tràn ra ngoài thẻ */
   @media (max-width:760px), (orientation:landscape) and (max-height:500px){ #fnBox .gx button[data-g],#fnBox .gx-subnav button{min-height:44px} } .gx-sk p{margin:8px 0 0;font-size:12.5px;color:#aeb6c7;line-height:1.5}
-  .gx-tier{flex:none;margin-left:auto;padding:1px 7px;border-radius:6px;font-size:10.5px;font-weight:800;background:#23263a;color:#cbd5e1} .gx-tier.SSR{background:rgba(234,179,8,.15);color:var(--go);border:1px solid rgba(234,179,8,.4)}
+  .gx-tier{flex:none;margin-left:auto;padding:1px 7px;border-radius:6px;font-size:10.5px;font-weight:800;background:#23263a;color:#cbd5e1} .gx-tier.R{background:rgba(148,163,184,.15);color:#94a3b8;border:1px solid rgba(148,163,184,.4)} .gx-tier.SR{background:rgba(167,139,250,.16);color:#a78bfa;border:1px solid rgba(167,139,250,.45)} .gx-tier.SSR{background:rgba(234,179,8,.15);color:#eab308;border:1px solid rgba(234,179,8,.4)} .gx-tier.in{margin-left:0;padding:2px 9px;font-size:12px}
+  .gx-bgr{display:flex;flex-wrap:wrap;gap:6px;align-items:center;padding:6px 0;border-top:1px solid var(--ln)} .gx-bgr .t{flex:1 1 100%;font-size:13px;color:#e2e8f0}
+  .gx-help{flex:none;width:30px;height:30px;padding:0;border-radius:50%;border:1px solid var(--ln);background:#1f2233;color:var(--cy);font:inherit;font-size:14px;font-weight:800;cursor:pointer} .gx-help.on{border-color:var(--cy);background:rgba(0,229,255,.12)}
+  .gx-hrow{display:inline-flex;align-items:center;gap:8px;flex-wrap:wrap} .gx-skh{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .gx-cmp{margin:4px 0;padding:5px 9px;border-radius:8px;font-size:12.5px;background:#1a1d2b;border:1px solid var(--ln);color:#cbd5e1} .gx-cmp.up{color:#4ade80;border-color:rgba(74,222,128,.4)} .gx-cmp.new{color:#22d3ee;border-color:rgba(34,211,238,.4)} .gx-cmp.down{color:#fbbf24;border-color:rgba(251,191,36,.4)}
+  .gx-tierhelp{margin:0 0 10px;padding:10px 12px;border-radius:12px;background:#141622;border:1px solid var(--ln)} .gx-th-row{display:flex;gap:10px;align-items:flex-start;padding:6px 0;border-top:1px solid var(--ln)} .gx-th-row p{margin:0 0 2px;font-size:12.5px;color:#cbd5e1} .gx-th-row small{color:#94a3b8;font-size:11px;line-height:1.4}
   .gx-hero{position:relative;padding:20px;border-radius:16px;border:1px solid #2d3148;background:linear-gradient(90deg,rgba(59,7,100,.55),#11131c,rgba(8,51,68,.55));overflow:hidden}
   .gx-hero h4{margin:6px 0;font-size:22px;color:#fff;font-family:"Noto Serif",Georgia,serif} .gx-hero p{margin:0;color:#cbd5e1;line-height:1.6;max-width:760px}
   .gx-pill{display:inline-block;padding:3px 10px;border-radius:99px;font-size:10.5px;letter-spacing:1px;text-transform:uppercase;background:rgba(168,85,247,.18);color:var(--pu);border:1px solid rgba(168,85,247,.35)}
@@ -2595,7 +2657,7 @@
      Tiền tố #fnBox vì trang Relax có luật #fun button {min-height:40px} (độ ưu tiên ID) đè các luật theo class */
   @media (max-width:760px), (orientation:landscape) and (max-height:500px){
     #fnBox .gx-btn,#fnBox .gx-opt,#fnBox .gx-act,#fnBox .gx-pk,#fnBox .gx-fh,#fnBox button.gx-chip,#fnBox .gx-nav button,#fnBox .gx-seg button{min-height:44px}
-    #fnBox .gx-top button,#fnBox .gx-mn{min-height:44px;min-width:44px} #fnBox .gx-btn[style*="min-height"]{min-height:44px!important}
+    #fnBox .gx-top button,#fnBox .gx-mn,#fnBox .gx-help{min-height:44px;min-width:44px} #fnBox .gx-btn[style*="min-height"]{min-height:44px!important}
     #fnBox .gx-acts,#fnBox .gx-opts,#fnBox .gx-pick,#fnBox .gx-row{gap:10px} #fnBox .gx-bag{display:inline-flex;gap:8px}
     .gx-actbar{display:flex;gap:10px;padding:8px max(10px,env(safe-area-inset-right)) 8px max(10px,env(safe-area-inset-left));background:rgba(15,16,22,.97);border-top:1px solid #2a2e45;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
     #fnBox .gx .gx-actbar button.gx-btn{flex:1 1 0;min-height:52px;flex-direction:column;gap:1px;padding:6px 12px;font-size:15px;line-height:1.2}
@@ -2710,6 +2772,7 @@
   .gx-ev.fate{border-color:rgba(244,63,94,.55);box-shadow:0 0 18px rgba(244,63,94,.15)}
   .gx-kv{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px 14px;margin:8px 0;font-size:12px} .gx-kv span{display:block;color:var(--mu)} .gx-kv b{color:#e2e8f0}
   .gx-shop{margin-top:10px;padding:12px;border-radius:12px;border:1px solid rgba(234,179,8,.3);background:#14120c}
+  .gx-shbag{display:flex;align-items:center;gap:10px;padding:8px 0;border-top:1px solid #ffffff10} .gx-shbag .ic{font-size:22px} .gx-shbag .t{flex:1;min-width:0} .gx-shbag .t b{color:#fff;font-size:13px} .gx-shbag .t small{display:block;color:var(--mu);font-size:11.5px} #fnBox .gx-shbag .gx-btn{min-height:44px;min-width:78px} .gx-shbag{flex-wrap:wrap}
   .gx-shi{display:flex;align-items:center;gap:10px;padding:8px 0;border-top:1px solid #ffffff10} .gx-shi .ic{font-size:22px} .gx-shi.sold{opacity:.5}
   .gx-sf{position:relative;display:flex;gap:8px;overflow-x:auto;padding:4px 0 8px;margin:0 0 2px;scrollbar-width:none;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
   .gx-sf::-webkit-scrollbar{display:none}
@@ -2761,6 +2824,35 @@
 
   const TAGVI = { escape:'chạy trốn', travel:'đi xa', explore:'khám phá', fight:'giao đấu', nature:'thiên nhiên', beast:'dã thú', social:'giao tiếp', love:'tình cảm', trade:'buôn bán',
     mystery:'bí ẩn', stealth:'lén lút', work:'làm việc', danger:'hiểm nguy', heal:'cứu chữa', plague:'dịch bệnh', undead:'xác sống', war:'chiến tranh', famine:'nạn đói' };
+  // ---- bậc dị năng R / SR / SSR: màu cố định, chú thích, so với dị năng đang có (chỉ đọc dữ liệu SKILLS / EV, không đổi cân bằng) ----
+  const TIERS = { R:{ n:'Thường', c:'#94a3b8', w:6 }, SR:{ n:'Hiếm', c:'#a78bfa', w:3 }, SSR:{ n:'Cực hiếm', c:'#eab308', w:1 } };   // w = trọng số thức tỉnh trong biến cố (offerSkill 'crisis')
+  const tierRank = t => ({ R:1, SR:2, SSR:3 }[t] || 0);
+  const tierChip = (t, full) => `<span class="gx-tier ${E(t)} in mono">${E(t)}${full && TIERS[t] ? ' · ' + TIERS[t].n : ''}</span>`;
+  const skTags = s => s[7].map(t => TAGVI[t] || t).join(', ');
+  let skCovN = 0; const skCovM = {};
+  const skCov = s => { if (skCovM[s[0]] == null) { if (!skCovN) skCovN = EV.filter(e => e.tg && e.tg.length).length || 1; skCovM[s[0]] = Math.round(100 * EV.filter(e => e.tg && e.tg.some(t => s[7].includes(t))).length / skCovN); } return skCovM[s[0]]; };
+  const BONUS_LB = { hp:'Sinh lực', gold:'vàng', fame:'Danh vọng', want:'Truy nã', good:'Thiện', hum:'Nhân tính' };
+  const skBonus = s9 => Object.entries(s9 || {}).map(([k, v]) => k === 'lore' ? 'mở một chương Huyết Sử' : BONUS_LB[k] ? `${v > 0 ? '+' : '−'}${Math.abs(v)} ${BONUS_LB[k]}` : statTxt({ [k]:v })).join(', ');
+  // so với dị năng bạn đang có: dị năng "cùng loại" = cùng dùng được trong một loại sự kiện (thẻ tg)
+  function skCmp(C, s) {
+    const own = skillsOf(C).filter(o => o[0] !== s[0]); if (!own.length) return ['new', 'Mới – bạn chưa có dị năng nào'];
+    const sh = own.filter(o => o[7].some(t => s[7].includes(t)));
+    if (!sh.length) return ['new', `Mới – mở thêm cách vượt qua: ${skTags(s)}`];
+    const r = tierRank(s[4]), top = Math.max(...sh.map(o => tierRank(o[4]))), nm = L => L.slice(0, 2).map(o => `${o[2]} (${o[4]})`).join(', ') + (L.length > 2 ? '…' : '');
+    const same = [...new Set(s[7].filter(t => sh.some(o => o[7].includes(t))).map(t => TAGVI[t] || t))].join(', '), extra = s[7].filter(t => !sh.some(o => o[7].includes(t))).map(t => TAGVI[t] || t).join(', '), ex = extra ? `; mở thêm: ${extra}` : '';
+    if (r > top) return ['up', `Mạnh hơn ${nm(sh)} – cùng dùng khi ${same}${ex}`];
+    if (r === top) return ['same', `Cùng loại với ${nm(sh.filter(o => tierRank(o[4]) === top))} – cùng dùng khi ${same}${ex}`];
+    return ['down', `Yếu hơn ${nm(sh.filter(o => tierRank(o[4]) === top))} – cùng dùng khi ${same}${ex}`];
+  }
+  const CMPI = { new:'✦', up:'▲', same:'＝', down:'▼' };
+  const tierHelpBtn = () => `<button class="gx-help${UI.tierHelp ? ' on' : ''}" data-g="tierhelp" aria-expanded="${!!UI.tierHelp}" aria-label="Chú thích bậc dị năng" title="Chú thích bậc dị năng">?</button>`;
+  function tierHelp() {
+    const sum = Object.keys(TIERS).reduce((a, t) => a + TIERS[t].w, 0), cnt = t => SKILLS.filter(s => s[4] === t).length, cov = t => { const L = SKILLS.filter(s => s[4] === t); return Math.round(L.reduce((a, s) => a + skCov(s), 0) / (L.length || 1)); };
+    const mean = { R:'Hay gặp nhất. Dùng được ở ít loại sự kiện hơn.', SR:'Ít gặp hơn. Dùng được ở nhiều loại sự kiện hơn bậc R.', SSR:'Rất hiếm, thường cần điều kiện khó (Dị Nhân, huyết thống, hạch / lõi). Dùng được ở nhiều loại sự kiện nhất.' };
+    return `<div class="gx-tierhelp" role="region" aria-label="Bảng bậc dị năng"><div class="gx-h" style="margin-bottom:6px"><h4>❔ Bảng bậc dị năng</h4><button class="gx-btn ghost sm" data-g="tierhelp">Đóng</button></div>
+      ${Object.keys(TIERS).map(t => `<div class="gx-th-row">${tierChip(t, 1)}<div><p>${E(mean[t])}</p><small class="mono">${cnt(t)} dị năng · thức tỉnh: trọng số ${TIERS[t].w} (${Math.round(100 * TIERS[t].w / sum)}% nếu đủ cả ba bậc) · dùng được ở khoảng ${cov(t)}% loại sự kiện</small></div></div>`).join('')}
+      <p class="gx-note" style="margin:8px 0 0">Khi dùng trong sự kiện, dị năng nào cũng <b>chắc thắng</b> sự kiện đó, kèm một thưởng nhỏ: bậc cao không thắng dễ hơn mà <b>hiếm hơn</b> và <b>dùng được ở nhiều tình huống hơn</b>. Mỗi sự kiện chỉ hiện tối đa 2 dị năng, bậc cao xếp trước. Ô đầy thì phải quên một dị năng cũ mới nhận được cái mới. <b>Bỏ qua là mất cơ hội</b>: lời mời không được giữ lại.</p></div>`;
+  }
   const SCOL = { the:'#f43f5e', tri:'#22d3ee', mi:'#c084fc', van:'#fbbf24', y:'#a78bfa', suc:'#fb923c', gen:'#34d399' };
   const bar = (lab, v, max, col) => `<div class="gx-bar"><div class="t"><span>${lab}</span><b>${v}</b></div><i><b style="width:${clamp(v / max * 100, 0, 100)}%;background:${col}"></b></i></div>`;
   const chipsHtml = cs => (cs || []).map(([c, t]) => `<span class="gx-chip ${c}">${E(t)}</span>`).join('');
@@ -2847,11 +2939,21 @@
         ${blk ? `<p class="gx-warn">⛔ ${E(blk)}${sv ? ` – có thể bán lấy ${sv} vàng` : ''}.</p>` : ''}
         <div class="gx-row">${blk ? '' : ch.length ? ch.map(k => `<button class="gx-btn" data-g="offer" data-k="take:${k}">${PATHS[k].ic} ${E(PATHS[k].n)}</button>`).join('') + (o.id === 'master' ? `<button class="gx-btn ghost" data-g="offer" data-k="take">🧙 Chỉ kết giao</button>` : '')
           : `<button class="gx-btn" data-g="offer" data-k="take">✓ ${{ witch:'Nhập học', arena:'Nhập ngũ', gene:'Đón nhận', master:'Kết giao' }[o.id] || 'Nhận'}</button>`}
-          ${sv ? `<button class="gx-btn ghost" data-g="offer" data-k="sell">💰 Bán ${sv} vàng</button>` : ''}<button class="gx-btn ghost" data-g="offer" data-k="skip">Bỏ qua</button></div></div>`; }
+          ${sv ? `<button class="gx-btn ghost" data-g="offer" data-k="sell">💰 Bán ${sv} vàng</button>` : ''}<button class="gx-btn ghost" data-g="offer" data-k="skip">Bỏ qua – bỏ lỡ cơ duyên</button></div></div>`; }
+    if (o.k === 'bag') { const id = o.id, b = BAOM[id], an = isAnimal(C), fits = bagFits(C, id), sv = an ? 0 : sellOf(C, id), lv = Math.max(0, Math.floor(+C.bagx || 0)), upPr = BAG_LV[lv], gr = gradeOf(C, id);
+      const grChip = g => `<span class="gx-gr" style="color:${GCOL[g]};border-color:${GCOL[g]}66">${E(g)}</span>`;
+      return `<div class="gx-offer bd"><div class="gx-h" style="margin-bottom:8px"><h4>🎒 Túi đầy – chọn cách xử lý</h4><small class="mono">Túi ${bagUsed(C)}/${bagCap(C)} ô${more}</small></div>
+        <b style="color:#fff">${b[1]} ${E(baoName(C, id))}</b> ${grChip(gr)}<p class="gx-note" style="margin:6px 0">${E(baoDesc(C, id))}</p>
+        <p class="${fits ? 'gx-note' : 'gx-warn'}">${fits ? 'Đã có chỗ trống – nhận món mới.' : 'Món mới không tự mất: bỏ hoặc bán một món trong túi để lấy chỗ, hoặc không nhận / bán món mới.'}</p>
+        <div class="gx-row">${fits ? `<button class="gx-btn" data-g="offer" data-k="take">🎒 Nhận ${E(baoName(C, id))}</button>` : ''}
+          ${!an && lv < BAG_LV.length && C.gold >= upPr ? `<button class="gx-btn" data-g="offer" data-k="up">🎒 Mua Túi trữ vật (+${BAG_STEP} ô, ${upPr} vàng) rồi nhận</button>` : ''}
+          ${sv ? `<button class="gx-btn ghost" data-g="offer" data-k="sellnew">💰 Bán món mới ${sv} vàng</button>` : ''}<button class="gx-btn ghost" data-g="offer" data-k="no">Không nhận món mới</button></div>
+        ${fits ? '' : `<span class="gx-lab mono">Hoặc lấy chỗ trong túi cho món mới</span>${bagList(C).map(x => { const bb = BAOM[x.id];
+          return `<div class="gx-bgr"><span class="t">${bb[1]} ${E(baoName(C, x.id))} <b>×${x.n}</b> ${grChip(gradeOf(C, x.id))}</span><button class="gx-btn ghost sm" data-g="offer" data-k="drop:${x.id}">✖ Bỏ${x.n > 1 ? ' cả chồng' : ''}</button>${an ? '' : `<button class="gx-btn ghost sm" data-g="offer" data-k="sell:${x.id}">💰 Bán${x.n > 1 ? ' cả chồng' : ''} ${sellOf(C, x.id) * x.n} vàng</button>`}</div>`; }).join('')}`}</div>`; }
     if (o.k === 'path') { const opts = [o.id, ...(o.alt || [])].filter(k => PATHS[k] && !(C.paths && C.paths[k]));
       return `<div class="gx-offer bd"><div class="gx-h" style="margin-bottom:8px"><h4>🏯 Cơ hội nhập môn</h4><small class="mono">${more.replace(' · ', '')}</small></div>
         <p class="gx-note" style="margin:0 0 6px">Bí kíp mở ra một con đường tu luyện. Chọn một hệ để nhập môn (bậc 1), hoặc bỏ qua.</p>
-        <div class="gx-row">${opts.map(k => `<button class="gx-btn" data-g="offer" data-k="take:${k}" title="${E(PATHS[k].d)}">${PATHS[k].ic} ${E(PATHS[k].n)}</button>`).join('')}<button class="gx-btn ghost" data-g="offer" data-k="skip">Bỏ qua</button></div></div>`; }
+        <div class="gx-row">${opts.map(k => `<button class="gx-btn" data-g="offer" data-k="take:${k}" title="${E(PATHS[k].d)}">${PATHS[k].ic} ${E(PATHS[k].n)}</button>`).join('')}<button class="gx-btn ghost" data-g="offer" data-k="skip">Bỏ qua – bỏ lỡ con đường này</button></div></div>`; }
     if (o.k === 'gene') { const gd = GENE[o.id], blk = geneBlock(C, o.id), fu = fusedOf(C), same = fu.find(x => GENE[x][1] === gd[1]), full = !same && fu.length >= geneCap(C);
       return `<div class="gx-offer"><div class="gx-h" style="margin-bottom:8px"><h4>🧬 Cơ hội dung nhập gene</h4><small class="mono">Ô gene ${fu.length}/${geneCap(C)}${C.fruit ? ' · 🍏 Vạn Huyết Quả' : ''}${more}</small></div>
         <b style="color:#fff">${E(gd[0])}</b> <span class="gx-chip">${E((SLOT.find(x => x[0] === gd[1]) || ['', '', gd[1]])[2])}</span>
@@ -2859,13 +2961,19 @@
         ${blk ? `<p class="gx-warn">⛔ ${E(blk)}</p>` : same ? `<p class="gx-note">♻ Sẽ thay ${E(GENE[same][0])} (cùng vị trí)</p>` : full ? `<p class="gx-warn">Ô gene đã đầy – bỏ một gene cũ để nhận gene này, hoặc bỏ qua.</p>` : ''}
         <div class="gx-row">${!blk && !full ? `<button class="gx-btn" data-g="offer" data-k="take">🧬 Dung nhập</button>` : ''}
           ${!blk && full ? fu.map(x => `<button class="gx-btn ghost" data-g="offer" data-k="drop:${x}">✂ Bỏ ${E(GENE[x][0])}</button>`).join('') : ''}
-          <button class="gx-btn ghost" data-g="offer" data-k="skip">Bỏ qua</button></div></div>`; }
-    const sk = SKM[o.id], full = (C.sk || []).length >= skillCap(C);
-    return `<div class="gx-offer"><div class="gx-h" style="margin-bottom:8px"><h4>⚡ Dị năng muốn thức tỉnh</h4><small class="mono">Ô dị năng ${(C.sk || []).length}/${skillCap(C)}${more}</small></div>
-      <b style="color:#fff">${sk[1]} ${E(sk[2])}</b> <span class="gx-tier ${sk[4]} mono">${sk[4]}</span><p class="gx-note" style="margin:6px 0">${E(sk[8])}</p>
-      ${full ? `<p class="gx-warn">Ô dị năng đã đầy (Dị Nhân chứa được 5) – quên một dị năng cũ hoặc bỏ qua.</p>` : ''}
-      <div class="gx-row">${!full ? `<button class="gx-btn" data-g="offer" data-k="take">⚡ Thức tỉnh</button>` : C.sk.map(x => `<button class="gx-btn ghost" data-g="offer" data-k="drop:${x}">✖ Quên ${E(SKM[x][2])}</button>`).join('')}
-        <button class="gx-btn ghost" data-g="offer" data-k="skip">Bỏ qua</button></div></div>`;
+          <button class="gx-btn ghost" data-g="offer" data-k="skip">Bỏ qua – mất cơ hội này</button></div></div>`; }
+    const sk = SKM[o.id], full = (C.sk || []).length >= skillCap(C), cmp = skCmp(C, sk), bn = skBonus(sk[9]);
+    return `<div class="gx-offer"><div class="gx-h" style="margin-bottom:8px"><h4>⚡ Dị năng muốn thức tỉnh</h4><span class="gx-hrow">${tierHelpBtn()}<small class="mono">Ô dị năng ${(C.sk || []).length}/${skillCap(C)}${more}</small></span></div>
+      ${UI.tierHelp ? tierHelp() : ''}
+      <div class="gx-skh">${tierChip(sk[4], 1)} <b style="color:#fff">${sk[1]} ${E(sk[2])}</b></div>
+      <p class="gx-note" style="margin:6px 0 2px"><b>Tác dụng:</b> chắc thắng khi gặp ${E(skTags(sk))}${bn ? ` · thưởng ${E(bn)}` : ''} · dùng được ở khoảng ${skCov(sk)}% loại sự kiện.</p>
+      <p class="gx-note" style="margin:0 0 2px"><b>Tư chất:</b> ${E(sk[6])}</p>
+      <p class="gx-cmp ${cmp[0]}">${CMPI[cmp[0]]} <b>So với bạn đang có:</b> ${E(cmp[1])}</p>
+      <p class="gx-note" style="margin:4px 0">${E(sk[8])}</p>
+      ${full ? `<p class="gx-warn">Giá: ô dị năng đã đầy (Dị Nhân chứa được 5) – phải quên một dị năng cũ để nhận cái mới, hoặc bỏ qua.</p>` : ''}
+      <div class="gx-row">${!full ? `<button class="gx-btn" data-g="offer" data-k="take">⚡ Thức tỉnh</button>` : C.sk.map(x => `<button class="gx-btn ghost" data-g="offer" data-k="drop:${x}">✖ Quên ${E(SKM[x][2])} (${E(SKM[x][4])})</button>`).join('')}
+        <button class="gx-btn ghost" data-g="offer" data-k="skip">Bỏ qua – mất dị năng này</button></div>
+      <p class="gx-note" style="margin:6px 0 0">Bỏ qua là mất hẳn: lời mời không được giữ lại (nếu đến từ bảo vật thì bảo vật đã dùng hết).</p></div>`;
   }
   // bảng con đường tu luyện (hệ chính được ưu tiên khi chọn "Tu luyện")
   function pathPanel(C) {
@@ -2884,7 +2992,7 @@
       <div class="gx-kv mono"><div><span>${SN[P.st]}</span><b style="color:${inf.st >= inf.need ? 'var(--gr)' : 'var(--re)'}">${inf.st} / cần ${inf.need}</b></div><div><span>Tỉ lệ thành công</span><b style="color:var(--cy)">${inf.odds}%</b></div><div><span>Thọ khi thành công</span><b>+${lifeSum(inf.t - 1, inf.t, k)} năm</b></div><div><span>Thời gian</span><b>vài tháng – vài năm</b></div></div>
       ${inf.block ? `<p class="gx-warn">⛔ ${E(inf.block)}</p>` : `<p class="gx-note">Thất bại: mất sinh lực, ${E(P.en)} tụt còn 55%, đôi khi tẩu hỏa nhập ma. ${inf.t >= 6 ? 'Từ bậc 6 bắt buộc dùng bảo vật hợp hệ.' : 'Dùng bảo vật hợp hệ: +20% tỉ lệ.'}</p>`}
       <div class="gx-opts">${!inf.block && inf.t < 6 ? `<button class="gx-opt" data-g="btgo" data-k="${k}" data-i=""><span>🧘 Đột phá bằng thực lực</span><small class="mono">${inf.odds}%</small></button>` : ''}
-        ${!inf.block ? inf.items.map(([id, i]) => `<button class="gx-opt sk" data-g="btgo" data-k="${k}" data-i="${i}"><span>${BAOM[id][1]} Dùng ${E(baoName(C, id))} <span class="gx-gr" style="color:${GCOL[BAOM[id][4]]}">${E(BAOM[id][4])}</span></span><small class="mono">${Math.min(99, inf.odds + 20)}%</small></button>`).join('') : ''}
+        ${!inf.block ? inf.items.map(([id, i]) => `<button class="gx-opt sk" data-g="btgo" data-k="${k}" data-i="${i}"><span>${BAOM[id][1]} Dùng ${E(baoName(C, id))}${bagList(C)[i] && bagList(C)[i].n > 1 ? ` (có ${bagList(C)[i].n})` : ''} <span class="gx-gr" style="color:${GCOL[BAOM[id][4]]}">${E(BAOM[id][4])}</span></span><small class="mono">${Math.min(99, inf.odds + 20)}%</small></button>`).join('') : ''}
         <button class="gx-opt" data-g="bt" data-k=""><span>↩ Để sau</span></button></div></div>`;
   }
   // bộ lọc chợ theo hệ: chỉ ẩn / hiện, không đổi giá, mã vật phẩm hay luật kỵ hệ. "Chung" = vật phẩm không thuộc hệ nào (hoặc hợp mọi hệ như Thần Cốt, Bàn Đào)
@@ -2894,13 +3002,15 @@
   const shopMatch = (f, id) => f === 'all' || (f === 'gen' ? !itemHe(id).length : itemHe(id).includes(f));
   function setShopF(k) { const p = prefs(); p.shopf = k; lsSet(UIK(), p); }
   function shopPanel(C) {
-    const sh = shopOf(C), sold = sh.sold || [], full = (C.inv || []).length >= 8, left = 365 - ((C.days != null ? C.days : C.age * 365) % 365), f = shopFilter(), shown = sh.it.filter(id => shopMatch(f, id));
+    const sh = shopOf(C), sold = sh.sold || [], left = 365 - ((C.days != null ? C.days : C.age * 365) % 365), f = shopFilter(), shown = sh.it.filter(id => shopMatch(f, id));
     const fl = [['all', '🧺', 'Tất cả'], ['gen', '🎒', 'Chung'], ...Object.keys(PATHS).map(k => [k, PATHS[k].ic, HE_SHORT[k] || PATHS[k].n])];
     return `<div class="gx-shop"><div class="gx-h" style="margin-bottom:6px"><h4 style="font-size:13px">🏪 ${sh.black ? 'Chợ & chợ đen' : 'Chợ phiên'}</h4><small class="mono">💰 ${C.gold} vàng · đổi hàng sau ${fmtDur(left)}</small></div>
       <div class="gx-sf" role="group" aria-label="Lọc theo hệ">${fl.map(([k, ic, n]) => `<button class="gx-sfb${f === k ? ' on' : ''}" data-g="shopf" data-k="${k}" aria-pressed="${f === k}">${ic} ${E(n)} <small>${sh.it.filter(id => shopMatch(k, id)).length}</small></button>`).join('')}</div>
-      ${shown.length ? shown.map(id => { const b = BAOM[id], pr = priceOf(C, id), gr = id === 'b_fruit' && !fruitKnown(C) ? 'Phàm' : b[4], sd = sold.includes(id);
+      ${shown.length ? shown.map(id => { const b = BAOM[id], pr = priceOf(C, id), gr = id === 'b_fruit' && !fruitKnown(C) ? 'Phàm' : b[4], sd = sold.includes(id), full = !bagFits(C, id);
         return `<div class="gx-shi${sd ? ' sold' : ''}"><span class="ic">${b[1]}</span><div class="t"><b>${E(baoName(C, id))}</b> <span class="gx-gr" style="color:${GCOL[gr]};border-color:${GCOL[gr]}66">${E(gr)}</span><small>${E(b[3])} · ${E(baoDesc(C, id)).slice(0, 110)}</small></div>
-          <button class="gx-btn sm" data-g="buy" data-k="${id}" ${sd || C.gold < pr || full ? 'disabled' : ''}>${sd ? 'Đã mua' : pr + ' vàng'}</button></div>`; }).join('') : `<p class="gx-note">${sh.it.length ? 'Kho năm nay không có món thuộc nhóm này – chọn "Tất cả" để xem hết.' : 'Hết hàng – sang năm quay lại.'}</p>`}
+          <button class="gx-btn sm" data-g="buy" data-k="${id}" ${sd || C.gold < pr || full ? 'disabled' : ''}>${sd ? 'Đã mua' : full ? 'Túi đầy' : pr + ' vàng'}</button></div>`; }).join('') : `<p class="gx-note">${sh.it.length ? 'Kho năm nay không có món thuộc nhóm này – chọn "Tất cả" để xem hết.' : 'Hết hàng – sang năm quay lại.'}</p>`}
+      ${(lv => `<div class="gx-shbag"><span class="ic">🎒</span><div class="t"><b>Túi trữ vật</b> <span class="gx-gr" style="color:${GCOL.Linh};border-color:${GCOL.Linh}66">cấp ${lv}/${BAG_LV.length}</span><small>Túi hiện ${bagUsed(C)}/${bagCap(C)} ô · ${lv >= BAG_LV.length ? 'đã ở cấp tối đa' : `mỗi cấp thêm ${BAG_STEP} ô, lên ${bagCap(C) + BAG_STEP} ô`} · tối đa ${BAG_BASE + BAG_STEP * BAG_LV.length} ô · luôn có bán, không đổi theo năm</small></div>
+        <button class="gx-btn sm" data-g="bagup" ${lv >= BAG_LV.length || C.gold < BAG_LV[lv] ? 'disabled' : ''}>${lv >= BAG_LV.length ? 'Tối đa' : BAG_LV[lv] + ' vàng'}</button></div>`)(Math.max(0, Math.floor(+C.bagx || 0)))}
       ${sh.black ? '<p class="gx-note">🕶 Đồ quý ở chợ đen có thể khiến bạn bị để ý (+ Truy nã).</p>' : ''}</div>`;
   }
   function viewLife() {
@@ -2920,9 +3030,9 @@
           ${!an ? `<button class="gx-btn ghost${UI.shop ? ' on' : ''}" data-g="shop">🏪 Chợ</button>` : ''}
           ${C.age >= 60 || C.lifeMax > 200 && C.age >= 40 ? `<button class="gx-btn ghost" data-g="endlife">📕 Khép lại cuốn sách đời mình</button>` : ''}</div>
         ${UI.shop && !an ? shopPanel(C) : ''}
-        ${C.inv && C.inv.length ? `<span class="gx-lab mono">🎒 Túi bảo vật (${C.inv.length}/8) – nuốt / dùng, hoặc bán</span><div class="gx-chips">${C.inv.map((id, i) => { const b = BAOM[id], keep = BT[id] && GRADES.indexOf(b[4]) >= 2;
-          return `<span class="gx-bag"><button class="gx-chip lore" data-g="use" data-k="${i}" ${wait ? 'disabled' : ''} title="${E(baoDesc(C, id))}">${b[1]} ${b[6] === 'nuot' ? 'Nuốt' : 'Dùng'} ${E(baoName(C, id))}${keep ? ' ⭐' : ''}</button>${!an ? `<button class="gx-chip" data-g="sell" data-k="${i}" ${wait ? 'disabled' : ''} title="Bán">💰${sellOf(C, id)}</button>` : ''}</span>`; }).join('')}</div>
-          ${C.inv.some(id => BT[id] && GRADES.indexOf(BAOM[id][4]) >= 2) ? '<p class="gx-note">⭐ = bảo vật hỗ trợ đột phá – nên để dành lúc bế quan.</p>' : ''}` : ''}</div>`;
+        ${bagUsed(C) ? `<span class="gx-lab mono">🎒 Túi bảo vật (${bagUsed(C)}/${bagCap(C)} ô) – nuốt / dùng, hoặc bán</span><div class="gx-chips">${bagList(C).map((x, i) => { const id = x.id, b = BAOM[id], keep = BT[id] && GRADES.indexOf(b[4]) >= 2;
+          return `<span class="gx-bag"><button class="gx-chip lore" data-g="use" data-k="${i}" ${wait ? 'disabled' : ''} title="${E(baoDesc(C, id))}">${b[1]} ${b[6] === 'nuot' ? 'Nuốt' : 'Dùng'} ${E(baoName(C, id))}${x.n > 1 ? ` ×${x.n}` : ''}${keep ? ' ⭐' : ''}</button>${!an ? `<button class="gx-chip" data-g="sell" data-k="${i}" ${wait ? 'disabled' : ''} title="Bán 1">💰${sellOf(C, id)}</button>` : ''}</span>`; }).join('')}</div>
+          ${bagList(C).some(x => BT[x.id] && GRADES.indexOf(BAOM[x.id][4]) >= 2) ? '<p class="gx-note">⭐ = bảo vật hỗ trợ đột phá – nên để dành lúc bế quan.</p>' : ''}` : ''}</div>`;
     else if (C.ph === 'ev') {
       const ev = evOf(C), p = UI.pend, sks = skillOpts(C, ev);
       main = `${scenesHtml(UI.res && UI.res.scenes)}${UI.res && UI.res.chips && UI.res.chips.length ? `<div class="gx-chips" style="margin:0 0 8px">${chipsHtml(UI.res.chips)}</div>` : ''}
@@ -2930,7 +3040,7 @@
         ${p ? `<div class="gx-res"><b style="color:var(--re)">Thất bại!</b><div class="gx-dice mono">Kiểm tra ${SN[p.roll.s]}: <b>${p.roll.v}</b> + 🎲${p.roll.d6}${p.roll.bonus ? ` + 🍀${p.roll.bonus}` : ''} = <b>${p.roll.sum}</b> &lt; ${p.roll.dc}</div>
             ${cp ? '' : `<div class="gx-row"><button class="gx-btn" data-g="nm" data-k="${p.i}">☯ Dùng 1 Nghịch Mệnh lật kèo (còn ${C.nm})</button><button class="gx-btn ghost" data-g="nmno" data-k="${p.i}">Chấp nhận số phận</button></div>`}</div>`
           : `<div class="gx-opts">${ev.c.map((c, i) => c.if && !c.if(C) ? '' : `<button class="gx-opt" data-g="pick" data-k="${i}"><span>${E(tx(C, c.t))}</span>${c.chk ? `<small class="mono">🎲 ${SN[c.chk[0]]} ${C.s[c.chk[0]]}/${c.chk[1]}</small>` : ''}</button>`).join('')}
-            ${sks.map(s => `<button class="gx-opt sk" data-g="skill" data-k="${s[0]}"><span>⚡ Dùng dị năng: ${s[1]} ${E(s[2])}</span><small class="mono">${s[4]} · chắc thắng</small></button>`).join('')}</div>`}</div>`;
+            ${sks.map(s => `<button class="gx-opt sk" data-g="skill" data-k="${s[0]}"><span>⚡ Dùng dị năng: ${s[1]} ${E(s[2])}</span><small class="mono"><b style="color:${(TIERS[s[4]] || {}).c || '#94a3b8'}">${E(s[4])}</b> · chắc thắng</small></button>`).join('')}</div>`}</div>`;
     } else if (C.ph === 'res') {
       const r = UI.res || {};
       if (r.quiet) main = `${scenesHtml(r.scenes)}<div class="gx-ev"><div class="yr mono"><span>📅 Tháng ${cal.m} · ${C.age} tuổi</span><span>⏱ ${fmtDur(r.days || 0)}</span></div>
@@ -2980,7 +3090,7 @@
         <div class="gx-chips">${persona(C).map(p => `<span class="gx-chip al">${p[0]} ${p[1]}</span>`).join('')}<span class="gx-chip">🧑 Nhân tính ${C.hum}</span><span class="gx-chip ${C.want >= 50 ? 'down' : ''}">🚨 Truy nã ${C.want}</span><span class="gx-chip gene">☯ ${C.nm}</span><span class="gx-chip">⏳ Thọ ${C.lifeMax > 3000 ? '∞' : C.lifeMax}</span></div>
         <div class="gx-axes">${axis('Tàn ác', 'Thiện', C.al.g, '#34d399')}${axis('Hỗn loạn', 'Trật tự', C.al.l, '#60a5fa')}${axis('Thận trọng', 'Liều lĩnh', C.al.b, '#fb923c')}</div>`)}
         <span class="gx-lab mono">🏯 Con đường tu luyện</span>${pathPanel(C)}
-        <div class="gx-chips"><span class="gx-chip gene">🧬 Ô gene ${fusedOf(C).length}/${geneCap(C)}${C.fruit ? ' · 🍏' : ''}</span><span class="gx-chip line">🩸 Dung hợp ${(C.bl || []).length}/${blCap(C)}</span><span class="gx-chip en">⚡ Dị năng ${(C.sk || []).length}/${skillCap(C)}</span><span class="gx-chip lore">🎒 ${(C.inv || []).length}/8</span></div>
+        <div class="gx-chips"><span class="gx-chip gene">🧬 Ô gene ${fusedOf(C).length}/${geneCap(C)}${C.fruit ? ' · 🍏' : ''}</span><span class="gx-chip line">🩸 Dung hợp ${(C.bl || []).length}/${blCap(C)}</span><span class="gx-chip en">⚡ Dị năng ${(C.sk || []).length}/${skillCap(C)}</span><span class="gx-chip lore">🎒 ${bagUsed(C)}/${bagCap(C)}</span></div>
         ${C.car && CAR_PERK[C.car.k] ? `<p class="gx-note">⚒ <b style="color:var(--go)">${E(careerName(C))}</b>: ${CAR_PERK[C.car.k][2].slice(0, C.car.rk + 1).map(E).join(' · ')}${C.car.rk < CAREER[C.car.k][1].length - 1 ? ` <span style="color:var(--mu)">(bậc kế: ${E(CAREER[C.car.k][1][C.car.rk + 1])})</span>` : ''}</p>` : ''}
         ${fold('stats', '📊 Chỉ số & năng lượng', `${statBars(C.s)}<div class="gx-bars">${EN.map(([k, n, col]) => bar(n, C.en[k], 100, col)).join('')}</div>`, STATS.map(([k, , ic]) => ic + C.s[k]).join(' '))}
         ${rel || C.spouse || C.kids ? fold('rel', '🤝 Quan hệ & gia đình', `${rel ? `<div class="gx-rel mono">${rel}</div>` : ''}${C.spouse || C.kids ? `<p class="gx-note">${C.spouse ? `💍 Bạn đời: ${E(C.spouse)} · ` : ''}👶 ${C.kidn.length ? E(kidsFull(C).join(', ')) : C.kids + ' con'}</p>` : ''}`) : ''}</div>
@@ -3016,12 +3126,13 @@
     const card = s => { const on = own.includes(s), apt = C && !on && skReq(C, s), src = BAO.filter(b => b[8] === s[0]).map(b => b[2]);
       return `<div class="gx-sk${on ? ' on' : ''}"><div class="hd"><span class="ic">${s[1]}</span><div style="flex:1;min-width:0"><h5>${E(s[2])}</h5><div class="meta">${E(s[3])} · dùng khi: ${s[7].map(t => TAGVI[t] || t).join(', ')}</div></div><span class="gx-tier ${s[4]} mono">${s[4]}</span></div>
         <p>${E(s[8])}</p><p class="gx-note" style="margin-top:6px">${on ? '<b style="color:var(--gr)">✓ Đã thức tỉnh</b>' : `${apt ? '<b style="color:var(--go)">✦ Có tư chất</b> – ' : ''}Tư chất: ${E(s[6])}${src.length ? ` · Bảo vật: ${E(src.join(', '))}` : ''}`}</p></div>`; };
-    const bag = C && C.inv && C.inv.length ? `<div class="gx-pn"><div class="gx-h"><h4>🎒 Túi bảo vật (${C.inv.length}/8)</h4><small class="mono">${C.ph === 'act' ? 'Dùng lúc đang chọn hoạt động' : 'Quay lại màn chọn hoạt động để dùng'}</small></div>
-      ${noteHtml()}<div class="gx-sks">${C.inv.map((id, i) => { const b = BAOM[id], gr = id === 'b_fruit' && !fruitKnown(C) ? 'Phàm' : b[4]; return `<div class="gx-sk"><div class="hd"><span class="ic">${b[1]}</span><div style="flex:1;min-width:0"><h5>${E(baoName(C, id))}</h5><div class="meta">${E(b[3])}${BT[id] ? ' · hỗ trợ đột phá: ' + BT[id].slice(0, 4).map(k => PATHS[k].ic).join('') : ''}</div></div><span class="gx-gr" style="color:${GCOL[gr]};border-color:${GCOL[gr]}66">${E(gr)}</span></div>
+    const bag = C && bagUsed(C) ? `<div class="gx-pn"><div class="gx-h"><h4>🎒 Túi bảo vật (${bagUsed(C)}/${bagCap(C)} ô)</h4><small class="mono">${C.ph === 'act' ? 'Dùng lúc đang chọn hoạt động' : 'Quay lại màn chọn hoạt động để dùng'}</small></div>
+      ${noteHtml()}<div class="gx-sks">${bagList(C).map((x, i) => { const id = x.id, b = BAOM[id], gr = id === 'b_fruit' && !fruitKnown(C) ? 'Phàm' : b[4]; return `<div class="gx-sk"><div class="hd"><span class="ic">${b[1]}</span><div style="flex:1;min-width:0"><h5>${E(baoName(C, id))}${x.n > 1 ? ` <b class="mono" style="color:var(--cy)">×${x.n}</b>` : ''}</h5><div class="meta">${E(b[3])}${BT[id] ? ' · hỗ trợ đột phá: ' + BT[id].slice(0, 4).map(k => PATHS[k].ic).join('') : ''}</div></div><span class="gx-gr" style="color:${GCOL[gr]};border-color:${GCOL[gr]}66">${E(gr)}</span></div>
         <p>${E(baoDesc(C, id))}</p><p class="gx-note">${E(statTxt(Object.fromEntries(Object.entries(b[7]).filter(([k]) => SN[k] || EN.some(e => e[0] === k)))))}${b[8] ? ` · thức tỉnh <b style="color:var(--cy)">${E(SKM[b[8]][2])}</b>` : ''}</p>
         <div class="gx-row"><button class="gx-btn" data-g="use" data-k="${i}" ${C.ph !== 'act' || (C.offers && C.offers.length) ? 'disabled' : ''}>${b[6] === 'nuot' ? '🍽 Nuốt' : '🔗 Dùng'}</button>${isAnimal(C) ? '' : `<button class="gx-btn ghost" data-g="sell" data-k="${i}" ${C.ph !== 'act' || (C.offers && C.offers.length) ? 'disabled' : ''}>💰 Bán ${sellOf(C, id)}</button>`}</div></div>`; }).join('')}</div></div>` : '';
-    return `${bag}<div class="gx-pn" style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between"><input class="gx-in" id="gxSkq" placeholder="🔎 Tìm dị năng…" value="${E(UI.skq || '')}" style="max-width:280px">
+    return `${bag}<div class="gx-pn" style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between"><input class="gx-in" id="gxSkq" placeholder="🔎 Tìm dị năng…" value="${E(UI.skq || '')}" style="max-width:280px">${tierHelpBtn()}
         <div class="gx-seg" style="flex-wrap:wrap">${[['', 'Tất cả'], ...cats.map(c => [c, c])].map(([k, n]) => `<button data-g="skc" data-k="${E(k)}" class="${(UI.skc || '') === k ? 'on' : ''}">${E(n)}</button>`).join('')}</div></div>
+      ${UI.tierHelp ? tierHelp() : ''}
       <p class="gx-note" style="margin:10px 2px">Dị năng <b>không tự có</b>: chỉ thức tỉnh khi gặp biến cố (cận kề cái chết, chiến loạn, dịch bệnh…) – ưu tiên dị năng bạn có tư chất – hoặc khi nuốt / dung hợp bảo vật. Mỗi người chứa được 2 dị năng (Tinh thần ≥ 14: 3), Dị Nhân chứa được 5.${C ? ` Đang có <b style="color:var(--cy)">${own.length}/${skillCap(C)}</b>.` : ''}</p>
       <div class="gx-sks">${L_.map(card).join('')}</div>
       <div class="gx-pn" style="margin-top:14px"><div class="gx-h"><h4>📦 Bảng bảo vật</h4><small class="mono">${BAO.length} món · phẩm cấp ${GRADES.join(' < ')}</small></div>
@@ -3256,7 +3367,7 @@
   let root = null;
   // cuộn về đầu khung game (khung toàn màn hình tự cuộn riêng)
   let lastPhk = null, progAt = 0;   // pha lần vẽ trước (để biết khi nào đổi pha); lúc bấm nút tiến trình gần nhất
-  const PROG = ['act', 'auto', 'next', 'pick', 'nm', 'nmno', 'skill', 'btgo'];   // nút làm game tiến lên: chạm đúp liên tiếp chỉ tính một lần
+  const PROG = ['act', 'auto', 'next', 'pick', 'nm', 'nmno', 'skill', 'btgo', 'offer', 'bagup'];   // nút làm game tiến lên: chạm đúp liên tiếp chỉ tính một lần
   let keep = null;   // vị trí cuộn cần giữ sau lần vẽ lại: { y: cuộn trang / khung, sc: cuộn từng cột, sig } (toTop() hủy)
   const scrollers = () => root ? [...root.querySelectorAll('.gx-main, .gx-life > div')] : [];   // các vùng cuộn riêng (chỉ có khi nằm ngang)
   function toTop() { keep = null; scrollers().forEach(e => { e.scrollTop = 0; }); const bx = root && root.closest('#fnBox'); if (!bx) return; const st = window.getComputedStyle(bx).position === 'fixed';
@@ -3314,6 +3425,7 @@
     if (g === 'noop') return;
     if (g === 'reg') { UI.reg = k; return render(); }
     if (g === 'sell' && G.life) return sellBao(+k);
+    if (g === 'bagup' && G.life) return buyBagUp();
     if (G.life && UI.tab === 'life') { const C = G.life;
       if (g === 'bt') { UI.bt = k; UI.shop = 0; render(); return toTop(); }
       if (g === 'btgo') return breakthrough(k, b.dataset.i);
@@ -3322,6 +3434,7 @@
       if (g === 'shopf') { setShopF(k); UI.sfCenter = 1; return render(); }
       if (g === 'buy') { b.disabled = true; return buy(k); } }   // khóa nút ngay khi bấm; xử lý mua trước, vẽ lại một lần
     if (g === 'skc') { UI.skc = k; return render(); }
+    if (g === 'tierhelp') { UI.tierHelp = !UI.tierHelp; return render(); }
     if (g === 'cut') { const C = G.life, free = carRk(C, 'scholar') >= 3; if (!C || C.ph !== 'act' || innateOf(C).includes(k) || (!free && C.gold < 30)) return;
       const chips = []; removeGene(C, k, chips); apply(C, free ? { hum:5 } : { gold:-30, hp:-10, hum:5 }, chips); UI.note = { txt:'', chips }; save(G); return render(); }
     if (g === 'use' && G.life) return useBao(+k);
