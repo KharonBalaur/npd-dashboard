@@ -102,7 +102,7 @@ Cả 8 quyết định đã duyệt, kèm 2 bổ sung ở mục 3 và 6.
 **Ước lượng: ~6 commit** (mỗi commit đổi `?v=` genesis.js): chỉ số 3 (trần + `grow` + đổi bản lưu; ngưỡng; mô phỏng / test), kỵ hệ 1,
 tu nhiều hệ 2 (luật; giao diện + bản lưu cũ). Gộp mỗi phần một commit thì 3.
 
-## Mô phỏng nhanh: số lượt "Tu luyện" mỗi bậc (bot trong scratchpad, không commit)
+## Mô phỏng nhanh: số lượt "Tu luyện" mỗi bậc (script `tools/sim-stats.js`)
 1. Chạy cơ sở với p = 0,35 (p = 0,5 ở dòng 5). 6.000 nhân vật Nội lực, vào tuổi 16, Tinh thần 11, Trí 10, Vận 10; chỉ tính lượt Tu luyện (thật: `ACT_DUR` ×6 khi thọ > 200, `YRS_T`, `LIFE_T`, `ODDS_T`; T6+ có bảo vật +20%); chưa tính Học / Rèn, thời gian tự trôi, sự kiện, tai nạn.
 2. T0→T1 8,5 · T1→T2 11,5 · T2→T3 12,7 · T3→T4 20,9 lượt. Cổng chỉ số thêm ≈ 14 lượt (≈ 13 năm) so với chỉ chờ thanh (39,7 lượt): tới T4 lúc 65 tuổi (thọ 109) thay vì 53.
 3. T4→T5 41,9 lượt (tuổi 104 / thọ 149); T5→T6 chỉ 13,6 lượt dù 75 năm, vì `durOf` ×6 (thọ 229 > 200) làm mỗi lượt ≈ 5,5 năm.
@@ -111,6 +111,6 @@ tu nhiều hệ 2 (luật; giao diện + bản lưu cũ). Gộp mỗi phần m�
 
 ## Kiểm sau triển khai
 Làm sau khi cả 3 phần đã vào code, trước khi báo xong; kết quả ghi lại vào file này.
-1. **Chạy lại mô phỏng lượt Tu luyện** (`b_tuluyen.js` trong scratchpad, không nằm trong repo; mất thì viết lại theo mục trên) với p = 0,5: `node b_tuluyen.js 6000 gate 0.5`. Đối chiếu bảng T0→T9 ở trên (kỳ vọng T0–T3 khoảng 6–10 lượt, T9 khoảng 40% còn sống), rồi chạy lại bằng hằng số đọc từ code đã triển khai, không dùng bản sao.
+1. **Chạy lại mô phỏng lượt Tu luyện** (`tools/sim-stats.js`, đọc hằng số thẳng từ `genesis.js`) với p = 0,5: `node tools/sim-stats.js 6000 gate 0.5`. Đối chiếu bảng T0→T9 ở trên (kỳ vọng T0–T3 khoảng 6–10 lượt, T9 khoảng 40% còn sống), rồi chạy lại bằng hằng số đọc từ code đã triển khai, không dùng bản sao.
 2. **So tần suất sự kiện cũ / mới trên ít nhất 3.000 đời mỗi bản**: cùng bot và cùng cách chọn ngẫu nhiên; bản cũ = nhánh trước khi đổi thang, bản mới = nhánh đã triển khai. Đếm theo mã sự kiện: số lần xuất hiện mỗi đời và tỉ lệ qua thử chỉ số; thêm số lượt mỗi đời và bậc cao nhất đạt được.
 3. **Chênh quá 10% thì báo** (cả sự kiện và các số tổng hợp), kèm nguyên nhân nghi ngờ (ngưỡng nào, dòng nào). Sự kiện có dưới 100 lần ở bản cũ ghi chú "ít mẫu": sai số ngẫu nhiên đã gần 10%, cần chạy thêm đời trước khi kết luận.
