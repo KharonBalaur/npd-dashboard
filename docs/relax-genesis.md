@@ -48,6 +48,12 @@ Chuyển từ `CLAUDE.md` nguyên văn (chỉ đổi chỗ, không bỏ thông t
   Lưu npdFun@user.gen {v:1, life, books (≤ 12), arch, lore, lives, legacy, phuc, draft} – giữ dưới 30 000 ký tự (ô Sheet ≤ 45 000 cho
   cả npdFun; C.log giữ 70 dòng). Đời đang dở từ bản cũ: upgrade(C) chỉ thêm trường (al, npc, segs, deeds, kidn, innate, sk = dị năng
   đang đủ điều kiện, inv, offers, fruit, days, since, gap), không đổi id sự kiện cũ.
+  Chỉ số thang 100 (docs/stats-100-plan.md): người thường = 10; trần = 20 + 10 × tầng cao nhất (T8 = T9 = 100); điều kiện đột phá
+  chỉ số chính ≥ trần − 5 (NEED_T); mỗi điểm tăng lấp 20% khoảng cách tới trần (growVal / statAdd); Vận khí quy về thang cũ
+  v* = min(25, 7 + 1,3·(Vận − 10)) cho mọi xác suất (vStar). Bản lưu cũ đổi MỘT lần bằng cờ C.sv = 2 trong upgrade(C), số cũ giữ
+  ở C.s20 (bản nháp: draft.sv, draft.roll.s20). Thêm ngưỡng chỉ số mới thì viết theo thang mới (f20 chỉ để đổi số cũ).
+  upgrade(C) chạy hai bước di cư ĐỘC LẬP, mỗi bước một cờ riêng và chạy lại không đổi thêm: túi bagUpgrade (C.inv → C.bag, cờ C.bagv = 1) và
+  thang chỉ số (cờ C.sv = 2); bản lưu cũ chưa có cả hai nạp vào được đúng cả hai (kiểm bằng `node tools/test-migrate.js`, không cần trình duyệt).
   Giao diện lưu riêng trên máy: khóa npdFunUi@user (trạng thái gập các khối, bộ lọc chợ shopf), không đồng bộ lên máy chủ.
   Chợ: kho C.shop = { y:tuổi, it:[mã vật phẩm], black, sold:[mã đã mua] } sinh theo hạt giống hash(C.sid | tuổi) (shopMake), đổi đúng một lần mỗi năm game
   (shopEnsure trong passTime / khi bấm / mount); vẽ chỉ đọc (shopOf). Nút mua theo mã vật phẩm, món đã mua ở lại kho ("Đã mua"). C.sid: nhân vật
