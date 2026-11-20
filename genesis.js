@@ -3107,21 +3107,29 @@
   }
   let root = null;
   // cuộn về đầu khung game (khung toàn màn hình tự cuộn riêng)
-  function toTop() { const bx = root && root.closest('#fnBox'); if (!bx) return; const st = window.getComputedStyle(bx).position === 'fixed';
+  let keepY = null;   // vị trí cuộn cần giữ sau lần vẽ lại (toTop() hủy)
+  function toTop() { keepY = null; const bx = root && root.closest('#fnBox'); if (!bx) return; const st = window.getComputedStyle(bx).position === 'fixed';
     if (st) bx.scrollTop = 0; else { const r = bx.getBoundingClientRect(); if (r.top < 0) window.scrollBy(0, r.top - 70); } }
-  function render() {
+  // fresh = true: đổi chế độ khung (toàn màn hình) nên không khôi phục vị trí cuộn
+  function render(fresh) {
     if (!root || !root.isConnected) return;
     G = load(); ensureCss();
     const t = UI.tab;
-    const bx = root.closest('#fnBox'); if (bx) bx.classList.toggle('gx-max', !!UI.max);
+    const bx = root.closest('#fnBox'), own0 = !!bx && window.getComputedStyle(bx).position === 'fixed', y0 = own0 ? bx.scrollTop : window.scrollY;   // đọc vị trí cuộn trước khi gán lại nội dung
+    if (bx) bx.classList.toggle('gx-max', !!UI.max);
     root.innerHTML = `<div class="gx">${topBar()}<div class="gx-main">${t === 'lore' ? viewLore() : t === 'books' ? viewBooks() : t === 'dna' ? viewDna() : t === 'skills' ? viewSkills() : G.life ? viewLife() : viewCreate()}
       <p class="gx-note">Lưu tự động theo tài khoản. Thế giới, tên riêng và cốt truyện là nội dung tự viết, chỉ lấy cảm hứng từ mô-típ dân gian và thể loại (ma cà rồng, người sói, học viện phù thủy, dị nhân, cương thi, võ hiệp, nhẫn giả, đấu sĩ, xác ướp, thần thoại) – không dùng nhân vật hay tên riêng của tác phẩm có bản quyền.</p></div></div>`;
+    // giữ vị trí cuộn: mỗi lần bấm game vẽ lại cả khung; một số trình duyệt (Safari iOS) đặt lại về đầu → đặt lại ngay và ở khung hình kế tiếp
+    if (fresh) { keepY = null; return; }
+    keepY = y0; const put = () => { if (keepY == null) return; const o = !!bx && window.getComputedStyle(bx).position === 'fixed';
+      if (o) { if (Math.abs(bx.scrollTop - keepY) > 1) bx.scrollTop = keepY; } else if (Math.abs(window.scrollY - keepY) > 1) window.scrollTo(0, keepY); };
+    put(); requestAnimationFrame(put);
   }
   function onClick(e) {
     const b = e.target.closest('[data-g]'); if (!b || !root || !root.contains(b) || b.disabled) return;
     const g = b.dataset.g, k = b.dataset.k; G = load();
     if (g === 'tab') { UI.tab = k; render(); return toTop(); }
-    if (g === 'max') { UI.max = !UI.max; return render(); }
+    if (g === 'max') { UI.max = !UI.max; return render(true); }
     if (g === 'exit') { UI.max = false; const bx = root.closest('#fnBox'); if (bx) { bx.classList.remove('gx-max', 'gx-wide'); const c = bx.querySelector('[data-f="close"]'); if (c) c.click(); } return; }
     if (g === 'book') { UI.book = +k; UI.bp = 0; return render(); }
     if (g === 'export') { const bk = G.books[+k]; if (bk) exportBook(bk); return; }
@@ -3171,7 +3179,7 @@
     if (g === 'close') { const ep = (root.querySelector('#gxEp') || {}).value || ''; return closeBook(ep, UI.leg); }
   }
   document.addEventListener('click', onClick);
-  document.addEventListener('input', e => { if (!root || e.target.id !== 'gxSkq' || !root.contains(e.target)) return; UI.skq = e.target.value; const p = e.target.selectionStart; render(); const i = root.querySelector('#gxSkq'); if (i) { i.focus(); i.setSelectionRange(p, p); } });
+  document.addEventListener('input', e => { if (!root || e.target.id !== 'gxSkq' || !root.contains(e.target)) return; UI.skq = e.target.value; const p = e.target.selectionStart; render(); const i = root.querySelector('#gxSkq'); if (i) { i.focus({ preventScroll:true }); i.setSelectionRange(p, p); } });
   window.GenesisGame = {
     mount(el) { root = el; const bx = el.closest('#fnBox'); if (bx) bx.classList.add('gx-wide'); ensureCss(); G = load(); render(); },
     summary() { const g = load(); return g.life ? `${g.life.n} · ${g.life.age} tuổi` : g.books.length ? `${g.books.length} cuốn sách · ${g.lives} kiếp` : 'Chưa bắt đầu'; },
