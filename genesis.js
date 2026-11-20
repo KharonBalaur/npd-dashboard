@@ -21,6 +21,16 @@
   // ---------- dữ liệu thế giới ----------
   const STATS = [['the', 'Thể chất', '💪'], ['y', 'Tinh thần', '🔮'], ['tri', 'Trí tuệ', '📘'], ['suc', 'Sức mạnh', '⚔'], ['van', 'Vận khí', '🍀'], ['mi', 'Mị lực', '🌸']];   // v4: Tương thích gen gộp vào Thể chất
   const SN = Object.fromEntries(STATS.map(s => [s[0], s[1]]));
+  // ===== chỉ số thang 100 (docs/stats-100-plan.md): người thường = 10; trần = 20 + 10 × tầng cao nhất (T8 = T9 = 100); mỗi điểm tăng lấp 20% khoảng cách tới trần =====
+  const P_CULT = .5;                                              // xác suất (nhân hệ số thời gian) tăng chỉ số chính của hệ chính mỗi lượt Tu luyện
+  const f20 = x => Math.round(10 + (x - 7) * 10 / 13);          // số cũ (thang 20, người thường ≈ 7) → thang mới (7 → 10, 20 → 20)
+  const toOld = x => 7 + 1.3 * (x - 10);                        // thang mới → thang cũ (công thức thọ, đào thải gene)
+  const capOfTier = t => Math.min(100, 20 + 10 * t);
+  const capOf = C => capOfTier(maxTier(C));                     // trần chỉ số của nhân vật theo tầng cao nhất đang có
+  const vStar = C => Math.max(1, Math.min(25, 7 + 1.3 * ((C && C.s ? C.s.van : 10) - 10)));   // Vận khí quy về thang cũ, trần 25: dùng cho mọi xác suất
+  // tăng n điểm: Δ = max(1, làm tròn((trần − v)·(1 − 0,8ⁿ))), không vượt trần; giảm n điểm: −n·max(1, làm tròn(trần/20)), không dưới 1
+  const growVal = (v, cap, n) => n >= 0 ? Math.max(v, Math.min(cap, v + (n ? Math.max(1, Math.round((cap - v) * (1 - Math.pow(.8, n)))) : 0))) : Math.max(1, v - Math.abs(n) * Math.max(1, Math.round(cap / 20)));
+  const statAdd = (C, k, n) => { const v0 = C.s[k] == null ? 10 : C.s[k]; C.s[k] = growVal(v0, capOf(C), n); return C.s[k] - v0; };   // trả về mức thay đổi thật
   const EN = [['thanh', 'Thiên Quang', '#eab308'], ['hac', 'Ngục khí', '#7c3aed'], ['co', 'Thiên Thạch', '#64748b'], ['thu', 'Vạn Thú', '#16a34a']];
   const ORIGIN = {
     fish:  ['🌊', 'Làng chài ven biển', 'của Làng Chài', { the:1, y:1 }, 10, 'Nghèo mà lương thiện; biển đêm có những con cá phát sáng.'],
@@ -1438,14 +1448,14 @@
   function removeGene(C, id, chips) {
     if (id === 'last') id = C.genes[C.genes.length - 1]; if (!id || !C.genes.includes(id)) return;
     const gd = GENE[id]; C.genes = C.genes.filter(x => x !== id); C.mut = clamp(C.mut - gd[3], 0, 100);
-    Object.entries(gd[2]).forEach(([k, v]) => { C.s[k] = clamp(C.s[k] - v, 1, 20); });
+    Object.entries(gd[2]).forEach(([k, v]) => { statAdd(C, k, -v); });
     chips.push(['', `✂ Tách ${gd[0]}`]); log(C, `Tách bỏ ${gd[0]}.`);
   }
   function apply(C, eff, chips) {
     if (!eff) return;
     const num = (k, v, label, lo = 0, hi = 100) => { C[k] = clamp(C[k] + v, lo, hi); chips.push([v > 0 === (k !== 'want') ? 'up' : 'down', `${v > 0 ? '+' : '−'}${Math.abs(v)} ${label}`]); };
     for (const [k, v] of Object.entries(eff)) {
-      if (SN[k]) { C.s[k] = clamp(C.s[k] + v, 1, 20); chips.push([v > 0 ? 'up' : 'down', `${v > 0 ? '+' : '−'}${Math.abs(v)} ${SN[k]}`]); }
+      if (SN[k]) { const d = statAdd(C, k, v); if (d) chips.push([d > 0 ? 'up' : 'down', `${d > 0 ? '+' : '−'}${Math.abs(d)} ${SN[k]}`]); }
       else if (k === 'hp') num('hp', v, 'Sinh lực');
       else if (k === 'gold') { C.gold = Math.max(0, C.gold + v); chips.push([v > 0 ? 'up' : 'down', `${v > 0 ? '+' : '−'}${Math.abs(v)} vàng`]); }
       else if (k === 'hum') num('hum', v, 'Nhân tính'); else if (k === 'fame') num('fame', v, 'Danh vọng'); else if (k === 'want') num('want', v, 'Truy nã');
@@ -1466,12 +1476,12 @@
         if (C.line && lk !== 'hybrid') {   // đã có huyết mạch: dung hợp thêm cần Vạn Huyết Quả (mở 5 ô)
           if ((C.bl || []).length >= blCap(C)) { chips.push(['bad', '🩸 Dòng máu cũ kháng cự dòng máu mới (cần Vạn Huyết Quả)']); continue; }
           const d2 = LINE[lk].sub[sub]; C.bl = (C.bl || []).concat([key]); if (!C.line2 && lk !== C.line.k) C.line2 = { k:lk, sub };
-          Object.entries(d2[1]).forEach(([s, x]) => { C.s[s] = clamp(C.s[s] + x, 1, 20); }); C.lifeMax += Math.round(d2[2] / 2);
+          Object.entries(d2[1]).forEach(([s, x]) => { statAdd(C, s, x); }); C.lifeMax += Math.round(d2[2] / 2);
           Object.entries(d2[4]).forEach(([e, x]) => { C.en[e] = clamp(C.en[e] + x, 0, 100); }); C.mut = clamp(C.mut + 15, 0, 100); C.hum = clamp(C.hum + d2[3], 0, 100);
           chips.push(['line', `🧬 Dung hợp huyết mạch: ${d2[0]}`]); log(C, `Dung hợp huyết mạch ${d2[0]}${lk !== C.line.k ? ` – trở thành ${fuseName(C.line.k, lk)}` : ''}.`);
           chimAdd('fuse:' + [C.line.k, lk].sort().join('+')); if (lp) joinPath(C, lp[0], lp[1], chips, 'Dung hợp –'); pathCombo(C, chips); continue; }
         const d = LINE[lk].sub[sub];
-        C.line = { k:lk, sub }; Object.entries(d[1]).forEach(([s, x]) => { C.s[s] = clamp(C.s[s] + x, 1, 20); }); C.lifeMax += d[2]; C.hum = clamp(C.hum + d[3], 0, 100);
+        C.line = { k:lk, sub }; Object.entries(d[1]).forEach(([s, x]) => { statAdd(C, s, x); }); C.lifeMax += d[2]; C.hum = clamp(C.hum + d[3], 0, 100);
         Object.entries(d[4]).forEach(([e, x]) => { C.en[e] = clamp(C.en[e] + x, 0, 100); }); C.mut = clamp(C.mut + (lk === 'witch' || sub === 'dao' ? 5 : 20), 0, 100);
         chips.push(['line', `${LINE[lk].ic} Huyết mạch: ${d[0]}`]); log(C, `Thức tỉnh huyết mạch ${d[0]}.`);
         if (lp) joinPath(C, lp[0], lp[1], chips, 'Huyết mạch dẫn lối –'); if (key === 'hybrid.one') joinPath(C, 'vampE', 2, chips); pathCombo(C, chips); }
@@ -1546,7 +1556,7 @@
     if (rnd(1, 100) <= rej) { C.hp -= 15; chips.push(['bad', id === 'g_virus' ? '🛡 Kháng được virus' : `💥 Đào thải ${gd[0]}`]); log(C, id === 'g_virus' ? 'Kháng được Virus Thượng Cổ.' : `Cơ thể đào thải ${gd[0]}.`); return false; }
     if (drop) removeGene(C, drop, chips);
     const old = C.genes.find(x => GENE[x][1] === gd[1] && !innateOf(C).includes(x)); if (old) { removeGene(C, old, chips); }
-    C.genes.push(id); Object.entries(gd[2]).forEach(([k, v]) => { C.s[k] = clamp(C.s[k] + v, 1, 20); });
+    C.genes.push(id); Object.entries(gd[2]).forEach(([k, v]) => { statAdd(C, k, v); });
     C.mut = clamp(C.mut + gd[3], 0, 100); C.hum = clamp(C.hum - Math.round(gd[3] / 2), 0, 100); C.en[gd[4]] = Math.min(100, C.en[gd[4]] + 5);
     if (id === 'g_virus') C.lifeMax -= 10;
     chips.push(['gene', `🧬 ${gd[0]}`]); log(C, `Dung nhập ${gd[0]}.`);
@@ -1958,7 +1968,8 @@
     else if (k === 'social') { inc('mi', .6); apply(C, { fame:1 }, chips); const nk = pick(['ban', 'dich', 'su', 'tinh'].filter(x => npcOk(C, x))); if (nk) apply(C, { aff:{ [nk]:C.tr.includes('beauty') ? 8 : 4 } }, chips); }
     else if (k === 'blood') { const mp = mainPath(C);   // v4: tu luyện hệ chính (các hệ khác tiến chậm theo)
       if (mp) { addXp(C, mp, days / 365 * (isAnimal(C) ? 1.2 : 1), chips); pathsOf(C).forEach(([k2]) => { if (k2 !== mp) addXp(C, k2, days / 365 * .25, chips, true); }); }
-      if (C.line) { const d = LINE[C.line.k].sub[C.line.sub]; const e = Object.keys(d[4])[0]; apply(C, { [e]:Math.round(2 + 5 * f) }, chips); } inc('y', .25); }
+      if (C.line) { const d = LINE[C.line.k].sub[C.line.sub]; const e = Object.keys(d[4])[0]; apply(C, { [e]:Math.round(2 + 5 * f) }, chips); }
+      const ms = mp && PATHS[mp] ? PATHS[mp].st : 'y'; inc(ms, P_CULT); if (ms !== 'y') inc('y', .25); }   // chỉ số chính của hệ chính (Tinh thần vẫn tăng chậm nếu hệ không dựa vào nó)
     else if (k === 'hunt') { inc('suc', .5); inc('the', .3); const r = Math.random(); if (r < .2) apply(C, { hp:-rnd(6, 16) }, chips); else apply(C, { hp:rnd(4, 10) }, chips); if (Math.random() < .12) apply(C, { gene:'beast' }, chips); if (Math.random() < .06) apply(C, { bao:pick(['b_herb', 'b_lingzhi', 'b_core', 'b_beast']) }, chips); addXp(C, 'beast', days / 365 * .4, chips, true); }
     else if (k === 'family') { if (C.spouse && C.kids < 8 && canKids(C) && Math.random() < .35 * Math.min(1, days / 200)) apply(C, { kids:1 }, chips); apply(C, { hum:3, hp:4 }, chips); if (npcOk(C, 'tinh')) apply(C, { aff:{ tinh:5 } }, chips); C.fame = clamp(C.fame + 1, 0, 100); }
     else if (k === 'rest') apply(C, { hp:Math.round(8 + 10 * f), hum:2 }, chips);
@@ -2746,7 +2757,7 @@
         ['lore', '📜', '4. Thế Giới & Huyết Sử', 'Thế giới'], ['books', '📚', `5. Thư Viện ${G.books.length}`, 'Thư viện']]
         .map(([k, ic, n, sh]) => `<button data-g="tab" data-k="${k}" class="${UI.tab === k ? 'on' : ''}"><i>${ic}</i><span class="l">${n}</span><span class="s">${sh}</span></button>`).join('')}</nav>`;
   }
-  function statBars(s) { return `<div class="gx-bars">${STATS.map(([k, n, ic]) => bar(`${ic} ${n}`, s[k], 20, SCOL[k])).join('')}</div>`; }
+  function statBars(s, max) { return `<div class="gx-bars">${STATS.map(([k, n, ic]) => bar(`${ic} ${n}`, s[k], max || 20, SCOL[k])).join('')}</div>`; }
 
   function viewCreate() {
     if (!UI.cre) UI.cre = G.draft || newDraft(); const d = UI.cre, lg = G.legacy, r = d.roll, lc = r ? luck(r.tot) : null, O = ORIGIN[d.o], Rc = RACE[d.r], W = WEALTH[d.w], Rg = d.o ? regOf(d.o) : null;
@@ -2927,7 +2938,7 @@
         <span class="gx-lab mono">🏯 Con đường tu luyện</span>${pathPanel(C)}
         <div class="gx-chips"><span class="gx-chip gene">🧬 Ô gene ${fusedOf(C).length}/${geneCap(C)}${C.fruit ? ' · 🍏' : ''}</span><span class="gx-chip line">🩸 Dung hợp ${(C.bl || []).length}/${blCap(C)}</span><span class="gx-chip en">⚡ Dị năng ${(C.sk || []).length}/${skillCap(C)}</span><span class="gx-chip lore">🎒 ${(C.inv || []).length}/8</span></div>
         ${C.car && CAR_PERK[C.car.k] ? `<p class="gx-note">⚒ <b style="color:var(--go)">${E(careerName(C))}</b>: ${CAR_PERK[C.car.k][2].slice(0, C.car.rk + 1).map(E).join(' · ')}${C.car.rk < CAREER[C.car.k][1].length - 1 ? ` <span style="color:var(--mu)">(bậc kế: ${E(CAREER[C.car.k][1][C.car.rk + 1])})</span>` : ''}</p>` : ''}
-        ${fold('stats', '📊 Chỉ số & năng lượng', `${statBars(C.s)}<div class="gx-bars">${EN.map(([k, n, col]) => bar(n, C.en[k], 100, col)).join('')}</div>`, STATS.map(([k, , ic]) => ic + C.s[k]).join(' '))}
+        ${fold('stats', '📊 Chỉ số & năng lượng', `${statBars(C.s, capOf(C))}<p class="gx-note" style="margin:6px 0 8px">Chỉ số tối đa <b>${capOf(C)}</b> (20 + 10 × tầng cao nhất đã đạt); đột phá lên tầng mới thì trần tăng thêm 10.</p><div class="gx-bars">${EN.map(([k, n, col]) => bar(n, C.en[k], 100, col)).join('')}</div>`, STATS.map(([k, , ic]) => ic + C.s[k]).join(' ') + ' · trần ' + capOf(C))}
         ${rel || C.spouse || C.kids ? fold('rel', '🤝 Quan hệ & gia đình', `${rel ? `<div class="gx-rel mono">${rel}</div>` : ''}${C.spouse || C.kids ? `<p class="gx-note">${C.spouse ? `💍 Bạn đời: ${E(C.spouse)} · ` : ''}👶 ${C.kidn.length ? E(C.kidn.join(', ')) : C.kids + ' con'}</p>` : ''}`) : ''}</div>
         <div style="margin-top:14px">${fold('book', '📖 Thủ bản đang viết', liveBook(C))}</div></div></div>`;
   }
@@ -3263,6 +3274,6 @@
   window.GenesisGame = {
     mount(el) { root = el; const bx = el.closest('#fnBox'); if (bx) bx.classList.add('gx-wide'); ensureCss(); G = load(); render(); },
     summary() { const g = load(); return g.life ? `${g.life.n} · ${g.life.age} tuổi` : g.books.length ? `${g.books.length} cuốn sách · ${g.lives} kiếp` : 'Chưa bắt đầu'; },
-    debug: () => ({ G:load(), UI, EV, LORE, apply, canKids, lifeSum, avatar, avatarAdult, avatarKid, avatarBeast, eligible, SKILLS, skillsOf, BAO, geneCap, skillCap, fusedOf, eraOf, PATHS, btInfo, btReady, maxTier, mainPath, BD, WEALTH, FATE, upgrade, pathRate }),
+    debug: () => ({ G:load(), UI, EV, LORE, apply, canKids, lifeSum, avatar, avatarAdult, avatarKid, avatarBeast, eligible, SKILLS, skillsOf, BAO, geneCap, skillCap, fusedOf, eraOf, PATHS, btInfo, btReady, maxTier, mainPath, BD, WEALTH, FATE, upgrade, pathRate, f20, toOld, capOfTier, capOf, vStar, growVal, statAdd, P_CULT, NEED_T, ODDS_T, YRS_T, LIFE_T, ACT_DUR }),
   };
 })();
