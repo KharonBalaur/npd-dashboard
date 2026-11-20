@@ -983,6 +983,77 @@
    "temp_id": true,
    "hint": "Dị nhân biến thể: người que ninja hào quang tím"
   },
+  "itm022_herb_01": {
+   "file": "itm022_herb_01.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-012",
+   "obj": [
+    1
+   ],
+   "kind": "sprite",
+   "bg": "magenta",
+   "alpha": true,
+   "bytes": 12430,
+   "q": 90,
+   "item": "ITM-022",
+   "temp_id": true,
+   "hint": "Lông Bão Đại Bàng: lông xám-lam xoáy gió",
+   "warn": [
+    "còn viền màu nền loang 1.29% điểm ảnh"
+   ]
+  },
+  "itm022_herb_02": {
+   "file": "itm022_herb_02.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-012",
+   "obj": [
+    2
+   ],
+   "kind": "sprite",
+   "bg": "magenta",
+   "alpha": true,
+   "bytes": 14384,
+   "q": 90,
+   "item": "ITM-022",
+   "temp_id": true,
+   "hint": "Lông bão nhỏ: tia sét mảnh"
+  },
+  "itm022_herb_03": {
+   "file": "itm022_herb_03.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-012",
+   "obj": [
+    3
+   ],
+   "kind": "sprite",
+   "bg": "magenta",
+   "alpha": true,
+   "bytes": 21846,
+   "q": 90,
+   "item": "ITM-022",
+   "temp_id": true,
+   "hint": "Linh Thảo Thanh Tâm: cành lá ngọc, giọt sương"
+  },
+  "itm022_herb_04": {
+   "file": "itm022_herb_04.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-012",
+   "obj": [
+    4
+   ],
+   "kind": "sprite",
+   "bg": "magenta",
+   "alpha": true,
+   "bytes": 15888,
+   "q": 90,
+   "item": "ITM-022",
+   "temp_id": true,
+   "hint": "Linh Thảo Thanh Tâm: nụ, ánh nhạt"
+  },
   "itm023_treasure_01": {
    "file": "itm023_treasure_01.webp",
    "w": 256,
@@ -2566,6 +2637,94 @@
    "temp_id": true,
    "hint": "Huyền thoại: vương miện Sáng Thế (vàng, đá quý, quầng sáng) – ảnh làm lại, thay ô 9"
   },
+  "itm040_book_01": {
+   "file": "itm040_book_01.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-030a",
+   "obj": [
+    1
+   ],
+   "kind": "sprite",
+   "bg": "magenta",
+   "alpha": true,
+   "bytes": 33616,
+   "q": 90,
+   "item": "ITM-040",
+   "temp_id": true,
+   "hint": "Sách Vòng Đời 1: bìa da nâu, lá nhỏ"
+  },
+  "itm040_book_02": {
+   "file": "itm040_book_02.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-030a",
+   "obj": [
+    2
+   ],
+   "kind": "sprite",
+   "bg": "magenta",
+   "alpha": true,
+   "bytes": 19550,
+   "q": 90,
+   "item": "ITM-040",
+   "temp_id": true,
+   "hint": "Sách Vòng Đời 2: bìa xanh lục đậm, cây nhỏ"
+  },
+  "itm040_book_03": {
+   "file": "itm040_book_03.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-030a",
+   "obj": [
+    3
+   ],
+   "kind": "sprite",
+   "bg": "magenta",
+   "alpha": true,
+   "bytes": 34862,
+   "q": 90,
+   "item": "ITM-040",
+   "temp_id": true,
+   "hint": "Sách Vòng Đời 3: bìa xanh lam, sóng nước"
+  },
+  "itm040_book_04": {
+   "file": "itm040_book_04.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-030a",
+   "obj": [
+    4
+   ],
+   "kind": "sprite",
+   "bg": "magenta",
+   "alpha": true,
+   "bytes": 25864,
+   "q": 90,
+   "item": "ITM-040",
+   "temp_id": true,
+   "hint": "Sách Vòng Đời 4: bìa tím, ngôi sao",
+   "warn": [
+    "còn viền màu nền loang 1.46% điểm ảnh"
+   ]
+  },
+  "itm040_book_05": {
+   "file": "itm040_book_05.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-030a",
+   "obj": [
+    5
+   ],
+   "kind": "sprite",
+   "bg": "magenta",
+   "alpha": true,
+   "bytes": 24042,
+   "q": 90,
+   "item": "ITM-040",
+   "temp_id": true,
+   "hint": "Sách Vòng Đời 5: bìa đỏ, ngọn lửa"
+  },
   "itm040_book_06": {
    "file": "itm040_book_06.webp",
    "w": 256,
@@ -2582,6 +2741,108 @@
    "item": "ITM-040",
    "temp_id": true,
    "hint": "Sách Vòng Đời 6: bìa xám đá, núi – ảnh làm lại, thay cuốn 6 của P-030a"
+  },
+  "itm040_book_07": {
+   "file": "itm040_book_07.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-030b",
+   "obj": [
+    1
+   ],
+   "kind": "sprite",
+   "bg": "magenta",
+   "alpha": true,
+   "bytes": 23062,
+   "q": 90,
+   "item": "ITM-040",
+   "temp_id": true,
+   "hint": "Sách Vòng Đời 7: bìa vàng, mặt trời"
+  },
+  "itm040_book_08": {
+   "file": "itm040_book_08.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-030b",
+   "obj": [
+    2
+   ],
+   "kind": "sprite",
+   "bg": "magenta",
+   "alpha": true,
+   "bytes": 29860,
+   "q": 90,
+   "item": "ITM-040",
+   "temp_id": true,
+   "hint": "Sách Vòng Đời 8: bìa bạc, trăng khuyết"
+  },
+  "itm040_book_09": {
+   "file": "itm040_book_09.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-030b",
+   "obj": [
+    3
+   ],
+   "kind": "sprite",
+   "bg": "magenta",
+   "alpha": true,
+   "bytes": 12286,
+   "q": 90,
+   "item": "ITM-040",
+   "temp_id": true,
+   "hint": "Sách Vòng Đời 9: bìa đen, đầu lâu"
+  },
+  "itm040_book_10": {
+   "file": "itm040_book_10.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-030b",
+   "obj": [
+    4
+   ],
+   "kind": "sprite",
+   "bg": "magenta",
+   "alpha": true,
+   "bytes": 22502,
+   "q": 90,
+   "item": "ITM-040",
+   "temp_id": true,
+   "hint": "Sách Vòng Đời 10: bìa trắng cẩm thạch, lông vũ"
+  },
+  "itm040_book_11": {
+   "file": "itm040_book_11.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-030b",
+   "obj": [
+    5
+   ],
+   "kind": "sprite",
+   "bg": "magenta",
+   "alpha": true,
+   "bytes": 19614,
+   "q": 90,
+   "item": "ITM-040",
+   "temp_id": true,
+   "hint": "Sách Vòng Đời 11: bìa xanh ngọc, xoáy"
+  },
+  "itm040_book_12": {
+   "file": "itm040_book_12.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-030b (12 book)",
+   "obj": [
+    1
+   ],
+   "kind": "sprite",
+   "bg": "magenta",
+   "alpha": true,
+   "bytes": 19336,
+   "q": 90,
+   "item": "ITM-040",
+   "temp_id": true,
+   "hint": "Sách Vòng Đời 12: bìa cam, vương miện – ảnh làm lại"
   },
   "itm042_logo_01": {
    "file": "itm042_logo_01.webp",

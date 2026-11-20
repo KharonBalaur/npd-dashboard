@@ -325,6 +325,12 @@ def despill(rgb, alpha, mode):
         out[..., 1] = np.where(band, np.minimum(G, np.maximum(R, B)), G)
     else:
         s = np.where(band, np.maximum(0.0, np.minimum(R, B) - G), 0.0)
+        # hào quang hồng nhạt (hào quang của vật trộn với nền magenta) rộng hơn 2px: ở dải 6px quanh biên, chỉ xử lý điểm sáng
+        # (L > 45) để không đổi màu nét viền tím sẫm của vật; trừ phần ám magenta, giữ phần "sáng" của hào quang
+        dist = cv2.distanceTransform((alpha >= 0.5).astype(np.uint8), cv2.DIST_L2, 3)
+        lum = cv2.cvtColor(np.clip(rgb, 0, 255).astype(np.uint8), cv2.COLOR_RGB2LAB)[..., 0].astype(np.float32) * 100.0 / 255.0
+        wide = (alpha > 0) & (dist <= 6.0) & (lum > 45)
+        s = np.where(wide, np.maximum(s, np.maximum(0.0, np.minimum(R, B) - G)), s)
         out[..., 0] = R - s
         out[..., 2] = B - s
     return np.clip(out, 0, 255)
