@@ -2526,7 +2526,9 @@
   .gx-sks{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px}
   .gx-sk{padding:12px;border-radius:12px;background:var(--pn);border:1px solid #262a3d} .gx-sk.on{border-color:rgba(0,229,255,.45);box-shadow:0 0 14px rgba(0,229,255,.12)}
   .gx-sk .hd{display:flex;align-items:flex-start;gap:10px} .gx-sk .ic{flex:none;display:grid;place-items:center;width:38px;height:38px;border-radius:10px;background:var(--bg);border:1px solid var(--ln);font-size:18px}
-  .gx-sk h5{margin:0;font-size:14px;color:#fff} .gx-sk .meta{font-size:11px;color:var(--mu)} .gx-sk p{margin:8px 0 0;font-size:12.5px;color:#aeb6c7;line-height:1.5}
+  .gx-sk h5{margin:0;font-size:14px;color:#fff} .gx-sk .meta{font-size:11px;color:var(--mu)}
+  #fnBox .gx-sk .meta{white-space:normal;overflow-wrap:anywhere}   /* dòng 'dùng khi: …' dài không được tràn ra ngoài thẻ */
+  @media (max-width:760px), (orientation:landscape) and (max-height:500px){ #fnBox .gx button[data-g],#fnBox .gx-subnav button{min-height:44px} } .gx-sk p{margin:8px 0 0;font-size:12.5px;color:#aeb6c7;line-height:1.5}
   .gx-tier{flex:none;margin-left:auto;padding:1px 7px;border-radius:6px;font-size:10.5px;font-weight:800;background:#23263a;color:#cbd5e1} .gx-tier.SSR{background:rgba(234,179,8,.15);color:var(--go);border:1px solid rgba(234,179,8,.4)}
   .gx-hero{position:relative;padding:20px;border-radius:16px;border:1px solid #2d3148;background:linear-gradient(90deg,rgba(59,7,100,.55),#11131c,rgba(8,51,68,.55));overflow:hidden}
   .gx-hero h4{margin:6px 0;font-size:22px;color:#fff;font-family:"Noto Serif",Georgia,serif} .gx-hero p{margin:0;color:#cbd5e1;line-height:1.6;max-width:760px}
@@ -2543,6 +2545,47 @@
   .gx-lg small{display:block;font-size:10.5px;color:var(--cy)} .gx-lg b{font-size:12.5px} .gx-lg.lock small{color:#5b6377} .gx-lg.lock b{color:#5b6377}
   .gx-term{margin-top:10px;padding:14px;border-radius:10px;background:var(--bg);border:1px solid #262a3d;font-size:12.5px;line-height:1.7;color:#cbd5e1;min-height:90px;white-space:pre-wrap}
   .gx-note{font-size:11.5px;color:var(--mu);margin:10px 0 0;line-height:1.5}
+  .gx-fd{margin:10px 0 0} .gx-fb{padding-top:8px}
+  .gx-fh{display:flex;align-items:center;gap:8px;width:100%;min-height:44px;padding:8px 12px;border:1px solid var(--ln);border-radius:12px;background:var(--pn2);color:var(--tx);font:inherit;font-size:13px;font-weight:700;text-align:left;cursor:pointer;-webkit-tap-highlight-color:transparent}
+  .gx-fh span{flex:1;min-width:0} .gx-fh small{color:var(--mu);font-weight:500;font-size:11px} .gx-fh i{font-style:normal;color:var(--cy)} .gx-fd.open>.gx-fh{border-color:rgba(0,229,255,.35)}
+  .gx-more{width:100%;min-height:44px;margin:8px 0 0}
+  /* màn nhỏ (điện thoại dọc, hoặc ngang thấp): nút bấm ≥ 44px, cách nhau ≥ 10px; nút chính của pha nằm ở thanh dưới.
+     Tiền tố #fnBox vì trang Relax có luật #fun button {min-height:40px} (độ ưu tiên ID) đè các luật theo class */
+  @media (max-width:760px), (orientation:landscape) and (max-height:500px){
+    #fnBox .gx-btn,#fnBox .gx-opt,#fnBox .gx-act,#fnBox .gx-pk,#fnBox .gx-fh,#fnBox button.gx-chip,#fnBox .gx-nav button,#fnBox .gx-seg button{min-height:44px}
+    #fnBox .gx-top button,#fnBox .gx-mn{min-height:44px;min-width:44px} #fnBox .gx-btn[style*="min-height"]{min-height:44px!important}
+    #fnBox .gx-acts,#fnBox .gx-opts,#fnBox .gx-pick,#fnBox .gx-row{gap:10px} #fnBox .gx-bag{display:inline-flex;gap:8px}
+    .gx-actbar{display:flex;gap:10px;padding:8px max(10px,env(safe-area-inset-right)) 8px max(10px,env(safe-area-inset-left));background:rgba(15,16,22,.97);border-top:1px solid #2a2e45;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+    #fnBox .gx .gx-actbar button.gx-btn{flex:1 1 0;min-height:52px;flex-direction:column;gap:1px;padding:6px 12px;font-size:15px;line-height:1.2}
+    .gx-actbar .gx-btn small{font-size:11px;font-weight:600;opacity:.8}
+  }
+  @media (max-width:760px){
+    #fnBox .gx .gx-nav button[data-g]{min-height:52px}
+    .gx-actbar{position:fixed;left:0;right:0;bottom:var(--gx-nav-h,61px);z-index:6}
+    .gx-main.has-bar{padding-bottom:calc(var(--gx-nav-h,61px) + var(--gx-bar-h,68px) + 16px)}
+  }
+  /* điện thoại nằm ngang: game chiếm toàn màn hình; thanh trên + thanh tab chung một hàng; tab Cuộc đời 2 cột (trái: nhân vật + chỉ số, phải: nhật ký + nút), mỗi cột cuộn riêng */
+  @media (orientation:landscape) and (max-height:500px){
+    #fnBox.gx-wide{position:fixed;inset:0;z-index:2000;max-width:none;margin:0;padding:0;border:0;border-radius:0;background:#0f1016;overflow:hidden}
+    #fnBox.gx-wide>.fn-h{display:none} #fnBox.gx-wide #fnStage{height:100%}
+    #fnBox.gx-wide .gx{display:grid;grid-template-columns:auto minmax(0,1fr);grid-template-rows:auto minmax(0,1fr) auto;height:100%;min-height:0;border:0;border-radius:0;overflow:hidden}
+    #fnBox .gx-top{position:static;grid-column:1;grid-row:1;gap:8px;flex-wrap:nowrap;padding:4px 8px 4px max(10px,env(safe-area-inset-left));border-bottom:0;background:transparent}
+    #fnBox .gx-badge,#fnBox .gx-tt small,#fnBox .gx-max-b{display:none}
+    #fnBox .gx-tt{flex:none;min-width:0} #fnBox .gx-tt h3{font-size:13px;line-height:1.2;padding:0;white-space:nowrap}
+    #fnBox .gx-logo{width:30px;height:30px;border-radius:9px} #fnBox .gx-logo i{font-size:14px}
+    #fnBox .gx-nav{position:static;grid-column:2;grid-row:1;display:flex;gap:4px;align-items:center;padding:4px max(10px,env(safe-area-inset-right)) 4px 0;background:transparent;border:0;overflow-x:auto;-webkit-backdrop-filter:none;backdrop-filter:none}
+    #fnBox .gx-nav button{flex:1 1 0;flex-direction:row;min-height:44px;padding:0 6px;gap:4px;font-size:12px}
+    #fnBox .gx-nav .l{display:none} #fnBox .gx-nav .s{display:inline;white-space:nowrap} #fnBox .gx-nav button i{margin:0;font-size:16px}
+    #fnBox .gx-main{grid-column:1/-1;grid-row:2;min-height:0;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;padding:8px max(10px,env(safe-area-inset-right)) 8px max(10px,env(safe-area-inset-left))}
+    #fnBox .gx-actbar{position:sticky;left:auto;right:auto;bottom:0;grid-column:1/-1;grid-row:3;z-index:6;padding:6px max(10px,env(safe-area-inset-right)) 6px max(10px,env(safe-area-inset-left))}
+    #fnBox .gx .gx-actbar button.gx-btn{min-height:48px}
+    #fnBox .gx-main.cols{overflow:hidden;display:flex;flex-direction:column} #fnBox .gx-main.cols>.gx-fd{display:none}
+    #fnBox .gx-main.cols .gx-life{flex:1;min-height:0;grid-template-columns:minmax(0,5fr) minmax(0,7fr);grid-template-rows:minmax(0,1fr);gap:10px;align-items:stretch}
+    #fnBox .gx-main.cols .gx-life>div{min-height:0;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+    #fnBox .gx-main.cols .gx-life>div:first-child{order:2} #fnBox .gx-main.cols .gx-life>div:last-child{order:1}
+    #fnBox .gx-main.cols .gx-mini{display:none}
+    #fnBox .gx-main.cols .gx-life>div:first-child>.gx-actbar{margin:8px -2px 0;border-radius:12px;border:1px solid #2a2e45}
+  }
   .gx-rel{display:grid;gap:5px;margin-top:8px} .gx-rel div{display:flex;justify-content:space-between;gap:8px;font-size:12px;padding:5px 8px;border-radius:8px;background:var(--bg);border:1px solid #262a3d}
   .gx-rel span{color:var(--mu)} .gx-rel b{color:#fff;font-weight:600}
   @media (max-width:980px){ .gx-life,.gx-dna,.gx-two{grid-template-columns:minmax(0,1fr)} .gx-g3{grid-template-columns:minmax(0,1fr)} }
@@ -2574,6 +2617,7 @@
   #fnBox.gx-max>.fn-h{display:none} #fnBox.gx-max .gx{border:0;border-radius:0;min-height:100%}
   #fnBox.gx-max .gx-top{position:sticky;top:0;z-index:5}
   @media (max-width:760px){
+    .gx-log{max-height:none;overflow:visible}
     #fnBox.gx-wide{position:fixed;inset:0;z-index:2000;max-width:none;margin:0;padding:0;border:0;border-radius:0;background:#0f1016;
       overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
     #fnBox.gx-wide>.fn-h{display:none}
@@ -2614,7 +2658,7 @@
   .gx-gr{display:inline-block;padding:0 7px;border:1px solid;border-radius:99px;font-size:11px;font-weight:700;line-height:18px;letter-spacing:.3px;white-space:nowrap}
   .gx-paths{display:grid;gap:8px;margin:6px 0 10px}
   .gx-path{padding:10px 12px;border-radius:12px;border:1px solid var(--ln);background:#12141c} .gx-path.on{border-color:rgba(234,179,8,.5);box-shadow:0 0 14px rgba(234,179,8,.12)}
-  .gx-path .hd{display:flex;align-items:center;gap:10px} .gx-path .hd i{font-style:normal;font-size:22px} .gx-path .t{flex:1;min-width:0}
+  .gx-path .hd{display:flex;align-items:center;gap:10px} .gx-path .hd .t{flex:1;min-width:0} .gx-path .hd .t small{white-space:normal;overflow-wrap:anywhere} .gx-path .hd i{font-style:normal;font-size:22px} .gx-path .t{flex:1;min-width:0}
   .gx-path .t b{display:block;color:#fff;font-size:13.5px} .gx-path .t small{color:var(--mu);font-size:11.5px}
   .gx-mn{flex:none;min-height:28px;padding:0 9px;border-radius:8px;border:1px solid var(--ln);background:transparent;color:var(--mu);font:inherit;font-size:11.5px;cursor:pointer} .gx-mn.on{color:var(--go);border-color:rgba(234,179,8,.5)}
   .gx-xp{position:relative;height:16px;margin:8px 0 6px;border-radius:99px;background:#1f2233;overflow:hidden} .gx-xp b{display:block;height:100%;border-radius:99px;transition:width .4s}
@@ -2709,8 +2753,9 @@
     const first = G.lives === 0, inn = d.r && INNATE[d.r] ? (d.r === 'beast' ? ['g_cat'] : INNATE[d.r]) : [];
     const lgTxt = !lg ? '' : lg.k === 'gene' ? `gene ${E(GENE[lg.v] ? GENE[lg.v][0] : '')} từ ${E(lg.from || '')}` : lg.k === 'rr' ? '+2 lượt gieo lại' : lg.k === 'gold' ? '+40 vàng khởi đầu' : lg.k === 'heir' ? `sinh làm hậu duệ của ${E(lg.from || 'đời trước')}` : '+1 Nghịch Mệnh';
     const pk = (lab, on, b, sub) => `<div class="gx-pk${on ? ' on' : ''}"><small class="mono">${lab}</small><b>${b}</b><small>${sub}</small></div>`;
+    if (compact()) curBar = barHtml([!r ? barBtn('roll', null, '', '🎲 Gieo quẻ') : barBtn('roll', null, 'ghost', `🎲 Gieo lại (${d.rr})`, '', d.rr <= 0), barBtn('born', null, 'gold', '👶 Chào đời', '', !r)]);
     return `<div class="gx-two"><div class="gx-pn"><div class="gx-h"><h4>🎲 Gieo Quẻ Định Mệnh</h4>
-        ${!r ? `<button class="gx-btn" data-g="roll">🎲 Gieo quẻ</button>` : `<button class="gx-btn ghost" data-g="roll" ${d.rr <= 0 ? 'disabled' : ''}>🎲 Gieo lại (${d.rr})</button>`}</div>
+        ${compact() ? '' : !r ? `<button class="gx-btn" data-g="roll">🎲 Gieo quẻ</button>` : `<button class="gx-btn ghost" data-g="roll" ${d.rr <= 0 ? 'disabled' : ''}>🎲 Gieo lại (${d.rr})</button>`}</div>
       <p class="gx-note" style="margin:0 0 8px">Chủng tộc, nơi sinh, gia cảnh, chỉ số, thiên phú và vận mệnh đều do trời định – bạn chỉ chọn tên, giới tính, màu tóc. ${first ? 'Kiếp đầu tiên chỉ được gieo <b style="color:var(--go)">một lần</b>.' : `Lượt gieo lại đến từ <b style="color:var(--go)">phúc duyên</b> tích lũy các kiếp trước (đang có ${G.phuc}).`}</p>
       ${lg ? `<div class="gx-chips" style="margin:0 0 6px"><span class="gx-chip lore">🎁 Di sản đang chờ: ${lgTxt}</span></div>` : ''}
       <div class="gx-two" style="gap:10px"><div><span class="gx-lab mono" style="margin-top:0">Tên nhân vật</span><input class="gx-in" id="gxName" maxlength="24" value="${E(d.n)}"></div>
@@ -2730,7 +2775,7 @@
       <div class="gx-stage">${avatar(d.ak ? { ak:d.ak, bt:0 } : { r:d.r || 'human', g:d.g, genes:inn, hair:d.hair, age:22 }, 220)}</div>
       ${r ? statBars(r.s) : `<p class="gx-note" style="text-align:center">Hình thái trưởng thành dự kiến</p>`}
       <p class="gx-note">* <b>Thể chất</b>: máu, sức chứa gene. <b>Tinh thần</b>: trên 10 mới thành phù thủy, rất khó tăng. <b>Trí tuệ</b>: học và tu luyện nhanh. <b>Sức mạnh</b>: sát thương, luyện thể, đấu khí. <b>Vận khí</b>: cơ duyên, bảo vật quý. <b>Mị lực</b>: giao tiếp, tình duyên. Kẻ kém may có nhiều Nghịch Mệnh hơn.</p>
-      <div class="gx-row"><button class="gx-btn gold" data-g="born" ${r ? '' : 'disabled'} style="flex:1">👶 Chào đời</button></div></div></div>`;
+      ${compact() ? '' : `<div class="gx-row"><button class="gx-btn gold" data-g="born" ${r ? '' : 'disabled'} style="flex:1">👶 Chào đời</button></div>`}</div></div>`;
   }
   function liveBook(C) {
     return `<div class="gx-book"><span class="kick mono">— THỦ BẢN ĐANG VIẾT —</span><h3>${E(title(C))}</h3><div class="by mono">Tác giả: ${E(C.n)} · ${C.age} tuổi</div>
@@ -2808,7 +2853,7 @@
     const cal = calOf(C.days || C.age * 365), mp = mainPath(C), W = WEALTH[C.w] || WEALTH.common, an = isAnimal(C);
     const hud = `<div class="gx-hud mono"><div><small>Tuổi</small><b style="color:var(--cy)">${C.age}<span style="font-size:11px;color:var(--mu)"> · th.${cal.m}</span></b></div><div><small>Vàng</small><b style="color:var(--go)">${C.gold}</b></div>
       <div><small>Danh vọng</small><b style="color:var(--gr)">${C.fame}</b></div><div><small>Cảnh giới</small><b style="color:var(--pu)">${mp ? `T${C.paths[mp].t} ${E(tierName(mp, C.paths[mp].t))}` : 'Phàm nhân'}</b></div><div><small>Thời thế</small><b>${er[0]} ${E(er[1])}</b></div></div>`;
-    const wait = C.offers && C.offers.length, left = Math.max(20, (C.gap || 365) - (C.since || 0)), ready = btReady(C);
+    const wait = C.offers && C.offers.length, left = Math.max(20, (C.gap || 365) - (C.since || 0)), ready = btReady(C), cp = compact();
     const startAge = an ? 1 : W[4], canCult = pathsOf(C).some(([k]) => PATHS[k].blood) || (pathsOf(C).length && C.age >= startAge);
     const actDis = k => wait ? 'Trả lời lời mời phía trên trước' : k === 'blood' && !pathsOf(C).length ? 'Chưa nhập môn hệ nào – chờ cơ duyên' : k === 'blood' && !canCult ? `Gia cảnh ${W[1]}: tu luyện từ ${startAge} tuổi` : '';
     const actName = (k, n) => k === 'blood' && mp ? `Tu luyện · ${PATHS[mp].ic}` : C.age < 13 && k === 'work' ? (C.w === 'poor' || C.w === 'orphan' ? 'Làm thuê kiếm sống' : 'Phụ việc nhà') : n;
@@ -2816,7 +2861,7 @@
     else if (C.ph === 'act') main = `${noteHtml()}${offerBox(C)}${ready.length && !wait ? `<div class="gx-dk gx-ready"><b>🏯 Bình cảnh đã tới:</b> ${ready.map(k => `<button class="gx-chip lore" data-g="bt" data-k="${k}">${PATHS[k].ic} ${E(tierName(k, C.paths[k].t + 1))} – bế quan đột phá</button>`).join(' ')}</div>` : ''}
       <div class="gx-ev"><div class="yr mono"><span>📅 Tháng ${cal.m} · ${C.age} tuổi · ${stageOf(C.age)[0]}</span><span>${er[0]} ${E(er[1])}</span></div><h5>Sắp tới bạn dành thời gian cho…</h5>
         <div class="gx-acts">${actsOf(C).map(([k, ic, n, sub]) => { const dis = actDis(k); return `<button class="gx-act" data-g="act" data-k="${k}" ${dis ? `disabled title="${E(dis)}"` : ''}><b>${ic} ${E(actName(k, n))}</b><small>${k === 'blood' && mp ? `${E(PATHS[mp].en)} ${Math.floor(C.paths[mp].xp)}% → ${E(tierName(mp, C.paths[mp].t + 1))}` : sub}</small><small style="color:var(--cy)">⏱ ${fmtDur(durOf(C, k)[0])} – ${fmtDur(durOf(C, k)[1])}</small></button>`; }).join('')}</div>
-        <div class="gx-row"><button class="gx-btn ghost" data-g="auto" ${wait ? 'disabled' : ''} style="flex:1">⏩ Để thời gian trôi (≈ ${fmtDur(left)} tới biến cố kế tiếp)</button>
+        <div class="gx-row">${cp ? '' : `<button class="gx-btn ghost" data-g="auto" ${wait ? 'disabled' : ''} style="flex:1">⏩ Để thời gian trôi (≈ ${fmtDur(left)} tới biến cố kế tiếp)</button>`}
           ${!an ? `<button class="gx-btn ghost${UI.shop ? ' on' : ''}" data-g="shop">🏪 Chợ</button>` : ''}
           ${C.age >= 60 || C.lifeMax > 200 && C.age >= 40 ? `<button class="gx-btn ghost" data-g="endlife">📕 Khép lại cuốn sách đời mình</button>` : ''}</div>
         ${UI.shop && !an ? shopPanel(C) : ''}
@@ -2828,18 +2873,18 @@
       main = `${scenesHtml(UI.res && UI.res.scenes)}${UI.res && UI.res.chips && UI.res.chips.length ? `<div class="gx-chips" style="margin:0 0 8px">${chipsHtml(UI.res.chips)}</div>` : ''}
         <div class="gx-ev${ev.fate ? ' fate' : ''}"><div class="yr mono"><span>📅 Tháng ${cal.m} · ${C.age} tuổi${ev.fate ? ' · ⚠ Vận mệnh tới hẹn' : ev.enc ? ' · Gặp gỡ ngẫu nhiên' : ev.dl ? ' · Đời thường' : ''}</span><span>${stageOf(C.age)[0]}</span></div><h5>${E(tx(C, ev.t))}</h5><p>${E(tx(C, ev.d))}</p>
         ${p ? `<div class="gx-res"><b style="color:var(--re)">Thất bại!</b><div class="gx-dice mono">Kiểm tra ${SN[p.roll.s]}: <b>${p.roll.v}</b> + 🎲${p.roll.d6}${p.roll.bonus ? ` + 🍀${p.roll.bonus}` : ''} = <b>${p.roll.sum}</b> &lt; ${p.roll.dc}</div>
-            <div class="gx-row"><button class="gx-btn" data-g="nm" data-k="${p.i}">☯ Dùng 1 Nghịch Mệnh lật kèo (còn ${C.nm})</button><button class="gx-btn ghost" data-g="nmno" data-k="${p.i}">Chấp nhận số phận</button></div></div>`
+            ${cp ? '' : `<div class="gx-row"><button class="gx-btn" data-g="nm" data-k="${p.i}">☯ Dùng 1 Nghịch Mệnh lật kèo (còn ${C.nm})</button><button class="gx-btn ghost" data-g="nmno" data-k="${p.i}">Chấp nhận số phận</button></div>`}</div>`
           : `<div class="gx-opts">${ev.c.map((c, i) => c.if && !c.if(C) ? '' : `<button class="gx-opt" data-g="pick" data-k="${i}"><span>${E(tx(C, c.t))}</span>${c.chk ? `<small class="mono">🎲 ${SN[c.chk[0]]} ${C.s[c.chk[0]]}/${c.chk[1]}</small>` : ''}</button>`).join('')}
             ${sks.map(s => `<button class="gx-opt sk" data-g="skill" data-k="${s[0]}"><span>⚡ Dùng dị năng: ${s[1]} ${E(s[2])}</span><small class="mono">${s[4]} · chắc thắng</small></button>`).join('')}</div>`}</div>`;
     } else if (C.ph === 'res') {
       const r = UI.res || {};
       if (r.quiet) main = `${scenesHtml(r.scenes)}<div class="gx-ev"><div class="yr mono"><span>📅 Tháng ${cal.m} · ${C.age} tuổi</span><span>⏱ ${fmtDur(r.days || 0)}</span></div>
         <h5>${r.bt ? (r.bt.ok ? `🌟 Đột phá thành công: ${E(tierName(r.bt.k, r.bt.t))}` : `💥 Đột phá ${E(tierName(r.bt.k, r.bt.t))} thất bại`) : 'Những ngày bình yên'}</h5><div class="gx-chips">${chipsHtml(r.chips)}</div>${offerBox(C)}
-        <div class="gx-row"><button class="gx-btn" data-g="next">Tiếp tục ▸</button></div></div>`;
+        ${cp ? '' : `<div class="gx-row"><button class="gx-btn" data-g="next">Tiếp tục ▸</button></div>`}</div>`;
       else main = `<div class="gx-ev"><div class="yr mono"><span>📅 Tháng ${cal.m} · ${C.age} tuổi · ${E(r.ev || '')}</span><span>${r.ok === false ? '✗ Thất bại' : '✓ Kết quả'}</span></div><h5>${E(r.pick || '')}</h5>
         ${r.roll ? `<div class="gx-dice mono">Kiểm tra ${SN[r.roll.s]}: <b>${r.roll.v}</b> + 🎲${r.roll.d6}${r.roll.bonus ? ` + 🍀${r.roll.bonus}` : ''} = <b>${r.roll.sum}</b> ${r.roll.sum >= r.roll.dc ? '≥' : '<'} ${r.roll.dc} ${r.roll.nm ? '· ☯ Nghịch Mệnh lật kèo!' : r.ok ? '✓' : '✗'}</div>` : ''}
         <p>${E(r.txt || '')}</p><div class="gx-chips">${chipsHtml(r.chips2)}</div>${offerBox(C)}
-        <div class="gx-row"><button class="gx-btn" data-g="next">${C.death ? '🕯 Tiếp…' : 'Tiếp tục ▸'}</button></div></div>`;
+        ${cp ? '' : `<div class="gx-row"><button class="gx-btn" data-g="next">${C.death ? '🕯 Tiếp…' : 'Tiếp tục ▸'}</button></div>`}</div>`;
     } else if (C.ph === 'dying') {
       const canJ = !C.ending && C.nm > 0 && !an && (C.o === 'east' || (C.line && C.line.k === 'jiang' && C.line.sub === 'dao')) && !(C.line && C.line.sub === 'corpse');
       const canP = !C.ending && C.flags.syn_rebirth && !C.flags.reborn, canR = !C.ending && C.nm > 0 && C.age < C.lifeMax, canM = !C.ending && C.flags.deathbook && !an;
@@ -2856,27 +2901,35 @@
         <span class="gx-lab mono">Di sản cho đời sau (chọn 1)</span>
         <div class="gx-pick">${[['gene', '🧬 Một gene của đời này', C.genes.length ? 'Đời sau thừa hưởng ngẫu nhiên 1 gene bạn đang có.' : 'Đời này chưa có gene nào.'], ['heir', '🌳 Sinh làm hậu duệ', C.kids ? `Đời sau chắc chắn sinh ra trong gia tộc ${C.clan || clanOf(C)}, làm cháu chắt của bạn.` : 'Đời này chưa có con.'], ['rr', '🎲 +2 lượt gieo lại', 'Chọn định mệnh kỹ hơn.'], ['gold', '💰 +40 vàng', 'Khởi đầu khá giả hơn.'], ['nm', '☯ +1 Nghịch Mệnh', 'Thêm một lần lật kèo số phận.']]
           .map(([k, n, sub]) => `<button class="gx-pk${UI.leg === k ? ' on' : ''}" data-g="leg" data-k="${k}" ${k === 'gene' && !C.genes.length || k === 'heir' && !C.kids ? 'disabled' : ''}><b>${n}</b><small>${sub}</small></button>`).join('')}</div>
-        <div class="gx-row"><button class="gx-btn gold" data-g="close">📚 Đóng sách & cất vào thư viện</button></div></div>`;
+        ${cp ? '' : `<div class="gx-row"><button class="gx-btn gold" data-g="close">📚 Đóng sách & cất vào thư viện</button></div>`}</div>`;
     }
+    let barH = '';
+    if (cp) {   // nút chính của pha → thanh dưới (nằm ngang: thanh dính đáy cột phải)
+      if (C.ph === 'act' && !(UI.bt && C.paths[UI.bt] && C.paths[UI.bt].xp >= 100)) barH = barHtml([barBtn('auto', null, '', '⏩ Để thời gian trôi', `≈ ${fmtDur(left)} tới biến cố kế tiếp`, wait)]);
+      else if (C.ph === 'ev' && UI.pend) barH = barHtml([barBtn('nm', UI.pend.i, '', `☯ Lật kèo (còn ${C.nm})`), barBtn('nmno', UI.pend.i, 'ghost', 'Chấp nhận số phận')]);
+      else if (C.ph === 'res') barH = barHtml([barBtn('next', null, '', !(UI.res || {}).quiet && C.death ? '🕯 Tiếp…' : 'Tiếp tục ▸')]);
+      else if (C.ph === 'book') barH = barHtml([barBtn('close', null, 'gold', '📚 Đóng sách & cất vào thư viện')]);
+    }
+    const cols = lsc(); if (cols) curCols = true; else curBar = barH;
     const rel = Object.entries(C.npc || {}).filter(([, v]) => v).map(([k, v]) => `<div><span>${NPCR[k][0]} ${NPCR[k][1]}</span><b>${E(v.n)}${v.st === 'dead' ? ' ✝' : v.st === 'gone' ? ' (đã xa)' : ` · ${v.aff >= 40 ? 'thân thiết' : v.aff >= 10 ? 'quý mến' : v.aff > -10 ? 'bình thường' : v.aff > -40 ? 'không ưa' : 'thù hận'}`}</b></div>`).join('');
-    const lgs = C.log.slice(-18).reverse(), Rg = regOf(C.o);
+    const lgAll = C.log.slice().reverse(), lgs = lgAll.slice(0, UI.logMore ? 40 : 10), Rg = regOf(C.o);
     const mini = `<div class="gx-mini"><div class="av">${avatar(avOf(C), 82)}</div><div style="min-width:0;flex:1"><b>${E(C.n)}</b>
       <small>${C.age} tuổi · ${E(lineName(C))} · ${mp ? E(tierName(mp, C.paths[mp].t)) : E(careerName(C))}</small><small>${persona(C).map(p => p[0] + ' ' + p[1]).join(' · ')} · ☯ ${C.nm}</small>
       <div class="hp"><i style="width:${clamp(C.hp, 0, 100)}%;background:${C.hp < 30 ? 'var(--re)' : C.hp < 60 ? 'var(--go)' : 'var(--gr)'}"></i></div></div></div>`;
     return `<div class="gx-life"><div style="min-width:0">${mini}<div class="gx-pn"><div class="gx-h"><h4>⏳ Mô Phỏng Cuộc Đời</h4><small class="mono">Mỗi lựa chọn viết thêm một trang vào Cuốn Sách Nhân Sinh</small></div>${hud}${main}</div>
-        <div class="gx-pn"><div class="gx-h" style="margin-bottom:8px"><h4 style="font-size:13px">📜 Dòng lịch sử cuộc đời</h4></div><ul class="gx-log mono">${lgs.map(l => `<li><b>[${l[0]}t]</b>${E(l[1])}</li>`).join('')}</ul></div></div>
+        <div class="gx-pn"><div class="gx-h" style="margin-bottom:8px"><h4 style="font-size:13px">📜 Dòng lịch sử cuộc đời</h4></div><ul class="gx-log mono">${lgs.map(l => `<li><b>[${l[0]}t]</b>${E(l[1])}</li>`).join('')}</ul>${lgAll.length > 10 ? `<button class="gx-btn ghost gx-more" data-g="logmore">${UI.logMore ? '▴ Thu gọn' : `▾ Xem thêm (${Math.min(lgAll.length, 40) - 10})`}</button>` : ''}</div>${cols ? barH : ''}</div>
       <div style="min-width:0"><div class="gx-pn"><div class="gx-h"><div><p class="gx-nm">${E(C.n)}</p><div class="gx-sub mono">${E(raceName(C.r, C.ak))}${C.flags.formed ? ' (hóa hình)' : ''} · ${E(lineName(C))} · ${E(careerName(C))}</div></div>
           <span class="gx-luck ${C.hp < 30 ? 'lo' : C.hp < 60 ? 'md' : 'hi'} mono">HP ${C.hp}</span></div>
-        <div class="gx-stage">${avatar(avOf(C), 230)}</div>
+        ${fold('look', '🪞 Diện mạo & tính cách', `<div class="gx-stage">${avatar(avOf(C), 230)}</div>
         <div class="gx-chips"><span class="gx-chip" style="color:${Rg[3]}">${Rg[0]} ${E(Rg[1])}</span><span class="gx-chip">${W[0]} ${E(W[1])}</span><span class="gx-chip">🌳 ${E(C.clan || clanOf(C))}</span><span class="gx-chip" title="Vận mệnh ẩn – chỉ lộ ra khi tới hẹn">🔮 Vận mệnh: ${C.fate && C.fate.done ? 'đã vượt qua' : '❓'}</span></div>
         <div class="gx-chips">${persona(C).map(p => `<span class="gx-chip al">${p[0]} ${p[1]}</span>`).join('')}<span class="gx-chip">🧑 Nhân tính ${C.hum}</span><span class="gx-chip ${C.want >= 50 ? 'down' : ''}">🚨 Truy nã ${C.want}</span><span class="gx-chip gene">☯ ${C.nm}</span><span class="gx-chip">⏳ Thọ ${C.lifeMax > 3000 ? '∞' : C.lifeMax}</span></div>
-        <div class="gx-axes">${axis('Tàn ác', 'Thiện', C.al.g, '#34d399')}${axis('Hỗn loạn', 'Trật tự', C.al.l, '#60a5fa')}${axis('Thận trọng', 'Liều lĩnh', C.al.b, '#fb923c')}</div>
+        <div class="gx-axes">${axis('Tàn ác', 'Thiện', C.al.g, '#34d399')}${axis('Hỗn loạn', 'Trật tự', C.al.l, '#60a5fa')}${axis('Thận trọng', 'Liều lĩnh', C.al.b, '#fb923c')}</div>`)}
         <span class="gx-lab mono">🏯 Con đường tu luyện</span>${pathPanel(C)}
         <div class="gx-chips"><span class="gx-chip gene">🧬 Ô gene ${fusedOf(C).length}/${geneCap(C)}${C.fruit ? ' · 🍏' : ''}</span><span class="gx-chip line">🩸 Dung hợp ${(C.bl || []).length}/${blCap(C)}</span><span class="gx-chip en">⚡ Dị năng ${(C.sk || []).length}/${skillCap(C)}</span><span class="gx-chip lore">🎒 ${(C.inv || []).length}/8</span></div>
         ${C.car && CAR_PERK[C.car.k] ? `<p class="gx-note">⚒ <b style="color:var(--go)">${E(careerName(C))}</b>: ${CAR_PERK[C.car.k][2].slice(0, C.car.rk + 1).map(E).join(' · ')}${C.car.rk < CAREER[C.car.k][1].length - 1 ? ` <span style="color:var(--mu)">(bậc kế: ${E(CAREER[C.car.k][1][C.car.rk + 1])})</span>` : ''}</p>` : ''}
-        ${statBars(C.s)}<div class="gx-bars">${EN.map(([k, n, col]) => bar(n, C.en[k], 100, col)).join('')}</div>
-        ${rel ? `<div class="gx-rel mono">${rel}</div>` : ''}${C.spouse || C.kids ? `<p class="gx-note">${C.spouse ? `💍 Bạn đời: ${E(C.spouse)} · ` : ''}👶 ${C.kidn.length ? E(C.kidn.join(', ')) : C.kids + ' con'}</p>` : ''}</div>
-        <div style="margin-top:14px">${liveBook(C)}</div></div></div>`;
+        ${fold('stats', '📊 Chỉ số & năng lượng', `${statBars(C.s)}<div class="gx-bars">${EN.map(([k, n, col]) => bar(n, C.en[k], 100, col)).join('')}</div>`, STATS.map(([k, , ic]) => ic + C.s[k]).join(' '))}
+        ${rel || C.spouse || C.kids ? fold('rel', '🤝 Quan hệ & gia đình', `${rel ? `<div class="gx-rel mono">${rel}</div>` : ''}${C.spouse || C.kids ? `<p class="gx-note">${C.spouse ? `💍 Bạn đời: ${E(C.spouse)} · ` : ''}👶 ${C.kidn.length ? E(C.kidn.join(', ')) : C.kids + ' con'}</p>` : ''}`) : ''}</div>
+        <div style="margin-top:14px">${fold('book', '📖 Thủ bản đang viết', liveBook(C))}</div></div></div>`;
   }
   function viewDna() {
     const C = G.life;
@@ -3105,23 +3158,56 @@
       ${[...new Set(BAO.map(b => b[3]))].map(kd => `<span class="gx-lab mono">${E(kd)}</span><div class="gx-sks">${BAO.filter(b => b[3] === kd).map(b => { const on = G.seenB.includes(b[0]);
         return `<div class="gx-sk${on ? '' : ' lock'}"><div class="hd"><span class="ic">${on ? b[1] : '❔'}</span><div style="flex:1;min-width:0"><h5>${on ? E(b[2]) : '???'}</h5><div class="meta">${on ? E(b[3]) + (BT[b[0]] ? ' · hỗ trợ đột phá' : '') : 'Chưa gặp'}</div></div><span class="gx-gr" style="color:${GCOL[b[4]]};border-color:${GCOL[b[4]]}66">${E(b[4])}</span></div>${on ? `<p>${E(b[5])}</p>` : ''}</div>`; }).join('')}</div>`).join('')}</div>`;
   }
+  // ---- gập / mở các khối ít dùng: nhớ theo MÁY (khóa riêng npdFunUi, không đồng bộ lên máy chủ, không đụng bản lưu npdFun) ----
+  // mặc định: màn nhỏ (điện thoại dọc, hoặc ngang thấp) gập các khối ít dùng; màn rộng luôn mở; người dùng bấm thì nhớ lựa chọn
+  const UIK = () => (typeof uKey === 'function' ? uKey('npdFunUi') : 'npdFunUi');
+  let uip = null;   // bản đọc trong một lần vẽ
+  const prefs = () => uip || (uip = lsGet(UIK(), {}));
+  const compact = () => !!(window.matchMedia && window.matchMedia('(max-width:760px), (orientation:landscape) and (max-height:500px)').matches);
+  const lsc = () => !!(window.matchMedia && window.matchMedia('(orientation:landscape) and (max-height:500px)').matches);   // điện thoại nằm ngang: tab Cuộc đời chia 2 cột, mỗi cột cuộn riêng
+  const FOLD_OPEN = { look:0, stats:0, rel:0, book:0, note:0 };   // mặc định trên màn nhỏ: 0 = gập
+  const isOpen = k => { const f = prefs().fold; return f && f[k] != null ? !!f[k] : compact() ? !!FOLD_OPEN[k] : true; };
+  function setOpen(k, v) { const p = prefs(); p.fold = p.fold && typeof p.fold === 'object' ? p.fold : {}; p.fold[k] = v ? 1 : 0; lsSet(UIK(), p); }
+  const fold = (k, title, body, sub) => { const o = isOpen(k);
+    return `<div class="gx-fd${o ? ' open' : ''}"><button class="gx-fh" data-g="fold" data-k="${k}" aria-expanded="${o}"><span>${title}</span>${sub ? `<small class="mono">${sub}</small>` : ''}<i>${o ? '▾' : '▸'}</i></button>${o ? `<div class="gx-fb">${body}</div>` : ''}</div>`; };
+  // thanh hành động dưới (chỉ màn nhỏ): nút chính của pha hiện tại nằm tầm ngón cái, ngay trên thanh tab; trong trang không vẽ lại các nút này
+  let curBar = '', curCols = false;
+  const barBtn = (g, k, cls, label, sub, dis) => `<button class="gx-btn ${cls || ''}" data-g="${g}"${k != null ? ` data-k="${k}"` : ''}${dis ? ' disabled' : ''}>${label}${sub ? `<small>${sub}</small>` : ''}</button>`;
+  const barHtml = L => L.length ? `<div class="gx-actbar" role="toolbar">${L.join('')}</div>` : '';
   let root = null;
   // cuộn về đầu khung game (khung toàn màn hình tự cuộn riêng)
-  function toTop() { const bx = root && root.closest('#fnBox'); if (!bx) return; const st = window.getComputedStyle(bx).position === 'fixed';
+  let keep = null;   // vị trí cuộn cần giữ sau lần vẽ lại: { y: cuộn trang / khung, sc: cuộn từng cột, sig } (toTop() hủy)
+  const scrollers = () => root ? [...root.querySelectorAll('.gx-main, .gx-life > div')] : [];   // các vùng cuộn riêng (chỉ có khi nằm ngang)
+  function toTop() { keep = null; scrollers().forEach(e => { e.scrollTop = 0; }); const bx = root && root.closest('#fnBox'); if (!bx) return; const st = window.getComputedStyle(bx).position === 'fixed';
     if (st) bx.scrollTop = 0; else { const r = bx.getBoundingClientRect(); if (r.top < 0) window.scrollBy(0, r.top - 70); } }
-  function render() {
+  // fresh = true: đổi chế độ khung (toàn màn hình) nên không khôi phục vị trí cuộn
+  function render(fresh) {
     if (!root || !root.isConnected) return;
-    G = load(); ensureCss();
+    G = load(); ensureCss(); uip = null;
     const t = UI.tab;
-    const bx = root.closest('#fnBox'); if (bx) bx.classList.toggle('gx-max', !!UI.max);
-    root.innerHTML = `<div class="gx">${topBar()}<div class="gx-main">${t === 'lore' ? viewLore() : t === 'books' ? viewBooks() : t === 'dna' ? viewDna() : t === 'skills' ? viewSkills() : G.life ? viewLife() : viewCreate()}
-      <p class="gx-note">Lưu tự động theo tài khoản. Thế giới, tên riêng và cốt truyện là nội dung tự viết, chỉ lấy cảm hứng từ mô-típ dân gian và thể loại (ma cà rồng, người sói, học viện phù thủy, dị nhân, cương thi, võ hiệp, nhẫn giả, đấu sĩ, xác ướp, thần thoại) – không dùng nhân vật hay tên riêng của tác phẩm có bản quyền.</p></div></div>`;
+    const bx = root.closest('#fnBox'), own0 = !!bx && window.getComputedStyle(bx).position === 'fixed', y0 = own0 ? bx.scrollTop : window.scrollY;   // đọc vị trí cuộn trước khi gán lại nội dung
+    if (bx) bx.classList.toggle('gx-max', !!UI.max);
+    curBar = ''; curCols = false;
+    const sc0 = scrollers().map(e => e.scrollTop), sig0 = UI.tab + (G.life ? 'L' : 'C');
+    const view = t === 'lore' ? viewLore() : t === 'books' ? viewBooks() : t === 'dna' ? viewDna() : t === 'skills' ? viewSkills() : G.life ? viewLife() : viewCreate();
+    root.innerHTML = `<div class="gx">${topBar()}<div class="gx-main${curBar ? ' has-bar' : ''}${curCols ? ' cols' : ''}">${view}
+      ${fold('note', 'ⓘ Lưu trữ & nội dung game', '<p class="gx-note" style="margin:0">Lưu tự động theo tài khoản. Thế giới, tên riêng và cốt truyện là nội dung tự viết, chỉ lấy cảm hứng từ mô-típ dân gian và thể loại (ma cà rồng, người sói, học viện phù thủy, dị nhân, cương thi, võ hiệp, nhẫn giả, đấu sĩ, xác ướp, thần thoại) – không dùng nhân vật hay tên riêng của tác phẩm có bản quyền.</p>')}</div>${curBar}</div>`;
+    if (curBar) { const nv = root.querySelector('.gx-nav'), br = root.querySelector('.gx-actbar');
+      if (nv) root.style.setProperty('--gx-nav-h', nv.offsetHeight + 'px'); if (br) root.style.setProperty('--gx-bar-h', br.offsetHeight + 'px'); }
+    // giữ vị trí cuộn: mỗi lần bấm game vẽ lại cả khung; một số trình duyệt (Safari iOS) đặt lại về đầu → đặt lại ngay và ở khung hình kế tiếp
+    if (fresh) { keep = null; return; }
+    keep = { y:y0, sc:sc0, sig:sig0 }; const put = () => { if (!keep) return; const o = !!bx && window.getComputedStyle(bx).position === 'fixed';
+      if (o) { if (Math.abs(bx.scrollTop - keep.y) > 1) bx.scrollTop = keep.y; } else if (Math.abs(window.scrollY - keep.y) > 1) window.scrollTo(0, keep.y);
+      if (keep.sig === UI.tab + (G.life ? 'L' : 'C')) scrollers().forEach((e, i) => { const v = keep.sc[i]; if (v && Math.abs(e.scrollTop - v) > 1) e.scrollTop = v; }); };
+    put(); requestAnimationFrame(put);
   }
   function onClick(e) {
     const b = e.target.closest('[data-g]'); if (!b || !root || !root.contains(b) || b.disabled) return;
     const g = b.dataset.g, k = b.dataset.k; G = load();
     if (g === 'tab') { UI.tab = k; render(); return toTop(); }
-    if (g === 'max') { UI.max = !UI.max; return render(); }
+    if (g === 'max') { UI.max = !UI.max; return render(true); }
+    if (g === 'fold') { setOpen(k, !isOpen(k)); return render(); }
+    if (g === 'logmore') { UI.logMore = !UI.logMore; return render(); }
     if (g === 'exit') { UI.max = false; const bx = root.closest('#fnBox'); if (bx) { bx.classList.remove('gx-max', 'gx-wide'); const c = bx.querySelector('[data-f="close"]'); if (c) c.click(); } return; }
     if (g === 'book') { UI.book = +k; UI.bp = 0; return render(); }
     if (g === 'export') { const bk = G.books[+k]; if (bk) exportBook(bk); return; }
@@ -3171,7 +3257,9 @@
     if (g === 'close') { const ep = (root.querySelector('#gxEp') || {}).value || ''; return closeBook(ep, UI.leg); }
   }
   document.addEventListener('click', onClick);
-  document.addEventListener('input', e => { if (!root || e.target.id !== 'gxSkq' || !root.contains(e.target)) return; UI.skq = e.target.value; const p = e.target.selectionStart; render(); const i = root.querySelector('#gxSkq'); if (i) { i.focus(); i.setSelectionRange(p, p); } });
+  if (window.matchMedia) { const mq = window.matchMedia('(max-width:760px), (orientation:landscape) and (max-height:500px)'), on = () => { if (root && root.isConnected) render(); };
+    if (mq.addEventListener) mq.addEventListener('change', on); else if (mq.addListener) mq.addListener(on); }
+  document.addEventListener('input', e => { if (!root || e.target.id !== 'gxSkq' || !root.contains(e.target)) return; UI.skq = e.target.value; const p = e.target.selectionStart; render(); const i = root.querySelector('#gxSkq'); if (i) { i.focus({ preventScroll:true }); i.setSelectionRange(p, p); } });
   window.GenesisGame = {
     mount(el) { root = el; const bx = el.closest('#fnBox'); if (bx) bx.classList.add('gx-wide'); ensureCss(); G = load(); render(); },
     summary() { const g = load(); return g.life ? `${g.life.n} · ${g.life.age} tuổi` : g.books.length ? `${g.books.length} cuốn sách · ${g.lives} kiếp` : 'Chưa bắt đầu'; },
