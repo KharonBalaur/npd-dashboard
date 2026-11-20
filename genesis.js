@@ -1613,7 +1613,8 @@
     C.bag = bagList(C).filter(x => x && BAOM[x.id] && +x.n > 0).map(x => ({ id:x.id, n:Math.min(BAG_STACK, Math.floor(+x.n)) })); C.bagx = Math.min(BAG_LV.length, Math.max(0, Math.floor(+C.bagx || 0)));
   }
   // hàng đợi lời mời tối đa 4: khi tràn bỏ lời mời cũ nhất KHÔNG phải lời mời túi (không để món bảo vật mất vì lời mời khác chen vào)
-  function offerPush(C, o) { const L = (C.offers || []).concat([o]); while (L.length > 4) { const i = L.findIndex(x => x.k !== 'bag'); if (i < 0) break; L.splice(i, 1); } return L; }
+  const offerLbl = o => o.k === 'gene' && GENE[o.id] ? 'gene ' + GENE[o.id][0] : o.k === 'skill' && SKM[o.id] ? 'dị năng ' + SKM[o.id][2] : o.k === 'path' && PATHS[o.id] ? 'con đường ' + PATHS[o.id].n : o.k === 'bd' && BD[o.id] ? BD[o.id][1] : o.k === 'bag' && BAOM[o.id] ? BAOM[o.id][2] : 'một cơ hội';
+  function offerPush(C, o) { const L = (C.offers || []).concat([o]); while (L.length > 4) { const i = L.findIndex(x => x.k !== 'bag'); if (i < 0) break; log(C, `Bỏ lỡ cơ hội: ${offerLbl(L.splice(i, 1)[0])} (hàng đợi lời mời đầy).`); } return L; }   // tràn thì bỏ lời mời cũ nhất không phải lời mời túi và GHI nhật ký, không im lặng
   const gradeOf = (C, id) => id === 'b_fruit' && !fruitKnown(C) ? 'Phàm' : BAOM[id][4];
   function addBao(C, id, chips) {
     bagPush(C, id); chips.push(['lore', `🎒 ${gradeOf(C, id)}: ${BAOM[id][1]} ${baoName(C, id)}`]); log(C, `Có được ${baoName(C, id)}.`);
@@ -1838,7 +1839,9 @@
       C.gold -= BAG_LV[lv]; C.bagx = lv + 1; chips.push(['down', `−${BAG_LV[lv]} vàng`], ['up', `🎒 Túi trữ vật cấp ${lv + 1}: ${bagCap(C)} ô`]); log(C, `Mua Túi trữ vật cấp ${lv + 1}: túi ${bagCap(C)} ô.`);
       if (!bagFits(C, o.id)) return; addBao(C, o.id, chips); }
     else if (/^(drop|sell):/.test(k)) { const sell = k.startsWith('sell:'), id = k.slice(5), i = bagList(C).findIndex(x => x.id === id); if (i < 0 || (sell && an)) return;
-      const x = C.bag[i], on = baoName(C, id); C.bag.splice(i, 1);
+      const x = C.bag[i], on = baoName(C, id);
+      if (x.n >= 2 && !confirm(sell ? `Bán ×${x.n} ${on} lấy ${sellOf(C, id) * x.n} vàng?` : `Bỏ ×${x.n} ${on}?`)) return;   // cả chồng từ 2 món: hỏi xác nhận, không đi mất chỉ bằng một lần bấm
+      C.bag.splice(i, 1);
       if (sell) { const v = sellOf(C, id) * x.n; apply(C, { gold:v }, chips); log(C, `Túi đầy – bán ${on} ×${x.n} được ${v} vàng để nhận ${nm}.`); }
       else { chips.push(['', `✖ Bỏ ${on}${x.n > 1 ? ' ×' + x.n : ''}`]); log(C, `Túi đầy – bỏ ${on}${x.n > 1 ? ' ×' + x.n : ''} để nhận ${nm}.`); }
       if (!bagFits(C, o.id)) return; addBao(C, o.id, chips); }
