@@ -19,7 +19,8 @@
     },
     "itm004_rank_01": {
      "obj": 4,
-     "hint": "Huy hiệu cấp bậc T9: vàng, vòng chòm sao"
+     "hint": "Huy hiệu cấp bậc T9: vàng, vòng chòm sao",
+     "redo": "vòng quầng xanh lá bao quanh huy hiệu (hào quang trùng màu nền) còn sót sau khi khử"
     }
    }
   },
@@ -900,7 +901,8 @@
      "hint": "Trang bị sơ khai: cầu lửa nhỏ"
     }
    },
-   "plate": true
+   "plate": true,
+   "merge": 10
   },
   "P-029": {
    "bg": "green",
@@ -919,24 +921,34 @@
     },
     "itm039_relic_04": {
      "obj": 4,
-     "hint": "Huyền thoại: bảo vật tối thượng (ba món lơ lửng)"
+     "also": [
+      5,
+      6
+     ],
+     "hint": "Huyền thoại: bảo vật tối thượng (ba món lơ lửng: cầu, vương miện, cuộn)"
     },
     "itm039_relic_05": {
-     "obj": 5,
+     "obj": 7,
      "hint": "Huyền thoại: cánh Sáng Thế (trắng-vàng)"
     },
     "itm039_relic_06": {
-     "obj": 6,
-     "hint": "Huyền thoại: cánh Tinh Không (lam đậm, sao)"
+     "obj": 8,
+     "also": [
+      9
+     ],
+     "hint": "Huyền thoại: cánh Tinh Không (lam đậm, sao; hai cánh rời ghép lại)"
     },
     "itm039_relic_07": {
-     "obj": 7,
+     "obj": 10,
      "hint": "Huyền thoại: cánh Hỗn Độn (tím sẫm)"
     },
     "itm039_relic_08": {
-     "obj": 8,
+     "obj": 11,
      "hint": "Huyền thoại: cánh Phượng Huyết (đỏ-cam lửa)"
     }
+   },
+   "key": {
+    "lmargin": 60
    }
   },
   "P-029 (vương miện)": {

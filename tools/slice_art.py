@@ -547,10 +547,11 @@ def find_objects(alpha, merge=None, min_area=None):
     thin = []
     for i in keep:                                         # đường mảnh dài (vạch giữa ô, mép khe): không phải vật
         bx, by, bw, bh, _ = st[i]
-        if max(bw, bh) >= 0.12 * m:
+        if max(bw, bh) >= 0.05 * m and (max(bw, bh) >= 0.12 * m or max(bw, bh) >= 6 * min(bw, bh)):
             sub = (lbl[by:by + bh, bx:bx + bw] == i).astype(np.uint8)
+            sub = cv2.copyMakeBorder(sub, 1, 1, 1, 1, cv2.BORDER_CONSTANT, value=0)   # vạch 1-4px lấp đầy khung: thiếu điểm 0 thì dtm vô hạn
             dtm = cv2.distanceTransform(sub, cv2.DIST_L2, 3).max()
-            if dtm < 2.6 or (dtm < 7 and st[i][4] < 0.12 * bw * bh and max(bw, bh) >= 0.3 * m):   # vạch mảnh / khung lưới thưa
+            if dtm < 2.6 or (dtm < 7 and st[i][4] < 0.12 * bw * bh and max(bw, bh) >= 0.3 * m) or (dtm < 5 and max(bw, bh) >= 8 * min(bw, bh) and max(bw, bh) >= 0.1 * m):   # vạch mảnh / khung lưới thưa / mẩu khe dài hẹp
                 thin.append(i)
     keep = [i for i in keep if i not in thin]
     if not keep:
