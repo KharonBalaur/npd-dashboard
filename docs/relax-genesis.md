@@ -58,3 +58,9 @@ Chuyển từ `CLAUDE.md` nguyên văn (chỉ đổi chỗ, không bỏ thông t
   `continuity.md` (thuật ngữ cố định + dòng thời gian), `chapters-summary.md` (tóm tắt từng chương), `review.md` ("Cần sửa" +
   "Canon mới chờ duyệt"). Mỗi phiên viết CHỈ đọc `story/continuity.md` (+ đề cương chương đang viết), không đọc lại chương cũ;
   mâu thuẫn ghi vào `review.md`, chưa sửa chương cũ khi chủ dự án chưa duyệt.
+
+## Đặt tên (genesis.js, đầu file: SURN / GIVEN_M / GIVEN_F / GIVEN_N / npcName / newKid)
+- Tên = họ (`SURN`, 32 họ) + tên gọi. Tên gọi chia kho nam `GIVEN_M`, nữ `GIVEN_F`, trung tính `GIVEN_N` (dùng cho "phi nhị nguyên"); `GIVEN` là kho gộp cho nhân vật phụ. Kho cũ (16 họ, 20 tên) nằm trọn trong kho mới, nên tên đã sinh ra từ trước vẫn nhận ra được.
+- Màn tạo nhân vật: tên gợi ý theo giới. Đổi giới thì đổi tên gọi, giữ họ; đổi qua lại trả đúng tên đã gợi ý cho giới đó (`d.ag`). Tên người chơi tự gõ đánh dấu `d.nt = 1` và không bao giờ bị đổi (kể cả khi gieo quẻ ra hậu duệ). Bản nháp cũ chưa có `nt`: tên không phải dạng "họ + tên trong kho" coi như tự gõ.
+- `npcName(C, g)`: tên nhân vật phụ (bạn, địch, sư phụ, người thương, bạn đời, người gặp gỡ) không trùng tên đầy đủ, tên gọi hay họ của ai khác trong đời (`namesOf(C)`); hết lựa chọn thì nới dần.
+- Con cái (`newKid`): lấy họ gia tộc `C.clan` (cùng quy tắc hậu duệ kiếp sau mang `par.cl`), giới ngẫu nhiên, tên gọi theo giới, không trùng tên gọi trong nhà. Lưu thêm `kidl[i] = { n, s (họ), g (giới), lk }`; `kidn` vẫn là tên gọi (dùng cho `{con}`). Con sinh từ trước chỉ có tên gọi, giữ nguyên, không sửa. Hiển thị đủ tên qua `kidFull` / `kidsFull`.
