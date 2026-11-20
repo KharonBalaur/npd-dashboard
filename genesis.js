@@ -2557,6 +2557,7 @@
   .gx-lg small{display:block;font-size:10.5px;color:var(--cy)} .gx-lg b{font-size:12.5px} .gx-lg.lock small{color:#5b6377} .gx-lg.lock b{color:#5b6377}
   .gx-term{margin-top:10px;padding:14px;border-radius:10px;background:var(--bg);border:1px solid #262a3d;font-size:12.5px;line-height:1.7;color:#cbd5e1;min-height:90px;white-space:pre-wrap}
   .gx-note{font-size:11.5px;color:var(--mu);margin:10px 0 0;line-height:1.5}
+  #fnBox button,#fnBox .gx-opt,#fnBox .gx-act,#fnBox .gx-pk{touch-action:manipulation}   /* chạm đúp không phóng to trang (iOS) */
   .gx-fd{margin:10px 0 0} .gx-fb{padding-top:8px}
   .gx-fh{display:flex;align-items:center;gap:8px;width:100%;min-height:44px;padding:8px 12px;border:1px solid var(--ln);border-radius:12px;background:var(--pn2);color:var(--tx);font:inherit;font-size:13px;font-weight:700;text-align:left;cursor:pointer;-webkit-tap-highlight-color:transparent}
   .gx-fh span{flex:1;min-width:0} .gx-fh small{color:var(--mu);font-weight:500;font-size:11px} .gx-fh i{font-style:normal;color:var(--cy)} .gx-fd.open>.gx-fh{border-color:rgba(0,229,255,.35)}
@@ -2596,7 +2597,7 @@
     #fnBox .gx-main.cols .gx-life>div{min-height:0;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
     #fnBox .gx-main.cols .gx-life>div:first-child{order:2} #fnBox .gx-main.cols .gx-life>div:last-child{order:1}
     #fnBox .gx-main.cols .gx-mini{display:none}
-    #fnBox .gx-main.cols .gx-life>div:first-child>.gx-actbar{margin:8px -2px 0;border-radius:12px;border:1px solid #2a2e45}
+    #fnBox .gx-main.cols .gx-life>div:first-child>.gx-actbar{margin:8px 0 0;border-radius:12px;border:1px solid #2a2e45}
   }
   .gx-rel{display:grid;gap:5px;margin-top:8px} .gx-rel div{display:flex;justify-content:space-between;gap:8px;font-size:12px;padding:5px 8px;border-radius:8px;background:var(--bg);border:1px solid #262a3d}
   .gx-rel span{color:var(--mu)} .gx-rel b{color:#fff;font-weight:600}
@@ -3201,6 +3202,8 @@
   const barHtml = L => L.length ? `<div class="gx-actbar" role="toolbar">${L.join('')}</div>` : '';
   let root = null;
   // cuộn về đầu khung game (khung toàn màn hình tự cuộn riêng)
+  let lastPhk = null, progAt = 0;   // pha lần vẽ trước (để biết khi nào đổi pha); lúc bấm nút tiến trình gần nhất
+  const PROG = ['act', 'auto', 'next', 'pick', 'nm', 'nmno', 'skill', 'btgo'];   // nút làm game tiến lên: chạm đúp liên tiếp chỉ tính một lần
   let keep = null;   // vị trí cuộn cần giữ sau lần vẽ lại: { y: cuộn trang / khung, sc: cuộn từng cột, sig } (toTop() hủy)
   const scrollers = () => root ? [...root.querySelectorAll('.gx-main, .gx-life > div')] : [];   // các vùng cuộn riêng (chỉ có khi nằm ngang)
   function toTop() { keep = null; scrollers().forEach(e => { e.scrollTop = 0; }); const bx = root && root.closest('#fnBox'); if (!bx) return; const st = window.getComputedStyle(bx).position === 'fixed';
@@ -3214,6 +3217,7 @@
     if (bx) bx.classList.toggle('gx-max', !!UI.max);
     curBar = ''; curCols = false;
     const sc0 = scrollers().map(e => e.scrollTop), sig0 = UI.tab + (G.life ? 'L' : 'C'), sfx = (root.querySelector('.gx-sf') || {}).scrollLeft || 0;
+    const phk = G.life ? `${G.life.ph}|${G.life.ev ? G.life.ev.id : ''}|${UI.bt || ''}` : '-', phChanged = lastPhk !== null && phk !== lastPhk && t === 'life' && !!G.life; lastPhk = phk;
     const view = t === 'lore' ? viewLore() : t === 'books' ? viewBooks() : t === 'dna' ? viewDna() : t === 'skills' ? viewSkills() : G.life ? viewLife() : viewCreate();
     root.innerHTML = `<div class="gx">${topBar()}<div class="gx-main${curBar ? ' has-bar' : ''}${curCols ? ' cols' : ''}">${view}
       ${fold('note', 'ⓘ Lưu trữ & nội dung game', '<p class="gx-note" style="margin:0">Lưu tự động theo tài khoản. Thế giới, tên riêng và cốt truyện là nội dung tự viết, chỉ lấy cảm hứng từ mô-típ dân gian và thể loại (ma cà rồng, người sói, học viện phù thủy, dị nhân, cương thi, võ hiệp, nhẫn giả, đấu sĩ, xác ướp, thần thoại) – không dùng nhân vật hay tên riêng của tác phẩm có bản quyền.</p>')}</div>${curBar}</div>`;
@@ -3226,10 +3230,19 @@
       if (o) { if (Math.abs(bx.scrollTop - keep.y) > 1) bx.scrollTop = keep.y; } else if (Math.abs(window.scrollY - keep.y) > 1) window.scrollTo(0, keep.y);
       if (keep.sig === UI.tab + (G.life ? 'L' : 'C')) scrollers().forEach((e, i) => { const v = keep.sc[i]; if (v && Math.abs(e.scrollTop - v) > 1) e.scrollTop = v; }); };
     put(); requestAnimationFrame(put);
+    if (phChanged) {   // đổi pha (vd. "trôi nhanh": khối hoạt động + chợ + túi đồ → thẻ sự kiện ngắn hơn): nếu đầu thẻ mới đã trôi lên khỏi màn hình thì đưa nó vào tầm nhìn, đừng để rơi xuống khung nhật ký
+      const an = root.querySelector('.gx-life .gx-scn, .gx-life .gx-ev');
+      if (an) { const col = curCols ? an.closest('.gx-life > div') : null, o = !!bx && window.getComputedStyle(bx).position === 'fixed', hdr = (root.querySelector('.gx-top') || {}).offsetHeight || 0;
+        if (col) { const d = an.getBoundingClientRect().top - col.getBoundingClientRect().top; if (d < 0) col.scrollTop += d - 4; }
+        else if (o) { const d = an.getBoundingClientRect().top - bx.getBoundingClientRect().top - hdr; if (d < 0) bx.scrollTop += d - 8; }
+        else { const d = an.getBoundingClientRect().top - 70; if (d < 0) window.scrollBy(0, d); }
+        keep.y = o ? bx.scrollTop : window.scrollY; keep.sc = scrollers().map(e => e.scrollTop); } }
   }
   function onClick(e) {
     const b = e.target.closest('[data-g]'); if (!b || !root || !root.contains(b) || b.disabled) return;
-    const g = b.dataset.g, k = b.dataset.k; G = load();
+    const g = b.dataset.g, k = b.dataset.k;
+    if (e.isTrusted && PROG.includes(g)) { const now = performance.now(); if (now - progAt < 350) return; progAt = now; }   // chạm đúp: cú thứ hai (rơi vào nút / phương án mới hiện ra) bị bỏ qua
+    G = load();
     if (G.life && !isAnimal(G.life) && shopEnsure(G.life)) save(G);   // qua năm: kho mới được tạo và lưu ở đây, không ở lúc vẽ
     if (g === 'tab') { UI.tab = k; render(); return toTop(); }
     if (g === 'max') { UI.max = !UI.max; return render(true); }
