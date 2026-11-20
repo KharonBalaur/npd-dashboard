@@ -117,7 +117,7 @@
     ['L4', 'Ác Quỷ Dưới Hang Sâu', 'Trong Đại Chiến Vạn Tộc, một ác quỷ leo lên từ địa ngục và bị các đạo sĩ xích dưới hang núi. Nó chỉ được tự do khi có kẻ uống máu nó. Ai uống có sức mạnh của trăm người, hóa được bầy dơi, nhưng sợ nắng và khát máu tới cuối đời: Huyết Ước – Pactborn.', 'Đứng trước miệng hang và nghe lời mời gọi.'],
     ['L5', 'Chiến Tranh Trăng Máu', 'Từ cùng một phòng thí nghiệm của Học Viện Gen sinh ra hai nhánh: Vesper – Huyết tộc gene lai, và Lycan – người sói không cần trăng. Họ căm ghét nhau hơn bất cứ thứ gì; cuộc chiến kéo dài cả trăm năm dưới mắt loài người.', 'Bước vào cuộc chiến giữa Huyết tộc và Lang tộc.'],
     ['L6', 'Băng Huyết', 'Con của một dị nhân và một Huyết Ước sinh ra với trái tim gần như ngừng đập: Frostblood. Họ uống máu thú, da lạnh như sương, nắng chỉ làm da ánh lên như băng. Bầy Sói Bắc Nguyên ký hiệp ước không xâm phạm với họ.', 'Kết bạn với một người đẹp lạnh lùng kỳ lạ.'],
-    ['L7', 'Học Viện Ngũ Tinh', 'Phép thuật là năng lượng tinh thần điều khiển nguyên tố và lực của các chiều không gian – Tinh thần chưa vượt 10 thì không thể thành phù thủy. Học Viện Ngũ Tinh trên mây nhận học trò qua thư nhập học, chia bốn viện Quang, Uyên, Thạch, Thú; viện thứ năm bị xóa tên.', 'Nhận thư mời của Học Viện.'],
+    ['L7', 'Học Viện Ngũ Tinh', 'Phép thuật là năng lượng tinh thần điều khiển nguyên tố và lực của các chiều không gian – Tinh thần chưa vượt 12 thì không thể thành phù thủy. Học Viện Ngũ Tinh trên mây nhận học trò qua thư nhập học, chia bốn viện Quang, Uyên, Thạch, Thú; viện thứ năm bị xóa tên.', 'Nhận thư mời của Học Viện.'],
     ['L8', 'Âm Khí & Cương Thi', 'Ở phương Đông, âm khí rò từ địa ngục thấm vào đất nghĩa địa. Xác chết không rữa mà hút dương khí người sống: cương thi – Thiết thi, Đồng thi, Ngân thi, Kim giáp thi, Phi thiên cương thi, Hạn bạt. Phái Huyền Phù dùng gạo nếp, gương bát quái, bùa vàng giữ ranh giới âm dương.', 'Canh nghĩa trang Đông Hương một đêm sương.'],
     ['L9', 'Ảnh Môn', 'Trên Núi Sương có một tông môn nhận trẻ mồ côi, rèn luyện cực đoan, cho uống bí dược và luyện thần cho tới khi tiềm năng bị khóa trong cơ thể mở ra: vết thương liền nhanh, thân tan vào bóng tối. Kẻ phản môn bị truy sát đến cùng.', 'Bị đưa lên Núi Sương.'],
     ['L10', 'Lời Tiên Tri Huyết Lang', 'Veyra từng phong ấn nửa sói của đứa con út – đứa trẻ mang cả lửa ngục lẫn lời nguyền sói. Lời tiên tri nói ngày Huyết Lang thức tỉnh, cả Huyết tộc lẫn Lang tộc sẽ phải quỳ, hoặc diệt vong.', 'Mang trong người cả máu Huyết tộc lẫn Lang tộc.'],
@@ -179,12 +179,12 @@
     ['sk_dragon', '🐉', 'Uy Áp Long Huyết', 'Hắc Ám', 'SSR', C => has_(C, 'g_dragon'), 'Đuôi Rồng Lửa', ['fight', 'social', 'danger'], 'Đuôi rồng bùng lửa – uy áp khiến cả rừng im bặt.', { fame:4 }],
     ['sk_wolf', '🐺', 'Hóa Lang', 'Huyết Mạch', 'SR', C => ['wolf', 'hybrid'].includes(lk_(C)), 'Lang Tộc / Huyết Lang', ['fight', 'nature', 'escape'], 'Bạn hóa thành sói xám khổng lồ, tru một tiếng vang núi.', { thu:5 }],
     ['sk_spell', '🔮', 'Thần Chú Ngôn Mã', 'Huyết Mạch', 'SR', C => lk_(C) === 'witch', 'Phù Thủy', ['mystery', 'fight', 'heal', 'undead'], 'Bạn đọc to một câu mã cổ – thế giới khẽ đổi theo lời bạn.', { tri:1 }],
-    ['sk_charm', '💋', 'Huyết Mị', 'Huyết Mạch', 'R', C => (C.line && ['first', 'cold'].includes(C.line.sub)) || C.s.mi >= 16, 'Huyết tộc Nguyên Thủy / Băng Huyết hoặc Mị lực ≥ 16', ['social', 'love', 'trade'], 'Giọng bạn trầm xuống, ánh mắt sâu thẳm – không ai nỡ từ chối.', { mi:1 }],
+    ['sk_charm', '💋', 'Huyết Mị', 'Huyết Mạch', 'R', C => (C.line && ['first', 'cold'].includes(C.line.sub)) || C.s.mi >= 17, 'Huyết tộc Nguyên Thủy / Băng Huyết hoặc Mị lực ≥ 17', ['social', 'love', 'trade'], 'Giọng bạn trầm xuống, ánh mắt sâu thẳm – không ai nỡ từ chối.', { mi:1 }],
     ['sk_undying', '⚰', 'Bất Tử Thân', 'Huyết Mạch', 'SR', C => C.line && C.line.sub === 'corpse', 'Cương Thi Tỉnh Trí', ['danger', 'undead', 'fight'], 'Đao kiếm chém vào như chém gỗ – bạn vẫn đứng đó.', { hp:5 }],
     ['sk_ninja', '🗡', 'Ám Sát Thuật', 'Huyết Mạch', 'SR', C => lk_(C) === 'shin', 'Ninja Ảnh Môn', ['fight', 'stealth'], 'Một tia sáng lóe lên – mọi chuyện kết thúc trước khi ai kịp thấy.', { want:3 }],
-    ['sk_trade', '💬', 'Miệng Lưỡi Thương Nhân', 'Đời Thường', 'R', C => (C.car && C.car.k === 'merchant') || C.s.mi >= 14, 'Thương nhân hoặc Mị lực ≥ 14', ['trade', 'social'], 'Bạn nói một hồi – đối phương tự móc túi trả thêm.', { gold:15 }],
-    ['sk_tactic', '♟', 'Binh Pháp', 'Đời Thường', 'R', C => (C.car && C.car.k === 'soldier' && C.car.rk >= 1) || C.s.tri >= 15, 'Đội trưởng trở lên hoặc Trí tuệ ≥ 15', ['war', 'fight'], 'Bạn bày trận, lùi một bước để tiến ba bước.', { fame:3 }],
-    ['sk_lore', '📚', 'Bác Học', 'Đời Thường', 'R', C => (C.car && C.car.k === 'scholar') || C.s.tri >= 16, 'Học giả hoặc Trí tuệ ≥ 16', ['mystery', 'plague'], 'Bạn nhớ ra một đoạn sách cổ nói đúng chuyện này.', { tri:1 }],
+    ['sk_trade', '💬', 'Miệng Lưỡi Thương Nhân', 'Đời Thường', 'R', C => (C.car && C.car.k === 'merchant') || C.s.mi >= 15, 'Thương nhân hoặc Mị lực ≥ 15', ['trade', 'social'], 'Bạn nói một hồi – đối phương tự móc túi trả thêm.', { gold:15 }],
+    ['sk_tactic', '♟', 'Binh Pháp', 'Đời Thường', 'R', C => (C.car && C.car.k === 'soldier' && C.car.rk >= 1) || C.s.tri >= 16, 'Đội trưởng trở lên hoặc Trí tuệ ≥ 16', ['war', 'fight'], 'Bạn bày trận, lùi một bước để tiến ba bước.', { fame:3 }],
+    ['sk_lore', '📚', 'Bác Học', 'Đời Thường', 'R', C => (C.car && C.car.k === 'scholar') || C.s.tri >= 17, 'Học giả hoặc Trí tuệ ≥ 17', ['mystery', 'plague'], 'Bạn nhớ ra một đoạn sách cổ nói đúng chuyện này.', { tri:1 }],
     ['sk_steal', '🗝', 'Diệu Thủ', 'Đời Thường', 'R', C => C.car && C.car.k === 'thief', 'Đạo tặc', ['stealth', 'trade'], 'Thứ cần lấy đã nằm trong túi bạn từ lúc nào.', { gold:10 }],
     ['sk_farm', '🌾', 'Nông Thuật', 'Đời Thường', 'R', C => C.car && ['farmer', 'fisher'].includes(C.car.k), 'Nông dân / ngư dân', ['work', 'famine', 'nature'], 'Bạn biết đất, biết trời – năm nào cũng có cái ăn.', { gold:8 }],
     ['sk_origin', '✴', 'Hỗn Nguyên Nhất Khí', 'Hỗn Nguyên', 'SSR', C => !!C.flags.origin, 'Cân bằng 4 nguồn khí (nhánh ẩn Hỗn Nguyên)', ['mystery', 'fight', 'social', 'danger', 'heal'], 'Bạn hòa bốn nguồn khí làm một – thực tại nghe theo.', { lore:'L2' }],
@@ -298,9 +298,9 @@
 
   // dị năng mới (Dị Nhân và bảo vật)
   SKILLS.push(
-    ['sk_regen', '🧫', 'Tái Sinh Tế Bào', 'Dị Nhân', 'SR', C => lk_(C) === 'mutant' || C.s.the >= 16, 'Dị Nhân hoặc Thể chất ≥ 16', ['danger', 'heal', 'fight'], 'Vết thương khép lại ngay trước mắt mọi người.', { hp:15 }],
+    ['sk_regen', '🧫', 'Tái Sinh Tế Bào', 'Dị Nhân', 'SR', C => lk_(C) === 'mutant' || C.s.the >= 17, 'Dị Nhân hoặc Thể chất ≥ 17', ['danger', 'heal', 'fight'], 'Vết thương khép lại ngay trước mắt mọi người.', { hp:15 }],
     ['sk_tele', '🌀', 'Dịch Chuyển Tức Thời', 'Dị Nhân', 'SSR', C => lk_(C) === 'mutant', 'Dị Nhân', ['escape', 'travel', 'danger'], 'Bạn chớp mắt – và đã đứng ở đầu kia con phố.', { van:1 }],
-    ['sk_mind', '🧠', 'Đọc Tâm', 'Dị Nhân', 'SR', C => lk_(C) === 'mutant' || C.s.tri >= 17, 'Dị Nhân hoặc Trí tuệ ≥ 17', ['social', 'mystery', 'trade', 'love'], 'Bạn nghe thấy điều người kia chưa kịp nói.', { mi:1 }],
+    ['sk_mind', '🧠', 'Đọc Tâm', 'Dị Nhân', 'SR', C => lk_(C) === 'mutant' || C.s.tri >= 18, 'Dị Nhân hoặc Trí tuệ ≥ 18', ['social', 'mystery', 'trade', 'love'], 'Bạn nghe thấy điều người kia chưa kịp nói.', { mi:1 }],
     ['sk_metal', '🧲', 'Điều Khiển Kim Loại', 'Dị Nhân', 'SSR', C => lk_(C) === 'mutant' && C.en.co >= 30, 'Dị Nhân và Tinh khí ≥ 30', ['fight', 'work', 'danger'], 'Mọi lưỡi kiếm quanh bạn khẽ rung rồi quay mũi.', { co:5 }],
     ['sk_storm', '⛈', 'Hô Phong Hoán Vũ', 'Dị Nhân', 'SSR', C => lk_(C) === 'mutant' && C.en.thanh >= 30, 'Dị Nhân và Thiên khí ≥ 30', ['fight', 'nature', 'famine'], 'Mây đen kéo đến theo cái phất tay của bạn.', { thanh:5 }],
     ['sk_ice', '❄', 'Băng Phong', 'Dị Nhân', 'SR', C => lk_(C) === 'mutant' || C.o === 'snow', 'Dị Nhân hoặc sinh ở Bắc địa', ['fight', 'escape'], 'Hơi thở bạn đóng băng cả mặt hồ.', { the:1 }],
@@ -351,7 +351,7 @@
   Object.values(ORIGIN).forEach(x => normS(x[3])); Object.values(RACE).forEach(x => normS(x[2])); OMEN.forEach(x => normS(x[2]));
   Object.values(GENE).forEach(x => normS(x[2])); SYN.forEach(x => normS(x[3])); BAO.forEach(x => normS(x[7])); SKILLS.forEach(x => normS(x[9]));
   Object.values(LINE).forEach(l => Object.values(l.sub).forEach(x => normS(x[1])));
-  const normC = c => { if (!c) return; if (c.chk && c.chk[0] === 'gen') c.chk[0] = 'the'; normS(c.ok); normS(c.no); (c.alt || []).forEach(a => normS(a.ok)); };
+  const normC = c => { if (!c) return; if (c.chk && c.chk[0] === 'gen') c.chk[0] = 'the'; if (c.chk && !c.dcf) { c.chk[1] = f20(c.chk[1]); c.dcf = 1; } /* độ khó (thang cũ) → thang mới, đúng một lần */ normS(c.ok); normS(c.no); (c.alt || []).forEach(a => normS(a.ok)); };
 
   // bản đồ: Tinh Linh Sâm Lâm (tây), Huyết Chiến Bình Nguyên (trung tâm – Chiến Trường Vạn Tộc), Vô Tận Hải (đông), Bắc Nguyên (bắc),
   // Hoang Mạc Tử Thần (nam), Vực Sâu Vô Tận (giữa bắc và trung tâm); phía tây rừng tinh linh là Phương Tây (3/4 đồi núi), ven biển đông là Phương Đông
@@ -377,7 +377,7 @@
   RACE.beast[1] = 'Lai thú'; RACE.beast[4] = 'Người mang vài nét thú (tai, đuôi, vuốt); khỏe, nhanh nhẹn, hay bị kỳ thị.';
   RACE.elf[1] = 'Tinh linh'; RACE.elf[3] = 240; RACE.elf[4] = 'Tinh linh rừng tây: tai nhọn, trí tuệ cao, sống hơn ba trăm năm.';
   Object.assign(RACE, {
-    witchb: ['🧙', 'Phù thủy bẩm sinh', { y:2, tri:1 }, 60, 'Sinh ra trong một gia đình phù thủy: Tinh thần luôn trên 10, học phép tổ truyền từ nhỏ, sống 100–150 năm.'],
+    witchb: ['🧙', 'Phù thủy bẩm sinh', { y:2, tri:1 }, 60, 'Sinh ra trong một gia đình phù thủy: Tinh thần luôn trên 12, học phép tổ truyền từ nhỏ, sống 100–150 năm.'],
     mutantb:['🧿', 'Dị nhân', { the:1, van:1 }, 10, 'Mang gene ẩn đã hé mở: năng lực ngẫu nhiên sẽ thức tỉnh ở tuổi dậy thì, mạnh hay yếu tùy số trời.'],
     animal: ['🐾', 'Thú', { the:2, suc:2, tri:-3, mi:-2 }, 0, 'Sinh ra là một con thú. Hấp thu linh khí để thành linh thú → yêu thú → hóa hình thành người.'],
   });
@@ -413,7 +413,7 @@
   const PATHS = {
     noi:   { ic:'🥋', n:'Võ giả · Nội lực', side:'east', en:'Nội lực', st:'y', T:['Phàm nhân', 'Luyện nội lực', 'Chân khí', 'Cương khí', 'Tiên Thiên', 'Tông Sư', 'Hóa Cảnh', 'Luyện Thần', 'Phản Hư', 'Võ Thần'], up:{ y:1, the:1 }, d:'Hấp thu Địa khí trời đất – lúc đầu qua đồ ăn, có chân khí rồi thì hút thẳng từ đất trời. Nội công, khinh công, điểm huyệt.' },
     body:  { ic:'👊', n:'Võ giả · Luyện thể', side:'east', en:'Khí huyết', st:'suc', T:['Phàm nhân', 'Minh kình', 'Ám kình', 'Hóa kình', 'Bão đan tọa khố', 'Kiến thần bất hoại', 'Thần Lực Thông Huyền', 'Kim Thân Bất Diệt', 'Pháp Tướng Thiên Địa', 'Nhục Thân Thành Thần'], up:{ suc:1, the:1 }, d:'Rèn gân cốt, luyện quyền: sức mạnh nằm trong chính thân thể, không cần phép.' },
-    witch: { ic:'🔮', n:'Phù thủy', side:'west', en:'Ma lực', st:'y', T:['Phàm nhân', 'Học đồ', 'Pháp sư', 'Đại ma pháp sư', 'Truyền kỳ pháp sư', 'Chí tôn pháp sư', 'Thánh pháp sư', 'Đại Hiền Giả', 'Bán thần', 'Pháp Thần'], up:{ y:1, tri:1 }, d:'Dùng năng lượng tinh thần điều khiển nguyên tố và lực của các chiều không gian. Cần Tinh thần trên 10.' },
+    witch: { ic:'🔮', n:'Phù thủy', side:'west', en:'Ma lực', st:'y', T:['Phàm nhân', 'Học đồ', 'Pháp sư', 'Đại ma pháp sư', 'Truyền kỳ pháp sư', 'Chí tôn pháp sư', 'Thánh pháp sư', 'Đại Hiền Giả', 'Bán thần', 'Pháp Thần'], up:{ y:1, tri:1 }, d:'Dùng năng lượng tinh thần điều khiển nguyên tố và lực của các chiều không gian. Cần Tinh thần trên 12.' },
     dau:   { ic:'🛡', n:'Đấu khí', side:'west', en:'Đấu khí', st:'suc', T:['Phàm nhân', 'Đấu sĩ', 'Đại đấu sĩ', 'Đấu tông', 'Đấu tôn', 'Đấu thánh', 'Đấu đế', 'Chiến Vương', 'Chiến Hoàng', 'Chiến Thần'], up:{ suc:1, the:1 }, d:'Hút năng lượng từ chiều không gian đấu khí – cuồng bạo, bùng nổ hơn nội lực. Rèn ở đấu trường và quân đoàn phương Tây. Đấu khí đốt cơ thể như lửa đốt củi: đấu sĩ già nhanh hơn – mỗi bậc chỉ cộng một nửa tuổi thọ của các hệ khác.' },
     nin:   { ic:'🥷', n:'Nhẫn thuật', side:'east', en:'Chakra', st:'van', T:['Phàm nhân', 'Hạ nhẫn', 'Trung nhẫn', 'Thượng nhẫn', 'Ám bộ', 'Ảnh nhẫn', 'Nhẫn tông', 'Ảnh Vương', 'Hư Ảnh', 'Nhẫn Thần'], up:{ van:1, the:1 }, d:'Rèn luyện cực đoan để mở khóa tiềm năng, kết hợp bí dược và luyện thần.' },
     dao:   { ic:'☯', n:'Đạo sĩ · Huyền môn', side:'east', en:'Chân nguyên', st:'y', T:['Phàm nhân', 'Đạo đồng', 'Luyện tinh hóa khí', 'Luyện khí hóa thần', 'Luyện thần hoàn hư', 'Chân nhân', 'Thiên sư', 'Địa tiên', 'Thiên tiên', 'Kim tiên'], up:{ y:1, tri:1 }, d:'Bùa chú, trận pháp, trấn thi; tu tâm dưỡng tính để giữ ranh giới âm dương.' },
@@ -427,7 +427,8 @@
   };
   const LIFE_T = [0, 0, 10, 20, 40, 80, 150, 300, 500, 2000];          // thọ cộng thêm khi đạt bậc
   const YRS_T = [0, 2, 4, 7, 15, 30, 60, 110, 200, 400];              // số năm khổ luyện (chuẩn) để đầy thanh của bậc kế tiếp
-  const NEED_T = [0, 5, 7, 9, 11, 13, 15, 16, 17, 18];                // chỉ số chính tối thiểu để đột phá lên bậc
+  const NEED_T_OLD = [0, 5, 7, 9, 11, 13, 15, 16, 17, 18];   // thang cũ (chỉ dùng khi đổi bản lưu)
+  const NEED_T = [0, 15, 25, 35, 45, 55, 65, 75, 85, 95];                // chỉ số chính tối thiểu để đột phá lên bậc t = trần của bậc t − 1 trừ 5 (20 + 10·(t − 1) − 5)
   const ODDS_T = [0, 95, 88, 78, 66, 55, 45, 35, 25, 15];             // tỉ lệ đột phá thành công (gốc, %)
   const TIER_N = ['Phàm nhân', 'Nhập môn', 'Sơ cấp', 'Trung cấp', 'Cao cấp', 'Tông sư', 'Đại tông sư', 'Truyền thuyết', 'Bán thần', 'Thần cấp'];
   // huyết mạch → hệ tu luyện + bậc khởi đầu
@@ -512,10 +513,10 @@
   const BD = {
     gold_s:['🪙', 'Túi tiền nhỏ', 25, [1, 999], null, 0, 'Người quen tặng một túi tiền.'],
     gold_l:['💎', 'Túi tiền lớn', 5, [1, 999], null, 0, 'Một món quà hậu hĩnh không rõ từ đâu.'],
-    witch: ['✉', 'Thư nhập học Học Viện Ngũ Tinh', 5, [10, 13], C => C.s.y >= 11 ? '' : 'Cần Tinh thần trên 10', 60, 'Một con cú thả lá thư niêm phong sáp tím.'],
-    sect:  ['🏯', 'Thư đề cử môn phái võ giả', 6, [6, 16], C => C.s.the >= 8 || C.s.suc >= 8 ? '' : 'Cần Thể chất hoặc Sức mạnh ≥ 8', 40, 'Một vị sư huynh mang thư của chưởng môn tới tận nhà.'],
-    arena: ['🛡', 'Thư tuyển đấu sĩ', 4, [12, 22], C => C.s.suc >= 9 ? '' : 'Cần Sức mạnh ≥ 9', 40, 'Quân đoàn thành bang tuyển người: “Ai cầm được khiên, đến đây!”'],
-    book:  ['📕', 'Bí kíp / sách phép', 8, [6, 999], C => C.s.tri >= 7 ? '' : 'Cần Trí tuệ ≥ 7 để đọc', 25, 'Một cuốn sách cũ nằm trên bậc cửa sáng sinh nhật.'],
+    witch: ['✉', 'Thư nhập học Học Viện Ngũ Tinh', 5, [10, 13], C => C.s.y >= 13 ? '' : 'Cần Tinh thần trên 12', 60, 'Một con cú thả lá thư niêm phong sáp tím.'],
+    sect:  ['🏯', 'Thư đề cử môn phái võ giả', 6, [6, 16], C => C.s.the >= 11 || C.s.suc >= 11 ? '' : 'Cần Thể chất hoặc Sức mạnh ≥ 11', 40, 'Một vị sư huynh mang thư của chưởng môn tới tận nhà.'],
+    arena: ['🛡', 'Thư tuyển đấu sĩ', 4, [12, 22], C => C.s.suc >= 12 ? '' : 'Cần Sức mạnh ≥ 12', 40, 'Quân đoàn thành bang tuyển người: “Ai cầm được khiên, đến đây!”'],
+    book:  ['📕', 'Bí kíp / sách phép', 8, [6, 999], C => C.s.tri >= 10 ? '' : 'Cần Trí tuệ ≥ 10 để đọc', 25, 'Một cuốn sách cũ nằm trên bậc cửa sáng sinh nhật.'],
     item:  ['🎁', 'Bảo vật ngẫu nhiên', 5, [3, 999], null, 0, 'Một chiếc hộp gỗ không đề tên người gửi.'],
     master:['🧙', 'Gặp kỳ nhân', 4, [8, 60], null, 0, 'Một người lạ dừng chân, nhìn bạn rất lâu rồi hỏi: “Muốn học không?”'],
     gene:  ['🧬', 'Thú hồn tìm đến', 3, [5, 999], null, 0, 'Đêm sinh nhật, một con thú phát sáng nằm chờ trước cửa.'],
@@ -603,7 +604,7 @@
       { t:'Lên đường ra trận', ok:{ car:'soldier', the:1 }, r:'Bạn khoác áo lính.' },
       { t:'Trốn vào rừng theo đạo sĩ kỳ bí', ok:{ thu:10, tri:1, flag:'forest', gene:'beast' }, r:'Đạo sĩ dạy bạn nghe tiếng muông thú, rồi để lại cho bạn một thú hồn.' },
       { t:'Đút lót 20 vàng', if:C => C.gold >= 20, ok:{ gold:-20 }, r:'Tên bạn biến khỏi sổ.' }] },
-    { id:'t_acad', a:[13, 17], w:4, once:1, if:C => noLine(C) && C.s.y >= 11, t:'Lá thư bằng lông vũ', d:'Một con cú thả lá thư: Học Viện Ngũ Tinh mời bạn nhập học.', c:[
+    { id:'t_acad', a:[13, 17], w:4, once:1, if:C => noLine(C) && C.s.y >= 13, t:'Lá thư bằng lông vũ', d:'Một con cú thả lá thư: Học Viện Ngũ Tinh mời bạn nhập học.', c:[
       { t:'Nhập học Học Viện', ok:{ line:['witch', 'acad'], lore:'L7' }, r:'Bạn nhận đũa phép đẽo từ cành Cổ Thụ Bạch Tâm và được xếp vào viện hợp với mình.' },
       { t:'Từ chối – ở lại với gia đình', ok:{ hum:5 }, r:'Con cú nhìn bạn đầy thất vọng.' }] },
     { id:'t_shin', a:[13, 16], w:5, once:1, if:C => noLine(C) && has(C, 'shincand'), t:'Thử thách Ảnh Môn', d:'Bảy năm luyện tập tàn khốc. Đêm nay là thử thách cuối: sống sót một mình trong rừng đầy bẫy.', c:[
@@ -638,7 +639,7 @@
       { t:'🌾 Làm nông', ok:{ car:'farmer', hp:5 }, r:'Ruộng vườn bình yên.' },
       { t:'🎣 Ra khơi', if:C => C.o === 'fish', ok:{ car:'fisher' }, r:'Biển gọi tên bạn.' },
       { t:'💰 Buôn bán', ok:{ car:'merchant', gold:5 }, r:'Gánh hàng rong đầu tiên.' },
-      { t:'🔬 Học Viện Gen', if:C => C.s.tri >= 8, ok:{ car:'scholar', tri:1 }, r:'Bạn khoác áo nghiên cứu, ngày ngày soi gene ẩn dưới kính.' },
+      { t:'🔬 Học Viện Gen', if:C => C.s.tri >= 11, ok:{ car:'scholar', tri:1 }, r:'Bạn khoác áo nghiên cứu, ngày ngày soi gene ẩn dưới kính.' },
       { t:'🏹 Săn dị thú', ok:{ car:'hunter', the:1 }, r:'Cung tên và bẫy là bạn.' },
       { t:'🗝 Đi đêm', ok:{ car:'thief', want:5 }, r:'Tiền nhanh, rủi ro cao.' }] },
     { id:'a_war', a:[18, 50], w:4, if:C => C.car && C.car.k === 'soldier', t:'Chiến trường biên ải', d:'Quân địch tràn qua biên giới, có cả dị nhân cánh dơi lẫn thú cưỡi rồng con.', c:[
@@ -648,7 +649,7 @@
     { id:'a_cave', a:[20, 40], w:3, once:1, if:C => noLine(C), t:'Lão Tổ dưới hang', d:'Đất nước lâm nguy. Trong hang núi, một giọng nói khàn khàn: “Uống máu ta, ngươi sẽ có sức mạnh của trăm người.”', c:[
       { t:'Uống máu Lão Tổ', ok:{ line:['vamp', 'pact'], lore:'L4', fame:10 }, r:'Bạn bước ra khỏi hang, mạnh như một đội quân – và ghét ánh mặt trời.' },
       { t:'Từ chối và bỏ đi', ok:{ y:2, hum:5, lore:'L4' }, r:'Tiếng cười vang theo bạn tới tận chân núi.' }] },
-    { id:'a_ball', a:[20, 40], w:3, once:1, if:C => noLine(C) && (has(C, 'vblood') || C.s.mi >= 11), t:'Dạ tiệc gia tộc Valcrest', d:'Bạn nhận thiệp mời viết bằng mực đỏ. Dạ tiệc trong lâu đài ven hồ, chủ nhân không hề già đi suốt ba thế kỷ.', c:[
+    { id:'a_ball', a:[20, 40], w:3, once:1, if:C => noLine(C) && (has(C, 'vblood') || C.s.mi >= 13), t:'Dạ tiệc gia tộc Valcrest', d:'Bạn nhận thiệp mời viết bằng mực đỏ. Dạ tiệc trong lâu đài ven hồ, chủ nhân không hề già đi suốt ba thế kỷ.', c:[
       { t:'Nhận lời làm người của gia tộc', ok:{ line:['vamp', 'first'], lore:'L3' }, r:'Họ trao bạn máu khởi thủy. “Gia đình là mãi mãi.”' },
       { t:'Nhảy một điệu rồi về', ok:{ mi:1, fame:4 }, r:'Sáng hôm sau cổ bạn có hai vết đỏ nhỏ…' }] },
     { id:'a_cold', a:[19, 35], w:5, once:1, if:C => noLine(C) && has(C, 'coldfriend'), t:'Lời đề nghị lạnh giá', d:'Người bạn năm xưa quay lại, vẫn không già đi: “Nếu muốn, bạn có thể ở cùng gia đình tôi – mãi mãi.”', c:[
@@ -677,7 +678,7 @@
     { id:'a_king', a:[30, 400], w:5, once:1, if:C => C.fame >= 60 && (C.car && C.car.rk >= 2 || C.o === 'noble'), t:'Ngai vàng bỏ trống', d:'Lão vua băng hà không người nối dõi. Các đại thần nhìn về phía bạn.', c:[
       { t:'Lên ngôi', chk:['mi', 12], ok:{ car:'king', fame:20, gold:100 }, no:{ want:20, fame:-10 }, r:'Bạn đội vương miện. Cả kinh thành tung hô.', rf:'Cuộc đảo chính thất bại; bạn thành kẻ phản loạn.' },
       { t:'Từ chối, đề cử người tài', ok:{ hum:10, fame:10 }, r:'Sử sách ghi bạn là bậc quân tử.' }] },
-    { id:'a_wed', a:[20, 45], w:4, once:1, if:C => has(C, 'lover') || C.s.mi >= 8, t:'Lập gia đình', d:'Bạn và người thương quyết định về chung một nhà.', c:[
+    { id:'a_wed', a:[20, 45], w:4, once:1, if:C => has(C, 'lover') || C.s.mi >= 11, t:'Lập gia đình', d:'Bạn và người thương quyết định về chung một nhà.', c:[
       { t:'Tổ chức đám cưới', ok:{ spouse:1, hum:8, gold:-10, hp:5 }, r:'Cả làng đến chung vui.' },
       { t:'Chưa sẵn sàng', ok:{ y:1 }, r:'Họ hiểu và chờ.' }] },
     { id:'a_kid', a:[21, 50], w:4, if:C => C.spouse && C.kids < 4 && canKids(C), t:'Đứa con chào đời', d:'Tiếng khóc của một sinh linh mới vang lên trong nhà bạn.', c:[
@@ -707,7 +708,7 @@
     { id:'a_abyss', a:[12, 400], w:2, t:'Vực Sâu Vô Tận', d:'Một vực sâu thở ra khí đen, có giọng nói hứa hẹn quyền năng.', c:[
       { t:'Hít sâu ma khí', ok:{ hac:15, the:1, hum:-5 }, r:'Bóng của bạn đôi khi tự cử động.' },
       { t:'Lấp vực bằng đá', ok:{ hum:3, fame:3 }, r:'Làng bên yên tâm hơn.' }] },
-    { id:'a_codex', a:[25, 400], w:3, if:C => (C.car && C.car.k === 'scholar') || L(C) === 'witch' || C.s.tri >= 13, t:'Giải mã một dòng Thần Văn', d:'Bạn trải bản dập Thần Văn lên bàn. Các ký tự trôi như cá.', c:[
+    { id:'a_codex', a:[25, 400], w:3, if:C => (C.car && C.car.k === 'scholar') || L(C) === 'witch' || C.s.tri >= 15, t:'Giải mã một dòng Thần Văn', d:'Bạn trải bản dập Thần Văn lên bàn. Các ký tự trôi như cá.', c:[
       { t:'Thức trắng giải mã', chk:['tri', 13], ok:{ lore:'L12', tri:1, flag:'decode' }, no:{ hp:-10 }, r:'Bạn đọc được một dòng Thần Văn còn sót: “Các ngươi đánh nhau vì những sinh linh mà các ngươi chưa bao giờ ngồi cạnh. Ta ngồi cạnh họ đã hàng nghìn năm. Họ không muốn các ngươi khâu hay xé. Họ muốn tự mình quyết định.”', rf:'Đầu đau như búa bổ.' },
       { t:'Gửi Học Viện', ok:{ gold:20 }, r:'Họ trả tiền và mang mảnh mã đi.' }] },
     { id:'a_sun', a:[20, 600], w:3, if:C => C.line && C.line.k === 'vamp' && C.line.sub !== 'cold', t:'Ngày nắng gắt', d:'Bạn bị kẹt ngoài đường giữa trưa hè.', c:[
@@ -1130,7 +1131,7 @@
       { t:'🥋 Theo võ sư nội gia (Nội lực)', ok:{ path:'noi', lore:'L19' }, r:'Võ sư đặt tay lên lưng bạn: “Kinh mạch thông suốt. Bắt đầu từ hơi thở.”' },
       { t:'👊 Theo quyền sư (Luyện thể)', ok:{ path:'body' }, r:'Sáng nào bạn cũng đứng tấn tới khi chân run.' },
       { t:'🛡 Theo kiếm sư thành bang vào Sân Cát (Đấu khí)', ok:{ path:'dau' }, r:'Ở Sân Cát, bạn bị đánh ngã không biết bao nhiêu lần – rồi giữa một trận, có thứ lửa từ nơi khác bùng lên sau tim.' },
-      { t:'🔮 Mời gia sư phù thủy', if:C => C.s.y >= 11, ok:{ line:['witch', 'old'] }, r:'Gia sư thắp một ngọn nến bằng ánh mắt rồi gật đầu.' }] },
+      { t:'🔮 Mời gia sư phù thủy', if:C => C.s.y >= 13, ok:{ line:['witch', 'old'] }, r:'Gia sư thắp một ngọn nến bằng ánh mắt rồi gật đầu.' }] },
     { id:'p_bai', a:[8, 30], w:4, once:1, if:C => sideOf(C) === 'east' && !pathsOf(C).some(([k]) => ['noi', 'body', 'dao'].includes(k)) && anOk(C), tg:['fight'], t:'Môn phái thu nhận đệ tử', d:'Đại hội thu nhận đệ tử dưới chân núi. Hàng trăm người xếp hàng chờ thử căn cốt.', c:[
       { t:'Thử nội công', chk:['y', 9], ok:{ path:'noi', lore:'L19' }, no:{ hp:-5 }, r:'Trưởng lão gật đầu: “Căn cốt tạm được. Vào đi.”', rf:'Bạn bị loại ở vòng đầu.' },
       { t:'Thử quyền cước', chk:['suc', 9], ok:{ path:'body', lore:'L19' }, no:{ hp:-8 }, r:'Bạn đấm vỡ cọc gỗ thử – cả sân xôn xao.', rf:'Bạn ngã sấp mặt trước bàn dân thiên hạ.' },
@@ -1341,6 +1342,16 @@
     if (C.r === 'animal' && !C.paths.beast) C.paths.beast = { t:0, xp:0 };
     C.bl = Array.isArray(C.bl) ? C.bl : C.line2 ? [`${C.line2.k}.${C.line2.sub}`] : [];
     C.kidl = Array.isArray(C.kidl) ? C.kidl : []; C.ak = C.ak || ''; C.pk = C.pk && C.paths[C.pk] ? C.pk : '';
+    // v5 (chỉ số thang 100): đổi MỘT lần bằng cờ sv = 2; số cũ giữ trong s20; bậc, thanh, thọ, túi đồ không đổi
+    if (C.s && C.sv !== 2) {
+      C.s20 = Object.assign({}, C.s20 || {}, C.s);
+      STATS.forEach(([k]) => { if (typeof C.s[k] === 'number') C.s[k] = f20(C.s[k]); });
+      pathsOf(C).forEach(([k, p]) => { const P = PATHS[k]; let need = p.t >= 1 ? NEED_T[p.t] : 0;   // hệ đã đạt bậc t: chỉ số chính đủ ngưỡng bậc t
+        if (p.t < 9 && p.xp >= 100 && (C.s20[P.st] || 0) >= NEED_T_OLD[p.t + 1]) need = Math.max(need, NEED_T[p.t + 1]);   // đang chờ đột phá (thanh đầy, chỉ số cũ đủ): giữ điều kiện đó
+        if (need && typeof C.s[P.st] === 'number') C.s[P.st] = Math.max(C.s[P.st], need); });
+      const cap = capOf(C); STATS.forEach(([k]) => { if (typeof C.s[k] === 'number') C.s[k] = clamp(C.s[k], 1, cap); });
+      C.sv = 2;
+    }
     if (!C.fate || !FATE[C.fate.k]) C.fate = { k:'old', at:0 };
     if (!C.clan) C.clan = clanOf(C);
     if (C.ph === 'ev' && !evOf(C)) { C.ph = 'act'; C.ev = null; }
@@ -1354,6 +1365,7 @@
     g.arch = Array.isArray(g.arch) ? g.arch : [];                                         // v3: sách cũ lưu tóm tắt
     g.draft = g.draft && g.draft.roll && g.draft.roll.s && ORIGIN[g.draft.o] && RACE[g.draft.r] ? g.draft : null;
     if (g.draft) { const s = g.draft.roll.s; if (s.suc == null) { s.suc = clamp(s.the, 1, 20); s.the = clamp(Math.max(s.the, s.gen || 0), 1, 20); }   // bản nháp từ bản cũ: không được gieo lại
+      if (g.draft.sv !== 2) { g.draft.roll.s20 = { ...s }; STATS.forEach(([k]) => { if (typeof s[k] === 'number') s[k] = clamp(f20(s[k]), 1, 20); }); g.draft.roll.tot = STATS.reduce((a, [k]) => a + (s[k] || 0), 0); g.draft.sv = 2; }   // thang 100: đổi một lần, giữ số cũ trong roll.s20
       if (!WEALTH[g.draft.w]) g.draft.w = g.draft.o === 'mount' ? 'orphan' : 'common'; }
     // v4: gia phả, Sách Thời Đại, Chimera Chí Thư, Bách khoa Bảo vật, điểm gia tộc
     g.tree = Array.isArray(g.tree) ? g.tree : []; g.saga = Array.isArray(g.saga) ? g.saga : []; g.chim = Array.isArray(g.chim) ? g.chim : [];
@@ -1386,30 +1398,30 @@
     dr.ak = dr.r === 'animal' ? pick(Object.keys(ANIMAL)) : '';
     dr.w = dr.r === 'animal' ? 'wild' : dr.o === 'mount' ? 'orphan' : pickW(Object.fromEntries(Object.entries(WEALTH).filter(([k]) => k !== 'wild' && !(dr.o === 'noble' && ['royal', 'poor'].includes(k))).map(([k, v]) => [k, v[2]])));
     if (dr.par && !dr.n.startsWith(dr.par.cl + ' ')) dr.n = `${dr.par.cl} ${pick(GIVEN)}`;
-    const s = {}; STATS.forEach(([k]) => { s[k] = rnd(2, 8) + rnd(0, 4); });
+    const s = {}; STATS.forEach(([k]) => { s[k] = 6 + rnd(0, 4) + rnd(0, 4); });   // thang 100: người thường = 10
     const add = m => Object.entries(m || {}).forEach(([k, v]) => { s[k] = (s[k] || 0) + v; });
     add(ORIGIN[dr.o][3]); add(RACE[dr.r][2]); if (dr.ak) add(ANIMAL[dr.ak][3]);
     const omen = rnd(0, OMEN.length - 1); add(OMEN[omen][2]);
-    if (dr.r === 'witchb' || dr.par && /^witch/.test(dr.par.lk)) s.y = Math.max(s.y, 11);
+    if (dr.r === 'witchb' || dr.par && /^witch/.test(dr.par.lk)) s.y = Math.max(s.y, 13);
     const tr = [];
-    if (s.the <= 4) tr.push('empty');
+    if (s.the <= 8) tr.push('empty');
     if (Math.random() < .12) { tr.push('sick'); s.y += 1; }
     if (dr.o === 'mount' || dr.w === 'orphan') tr.push('orph');
-    if (s.van >= 12) tr.push('lucky'); if (s.tri >= 12) tr.push('genius'); if (s.mi >= 12) tr.push('beauty');
-    if (s.the >= 12 && Math.random() < .5) tr.push('iron'); if (Math.random() < .08) tr.push('oldsoul');
+    if (s.van >= 14 && Math.random() < .72) tr.push('lucky'); if (s.tri >= 14 && Math.random() < .72) tr.push('genius'); if (s.mi >= 14 && Math.random() < .72) tr.push('beauty');   // hệ số .72: giữ tần suất như thang cũ
+    if (s.the >= 14 && Math.random() < .35) tr.push('iron'); if (Math.random() < .08) tr.push('oldsoul');
     if ((['tribe', 'border'].includes(dr.o) && Math.random() < .4) || Math.random() < .06) tr.push('beastf');
     if (Math.random() < .07) tr.push('chaos'); if (Math.random() < .08) tr.push('longev');
-    if (s.suc >= 11 && s.the >= 10 && Math.random() < .35) tr.push('martial'); if (s.y >= 11 && Math.random() < .35) tr.push('keen');
+    if (s.suc >= 13 && s.the >= 12 && Math.random() < .35) tr.push('martial'); if (s.y >= 13 && Math.random() < .3) tr.push('keen');
     if ((['mutantb', 'witchb'].includes(dr.r) && Math.random() < .3) || Math.random() < .04) tr.push('early');
     STATS.forEach(([k]) => { s[k] = clamp(s[k], 1, 20); });
     const tot = s.the + s.tri + s.mi + s.van, tot6 = STATS.reduce((a, [k]) => a + s[k], 0);
-    const nm = Math.max(0, Math.round((34 - tot) / 4)) + (tr.includes('empty') ? 1 : 0) + (G.legacy && G.legacy.k === 'nm' ? 1 : 0);
-    dr.roll = { s, omen, tr, nm, tot:tot6, al:{ g:rnd(-15, 15), l:tr.includes('chaos') ? rnd(-45, -30) : rnd(-15, 15), b:rnd(-15, 15) } };
+    const nm = Math.max(0, Math.round((46 - tot) / 3)) + (tr.includes('empty') ? 1 : 0) + (G.legacy && G.legacy.k === 'nm' ? 1 : 0);
+    dr.sv = 2; dr.roll = { s, omen, tr, nm, tot:tot6, al:{ g:rnd(-15, 15), l:tr.includes('chaos') ? rnd(-45, -30) : rnd(-15, 15), b:rnd(-15, 15) } };
   }
   function birth(dr) {
     const r = dr.roll, lg = G.legacy;
     const W = WEALTH[dr.w] || WEALTH.common;
-    const C = { n:String(dr.n || 'Vô Danh').slice(0, 24), g:dr.g, o:dr.o, r:dr.r, s:{ ...r.s }, omen:r.omen, tr:r.tr, nm:r.nm,
+    const C = { n:String(dr.n || 'Vô Danh').slice(0, 24), g:dr.g, o:dr.o, r:dr.r, s:{ ...r.s }, sv:2, omen:r.omen, tr:r.tr, nm:r.nm,
       hp:r.tr.includes('sick') ? 70 : 100, gold:ORIGIN[dr.o][4] + W[3] + (lg && lg.k === 'gold' ? 40 : 0), hum:100, fame:0, want:0, mut:0,
       en:{ thanh:0, hac:0, co:0, thu:0 }, genes:[], line:null, car:null, spouse:'', kids:0, kidn:[], flags:{ lorecount:G.lore.length }, seen:[], log:[], deeds:[],
       al:{ ...r.al }, npc:{ ban:{ n:npcName(), aff:rnd(5, 25), st:'ok' }, dich:{ n:npcName(), aff:rnd(-15, 0), st:'ok' } },
@@ -1417,7 +1429,7 @@
       days:0, since:0, segs:makeSegs(0, 130), sk:[], inv:[], offers:[], innate:[], fruit:0,
       w:WEALTH[dr.w] ? dr.w : 'common', ak:dr.ak || '', paths:{}, pk:'', bl:[], kidl:[], shop:null, clan:'', par:dr.par || null, fate:null };
     if (r.tr.includes('orph')) { C.npc.ban.n = npcName(); C.npc.su = { n:npcName(), aff:15, st:'ok', role:'người lạ dẫn lối' }; }
-    C.lifeMax = dr.r === 'animal' ? rnd(15, 30) + Math.round(C.s.the / 2) + (r.tr.includes('longev') ? 8 : 0) : 62 + Math.round(C.s.the * 1.5) + rnd(-4, 10) + RACE[dr.r][3] + (r.tr.includes('longev') ? 15 : 0);
+    C.lifeMax = dr.r === 'animal' ? rnd(15, 30) + Math.round(toOld(C.s.the) / 2) + (r.tr.includes('longev') ? 8 : 0) : 62 + Math.round(toOld(C.s.the) * 1.5) + rnd(-4, 10) + RACE[dr.r][3] + (r.tr.includes('longev') ? 15 : 0);
     if (dr.r === 'animal') { C.paths.beast = { t:0, xp:0 }; C.pk = 'beast'; }
     C.fate = dr.r === 'animal' ? { k:'old', at:0 } : fateRoll(C); C.clan = dr.par ? dr.par.cl : clanOf(C);
     const inn = INNATE[dr.r]; if (inn) { const g0 = dr.r === 'beast' ? pick(inn) : inn[0]; C.genes.push(g0); C.innate.push(g0); }
@@ -1529,15 +1541,15 @@
   const PHYS = ['back', 'shell', 'legs', 'legs2', 'tail', 'blade', 'arm'], MIND = ['eyes', 'core', 'halo', 'aura'];
   const innateOf = C => C.innate || [];
   const fusedOf = C => C.genes.filter(g => !innateOf(C).includes(g));
-  const geneCap = C => 1 + Math.floor(C.s.the / 8) + (C.fruit > 0 ? 5 : 0) + (C.tr.includes('empty') ? 1 : 0) + (carRk(C, 'scholar') >= 2 ? 1 : 0);
+  const geneCap = C => 1 + (C.s.the >= 11 ? 1 : 0) + (C.s.the >= 17 ? 1 : 0) + (C.fruit > 0 ? 5 : 0) + (C.tr.includes('empty') ? 1 : 0) + (carRk(C, 'scholar') >= 2 ? 1 : 0);
   const isMutant = C => lk_(C) === 'mutant' || !!(C.line2 && C.line2.k === 'mutant');
-  const skillCap = C => (isMutant(C) ? 5 : 2) + (C.s.y >= 14 ? 1 : 0);   // Tinh thần ≥ 14: +1
+  const skillCap = C => (isMutant(C) ? 5 : 2) + (C.s.y >= 15 ? 1 : 0);   // Tinh thần ≥ 15: +1
   // lý do chưa dung nhập được gene (rỗng = được)
   function geneBlock(C, id) {
     const gd = GENE[id]; if (!gd) return 'Không rõ gene';
     if (innateOf(C).some(g => GENE[g][1] === gd[1])) return 'Vị trí này đã có bộ phận bẩm sinh';
     if (FUSE_ONLY.includes(id) && !(C.fruit > 0)) return 'Gene khác loài – phải ăn Vạn Huyết Quả mới ghép được';
-    const need = 6 + Math.floor(gd[3] / 4);
+    const need = f20(6 + Math.floor(gd[3] / 4));
     if (PHYS.includes(gd[1]) && C.s.the < need) return `Thể chất chưa chịu nổi (cần Thể chất ≥ ${need})`;
     if (MIND.includes(gd[1]) && C.s.tri < need) return `Trí tuệ chưa chịu nổi (cần Trí tuệ ≥ ${need})`;
     return '';
@@ -1551,7 +1563,7 @@
     chips.push(['gene', `🧬 Cơ hội dung nhập: ${GENE[id][0]}`]);
   }
   function fuseGene(C, id, chips, drop) {
-    const gd = GENE[id], rej = id === 'g_virus' ? (C.tr.includes('sick') ? 60 : 0) : clamp(34 - C.s.the * 3 - (C.tr.includes('empty') ? 30 : 0) - (C.tr.includes('beastf') && BEASTS.includes(id) ? 20 : 0)
+    const gd = GENE[id], rej = id === 'g_virus' ? (C.tr.includes('sick') ? 60 : 0) : clamp(34 - toOld(C.s.the) * 3 - (C.tr.includes('empty') ? 30 : 0) - (C.tr.includes('beastf') && BEASTS.includes(id) ? 20 : 0)
       - (carRk(C, 'scholar') >= 1 ? 10 : 0) - (C.flags.chimbook ? 10 : 0), 3, 60);
     if (rnd(1, 100) <= rej) { C.hp -= 15; chips.push(['bad', id === 'g_virus' ? '🛡 Kháng được virus' : `💥 Đào thải ${gd[0]}`]); log(C, id === 'g_virus' ? 'Kháng được Virus Thượng Cổ.' : `Cơ thể đào thải ${gd[0]}.`); return false; }
     if (drop) removeGene(C, drop, chips);
@@ -1594,10 +1606,10 @@
     if (b[8]) offerSkill(C, b[8], chips);
     // v4: công dụng riêng của bảo vật
     if (id === 'b_fruit') { C.flags.fruitid = 1; chimAdd('fruit'); if (!G.seenB.includes('b_fruit')) G.seenB.push('b_fruit'); }
-    if (BT_PATH[id]) { const opts = BT_PATH[id].filter(k => !(C.paths && C.paths[k]) && (k !== 'witch' || C.s.y >= 11)), has_ = BT_PATH[id].find(k => C.paths && C.paths[k]);
+    if (BT_PATH[id]) { const opts = BT_PATH[id].filter(k => !(C.paths && C.paths[k]) && (k !== 'witch' || C.s.y >= 13)), has_ = BT_PATH[id].find(k => C.paths && C.paths[k]);
       if (has_) { C.paths[has_].xp = Math.min(100, C.paths[has_].xp + 30); chips.push(['en', `+30% ${PATHS[has_].en}`]); }
       else if (opts.length) C.offers = (C.offers || []).concat([{ k:'path', id:opts[0], alt:opts.slice(1) }]);
-      else chips.push(['bad', id === 'b_sbook' ? '🔮 Chữ trong sách không sáng lên – Tinh thần chưa vượt 10' : 'Đọc mãi không hiểu']); }
+      else chips.push(['bad', id === 'b_sbook' ? '🔮 Chữ trong sách không sáng lên – Tinh thần chưa vượt 12' : 'Đọc mãi không hiểu']); }
     else if (BT[id]) { const mp = mainPath(C); if (mp && BT[id].includes(mp) && C.paths[mp].t < 9) { C.paths[mp].xp = Math.min(100, C.paths[mp].xp + 25); chips.push(['en', `+25% ${PATHS[mp].en}`]); } }
     if (id === 'b_serum') { if (!C.line || C.fruit > 0 || Math.random() < .4) apply(C, { line:['mutant', 'made'] }, chips); else chips.push(['bad', '🧪 Gene ẩn không đáp ứng']); crisis(C, chips, .5); }
     if (id === 'b_vvial') { if (rnd(1, 100) <= 65 + (C.tr.includes('sick') ? 25 : 0)) apply(C, { line:['vamp', 'virus'], lore:'L13' }, chips); else { apply(C, { hp:-50 }, chips); chips.push(['bad', '☣ Cơ thể không chịu nổi virus cổ']); } }
@@ -1637,7 +1649,7 @@
   // nhập môn một hệ (hoặc nâng lên bậc khởi đầu nếu đang thấp hơn)
   function joinPath(C, k, t, chips, why) {
     if (!PATHS[k]) return; C.paths = C.paths || {}; t = t == null ? 1 : t;
-    if (k === 'witch' && C.s.y < 11 && !C.line) { chips.push(['bad', '🔮 Tinh thần chưa vượt 10 – phép không thành']); return; }
+    if (k === 'witch' && C.s.y < 13 && !C.line) { chips.push(['bad', '🔮 Tinh thần chưa vượt 12 – phép không thành']); return; }
     const cur = C.paths[k];
     if (cur && cur.t >= t) return;
     if (!cur && !PATHS[k].blood && pathsOf(C).filter(([x]) => !PATHS[x].blood && x !== 'beast').length >= 3 && k !== 'phap') { chips.push(['bad', '🏯 Đã theo đủ 3 con đường tu luyện – không học thêm được']); return; }
@@ -1735,8 +1747,8 @@
     const w = b => BAO_GW[b[4]] * (1 + Math.max(0, van - 10) * .06 * GRADES.indexOf(b[4]));
     let r = Math.random() * L_.reduce((a, b) => a + w(b), 0); for (const b of L_) { r -= w(b); if (r <= 0) return b[0]; } return L_[0][0];
   }
-  // Vạn Huyết Quả trông như quả dại: cần Trí tuệ ≥ 14, học giả, hoặc đã từng gặp (Bách khoa Bảo vật) mới nhận ra
-  const fruitKnown = C => !!C && (C.s.tri >= 14 || carRk(C, 'scholar') >= 1 || (G && G.seenB || []).includes('b_fruit') || !!C.flags.fruitid);
+  // Vạn Huyết Quả trông như quả dại: cần Trí tuệ ≥ 15, học giả, hoặc đã từng gặp (Bách khoa Bảo vật) mới nhận ra
+  const fruitKnown = C => !!C && (C.s.tri >= 15 || carRk(C, 'scholar') >= 1 || (G && G.seenB || []).includes('b_fruit') || !!C.flags.fruitid);
   const baoName = (C, id) => id === 'b_fruit' && !fruitKnown(C) ? 'Quả dại xám (chưa giám định)' : BAOM[id] ? BAOM[id][2] : id;
   const baoDesc = (C, id) => id === 'b_fruit' && !fruitKnown(C) ? 'Một quả nhỏ xám xịt như táo dại héo, nhặt được ở nơi đất thấm máu. Chẳng ai trả giá cao.' : BAOM[id] ? BAOM[id][5] : '';
   const priceOf = (C, id) => Math.round(PRICE[BAOM[id][4]] * (carRk(C, 'merchant') >= 1 ? .8 : 1) * (eraOf(C) === 'gold' ? .9 : ['famine', 'war', 'tribes'].includes(eraOf(C)) ? 1.25 : 1));
@@ -1790,7 +1802,7 @@
   // hệ hợp với nơi sinh (thư đề cử, kỳ nhân, gia tộc mời sư phụ)
   const pathChoices = (C, kind) => {
     const s = sideOf(C), L_ = kind === 'sect' ? (s === 'west' ? ['body', 'noi'] : ['noi', 'body', 'dao']) : s === 'west' ? ['dau', 'witch', 'body'] : s === 'north' ? ['body', 'dau', 'noi'] : ['noi', 'body', 'dao', 'nin'];
-    return L_.filter(k => !(C.paths && C.paths[k]) && (k !== 'witch' || C.s.y >= 11));
+    return L_.filter(k => !(C.paths && C.paths[k]) && (k !== 'witch' || C.s.y >= 13));
   };
   // ---- gia tộc: họ = chữ đầu của tên; điểm gia tộc = danh vọng + tài sản + con cháu ----
   const clanOf = C => String(C.n || '').trim().split(/\s+/)[0] || 'Vô Danh';
@@ -2730,7 +2742,7 @@
   const chipsHtml = cs => (cs || []).map(([c, t]) => `<span class="gx-chip ${c}">${E(t)}</span>`).join('');
   // huyết mạch bất tử (thọ > 200) không già đi trên hình
   const avOf = C => ({ r:C.r, g:C.g, line:C.line, genes:C.genes, hair:C.hair, car:C.car ? C.car.k : '', mut:C.mut, hp:C.hp, age:C.r === 'animal' ? 25 : C.lifeMax > 200 ? Math.min(C.age, 40) : C.age, ak:C.ak, formed:!!(C.flags && C.flags.formed), bt:tierOf(C, 'beast') });
-  const luck = tot => tot >= 62 ? ['hi', 'GREAT'] : tot >= 46 ? ['md', 'NORMAL'] : ['lo', 'POOR'];
+  const luck = tot => tot >= 77 ? ['hi', 'GREAT'] : tot >= 64 ? ['md', 'NORMAL'] : ['lo', 'POOR'];
   const power = C => Math.round(C.s.the * 35 + (C.s.suc || 0) * 30 + C.s.tri * 25 + C.s.y * 30 + C.s.van * 15 + C.mut * 12 + EN.reduce((a, e) => a + C.en[e[0]], 0) * 3 + skillsOf(C).length * 60 + Math.pow(1 + maxTier(C), 2.6) * 110);
   const SLOT = [['ears', '👂', 'Tai'], ['eyes', '👁', 'Mắt'], ['horn', '🦌', 'Sừng'], ['halo', '😇', 'Hào quang'], ['back', '🦅', 'Lưng / cánh'], ['shell', '🐢', 'Mai'], ['arm', '🦾', 'Tay'],
     ['blade', '🗡', 'Lưỡi cẳng tay'], ['legs', '🦵', 'Chân'], ['legs2', '🕷', 'Chi phụ'], ['tail', '🦎', 'Đuôi'], ['skin', '🐟', 'Da'], ['core', '⚛', 'Hạt nhân'], ['spore', '🍄', 'Bào tử'], ['aura', '☣', 'Virus / khí']];
@@ -2785,7 +2797,7 @@
     <div class="gx-pn"><div class="gx-h"><div><p class="gx-nm">${E(d.n)}</p><div class="gx-sub mono">${Rc ? E(raceName(d.r, d.ak)) : '???'} · ${O ? E(O[1]) : '???'}</div></div>${lc ? `<span class="gx-luck ${lc[0]} mono">LUCK: ${lc[1]} (${r.tot})</span>` : ''}</div>
       <div class="gx-stage">${avatar(d.ak ? { ak:d.ak, bt:0 } : { r:d.r || 'human', g:d.g, genes:inn, hair:d.hair, age:22 }, 220)}</div>
       ${r ? statBars(r.s) : `<p class="gx-note" style="text-align:center">Hình thái trưởng thành dự kiến</p>`}
-      <p class="gx-note">* <b>Thể chất</b>: máu, sức chứa gene. <b>Tinh thần</b>: trên 10 mới thành phù thủy, rất khó tăng. <b>Trí tuệ</b>: học và tu luyện nhanh. <b>Sức mạnh</b>: sát thương, luyện thể, đấu khí. <b>Vận khí</b>: cơ duyên, bảo vật quý. <b>Mị lực</b>: giao tiếp, tình duyên. Kẻ kém may có nhiều Nghịch Mệnh hơn.</p>
+      <p class="gx-note">* <b>Thể chất</b>: máu, sức chứa gene. <b>Tinh thần</b>: trên 12 mới thành phù thủy, rất khó tăng. <b>Trí tuệ</b>: học và tu luyện nhanh. <b>Sức mạnh</b>: sát thương, luyện thể, đấu khí. <b>Vận khí</b>: cơ duyên, bảo vật quý. <b>Mị lực</b>: giao tiếp, tình duyên. Kẻ kém may có nhiều Nghịch Mệnh hơn.</p>
       ${compact() ? '' : `<div class="gx-row"><button class="gx-btn gold" data-g="born" ${r ? '' : 'disabled'} style="flex:1">👶 Chào đời</button></div>`}</div></div>`;
   }
   function liveBook(C) {
@@ -2949,7 +2961,7 @@
     const free = carRk(C, 'scholar') >= 3;
     return `<div class="gx-dna"><div class="gx-pn"><div class="gx-h"><h4>🔬 Các vị trí dung nhập cơ thể</h4><span class="gx-luck ${C.mut >= 60 ? 'lo' : C.mut >= 30 ? 'md' : 'hi'} mono">Ổn định gene ${100 - C.mut}%</span></div>
       <div class="gx-dk" style="margin-bottom:10px"><b style="color:#fff">🧬 Ô gene: ${fusedOf(C).length}/${geneCap(C)}</b>
-        <p class="gx-note" style="margin:4px 0 0">= 1 + Thể chất ÷ 8 (${Math.floor(C.s.the / 8)})${C.tr.includes('empty') ? ' + 1 Phế Thể' : ''}${carRk(C, 'scholar') >= 2 ? ' + 1 phòng thí nghiệm' : ''}${C.fruit ? ' + <b style="color:var(--gr)">5 Vạn Huyết Quả</b>' : ''}.
+        <p class="gx-note" style="margin:4px 0 0">= 1 + (Thể chất ≥ 11) + (Thể chất ≥ 17) (${(C.s.the >= 11 ? 1 : 0) + (C.s.the >= 17 ? 1 : 0)})${C.tr.includes('empty') ? ' + 1 Phế Thể' : ''}${carRk(C, 'scholar') >= 2 ? ' + 1 phòng thí nghiệm' : ''}${C.fruit ? ' + <b style="color:var(--gr)">5 Vạn Huyết Quả</b>' : ''}.
         Gene có cánh, đuôi, mai, chi cần đủ <b>Thể chất</b>; mắt, hạt nhân, hào quang cần đủ <b>Trí tuệ</b>. ${C.fruit ? 'Đã ăn Vạn Huyết Quả: ghép được gene mọi chủng tộc và dung hợp thêm một huyết mạch.' : 'Gene khác loài (kim loại sao, hạt nhân, tinh tú) và dung hợp huyết mạch cần <b style="color:var(--go)">Vạn Huyết Quả</b> – chỉ mọc ở Chiến Trường Vạn Tộc.'}</p></div>
       <div class="gx-dk" style="margin-bottom:10px"><b style="color:#fff">🩸 Huyết mạch: ${C.line ? E(LINE[C.line.k].sub[C.line.sub][0]) : 'chưa có'} · dung hợp ${(C.bl || []).length}/${blCap(C)}</b>
         <p class="gx-note" style="margin:4px 0 0">${(C.bl || []).length ? (C.bl || []).map(x => { const [a, b] = x.split('.'); return LINE[a] && LINE[a].sub[b] ? E(LINE[a].sub[b][0]) : ''; }).join(' · ') + '. ' : ''}Không có Vạn Huyết Quả chỉ mang được 1 dòng máu gốc; ăn Vạn Huyết Quả mở 5 ô dung hợp mọi tộc. Đủ 5 nhánh Huyết tộc → Đại Đế Ma Cà Rồng; đủ 3 nhánh Lang tộc → Chung Cực Lang Vương. Xem thêm Chimera Chí Thư trong Thư Viện.</p></div>
@@ -2978,7 +2990,7 @@
         <div class="gx-row"><button class="gx-btn" data-g="use" data-k="${i}" ${C.ph !== 'act' || (C.offers && C.offers.length) ? 'disabled' : ''}>${b[6] === 'nuot' ? '🍽 Nuốt' : '🔗 Dùng'}</button>${isAnimal(C) ? '' : `<button class="gx-btn ghost" data-g="sell" data-k="${i}" ${C.ph !== 'act' || (C.offers && C.offers.length) ? 'disabled' : ''}>💰 Bán ${sellOf(C, id)}</button>`}</div></div>`; }).join('')}</div></div>` : '';
     return `${bag}<div class="gx-pn" style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between"><input class="gx-in" id="gxSkq" placeholder="🔎 Tìm dị năng…" value="${E(UI.skq || '')}" style="max-width:280px">
         <div class="gx-seg" style="flex-wrap:wrap">${[['', 'Tất cả'], ...cats.map(c => [c, c])].map(([k, n]) => `<button data-g="skc" data-k="${E(k)}" class="${(UI.skc || '') === k ? 'on' : ''}">${E(n)}</button>`).join('')}</div></div>
-      <p class="gx-note" style="margin:10px 2px">Dị năng <b>không tự có</b>: chỉ thức tỉnh khi gặp biến cố (cận kề cái chết, chiến loạn, dịch bệnh…) – ưu tiên dị năng bạn có tư chất – hoặc khi nuốt / dung hợp bảo vật. Mỗi người chứa được 2 dị năng (Tinh thần ≥ 14: 3), Dị Nhân chứa được 5.${C ? ` Đang có <b style="color:var(--cy)">${own.length}/${skillCap(C)}</b>.` : ''}</p>
+      <p class="gx-note" style="margin:10px 2px">Dị năng <b>không tự có</b>: chỉ thức tỉnh khi gặp biến cố (cận kề cái chết, chiến loạn, dịch bệnh…) – ưu tiên dị năng bạn có tư chất – hoặc khi nuốt / dung hợp bảo vật. Mỗi người chứa được 2 dị năng (Tinh thần ≥ 15: 3), Dị Nhân chứa được 5.${C ? ` Đang có <b style="color:var(--cy)">${own.length}/${skillCap(C)}</b>.` : ''}</p>
       <div class="gx-sks">${L_.map(card).join('')}</div>
       <div class="gx-pn" style="margin-top:14px"><div class="gx-h"><h4>📦 Bảng bảo vật</h4><small class="mono">${BAO.length} món · phẩm cấp ${GRADES.join(' < ')}</small></div>
         ${[...new Set(BAO.map(b => b[3]))].map(kd => `<span class="gx-lab mono">${kd}</span><div class="gx-sks">${BAO.filter(b => b[3] === kd).map(b => `<div class="gx-sk"><div class="hd"><span class="ic">${b[1]}</span><div style="flex:1;min-width:0"><h5>${E(b[2])}</h5><div class="meta">${b[6] === 'nuot' ? 'Nuốt' : 'Dung hợp'}${b[8] ? ` → ${E(SKM[b[8]][2])}` : ''}</div></div><span class="gx-gr" style="color:${GCOL[b[4]]};border-color:${GCOL[b[4]]}66">${E(b[4])}</span></div><p>${E(b[5])}</p>${BT[b[0]] ? `<p class="gx-note">🏯 Hỗ trợ đột phá: ${BT[b[0]].length > 8 ? 'mọi hệ' : BT[b[0]].map(k => E(PATHS[k].n)).join(', ')}</p>` : ''}</div>`).join('')}</div>`).join('')}</div>`;
@@ -3150,7 +3162,7 @@
       <p class="gx-note">Tên vàng = người con có hậu duệ được bạn chơi ở kiếp sau. Gia tộc mạnh để lại vàng cho hậu duệ; gia tộc tan tác thì không còn ai nối dõi.</p></div>`;
   }
   const CHIM_TIPS = ['Nâng Thể chất trước rồi mới ghép gene: mỗi 8 điểm Thể chất thêm 1 ô gene, đào thải giảm mạnh.', 'Gene cánh, đuôi, mai, chi cần Thể chất; mắt, hạt nhân, hào quang cần Trí tuệ.', 'Phế Thể (Thể chất ≤ 4) là bình chứa rỗng: gần như không đào thải – hợp hướng chimera.',
-    'Có huyết mạch chính rồi hãy ăn Vạn Huyết Quả: quả mở 5 ô dung hợp, đủ cho cả năm nhánh Huyết tộc.', 'Đừng bán “quả dại xám” nhặt ở Chiến Trường Vạn Tộc khi chưa giám định – Trí tuệ ≥ 14, học giả, hoặc đã gặp ở kiếp trước mới nhận ra.',
+    'Có huyết mạch chính rồi hãy ăn Vạn Huyết Quả: quả mở 5 ô dung hợp, đủ cho cả năm nhánh Huyết tộc.', 'Đừng bán “quả dại xám” nhặt ở Chiến Trường Vạn Tộc khi chưa giám định – Trí tuệ ≥ 15, học giả, hoặc đã gặp ở kiếp trước mới nhận ra.',
     'Bảo vật phẩm Bảo trở lên hợp hệ nên để dành lúc bế quan: từ bậc 6 không có bảo vật thì không đột phá được.', 'Phù thủy bậc 2 + võ giả bậc 2 tự mở con đường Pháp sư phương Đông.'];
   function libChim() {
     const has = id => G.chim.includes(id), fu = Object.entries(FUSE_N);
@@ -3274,6 +3286,6 @@
   window.GenesisGame = {
     mount(el) { root = el; const bx = el.closest('#fnBox'); if (bx) bx.classList.add('gx-wide'); ensureCss(); G = load(); render(); },
     summary() { const g = load(); return g.life ? `${g.life.n} · ${g.life.age} tuổi` : g.books.length ? `${g.books.length} cuốn sách · ${g.lives} kiếp` : 'Chưa bắt đầu'; },
-    debug: () => ({ G:load(), UI, EV, LORE, apply, canKids, lifeSum, avatar, avatarAdult, avatarKid, avatarBeast, eligible, SKILLS, skillsOf, BAO, geneCap, skillCap, fusedOf, eraOf, PATHS, btInfo, btReady, maxTier, mainPath, BD, WEALTH, FATE, upgrade, pathRate, f20, toOld, capOfTier, capOf, vStar, growVal, statAdd, P_CULT, NEED_T, ODDS_T, YRS_T, LIFE_T, ACT_DUR }),
+    debug: () => ({ G:load(), UI, EV, LORE, apply, canKids, lifeSum, avatar, avatarAdult, avatarKid, avatarBeast, eligible, SKILLS, skillsOf, BAO, geneCap, skillCap, fusedOf, eraOf, PATHS, btInfo, btReady, maxTier, mainPath, BD, WEALTH, FATE, upgrade, pathRate, roll, newDraft, birth, f20, toOld, capOfTier, capOf, vStar, growVal, statAdd, P_CULT, NEED_T, ODDS_T, YRS_T, LIFE_T, ACT_DUR }),
   };
 })();
