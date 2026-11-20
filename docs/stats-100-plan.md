@@ -33,7 +33,7 @@
 Săn Sức .5 / Thể .3; Tu luyện chỉ Tinh thần .25) + thưởng cố định qua `apply`; không có trần theo bậc.
 Đề xuất `grow(C, k, n)`: **Δ = max(1, round((trần − v)·(1 − 0,8ⁿ)))**, tức mỗi điểm lấp 20% khoảng cách tới trần, ít nhất +1, không vượt
 trần; giảm: −n·max(1, round(trần/20)). Ví dụ người phàm 10 → 12 → 14 → 15 … 20 sau 8 lần +1 (cũ 12 lần); đột phá nâng trần +10
-nên tăng nhanh lại. Thêm: Tu luyện cộng **chỉ số chính của hệ chính** (p ≈ .35), nếu không hệ Nhẫn thuật (Vận) và các hệ Thể chất kẹt ở
+nên tăng nhanh lại. Thêm: Tu luyện cộng **chỉ số chính của hệ chính** (p = 0,5, đã duyệt), nếu không hệ Nhẫn thuật (Vận) và các hệ Thể chất kẹt ở
 ngưỡng mới; `PATHS.up` chạy sau khi nâng trần.
 
 **(d) Đổi bản lưu một lần.** Cờ `C.sv = 2` trong `upgrade()` 1314 (bản nháp: `g.draft.sv` trong `load()` 1346). Chưa có cờ thì: chép
@@ -88,22 +88,29 @@ Dung hợp (đúng "Huyết Lang Lai"), chịu phạt khắc; dòng `hybrid.one`
 Đạo Sĩ Trấn Thi), chịu phạt khắc, không cấm. **Bản lưu cũ**: không hạ bậc, không xóa hệ; hệ phụ đang vượt trần chỉ dừng tăng; cặp khắc có sẵn
 giữ nguyên, phạt tính từ lần đột phá kế tiếp.
 
-## Cần chủ dự án duyệt
-1. Trần T9: 20 + 10 × bậc cho ra 110 → đề xuất T8 = T9 = 100 (Thần cấp không nâng trần).
-2. Ngưỡng vùng phàm đổi bằng f(x) = round(10 + (x − 7)·10/13) (gốc cũ 7 → 10), hay giữ nguyên số cũ.
-3. Đột phá cần chỉ số chính ≥ trần − 5 (15 … 95); mỗi điểm tăng lấp 20% khoảng cách tới trần.
-4. Phù thủy: đổi chữ "Tinh thần > 10" thành "> 12" (≥ 13, cùng độ hiếm như cũ), hay giữ 11 (dễ hơn trước nhiều).
-5. Kỵ hệ chỉ áp cho người đã có hệ; đồ chuyển hóa theo luật huyết mạch; thú có nút Bỏ.
-6. Giá bán 45% (thương nhân 50% thay 60%), theo thời thế; xác nhận từ phẩm Linh.
-7. Ô phụ 1 (+1 theo 3 thiên phú); bậc phụ ≤ chính − 1; chậm 20% mỗi hệ phụ (hợp 10%).
-8. Ma trận hợp / khắc như trên: khắc = phạt −10 đột phá (không cấm); hệ chủng tộc thêm được chỉ qua Dung hợp.
+## Cần chủ dự án duyệt – ĐÃ DUYỆT (2026-11-19)
+Cả 8 quyết định đã duyệt, kèm 2 bổ sung ở mục 3 và 6.
+1. [ĐÃ DUYỆT] Trần T9: 20 + 10 × bậc cho ra 110 → đề xuất T8 = T9 = 100 (Thần cấp không nâng trần).
+2. [ĐÃ DUYỆT] Ngưỡng vùng phàm đổi bằng f(x) = round(10 + (x − 7)·10/13) (gốc cũ 7 → 10), hay giữ nguyên số cũ.
+3. [ĐÃ DUYỆT] Đột phá cần chỉ số chính ≥ trần − 5 (15 … 95); mỗi điểm tăng lấp 20% khoảng cách tới trần. **Bổ sung: xác suất tăng chỉ số mỗi lượt Tu luyện p = 0,5.**
+4. [ĐÃ DUYỆT] Phù thủy: đổi chữ "Tinh thần > 10" thành "> 12" (≥ 13, cùng độ hiếm như cũ), hay giữ 11 (dễ hơn trước nhiều).
+5. [ĐÃ DUYỆT] Kỵ hệ chỉ áp cho người đã có hệ; đồ chuyển hóa theo luật huyết mạch; thú có nút Bỏ.
+6. [ĐÃ DUYỆT] Giá bán 45% (thương nhân 50% thay 60%; **bổ sung: chủ dự án có thể đổi lại 60% sau**), theo thời thế; xác nhận từ phẩm Linh.
+7. [ĐÃ DUYỆT] Ô phụ 1 (+1 theo 3 thiên phú); bậc phụ ≤ chính − 1; chậm 20% mỗi hệ phụ (hợp 10%).
+8. [ĐÃ DUYỆT] Ma trận hợp / khắc như trên: khắc = phạt −10 đột phá (không cấm); hệ chủng tộc thêm được chỉ qua Dung hợp.
 
 **Ước lượng: ~6 commit** (mỗi commit đổi `?v=` genesis.js): chỉ số 3 (trần + `grow` + đổi bản lưu; ngưỡng; mô phỏng / test), kỵ hệ 1,
 tu nhiều hệ 2 (luật; giao diện + bản lưu cũ). Gộp mỗi phần một commit thì 3.
 
 ## Mô phỏng nhanh: số lượt "Tu luyện" mỗi bậc (bot trong scratchpad, không commit)
-1. 6.000 nhân vật Nội lực, vào tuổi 16, Tinh thần 11, Trí 10, Vận 10; chỉ tính lượt Tu luyện (thật: `ACT_DUR` ×6 khi thọ > 200, `YRS_T`, `LIFE_T`, `ODDS_T`; T6+ có bảo vật +20%); chưa tính Học / Rèn, thời gian tự trôi, sự kiện, tai nạn.
+1. Chạy cơ sở với p = 0,35 (p = 0,5 ở dòng 5). 6.000 nhân vật Nội lực, vào tuổi 16, Tinh thần 11, Trí 10, Vận 10; chỉ tính lượt Tu luyện (thật: `ACT_DUR` ×6 khi thọ > 200, `YRS_T`, `LIFE_T`, `ODDS_T`; T6+ có bảo vật +20%); chưa tính Học / Rèn, thời gian tự trôi, sự kiện, tai nạn.
 2. T0→T1 8,5 · T1→T2 11,5 · T2→T3 12,7 · T3→T4 20,9 lượt. Cổng chỉ số thêm ≈ 14 lượt (≈ 13 năm) so với chỉ chờ thanh (39,7 lượt): tới T4 lúc 65 tuổi (thọ 109) thay vì 53.
 3. T4→T5 41,9 lượt (tuổi 104 / thọ 149); T5→T6 chỉ 13,6 lượt dù 75 năm, vì `durOf` ×6 (thọ 229 > 200) làm mỗi lượt ≈ 5,5 năm.
 4. T6→T7 24,3 · T7→T8 45 · T8→T9 85 lượt (463 năm); tuổi tới T9 ≈ 1.009 / thọ 1.179. Tới được: T5 98%, T6 93%, T7 80%, T8 64%, T9 38% (chưa tính tai nạn).
-5. Bậc cao không đổi theo chỉ số, bậc thấp rất nhạy xác suất tăng chỉ số p: p = 0,2 → T0–T3 tốn 15–20 lượt mỗi bậc và 19% tới T9; p = 0,5 → 6–10 lượt. Đề xuất p ≥ 0,5 hoặc cho Rèn / Học cùng tăng chỉ số chính.
+5. Bậc cao không đổi theo chỉ số, bậc thấp rất nhạy xác suất tăng chỉ số p: p = 0,2 → T0–T3 tốn 15–20 lượt mỗi bậc và 19% tới T9; p = 0,5 → 6–10 lượt. Đã duyệt p = 0,5 (quyết định 3); cho Rèn / Học cùng tăng chỉ số chính chỉ là phương án dự phòng.
+
+## Kiểm sau triển khai
+Làm sau khi cả 3 phần đã vào code, trước khi báo xong; kết quả ghi lại vào file này.
+1. **Chạy lại mô phỏng lượt Tu luyện** (`b_tuluyen.js` trong scratchpad, không nằm trong repo; mất thì viết lại theo mục trên) với p = 0,5: `node b_tuluyen.js 6000 gate 0.5`. Đối chiếu bảng T0→T9 ở trên (kỳ vọng T0–T3 khoảng 6–10 lượt, T9 khoảng 40% còn sống), rồi chạy lại bằng hằng số đọc từ code đã triển khai, không dùng bản sao.
+2. **So tần suất sự kiện cũ / mới trên ít nhất 3.000 đời mỗi bản**: cùng bot và cùng cách chọn ngẫu nhiên; bản cũ = nhánh trước khi đổi thang, bản mới = nhánh đã triển khai. Đếm theo mã sự kiện: số lần xuất hiện mỗi đời và tỉ lệ qua thử chỉ số; thêm số lượt mỗi đời và bậc cao nhất đạt được.
+3. **Chênh quá 10% thì báo** (cả sự kiện và các số tổng hợp), kèm nguyên nhân nghi ngờ (ngưỡng nào, dòng nào). Sự kiện có dưới 100 lần ở bản cũ ghi chú "ít mẫu": sai số ngẫu nhiên đã gần 10%, cần chạy thêm đời trước khi kết luận.
