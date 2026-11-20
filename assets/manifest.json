@@ -450,6 +450,78 @@
    "temp_id": true,
    "hint": "Huy hiệu Đấu Khí / Võ đạo (nắm đấm khí trong vòng ấn)"
   },
+  "itm014_qifx_01": {
+   "file": "itm014_qifx_01.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-005",
+   "obj": [
+    1
+   ],
+   "kind": "fx",
+   "bg": "black",
+   "alpha": false,
+   "blend": "screen",
+   "bytes": 8882,
+   "q": 88,
+   "item": "ITM-014",
+   "temp_id": true,
+   "hint": "Khí kình: sóng xung kích quanh lõi cam-trắng"
+  },
+  "itm014_qifx_02": {
+   "file": "itm014_qifx_02.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-005",
+   "obj": [
+    2
+   ],
+   "kind": "fx",
+   "bg": "black",
+   "alpha": false,
+   "blend": "screen",
+   "bytes": 13152,
+   "q": 88,
+   "item": "ITM-014",
+   "temp_id": true,
+   "hint": "Khí kình: ấn tay vàng (vòng đường nét)"
+  },
+  "itm014_qifx_03": {
+   "file": "itm014_qifx_03.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-005",
+   "obj": [
+    3
+   ],
+   "kind": "fx",
+   "bg": "black",
+   "alpha": false,
+   "blend": "screen",
+   "bytes": 4772,
+   "q": 88,
+   "item": "ITM-014",
+   "temp_id": true,
+   "hint": "Khí kình: cú đấm tia lam-trắng"
+  },
+  "itm014_qifx_04": {
+   "file": "itm014_qifx_04.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-005",
+   "obj": [
+    4
+   ],
+   "kind": "fx",
+   "bg": "black",
+   "alpha": false,
+   "blend": "screen",
+   "bytes": 4114,
+   "q": 88,
+   "item": "ITM-014",
+   "temp_id": true,
+   "hint": "Khí kình: vệt gió lưỡi liềm trắng-lam"
+  },
   "itm015_emblem_01": {
    "file": "itm015_emblem_01.webp",
    "w": 256,
@@ -924,6 +996,60 @@
    "warn": [
     "còn viền màu nền loang 0.52% điểm ảnh"
    ]
+  },
+  "itm020_fusion_01": {
+   "file": "itm020_fusion_01.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-010",
+   "obj": [
+    1
+   ],
+   "kind": "fx",
+   "bg": "black",
+   "alpha": false,
+   "blend": "screen",
+   "bytes": 9404,
+   "q": 88,
+   "item": "ITM-020",
+   "temp_id": true,
+   "hint": "Dung hợp thành công: xoáy lam-đỏ"
+  },
+  "itm020_fusion_02": {
+   "file": "itm020_fusion_02.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-010",
+   "obj": [
+    2
+   ],
+   "kind": "fx",
+   "bg": "black",
+   "alpha": false,
+   "blend": "screen",
+   "bytes": 8296,
+   "q": 88,
+   "item": "ITM-020",
+   "temp_id": true,
+   "hint": "Dung hợp hoàn hảo: bùng vàng + vòng xung kích"
+  },
+  "itm020_fusion_03": {
+   "file": "itm020_fusion_03.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-010",
+   "obj": [
+    3
+   ],
+   "kind": "fx",
+   "bg": "black",
+   "alpha": false,
+   "blend": "screen",
+   "bytes": 6914,
+   "q": 88,
+   "item": "ITM-020",
+   "temp_id": true,
+   "hint": "Đột biến: vết nứt tím cùng mảnh sắc"
   },
   "itm021_virus_01": {
    "file": "itm021_virus_01.webp",
@@ -1710,6 +1836,600 @@
    "temp_id": true,
    "hint": "Huy hiệu hệ tu luyện 13: bánh xe tím + xoáy sao (chưa rõ tên hệ trong game)"
   },
+  "itm029_aura_arcane_t1": {
+   "file": "itm029_aura_arcane_t1.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-019b",
+   "obj": [
+    1
+   ],
+   "kind": "fx",
+   "bg": "black",
+   "alpha": false,
+   "blend": "screen",
+   "bytes": 820,
+   "q": 88,
+   "item": "ITM-029",
+   "temp_id": true,
+   "hint": "Hào quang bậc T1, bảng màu lam-tím-tím đậm huyền bí (Phù thủy, Pháp sư, Thần ma)"
+  },
+  "itm029_aura_arcane_t2": {
+   "file": "itm029_aura_arcane_t2.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-019b",
+   "obj": [
+    2
+   ],
+   "kind": "fx",
+   "bg": "black",
+   "alpha": false,
+   "blend": "screen",
+   "bytes": 1418,
+   "q": 88,
+   "item": "ITM-029",
+   "temp_id": true,
+   "hint": "Hào quang bậc T2, bảng màu lam-tím-tím đậm huyền bí (Phù thủy, Pháp sư, Thần ma)"
+  },
+  "itm029_aura_arcane_t3": {
+   "file": "itm029_aura_arcane_t3.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-019b",
+   "obj": [
+    3
+   ],
+   "kind": "fx",
+   "bg": "black",
+   "alpha": false,
+   "blend": "screen",
+   "bytes": 2784,
+   "q": 88,
+   "item": "ITM-029",
+   "temp_id": true,
+   "hint": "Hào quang bậc T3, bảng màu lam-tím-tím đậm huyền bí (Phù thủy, Pháp sư, Thần ma)"
+  },
+  "itm029_aura_arcane_t4": {
+   "file": "itm029_aura_arcane_t4.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-019b",
+   "obj": [
+    4
+   ],
+   "kind": "fx",
+   "bg": "black",
+   "alpha": false,
+   "blend": "screen",
+   "bytes": 3262,
+   "q": 88,
+   "item": "ITM-029",
+   "temp_id": true,
+   "hint": "Hào quang bậc T4, bảng màu lam-tím-tím đậm huyền bí (Phù thủy, Pháp sư, Thần ma)"
+  },
+  "itm029_aura_arcane_t5": {
+   "file": "itm029_aura_arcane_t5.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-019b",
+   "obj": [
+    5
+   ],
+   "kind": "fx",
+   "bg": "black",
+   "alpha": false,
+   "blend": "screen",
+   "bytes": 4212,
+   "q": 88,
+   "item": "ITM-029",
+   "temp_id": true,
+   "hint": "Hào quang bậc T5, bảng màu lam-tím-tím đậm huyền bí (Phù thủy, Pháp sư, Thần ma)"
+  },
+  "itm029_aura_arcane_t6": {
+   "file": "itm029_aura_arcane_t6.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-019b",
+   "obj": [
+    6
+   ],
+   "kind": "fx",
+   "bg": "black",
+   "alpha": false,
+   "blend": "screen",
+   "bytes": 10976,
+   "q": 88,
+   "item": "ITM-029",
+   "temp_id": true,
+   "hint": "Hào quang bậc T6, bảng màu lam-tím-tím đậm huyền bí (Phù thủy, Pháp sư, Thần ma)"
+  },
+  "itm029_aura_arcane_t7": {
+   "file": "itm029_aura_arcane_t7.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-019b",
+   "obj": [
+    7
+   ],
+   "kind": "fx",
+   "bg": "black",
+   "alpha": false,
+   "blend": "screen",
+   "bytes": 8140,
+   "q": 88,
+   "item": "ITM-029",
+   "temp_id": true,
+   "hint": "Hào quang bậc T7, bảng màu lam-tím-tím đậm huyền bí (Phù thủy, Pháp sư, Thần ma)"
+  },
+  "itm029_aura_arcane_t8": {
+   "file": "itm029_aura_arcane_t8.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-019b",
+   "obj": [
+    8
+   ],
+   "kind": "fx",
+   "bg": "black",
+   "alpha": false,
+   "blend": "screen",
+   "bytes": 7446,
+   "q": 88,
+   "item": "ITM-029",
+   "temp_id": true,
+   "hint": "Hào quang bậc T8, bảng màu lam-tím-tím đậm huyền bí (Phù thủy, Pháp sư, Thần ma)"
+  },
+  "itm029_aura_blood_t1": {
+   "file": "itm029_aura_blood_t1.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-019c",
+   "obj": [
+    1
+   ],
+   "kind": "fx",
+   "bg": "black",
+   "alpha": false,
+   "blend": "screen",
+   "bytes": 756,
+   "q": 88,
+   "item": "ITM-029",
+   "temp_id": true,
+   "hint": "Hào quang bậc T1, bảng màu đỏ thẫm-đen-tím máu (Huyết tộc, Dị nhân)"
+  },
+  "itm029_aura_blood_t2": {
+   "file": "itm029_aura_blood_t2.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-019c",
+   "obj": [
+    2
+   ],
+   "kind": "fx",
+   "bg": "black",
+   "alpha": false,
+   "blend": "screen",
+   "bytes": 1160,
+   "q": 88,
+   "item": "ITM-029",
+   "temp_id": true,
+   "hint": "Hào quang bậc T2, bảng màu đỏ thẫm-đen-tím máu (Huyết tộc, Dị nhân)"
+  },
+  "itm029_aura_blood_t3": {
+   "file": "itm029_aura_blood_t3.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-019c",
+   "obj": [
+    3
+   ],
+   "kind": "fx",
+   "bg": "black",
+   "alpha": false,
+   "blend": "screen",
+   "bytes": 2486,
+   "q": 88,
+   "item": "ITM-029",
+   "temp_id": true,
+   "hint": "Hào quang bậc T3, bảng màu đỏ thẫm-đen-tím máu (Huyết tộc, Dị nhân)"
+  },
+  "itm029_aura_blood_t4": {
+   "file": "itm029_aura_blood_t4.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-019c",
+   "obj": [
+    4
+   ],
+   "kind": "fx",
+   "bg": "black",
+   "alpha": false,
+   "blend": "screen",
+   "bytes": 3220,
+   "q": 88,
+   "item": "ITM-029",
+   "temp_id": true,
+   "hint": "Hào quang bậc T4, bảng màu đỏ thẫm-đen-tím máu (Huyết tộc, Dị nhân)"
+  },
+  "itm029_aura_blood_t5": {
+   "file": "itm029_aura_blood_t5.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-019c",
+   "obj": [
+    5
+   ],
+   "kind": "fx",
+   "bg": "black",
+   "alpha": false,
+   "blend": "screen",
+   "bytes": 4228,
+   "q": 88,
+   "item": "ITM-029",
+   "temp_id": true,
+   "hint": "Hào quang bậc T5, bảng màu đỏ thẫm-đen-tím máu (Huyết tộc, Dị nhân)"
+  },
+  "itm029_aura_blood_t6": {
+   "file": "itm029_aura_blood_t6.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-019c",
+   "obj": [
+    6
+   ],
+   "kind": "fx",
+   "bg": "black",
+   "alpha": false,
+   "blend": "screen",
+   "bytes": 9848,
+   "q": 88,
+   "item": "ITM-029",
+   "temp_id": true,
+   "hint": "Hào quang bậc T6, bảng màu đỏ thẫm-đen-tím máu (Huyết tộc, Dị nhân)"
+  },
+  "itm029_aura_blood_t7": {
+   "file": "itm029_aura_blood_t7.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-019c",
+   "obj": [
+    7
+   ],
+   "kind": "fx",
+   "bg": "black",
+   "alpha": false,
+   "blend": "screen",
+   "bytes": 5980,
+   "q": 88,
+   "item": "ITM-029",
+   "temp_id": true,
+   "hint": "Hào quang bậc T7, bảng màu đỏ thẫm-đen-tím máu (Huyết tộc, Dị nhân)"
+  },
+  "itm029_aura_blood_t8": {
+   "file": "itm029_aura_blood_t8.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-019c",
+   "obj": [
+    8
+   ],
+   "kind": "fx",
+   "bg": "black",
+   "alpha": false,
+   "blend": "screen",
+   "bytes": 7368,
+   "q": 88,
+   "item": "ITM-029",
+   "temp_id": true,
+   "hint": "Hào quang bậc T8, bảng màu đỏ thẫm-đen-tím máu (Huyết tộc, Dị nhân)"
+  },
+  "itm029_aura_fire_t1": {
+   "file": "itm029_aura_fire_t1.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-019a",
+   "obj": [
+    1
+   ],
+   "kind": "fx",
+   "bg": "black",
+   "alpha": false,
+   "blend": "screen",
+   "bytes": 912,
+   "q": 88,
+   "item": "ITM-029",
+   "temp_id": true,
+   "hint": "Hào quang bậc T1, bảng màu cam-đỏ-vàng lửa (Võ giả, Đấu khí, Thể chất)"
+  },
+  "itm029_aura_fire_t2": {
+   "file": "itm029_aura_fire_t2.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-019a",
+   "obj": [
+    2
+   ],
+   "kind": "fx",
+   "bg": "black",
+   "alpha": false,
+   "blend": "screen",
+   "bytes": 2094,
+   "q": 88,
+   "item": "ITM-029",
+   "temp_id": true,
+   "hint": "Hào quang bậc T2, bảng màu cam-đỏ-vàng lửa (Võ giả, Đấu khí, Thể chất)"
+  },
+  "itm029_aura_fire_t3": {
+   "file": "itm029_aura_fire_t3.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-019a",
+   "obj": [
+    3
+   ],
+   "kind": "fx",
+   "bg": "black",
+   "alpha": false,
+   "blend": "screen",
+   "bytes": 3314,
+   "q": 88,
+   "item": "ITM-029",
+   "temp_id": true,
+   "hint": "Hào quang bậc T3, bảng màu cam-đỏ-vàng lửa (Võ giả, Đấu khí, Thể chất)"
+  },
+  "itm029_aura_fire_t4": {
+   "file": "itm029_aura_fire_t4.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-019a",
+   "obj": [
+    4
+   ],
+   "kind": "fx",
+   "bg": "black",
+   "alpha": false,
+   "blend": "screen",
+   "bytes": 4054,
+   "q": 88,
+   "item": "ITM-029",
+   "temp_id": true,
+   "hint": "Hào quang bậc T4, bảng màu cam-đỏ-vàng lửa (Võ giả, Đấu khí, Thể chất)"
+  },
+  "itm029_aura_fire_t5": {
+   "file": "itm029_aura_fire_t5.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-019a",
+   "obj": [
+    5
+   ],
+   "kind": "fx",
+   "bg": "black",
+   "alpha": false,
+   "blend": "screen",
+   "bytes": 5580,
+   "q": 88,
+   "item": "ITM-029",
+   "temp_id": true,
+   "hint": "Hào quang bậc T5, bảng màu cam-đỏ-vàng lửa (Võ giả, Đấu khí, Thể chất)"
+  },
+  "itm029_aura_fire_t6": {
+   "file": "itm029_aura_fire_t6.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-019a",
+   "obj": [
+    6
+   ],
+   "kind": "fx",
+   "bg": "black",
+   "alpha": false,
+   "blend": "screen",
+   "bytes": 11290,
+   "q": 88,
+   "item": "ITM-029",
+   "temp_id": true,
+   "hint": "Hào quang bậc T6, bảng màu cam-đỏ-vàng lửa (Võ giả, Đấu khí, Thể chất)"
+  },
+  "itm029_aura_fire_t7": {
+   "file": "itm029_aura_fire_t7.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-019a",
+   "obj": [
+    7
+   ],
+   "kind": "fx",
+   "bg": "black",
+   "alpha": false,
+   "blend": "screen",
+   "bytes": 9940,
+   "q": 88,
+   "item": "ITM-029",
+   "temp_id": true,
+   "hint": "Hào quang bậc T7, bảng màu cam-đỏ-vàng lửa (Võ giả, Đấu khí, Thể chất)"
+  },
+  "itm029_aura_fire_t8": {
+   "file": "itm029_aura_fire_t8.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-019a",
+   "obj": [
+    8
+   ],
+   "kind": "fx",
+   "bg": "black",
+   "alpha": false,
+   "blend": "screen",
+   "bytes": 8832,
+   "q": 88,
+   "item": "ITM-029",
+   "temp_id": true,
+   "hint": "Hào quang bậc T8, bảng màu cam-đỏ-vàng lửa (Võ giả, Đấu khí, Thể chất)"
+  },
+  "itm029_aura_fire_t9": {
+   "file": "itm029_aura_fire_t9.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-019a (T9)",
+   "obj": [
+    1
+   ],
+   "kind": "fx",
+   "bg": "black",
+   "alpha": false,
+   "blend": "screen",
+   "bytes": 17980,
+   "q": 88,
+   "item": "ITM-029",
+   "temp_id": true,
+   "hint": "Hào quang bậc T9 bảng lửa – ảnh làm lại; 3 bảng màu còn lại dùng hue-rotate trong CSS"
+  },
+  "itm029_aura_wild_t1": {
+   "file": "itm029_aura_wild_t1.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-019d",
+   "obj": [
+    1
+   ],
+   "kind": "fx",
+   "bg": "black",
+   "alpha": false,
+   "blend": "screen",
+   "bytes": 1042,
+   "q": 88,
+   "item": "ITM-029",
+   "temp_id": true,
+   "hint": "Hào quang bậc T1, bảng màu xanh lục-lam-bạc hoang dã (Lang tộc, Cương thi, Thú)"
+  },
+  "itm029_aura_wild_t2": {
+   "file": "itm029_aura_wild_t2.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-019d",
+   "obj": [
+    2
+   ],
+   "kind": "fx",
+   "bg": "black",
+   "alpha": false,
+   "blend": "screen",
+   "bytes": 1768,
+   "q": 88,
+   "item": "ITM-029",
+   "temp_id": true,
+   "hint": "Hào quang bậc T2, bảng màu xanh lục-lam-bạc hoang dã (Lang tộc, Cương thi, Thú)"
+  },
+  "itm029_aura_wild_t3": {
+   "file": "itm029_aura_wild_t3.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-019d",
+   "obj": [
+    3
+   ],
+   "kind": "fx",
+   "bg": "black",
+   "alpha": false,
+   "blend": "screen",
+   "bytes": 2408,
+   "q": 88,
+   "item": "ITM-029",
+   "temp_id": true,
+   "hint": "Hào quang bậc T3, bảng màu xanh lục-lam-bạc hoang dã (Lang tộc, Cương thi, Thú)"
+  },
+  "itm029_aura_wild_t4": {
+   "file": "itm029_aura_wild_t4.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-019d",
+   "obj": [
+    4
+   ],
+   "kind": "fx",
+   "bg": "black",
+   "alpha": false,
+   "blend": "screen",
+   "bytes": 2918,
+   "q": 88,
+   "item": "ITM-029",
+   "temp_id": true,
+   "hint": "Hào quang bậc T4, bảng màu xanh lục-lam-bạc hoang dã (Lang tộc, Cương thi, Thú)"
+  },
+  "itm029_aura_wild_t5": {
+   "file": "itm029_aura_wild_t5.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-019d",
+   "obj": [
+    5
+   ],
+   "kind": "fx",
+   "bg": "black",
+   "alpha": false,
+   "blend": "screen",
+   "bytes": 5952,
+   "q": 88,
+   "item": "ITM-029",
+   "temp_id": true,
+   "hint": "Hào quang bậc T5, bảng màu xanh lục-lam-bạc hoang dã (Lang tộc, Cương thi, Thú)"
+  },
+  "itm029_aura_wild_t6": {
+   "file": "itm029_aura_wild_t6.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-019d",
+   "obj": [
+    6
+   ],
+   "kind": "fx",
+   "bg": "black",
+   "alpha": false,
+   "blend": "screen",
+   "bytes": 10886,
+   "q": 88,
+   "item": "ITM-029",
+   "temp_id": true,
+   "hint": "Hào quang bậc T6, bảng màu xanh lục-lam-bạc hoang dã (Lang tộc, Cương thi, Thú)"
+  },
+  "itm029_aura_wild_t7": {
+   "file": "itm029_aura_wild_t7.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-019d",
+   "obj": [
+    7
+   ],
+   "kind": "fx",
+   "bg": "black",
+   "alpha": false,
+   "blend": "screen",
+   "bytes": 7112,
+   "q": 88,
+   "item": "ITM-029",
+   "temp_id": true,
+   "hint": "Hào quang bậc T7, bảng màu xanh lục-lam-bạc hoang dã (Lang tộc, Cương thi, Thú)"
+  },
+  "itm029_aura_wild_t8": {
+   "file": "itm029_aura_wild_t8.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-019d",
+   "obj": [
+    8
+   ],
+   "kind": "fx",
+   "bg": "black",
+   "alpha": false,
+   "blend": "screen",
+   "bytes": 7536,
+   "q": 88,
+   "item": "ITM-029",
+   "temp_id": true,
+   "hint": "Hào quang bậc T8, bảng màu xanh lục-lam-bạc hoang dã (Lang tộc, Cương thi, Thú)"
+  },
   "itm030_race_01": {
    "file": "itm030_race_01.webp",
    "w": 256,
@@ -2100,6 +2820,78 @@
    "item": "ITM-034",
    "temp_id": true,
    "hint": "Hoạt động: mệnh chung (cụ già tan thành khói) – ảnh làm lại, thay ô 6"
+  },
+  "itm035_vfx_01": {
+   "file": "itm035_vfx_01.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-025",
+   "obj": [
+    1
+   ],
+   "kind": "fx",
+   "bg": "black",
+   "alpha": false,
+   "blend": "screen",
+   "bytes": 12034,
+   "q": 88,
+   "item": "ITM-035",
+   "temp_id": true,
+   "hint": "Hiệu ứng đột phá: cột sáng + vòng sét"
+  },
+  "itm035_vfx_02": {
+   "file": "itm035_vfx_02.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-025",
+   "obj": [
+    2
+   ],
+   "kind": "fx",
+   "bg": "black",
+   "alpha": false,
+   "blend": "screen",
+   "bytes": 10508,
+   "q": 88,
+   "item": "ITM-035",
+   "temp_id": true,
+   "hint": "Hiệu ứng Thiên kiếp: mây bão, chín tia sét"
+  },
+  "itm035_vfx_03": {
+   "file": "itm035_vfx_03.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-025",
+   "obj": [
+    3
+   ],
+   "kind": "fx",
+   "bg": "black",
+   "alpha": false,
+   "blend": "screen",
+   "bytes": 8464,
+   "q": 88,
+   "item": "ITM-035",
+   "temp_id": true,
+   "hint": "Hiệu ứng Nghịch Mệnh: đồng hồ cát nứt, ánh vàng-đỏ"
+  },
+  "itm035_vfx_04": {
+   "file": "itm035_vfx_04.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-025",
+   "obj": [
+    4
+   ],
+   "kind": "fx",
+   "bg": "black",
+   "alpha": false,
+   "blend": "screen",
+   "bytes": 9182,
+   "q": 88,
+   "item": "ITM-035",
+   "temp_id": true,
+   "hint": "Hiệu ứng Trang chép: trang sách phát sáng, hồn bay lên"
   },
   "itm036_region_01": {
    "file": "itm036_region_01.webp",
