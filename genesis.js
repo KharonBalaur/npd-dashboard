@@ -194,9 +194,36 @@
     ['syn_void', 'Hư Không Dực', ['g_corev', 'g_bat'], { tri:2, hac:10 }, 'Cánh dơi hút ánh sáng vào lỗ đen giữa ngực.'],
     ['syn_hunter', 'Thợ Săn Đêm', ['g_owl', 'g_wolf'], { van:2, the:1 }, 'Mắt cú và vuốt sói – con mồi không có đường thoát.'],
   ];
-  const SURN = ['Lý', 'Tô', 'Lâm', 'Hàn', 'Mộ', 'Diệp', 'Vân', 'Phương', 'Lạc', 'Bạch', 'Mạc', 'Kha', 'Thẩm', 'Tần', 'Quách', 'Đường'];
-  const GIVEN = ['Hàn', 'Mộc', 'Tuyết', 'Phong', 'Nguyệt', 'Lãng', 'Vũ', 'Dao', 'Khải', 'Thanh', 'Uyên', 'Tịch', 'Minh', 'Hạ', 'Kỳ', 'Sương', 'Tranh', 'Vy', 'Cẩn', 'Lam'];
-  const npcName = () => pick(SURN) + ' ' + pick(GIVEN);
+  // Tên: họ + tên gọi. Tên gọi chia theo giới (nam / nữ / trung tính cho "phi nhị nguyên"); GIVEN là toàn bộ kho (nhân vật phụ không phân giới).
+  const SURN = ['Lý', 'Tô', 'Lâm', 'Hàn', 'Mộ', 'Diệp', 'Vân', 'Phương', 'Lạc', 'Bạch', 'Mạc', 'Kha', 'Thẩm', 'Tần', 'Quách', 'Đường',
+    'Triệu', 'Giang', 'Cố', 'Liễu', 'Tiêu', 'Ninh', 'Doãn', 'Thạch', 'Vương', 'Dương', 'Lục', 'Nghiêm', 'Âu', 'Hoa', 'Dư', 'Kim'];
+  const GIVEN_M = ['Hàn', 'Mộc', 'Phong', 'Lãng', 'Vũ', 'Khải', 'Tịch', 'Trạch', 'Hiên', 'Quân', 'Thịnh', 'Nhạc', 'Kiệt', 'Duệ', 'Khuê', 'Hạo',
+    'Bân', 'Dật', 'Thành', 'Trực', 'Sơn', 'Hải', 'Cương', 'Nghị', 'Việt', 'Huy', 'Đạt', 'Lôi', 'Thần', 'Quang', 'Hưng', 'Tuấn'];
+  const GIVEN_F = ['Tuyết', 'Nguyệt', 'Dao', 'Uyên', 'Sương', 'Vy', 'Liên', 'Ngọc', 'Diễm', 'Hương', 'Mai', 'Nhược', 'Oanh', 'Quyên', 'Linh', 'Thư',
+    'Trà', 'Yên', 'Châu', 'Lệ', 'Nhi', 'Thảo', 'Băng', 'Kiều', 'Lan', 'Ly', 'Như', 'Trâm', 'Hồng', 'Hân', 'Ngân', 'Phụng'];
+  const GIVEN_N = ['Thanh', 'Minh', 'Hạ', 'Kỳ', 'Cẩn', 'Lam', 'Tranh', 'An', 'Bình', 'Du', 'Hòa', 'Nhiên', 'Tịnh', 'Tuệ', 'Từ', 'Ân', 'Giác', 'Vọng', 'Tâm', 'Nhã', 'Hiểu', 'Lạc'];
+  const GIVEN = [...GIVEN_M, ...GIVEN_F, ...GIVEN_N];
+  const givenPool = g => g === 'm' ? GIVEN_M : g === 'f' ? GIVEN_F : g === 'x' ? GIVEN_N : GIVEN;
+  const firstTok = n => String(n || '').trim().split(/\s+/)[0] || '', lastTok = n => String(n || '').trim().split(/\s+/).pop() || '';
+  // mọi tên đang có trong một đời: bản thân, nhân vật phụ, bạn đời, các con (đã có họ thì ghi đủ, con cũ chỉ có tên gọi)
+  const namesOf = C => { const u = []; if (!C) return u; if (C.n) u.push(C.n); Object.values(C.npc && typeof C.npc === 'object' ? C.npc : {}).forEach(v => { if (v && v.n) u.push(v.n); });
+    if (C.spouse) u.push(C.spouse); (Array.isArray(C.kidn) ? C.kidn : []).forEach(x => x && u.push(x)); (Array.isArray(C.kidl) ? C.kidl : []).forEach(k => { if (k && k.n) u.push(k.s ? `${k.s} ${k.n}` : k.n); }); if (C.par && C.par.n) u.push(C.par.n); return u; };
+  // tên nhân vật phụ: không trùng tên đầy đủ, ưu tiên cũng không trùng tên gọi và họ với ai khác trong đời (g: m / f / x; bỏ trống = kho chung)
+  function npcName(C, g) {
+    const used = namesOf(C), full = new Set(used), given = new Set(used.map(lastTok)), sur = new Set(used.map(firstTok)), pool = givenPool(g);
+    for (const lv of [2, 1, 0]) for (let t = 0; t < 60; t++) { const sn = pick(SURN), gv = pick(pool);
+      if (full.has(`${sn} ${gv}`) || (lv >= 1 && given.has(gv)) || (lv >= 2 && sur.has(sn))) continue; return `${sn} ${gv}`; }
+    return `${pick(SURN)} ${pick(pool)}`;
+  }
+  // con cái: mang họ gia tộc của nhân vật (cùng quy tắc hậu duệ: kiếp sau lấy họ C.clan), tên gọi theo giới của con, không trùng tên gọi trong nhà
+  function newKid(C) { const g = Math.random() < .5 ? 'm' : 'f', pool = givenPool(g), used = new Set(namesOf(C).map(lastTok)); let gv = pick(pool);
+    for (let t = 0; t < 40 && used.has(gv); t++) gv = pick(pool); return { n:gv, s:C.clan || clanOf(C), g }; }
+  const kidFull = (C, i) => { const gv = (C.kidn || [])[i], k = (C.kidl || []).find(x => x && x.n === gv && x.s); return k ? `${k.s} ${k.n}` : gv; };
+  const kidsFull = C => (C.kidn || []).map((_, i) => kidFull(C, i));
+  // tên gợi ý trong màn tạo nhân vật theo giới tính: đổi qua lại giữ lại tên đã gợi ý cho giới đó; tên người chơi tự gõ (d.nt = 1) không bao giờ bị đổi
+  const looksAuto = n => { const t = String(n || '').trim().split(/\s+/); return t.length === 2 && SURN.includes(t[0]) && GIVEN.includes(t[1]); };
+  const nameTyped = d => d.nt === 1 || (d.nt === undefined && !looksAuto(d.n));
+  function nameForGender(d, k) { d.ag = d.ag && typeof d.ag === 'object' ? d.ag : {}; if (!d.ag[k]) d.ag[k] = `${d.par ? d.par.cl : d.sn || firstTok(d.n)} ${pick(givenPool(k))}`; return d.ag[k]; }
   const NPCR = { ban:['🤝', 'Bạn thuở nhỏ'], dich:['⚔', 'Kình địch'], su:['🧙', 'Sư phụ'], tinh:['💗', 'Người thương'] };
   const PLACES = ['bên bờ suối', 'ở ngã ba đường', 'trong quán trọ ven đường', 'dưới chân cầu đá', 'giữa chợ phiên', 'trong rừng trúc', 'trước cổng thành', 'bên đống lửa trại'];
 
@@ -1301,7 +1328,7 @@
   ];
   ENC.forEach(e => e[3].forEach(normC));
   // điều kiện của lựa chọn trong gặp gỡ dùng hàm, nên khi lưu chỉ lưu chỉ số gặp gỡ + nơi chốn
-  function makeEnc(C) { const i = rnd(0, ENC.length - 1); return { enc:i, p:pick(PLACES), who:npcName() }; }
+  function makeEnc(C) { const i = rnd(0, ENC.length - 1); return { enc:i, p:pick(PLACES), who:npcName(C) }; }
   function evOf(C) {
     if (!C.ev) return null;
     if (C.ev.enc != null) { const e = ENC[C.ev.enc]; if (!e) return null;
@@ -1314,7 +1341,7 @@
   function upgrade(C) {
     if (!C) return C;
     C.al = C.al && typeof C.al === 'object' ? C.al : { g:0, l:0, b:0 };
-    C.npc = C.npc && typeof C.npc === 'object' ? C.npc : { ban:{ n:npcName(), aff:10, st:'ok' }, dich:{ n:npcName(), aff:-5, st:'ok' } };
+    if (!(C.npc && typeof C.npc === 'object')) { C.npc = {}; C.npc.ban = { n:npcName(C), aff:10, st:'ok' }; C.npc.dich = { n:npcName(C), aff:-5, st:'ok' }; }
     if (!Array.isArray(C.segs) || !C.segs.length) C.segs = Array.isArray(C.eras) && C.eras.length ? segsFromDecades(C.eras) : makeSegs(0, 130);
     C.deeds = Array.isArray(C.deeds) ? C.deeds : []; C.kidn = Array.isArray(C.kidn) ? C.kidn : [];
     C.flags = C.flags || {}; C.seen = C.seen || []; C.genes = C.genes || [];
@@ -1366,7 +1393,8 @@
   // ---------- tạo nhân vật ----------
   // kiếp đầu của tài khoản: gieo đúng 1 lần; các kiếp sau: thêm lượt gieo lại bằng phúc duyên tích lũy (+2 nếu di sản là lượt gieo)
   function newDraft() { const lg = G.legacy && G.legacy.k === 'rr' ? 2 : 0;
-    return { n:npcName(), g:pick(['m', 'f']), o:'', r:'', w:'', ak:'', par:null, roll:null, lg, rr:lg + (G.lives > 0 ? (G.phuc || 0) : 0), hair:rnd(0, 5) }; }
+    const g = pick(['m', 'f']), sn = pick(SURN), n = `${sn} ${pick(givenPool(g))}`;
+    return { n, nt:0, sn, ag:{ [g]:n }, g, o:'', r:'', w:'', ak:'', par:null, roll:null, lg, rr:lg + (G.lives > 0 ? (G.phuc || 0) : 0), hair:rnd(0, 5) }; }
   function roll(dr) {
     // hậu duệ của một đời trước (gia phả): đời đó có con và gia tộc chưa bị diệt; di sản "heir" chắc chắn làm hậu duệ
     const heirs = (G.tree || []).filter(n => (n.kids || []).length && !(G.clans[n.cl] && G.clans[n.cl].fall)), lgHeir = G.legacy && G.legacy.k === 'heir';
@@ -1376,7 +1404,7 @@
     dr.r = dr.par && RACE[dr.par.r] && dr.par.r !== 'animal' ? dr.par.r : pickW(RACE_W);
     dr.ak = dr.r === 'animal' ? pick(Object.keys(ANIMAL)) : '';
     dr.w = dr.r === 'animal' ? 'wild' : dr.o === 'mount' ? 'orphan' : pickW(Object.fromEntries(Object.entries(WEALTH).filter(([k]) => k !== 'wild' && !(dr.o === 'noble' && ['royal', 'poor'].includes(k))).map(([k, v]) => [k, v[2]])));
-    if (dr.par && !dr.n.startsWith(dr.par.cl + ' ')) dr.n = `${dr.par.cl} ${pick(GIVEN)}`;
+    if (dr.par && !nameTyped(dr)) { dr.sn = dr.par.cl; dr.ag = {}; if (!dr.n.startsWith(dr.par.cl + ' ')) dr.n = nameForGender(dr, dr.g); dr.ag[dr.g] = dr.n; }   // hậu duệ lấy họ gia tộc (đổi giới thì đổi tên gọi, giữ họ); tên người chơi tự gõ thì giữ nguyên
     const s = {}; STATS.forEach(([k]) => { s[k] = rnd(2, 8) + rnd(0, 4); });
     const add = m => Object.entries(m || {}).forEach(([k, v]) => { s[k] = (s[k] || 0) + v; });
     add(ORIGIN[dr.o][3]); add(RACE[dr.r][2]); if (dr.ak) add(ANIMAL[dr.ak][3]);
@@ -1403,11 +1431,12 @@
     const C = { n:String(dr.n || 'Vô Danh').slice(0, 24), g:dr.g, o:dr.o, r:dr.r, s:{ ...r.s }, omen:r.omen, tr:r.tr, nm:r.nm,
       hp:r.tr.includes('sick') ? 70 : 100, gold:ORIGIN[dr.o][4] + W[3] + (lg && lg.k === 'gold' ? 40 : 0), hum:100, fame:0, want:0, mut:0,
       en:{ thanh:0, hac:0, co:0, thu:0 }, genes:[], line:null, car:null, spouse:'', kids:0, kidn:[], flags:{ lorecount:G.lore.length }, seen:[], log:[], deeds:[],
-      al:{ ...r.al }, npc:{ ban:{ n:npcName(), aff:rnd(5, 25), st:'ok' }, dich:{ n:npcName(), aff:rnd(-15, 0), st:'ok' } },
+      al:{ ...r.al }, npc:{},
       age:0, turn:0, hair:dr.hair != null ? dr.hair : rnd(0, 5), ph:'act', ev:null, born:new Date().toISOString().slice(0, 10),
       days:0, since:0, segs:makeSegs(0, 130), sk:[], inv:[], offers:[], innate:[], fruit:0,
       w:WEALTH[dr.w] ? dr.w : 'common', ak:dr.ak || '', paths:{}, pk:'', bl:[], kidl:[], shop:null, clan:'', par:dr.par || null, fate:null, sid:rnd(1, 2147483646) };
-    if (r.tr.includes('orph')) { C.npc.ban.n = npcName(); C.npc.su = { n:npcName(), aff:15, st:'ok', role:'người lạ dẫn lối' }; }
+    C.npc.ban = { n:npcName(C), aff:rnd(5, 25), st:'ok' }; C.npc.dich = { n:npcName(C), aff:rnd(-15, 0), st:'ok' };
+    if (r.tr.includes('orph')) { C.npc.ban.n = npcName(C); C.npc.su = { n:npcName(C), aff:15, st:'ok', role:'người lạ dẫn lối' }; }
     C.lifeMax = dr.r === 'animal' ? rnd(15, 30) + Math.round(C.s.the / 2) + (r.tr.includes('longev') ? 8 : 0) : 62 + Math.round(C.s.the * 1.5) + rnd(-4, 10) + RACE[dr.r][3] + (r.tr.includes('longev') ? 15 : 0);
     if (dr.r === 'animal') { C.paths.beast = { t:0, xp:0 }; C.pk = 'beast'; }
     C.fate = dr.r === 'animal' ? { k:'old', at:0 } : fateRoll(C); C.clan = dr.par ? dr.par.cl : clanOf(C);
@@ -1478,10 +1507,10 @@
         if (lp) joinPath(C, lp[0], lp[1], chips, 'Huyết mạch dẫn lối –'); if (key === 'hybrid.one') joinPath(C, 'vampE', 2, chips); pathCombo(C, chips); }
       else if (k === 'car') { if (C.car && C.car.k === v) continue; C.car = { k:v, rk:0 }; chips.push(['', `${CAREER[v][0]} ${CAREER[v][1][0]}`]); log(C, `Trở thành ${CAREER[v][1][0]}.`); }
       else if (k === 'rank') { if (C.car) { C.car.rk = Math.min(C.car.rk + v, CAREER[C.car.k][1].length - 1); chips.push(['up', `⬆ ${careerName(C)}`]); log(C, `Thăng lên ${careerName(C)}.`); } }
-      else if (k === 'spouse') { C.spouse = npcOk(C, 'tinh') && C.flags.lover ? C.npc.tinh.n : npcName(); chips.push(['up', `💍 Kết duyên với ${C.spouse}`]); log(C, `Kết hôn với ${C.spouse}.`); }
+      else if (k === 'spouse') { C.spouse = npcOk(C, 'tinh') && C.flags.lover ? C.npc.tinh.n : npcName(C); chips.push(['up', `💍 Kết duyên với ${C.spouse}`]); log(C, `Kết hôn với ${C.spouse}.`); }
       else if (k === 'kids' && !canKids(C)) chips.push(['bad', '🩸 Dòng máu Huyết tộc không để lại con nối dõi']);
-      else if (k === 'kids') { for (let i = 0; i < v; i++) { C.kids++; const kn = pick(GIVEN); C.kidn.push(kn); (C.kidl = C.kidl || []).push({ n:kn, lk:C.line && Math.random() < .5 ? `${C.line.k}.${C.line.sub}` : '' }); } chips.push(['up', `👶 ${C.kidn[C.kidn.length - 1]} chào đời`]); log(C, `Đón đứa con ${C.kidn[C.kidn.length - 1]}.`); }
-      else if (k === 'meet') { if (!C.npc[v] || C.npc[v].st !== 'ok') { C.npc[v] = { n:npcName(), aff:20, st:'ok', role:eff.sudo || '' }; chips.push(['up', `${NPCR[v][0]} ${NPCR[v][1]}: ${C.npc[v].n}`]); log(C, `${NPCR[v][1]}: ${C.npc[v].n}${eff.sudo ? ' (' + eff.sudo + ')' : ''}.`); } }
+      else if (k === 'kids') { for (let i = 0; i < v; i++) { C.kids++; const kd = newKid(C); C.kidn.push(kd.n); (C.kidl = C.kidl || []).push({ n:kd.n, s:kd.s, g:kd.g, lk:C.line && Math.random() < .5 ? `${C.line.k}.${C.line.sub}` : '' }); } const kf = kidFull(C, C.kidn.length - 1); chips.push(['up', `👶 ${kf} chào đời`]); log(C, `Đón đứa con ${kf}.`); }
+      else if (k === 'meet') { if (!C.npc[v] || C.npc[v].st !== 'ok') { C.npc[v] = { n:npcName(C), aff:20, st:'ok', role:eff.sudo || '' }; chips.push(['up', `${NPCR[v][0]} ${NPCR[v][1]}: ${C.npc[v].n}`]); log(C, `${NPCR[v][1]}: ${C.npc[v].n}${eff.sudo ? ' (' + eff.sudo + ')' : ''}.`); } }
       else if (k === 'aff') Object.entries(v).forEach(([nk, x]) => { if (!C.npc[nk]) return; C.npc[nk].aff = clamp(C.npc[nk].aff + x, -100, 100); chips.push([x > 0 ? 'up' : 'down', `${NPCR[nk][0]} ${C.npc[nk].n} ${x > 0 ? '+' : '−'}${Math.abs(x)}`]); })
       else if (k === 'npcst') Object.entries(v).forEach(([nk, st]) => { if (!C.npc[nk]) return; C.npc[nk].st = st; chips.push(['down', `${NPCR[nk][0]} ${C.npc[nk].n}: ${st === 'dead' ? 'qua đời' : 'rời xa'}`]); })
       else if (k === 'deed') { const [adj, txt] = String(v).split('|'); C.deeds.push(adj + '|' + tx(C, txt || adj)); if (C.deeds.length > 12) C.deeds.shift(); chips.push(['lore', `🏅 ${tx(C, txt || adj)}`]); }
@@ -1821,7 +1850,7 @@
         else if (o.id === 'sect') joinPath(C, pk || 'noi', 1, chips, 'Nhập môn phái –');
         else if (o.id === 'arena') joinPath(C, 'dau', 1, chips, 'Vào quân đoàn đấu sĩ –');
         else if (o.id === 'book' || o.id === 'item') gainBao(C, o.v, chips);
-        else if (o.id === 'master') { C.npc.su = { n:npcName(), aff:25, st:'ok', role:'kỳ nhân' }; chips.push(['up', `🧙 Sư phụ: ${C.npc.su.n}`]); if (pk) joinPath(C, pk, 1, chips, 'Theo kỳ nhân học –'); }
+        else if (o.id === 'master') { C.npc.su = { n:npcName(C), aff:25, st:'ok', role:'kỳ nhân' }; chips.push(['up', `🧙 Sư phụ: ${C.npc.su.n}`]); if (pk) joinPath(C, pk, 1, chips, 'Theo kỳ nhân học –'); }
         else if (o.id === 'gene') { C.offers.shift(); gainGene(C, 'beast', chips); UI.note = { txt:'', chips }; save(G); return render(); }
         log(C, `Sinh nhật ${o.a}: nhận ${b[1]}.`); }
       else log(C, `Sinh nhật ${o.a}: bỏ qua ${b[1]}.`); }
@@ -2116,14 +2145,14 @@
     const book = { t:title(C), n:C.n, g:C.g, o:C.o, r:C.r, ln:lineName(C), car:careerName(C), age:C.age, end:ending(C), cause:C.death, ep:String(ep || '').slice(0, 120),
       av:{ r:C.r, g:C.g, line:C.line, genes:C.genes.slice(), hair:C.hair, car:C.car ? C.car.k : '', mut:C.mut, age:C.lifeMax > 200 ? Math.min(C.age, 40) : C.age }, st:{ ...C.s }, fame:C.fame, hum:C.hum, mut:C.mut, kids:C.kids, sp:C.spouse,
       sum:bookSummary(C).slice(0, 300), ps:persona(C).map(p => p[1]).join(' · '), deeds:C.deeds.map(d => d.split('|')[1]).slice(-5), ch, at:new Date().toISOString().slice(0, 10),
-      sk:skillsOf(C).map(x => x[2]).slice(0, 6), gold:C.gold, fruit:C.fruit || 0, kn:C.kidn.slice(0, 6),
+      sk:skillsOf(C).map(x => x[2]).slice(0, 6), gold:C.gold, fruit:C.fruit || 0, kn:kidsFull(C).slice(0, 6),
       eras:[...new Set((C.segs || []).filter(x => x[1] <= C.age).map(x => ERAS[x[0]] ? ERAS[x[0]][1] : ''))].filter(Boolean).slice(0, 10),
       w:C.w, ak:C.ak || '', fate:C.fate && FATE[C.fate.k] ? FATE[C.fate.k][0] + (C.fate.k !== 'old' ? ` (${C.fate.at} tuổi${C.fate.done ? ' – đã vượt qua' : ''})` : '') : '',
       pa:pathsOf(C).map(([k, x]) => [k, x.t]), cl:C.clan || clanOf(C), par:C.par ? C.par.n : '', bl:(C.bl || []).slice(0, 5) };
     book.av.ak = C.ak || ''; book.av.formed = !!C.flags.formed; book.av.bt = tierOf(C, 'beast');
     // v4: gia phả, điểm gia tộc, Sách Thời Đại
     const node = { i:G.lives, n:C.n, g:C.g, r:C.r, o:C.o, ak:C.ak || '', lk:C.line ? `${C.line.k}.${C.line.sub}` : '', ln:lineName(C), age:C.age, end:book.end, t:book.t, cl:book.cl,
-      p:C.par ? C.par.i : null, pk:C.par ? C.par.kid : '', kids:(C.kidn || []).slice(0, 6), sp:C.spouse || '', tp:book.pa.length ? (x => `${PATHS[x[0]].n} · ${tierName(x[0], x[1])}`)(book.pa.slice().sort((a, b) => b[1] - a[1])[0]) : '', at:book.at };
+      p:C.par ? C.par.i : null, pk:C.par ? C.par.kid : '', kids:kidsFull(C).slice(0, 6), sp:C.spouse || '', tp:book.pa.length ? (x => `${PATHS[x[0]].n} · ${tierName(x[0], x[1])}`)(book.pa.slice().sort((a, b) => b[1] - a[1])[0]) : '', at:book.at };
     G.tree.unshift(node);
     const oc = G.clans[book.cl] || { s:0, n:0 }; G.clans[book.cl] = { s:oc.s + clanScore(C), n:(oc.n || 0) + 1, fall:C.flags.clanfall ? 1 : 0 };
     (C.segs || []).filter(x => x[1] <= C.age).forEach(x => G.saga.unshift({ e:x[0], a:x[1], b:Math.min(C.age, x[1] + x[2]), n:C.n, t:book.t, i:G.lives }));
@@ -2954,7 +2983,7 @@
         <div class="gx-chips"><span class="gx-chip gene">🧬 Ô gene ${fusedOf(C).length}/${geneCap(C)}${C.fruit ? ' · 🍏' : ''}</span><span class="gx-chip line">🩸 Dung hợp ${(C.bl || []).length}/${blCap(C)}</span><span class="gx-chip en">⚡ Dị năng ${(C.sk || []).length}/${skillCap(C)}</span><span class="gx-chip lore">🎒 ${(C.inv || []).length}/8</span></div>
         ${C.car && CAR_PERK[C.car.k] ? `<p class="gx-note">⚒ <b style="color:var(--go)">${E(careerName(C))}</b>: ${CAR_PERK[C.car.k][2].slice(0, C.car.rk + 1).map(E).join(' · ')}${C.car.rk < CAREER[C.car.k][1].length - 1 ? ` <span style="color:var(--mu)">(bậc kế: ${E(CAREER[C.car.k][1][C.car.rk + 1])})</span>` : ''}</p>` : ''}
         ${fold('stats', '📊 Chỉ số & năng lượng', `${statBars(C.s)}<div class="gx-bars">${EN.map(([k, n, col]) => bar(n, C.en[k], 100, col)).join('')}</div>`, STATS.map(([k, , ic]) => ic + C.s[k]).join(' '))}
-        ${rel || C.spouse || C.kids ? fold('rel', '🤝 Quan hệ & gia đình', `${rel ? `<div class="gx-rel mono">${rel}</div>` : ''}${C.spouse || C.kids ? `<p class="gx-note">${C.spouse ? `💍 Bạn đời: ${E(C.spouse)} · ` : ''}👶 ${C.kidn.length ? E(C.kidn.join(', ')) : C.kids + ' con'}</p>` : ''}`) : ''}</div>
+        ${rel || C.spouse || C.kids ? fold('rel', '🤝 Quan hệ & gia đình', `${rel ? `<div class="gx-rel mono">${rel}</div>` : ''}${C.spouse || C.kids ? `<p class="gx-note">${C.spouse ? `💍 Bạn đời: ${E(C.spouse)} · ` : ''}👶 ${C.kidn.length ? E(kidsFull(C).join(', ')) : C.kids + ' con'}</p>` : ''}`) : ''}</div>
         <div style="margin-top:14px">${fold('book', '📖 Thủ bản đang viết', liveBook(C))}</div></div></div>`;
   }
   function viewDna() {
@@ -3136,10 +3165,24 @@
       ${body}`;
   }
   const LIBS = [['life', '📕', 'Sách Nhân Sinh'], ['era', '⏳', 'Sách Thời Đại'], ['tree', '🌳', 'Gia Phả'], ['chim', '🧬', 'Chimera Chí Thư'], ['bao', '📦', 'Bách khoa Bảo vật']];
+  // Khôi phục từ bản sao: chỉ hiện khi máy còn khóa npdFun~bak@user (sheets-bridge cất khi hai máy lệch nhau). Không bao giờ tự nạp; bấm là hỏi xác nhận.
+  const bakSum = v => { const g = v && v.gen; if (!g || typeof g !== 'object') return null; const L = g.life && typeof g.life === 'object' ? g.life : null;
+    return { n:L ? String(L.n || '') : '', age:L ? Math.floor(+L.age || 0) : 0, lives:+g.lives || 0, books:(Array.isArray(g.books) ? g.books.length : 0) + (Array.isArray(g.arch) ? g.arch.length : 0) }; };
+  const bakEmpty = s => !s || (!s.n && !s.lives && !s.books);
+  const bakTxt = s => s ? `${s.n ? `${s.n} · ${s.age} tuổi` : 'chưa có đời đang sống'} · kiếp ${s.lives} · ${s.books} cuốn sách` : 'không có dữ liệu game';
+  function bakFold() {
+    if (!window.npdBackupGet || !syncReady()) return ''; const b = window.npdBackupGet('npdFun'); if (!b) return '';
+    const s = bakSum(b), c = bakSum({ gen:G });
+    return fold('bak', '🛟 Khôi phục từ bản sao', `<p class="gx-note" style="margin:0 0 8px">Khi hai máy lệch tiến độ, game cất lại bản không được chọn ngay trên máy này và không bao giờ tự nạp lại. Nếu mất đời đang chơi, bạn có thể nạp bản sao làm đời hiện tại.</p>
+      <p class="gx-note" style="margin:0 0 4px"><b>Bản sao:</b> ${E(bakTxt(s))}</p><p class="gx-note" style="margin:0 0 8px"><b>Hiện tại:</b> ${E(bakTxt(c))}</p>
+      ${bakEmpty(s) ? '<p class="gx-note">Bản sao này trống, không có gì để khôi phục.</p>' : `<div class="gx-row" style="margin-top:4px"><button class="gx-btn ghost" data-g="bkgo"${UI.bkBusy ? ' disabled' : ''}>🛟 Khôi phục từ bản sao</button></div><p class="gx-note" style="margin:6px 0 0">Đời hiện tại được cất vào bản sao, bấm lần nữa để quay về.</p>`}
+      ${UI.bkMsg ? `<p class="gx-note" style="margin:8px 0 0;color:var(--go)">${E(UI.bkMsg)}</p>` : ''}`);
+  }
   function viewBooks() {
     const sec = UI.lib || 'life', cnt = { life:G.books.length + G.arch.length, era:G.saga.length, tree:G.tree.length, chim:G.chim.length, bao:`${G.seenB.length}/${BAO.length}` };
     return `<div class="gx-subnav">${LIBS.map(([k, ic, n]) => `<button data-g="lib" data-k="${k}" class="${sec === k ? 'on' : ''}">${ic} ${n} <small class="mono">${cnt[k]}</small></button>`).join('')}</div>
-      ${({ life:libLife, era:libEra, tree:libTree, chim:libChim, bao:libBao }[sec] || libLife)()}`;
+      ${({ life:libLife, era:libEra, tree:libTree, chim:libChim, bao:libBao }[sec] || libLife)()}
+      ${bakFold()}`;
   }
   // Sách Thời Đại: dấu ấn của người chơi trong từng thời thế đã sống qua
   function libEra() {
@@ -3192,7 +3235,8 @@
   const compact = () => !!(window.matchMedia && window.matchMedia('(max-width:760px), (orientation:landscape) and (max-height:500px)').matches);
   const lsc = () => !!(window.matchMedia && window.matchMedia('(orientation:landscape) and (max-height:500px)').matches);   // điện thoại nằm ngang: tab Cuộc đời chia 2 cột, mỗi cột cuộn riêng
   const FOLD_OPEN = { look:0, stats:0, rel:0, book:0, note:0 };   // mặc định trên màn nhỏ: 0 = gập
-  const isOpen = k => { const f = prefs().fold; return f && f[k] != null ? !!f[k] : compact() ? !!FOLD_OPEN[k] : true; };
+  const FOLD_SHUT = { bak:1 };   // luôn gập sẵn kể cả trên máy tính (mục ít dùng)
+  const isOpen = k => { const f = prefs().fold; return f && f[k] != null ? !!f[k] : FOLD_SHUT[k] ? false : compact() ? !!FOLD_OPEN[k] : true; };
   function setOpen(k, v) { const p = prefs(); p.fold = p.fold && typeof p.fold === 'object' ? p.fold : {}; p.fold[k] = v ? 1 : 0; lsSet(UIK(), p); }
   const fold = (k, title, body, sub) => { const o = isOpen(k);
     return `<div class="gx-fd${o ? ' open' : ''}"><button class="gx-fh" data-g="fold" data-k="${k}" aria-expanded="${o}"><span>${title}</span>${sub ? `<small class="mono">${sub}</small>` : ''}<i>${o ? '▾' : '▸'}</i></button>${o ? `<div class="gx-fb">${body}</div>` : ''}</div>`; };
@@ -3200,6 +3244,15 @@
   let curBar = '', curCols = false;
   const barBtn = (g, k, cls, label, sub, dis) => `<button class="gx-btn ${cls || ''}" data-g="${g}"${k != null ? ` data-k="${k}"` : ''}${dis ? ' disabled' : ''}>${label}${sub ? `<small>${sub}</small>` : ''}</button>`;
   const barHtml = L => L.length ? `<div class="gx-actbar" role="toolbar">${L.join('')}</div>` : '';
+  // chỉ cho tạo nhân vật / ghi tiến độ SAU khi sheets-bridge đã nhận bản từ máy chủ (npdPersonalReady); trước đó chỉ hiện khung chờ
+  const syncReady = () => !window.npdPersonalReady || window.npdPersonalReady();
+  let syncFail = '';   // lý do không tải được tiến độ (sự kiện npd:mine-fail); rỗng = đang chờ bình thường
+  const WAIT_OK = ['tab', 'max', 'exit', 'fold', 'logmore', 'lore', 'lsec', 'lib', 'legend', 'lgdx', 'reg', 'bks', 'bp', 'book', 'export', 'skc', 'shopf', 'noop', 'syncretry'];   // thao tác chỉ xem: được phép khi đang chờ
+  function viewWait() {
+    return `<div class="gx-pn gx-wait"><div class="gx-h"><h4>${syncFail ? '⚠' : '⏳'} Đang tải tiến độ của bạn từ máy chủ…</h4></div>
+      <p class="gx-note" style="margin:0 0 8px">Game chỉ mở sau khi tiến độ về tới máy này, để không tạo nhân vật mới hay ghi đè đời đang chơi của bạn. Thường mất vài giây.</p>
+      ${syncFail ? `<p class="gx-note" style="color:var(--re);margin:0 0 8px">Chưa tải được: ${E(syncFail)}. Kiểm tra mạng rồi bấm thử lại.</p><div class="gx-row"><button class="gx-btn" data-g="syncretry">↻ Thử lại</button></div>` : ''}</div>`;
+  }
   let root = null;
   // cuộn về đầu khung game (khung toàn màn hình tự cuộn riêng)
   let lastPhk = null, progAt = 0;   // pha lần vẽ trước (để biết khi nào đổi pha); lúc bấm nút tiến trình gần nhất
@@ -3218,7 +3271,7 @@
     curBar = ''; curCols = false;
     const sc0 = scrollers().map(e => e.scrollTop), sig0 = UI.tab + (G.life ? 'L' : 'C'), sfx = (root.querySelector('.gx-sf') || {}).scrollLeft || 0;
     const phk = G.life ? `${G.life.ph}|${G.life.ev ? G.life.ev.id : ''}|${UI.bt || ''}` : '-', phChanged = lastPhk !== null && phk !== lastPhk && t === 'life' && !!G.life; lastPhk = phk;
-    const view = t === 'lore' ? viewLore() : t === 'books' ? viewBooks() : t === 'dna' ? viewDna() : t === 'skills' ? viewSkills() : G.life ? viewLife() : viewCreate();
+    const view = t === 'lore' ? viewLore() : t === 'books' ? viewBooks() : !syncReady() ? viewWait() : t === 'dna' ? viewDna() : t === 'skills' ? viewSkills() : G.life ? viewLife() : viewCreate();
     root.innerHTML = `<div class="gx">${topBar()}<div class="gx-main${curBar ? ' has-bar' : ''}${curCols ? ' cols' : ''}">${view}
       ${fold('note', 'ⓘ Lưu trữ & nội dung game', '<p class="gx-note" style="margin:0">Lưu tự động theo tài khoản. Thế giới, tên riêng và cốt truyện là nội dung tự viết, chỉ lấy cảm hứng từ mô-típ dân gian và thể loại (ma cà rồng, người sói, học viện phù thủy, dị nhân, cương thi, võ hiệp, nhẫn giả, đấu sĩ, xác ướp, thần thoại) – không dùng nhân vật hay tên riêng của tác phẩm có bản quyền.</p>')}</div>${curBar}</div>`;
     const sf = root.querySelector('.gx-sf'); if (sf) { sf.scrollLeft = sfx; if (UI.sfCenter) { const on = sf.querySelector('.on'); if (on) sf.scrollLeft = Math.max(0, on.offsetLeft - (sf.clientWidth - on.offsetWidth) / 2); } } UI.sfCenter = 0;
@@ -3241,9 +3294,11 @@
   function onClick(e) {
     const b = e.target.closest('[data-g]'); if (!b || !root || !root.contains(b) || b.disabled) return;
     const g = b.dataset.g, k = b.dataset.k;
+    if (!syncReady() && !WAIT_OK.includes(g)) return;   // chưa nhận tiến độ từ máy chủ: không tạo nhân vật, không ghi gì
     if (e.isTrusted && PROG.includes(g)) { const now = performance.now(); if (now - progAt < 350) return; progAt = now; }   // chạm đúp: cú thứ hai (rơi vào nút / phương án mới hiện ra) bị bỏ qua
     G = load();
-    if (G.life && !isAnimal(G.life) && shopEnsure(G.life)) save(G);   // qua năm: kho mới được tạo và lưu ở đây, không ở lúc vẽ
+    if (g === 'syncretry') { syncFail = ''; if (window.NPD && NPD.refresh) NPD.refresh(); return render(); }
+    if (syncReady() && G.life && !isAnimal(G.life) && shopEnsure(G.life)) save(G);   // qua năm: kho mới được tạo và lưu ở đây, không ở lúc vẽ
     if (g === 'tab') { UI.tab = k; render(); return toTop(); }
     if (g === 'max') { UI.max = !UI.max; return render(true); }
     if (g === 'fold') { setOpen(k, !isOpen(k)); return render(); }
@@ -3273,10 +3328,19 @@
     if (g === 'offer' && G.life) return resolveOffer(k);
     if (g === 'bp') { UI.bp = Math.max(0, (UI.bp || 0) + (+k)); return render(); }
     if (g === 'bks') { UI.bks = k; return render(); }
+    if (g === 'bkgo') {
+      const bs = window.npdBackupGet ? bakSum(window.npdBackupGet('npdFun')) : null; if (UI.bkBusy || bakEmpty(bs)) return;
+      if (!confirm(`Khôi phục từ bản sao?\n\nBản sao: ${bakTxt(bs)}\nHiện tại: ${bakTxt(bakSum({ gen:G }))}\n\nBản sao sẽ thành đời hiện tại và được lưu lên máy chủ. Đời hiện tại không mất: nó được cất vào bản sao, bấm lần nữa để quay về.`)) return;
+      UI.bkBusy = 1; UI.bkMsg = 'Đang khôi phục…'; render();
+      return void window.npdBackupRestore('npdFun', 'gen').then(r => { UI.bkBusy = 0; G = load(); UI.cre = null; UI.res = null; UI.note = null; UI.pend = null; UI.bt = ''; UI.shop = 0; UI.book = 0; UI.bp = 0;
+        UI.bkMsg = r.ok ? `Đã khôi phục: ${bakTxt(bakSum({ gen:G }))}. ${r.saved ? 'Đã lưu lên máy chủ.' : 'Chưa lưu được lên máy chủ, game sẽ tự thử lại.'}` : `Chưa khôi phục được: ${r.error}`; if (root && root.isConnected) render(); });
+    }
     if (!G.life || UI.tab !== 'life') {
       if (UI.tab !== 'life') return;
-      const d = UI.cre || (UI.cre = newDraft()), nm = root.querySelector('#gxName'); if (nm) d.n = nm.value.trim() || d.n;
-      if (g === 'sex') d.g = k; else if (g === 'hair') d.hair = +k;
+      const d = UI.cre || (UI.cre = newDraft()), nm = root.querySelector('#gxName');
+      if (d.nt === undefined) d.nt = nameTyped(d) ? 1 : 0;                                  // bản nháp cũ chưa có cờ: tên không giống tên gợi ý = người chơi đã gõ
+      if (nm) { const v = nm.value.trim(); if (v && v !== d.n) { d.n = v; d.nt = 1; } }      // ô tên khác tên đang giữ = người chơi vừa gõ: đánh dấu, không ghi đè
+      if (g === 'sex') { d.g = k; if (!d.nt) d.n = nameForGender(d, k); } else if (g === 'hair') d.hair = +k;
       else if (g === 'roll') { if (d.roll) { if (d.rr <= 0) return; d.rr--; if (d.lg > 0) d.lg--; else G.phuc = Math.max(0, (G.phuc || 0) - 1); }
         roll(d); G.draft = d; save(G); }
       else if (g === 'born' && d.roll) { birth(d); UI.tab = 'life'; }
@@ -3298,11 +3362,13 @@
     if (g === 'close') { const ep = (root.querySelector('#gxEp') || {}).value || ''; return closeBook(ep, UI.leg); }
   }
   document.addEventListener('click', onClick);
+  document.addEventListener('npd:mine-ready', () => { syncFail = ''; if (root && root.isConnected) { G = load(); if (G.life && !isAnimal(G.life) && shopEnsure(G.life)) save(G); render(); } });
+  document.addEventListener('npd:mine-fail', e => { if (syncReady()) return; syncFail = String((e.detail && e.detail.msg) || 'không rõ lý do').slice(0, 120); if (root && root.isConnected) render(); });
   if (window.matchMedia) { const mq = window.matchMedia('(max-width:760px), (orientation:landscape) and (max-height:500px)'), on = () => { if (root && root.isConnected) render(); };
     if (mq.addEventListener) mq.addEventListener('change', on); else if (mq.addListener) mq.addListener(on); }
   document.addEventListener('input', e => { if (!root || e.target.id !== 'gxSkq' || !root.contains(e.target)) return; UI.skq = e.target.value; const p = e.target.selectionStart; render(); const i = root.querySelector('#gxSkq'); if (i) { i.focus({ preventScroll:true }); i.setSelectionRange(p, p); } });
   window.GenesisGame = {
-    mount(el) { root = el; const bx = el.closest('#fnBox'); if (bx) bx.classList.add('gx-wide'); ensureCss(); G = load(); if (G.life && !isAnimal(G.life) && shopEnsure(G.life)) save(G); render(); },
+    mount(el) { root = el; const bx = el.closest('#fnBox'); if (bx) bx.classList.add('gx-wide'); ensureCss(); G = load(); if (syncReady() && G.life && !isAnimal(G.life) && shopEnsure(G.life)) save(G); render(); },
     summary() { const g = load(); return g.life ? `${g.life.n} · ${g.life.age} tuổi` : g.books.length ? `${g.books.length} cuốn sách · ${g.lives} kiếp` : 'Chưa bắt đầu'; },
     debug: () => ({ G:load(), UI, EV, LORE, apply, canKids, lifeSum, avatar, avatarAdult, avatarKid, avatarBeast, eligible, SKILLS, skillsOf, BAO, geneCap, skillCap, fusedOf, eraOf, PATHS, btInfo, btReady, maxTier, mainPath, BD, WEALTH, FATE, upgrade, pathRate, shopOf, shopMake, shopEnsure, hashStr, roll, newDraft, birth, itemHe, shopMatch }),
   };

@@ -16,3 +16,6 @@ Chuyển từ `CLAUDE.md` nguyên văn (chỉ đổi chỗ, không bỏ thông t
   hash) → giữ bản tiến xa hơn (progressOf: npdFun theo số kiếp / sách / ngày sống, npdLib theo số bí kíp đạt, npdIv theo số lần ôn / xem / nói / ghi chú; khóa khác giữ bản
   máy chủ), bản kia cất ở <khóa>~bak@user. Trạng thái: window.npdMineStatus {khóa: {st: pending|sending|ok|err|expired, msg}},
   sự kiện "npd:mine", npdPersonalUnsaved(), npdPersonalFlush(keepalive). Game hiện trạng thái này ở huy hiệu #gxSync.
+  Game chỉ tạo nhân vật / ghi tiến độ sau khi npdPersonalReady() (đã nhận bản từ máy chủ; sự kiện npd:mine-ready / npd:mine-fail), npdFun trống
+  không ghi đè bản đã lưu. Khôi phục từ bản sao: npdBackupGet(khóa) / npdBackupRestore(khóa, phần) – chỉ chạy khi người dùng bấm (nút cuối Thư viện
+  của game, có xác nhận); bản đang có cất vào chỗ của bản sao (bấm lần nữa để quay về), rồi gửi lên máy chủ.
