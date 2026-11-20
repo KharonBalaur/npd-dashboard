@@ -1,6 +1,15 @@
 # Kế hoạch: chỉ số thang 100 · vật phẩm kỵ hệ · tu nhiều hệ
 
-**Kế hoạch, chưa sửa game.** Số dòng `genesis.js` ngày 2026-11-19, gần đúng.
+**Số dòng `genesis.js` trong tài liệu này là của ngày lập kế hoạch (2026-11-19), chỉ gần đúng.**
+
+## Trạng thái: phần A (chỉ số thang 100) ĐÃ TRIỂN KHAI
+Nhánh `claude/stats-100`, 4 commit, `genesis.js?v=20261120g`. Phần B (kỵ hệ, bán vật phẩm) và C (đa hệ) chưa làm. Triển khai khớp kế hoạch, trừ các chỗ sau (số liệu đo trên 40.000 lần gieo thật, so với bản cũ):
+- Thiên phú: Phế Thể Thể ≤ 8 (lệch +2,1 điểm %); May mắn / Thiên Tài / Khuynh Thành ≥ 14 nhân 0,72; Thiết Cốt Thể ≥ 14 nhân 0,35; Mẫn Tuệ Tinh thần ≥ 13 nhân 0,3; Võ Cốt Sức ≥ 13 và Thể ≥ 12 (+1,6). Phân phối mới mỏng đuôi hơn nên cần hệ số xác suất để tần suất khớp.
+- Nghịch Mệnh `round((46 − tổng 4)/3)` (kế hoạch ghi 45); lệch lớn nhất 2,7 điểm ở "1 Nghịch Mệnh" vì tổng nguyên rời rạc. Xếp loại gieo 77 / 64 (kế hoạch ghi 75 / 63): đại diện 1,3% / 62,9% / 35,8% so với cũ 1,0% / 61,6% / 37,5%.
+- Tu luyện: `inc(chỉ số chính, 0,5)`; Tinh thần vẫn tăng thêm .25 chỉ khi hệ không dựa vào Tinh thần (kế hoạch ghi "thêm", sẽ thành .75 với hệ dựa vào Tinh thần).
+- `NEED_T` mới đặt ở cùng commit đổi bản lưu để bước đổi dùng đúng ngưỡng; `NEED_T_OLD` chỉ dùng khi đổi bản lưu.
+- Sổ đời (`books[].st`) có lưu chỉ số lúc kết thúc nhưng không hiển thị, không đổi. `C.s.gen` còn trong bản lưu v3: giữ nguyên (điều kiện sự kiện `t_mutant` dùng nó vẫn như cũ).
+- Bản lưu: `C.sv = 2` (cờ), `C.s20` (chỉ số cũ), bản nháp `draft.sv` và `draft.roll.s20`. Đổi đúng một lần, chạy lại không đổi thêm; thử các ca người phàm, Nội lực T4 sắp đột phá, Huyết tộc T6, thú, bản nháp.
 
 ## 1. Chỉ số 1–20 → 1–100
 
@@ -20,8 +29,8 @@
 | Điều kiện sự kiện 506–508, 631, 641, 670, 700 | Thể/Sức ≥ 8; Sức ≥ 9; Trí ≥ 7/8/13; Mị ≥ 8/11 | 11; 12; 10/11/15; 11/13 |
 | Phù thủy 505, 596, 1123, 1587, 1630, 1783 | Tinh thần ≥ 11 ("trên 10") | ≥ 13 ("trên 12") – quyết định 4 |
 | Dị năng 172–177, 291, 293 | Mị ≥ 16/14; Trí ≥ 15/16/17; Thể ≥ 16 | 17/15; 16/17/18; 17 |
-| Thiên phú lúc sinh 1385–1392 | Thể ≤ 4; Vận/Trí/Mị/Thể ≥ 12; Sức ≥ 11 & Thể ≥ 10; Tinh thần ≥ 11 | ≤ 8; ≥ 14; 13 & 12; 13 (chốt bằng mô phỏng) |
-| Nghịch Mệnh 1396 · xếp loại gieo 2678 | (34 − tổng 4)/4 · tổng 6 ≥ 62 / 46 | (45 − tổng 4)/3 · ≥ 75 / 63 (chốt bằng mô phỏng) |
+| Thiên phú lúc sinh 1385–1392 | Thể ≤ 4; Vận/Trí/Mị/Thể ≥ 12; Sức ≥ 11 & Thể ≥ 10; Tinh thần ≥ 11 | ≤ 8; ≥ 14 (×0,72); Thể ≥ 14 (×0,35); 13 & 12; Tinh thần ≥ 13 (×0,3) (đã chốt) |
+| Nghịch Mệnh 1396 · xếp loại gieo 2678 | (34 − tổng 4)/4 · tổng 6 ≥ 62 / 46 | (46 − tổng 4)/3 · ≥ 77 / 64 (đã chốt) |
 | Thọ lúc sinh 1410 · đào thải gene 1544 | 62 + 1,5·Thể · 34 − 3·Thể | Thể quy về thang cũ 7 + 1,3·(Thể − 10): không đổi |
 | `geneCap` 1522 · `skillCap` 1524 · `fruitKnown` 1729 | 1 + ⌊Thể/8⌋ · Tinh thần ≥ 14 · Trí ≥ 14 | 1 + (Thể ≥ 11) + (Thể ≥ 17) · 15 · 15 |
 | Đột phá `NEED_T` 420 | 5, 7, 9, 11, 13, 15, 16, 17, 18 | 15, 25 … 95 = trần bậc hiện tại − 5 ("chạm bình cảnh") |
@@ -114,3 +123,12 @@ Làm sau khi cả 3 phần đã vào code, trước khi báo xong; kết quả g
 1. **Chạy lại mô phỏng lượt Tu luyện** (`tools/sim-stats.js`, đọc hằng số thẳng từ `genesis.js`) với p = 0,5: `node tools/sim-stats.js 6000 gate 0.5`. Đối chiếu bảng T0→T9 ở trên (kỳ vọng T0–T3 khoảng 6–10 lượt, T9 khoảng 40% còn sống), rồi chạy lại bằng hằng số đọc từ code đã triển khai, không dùng bản sao.
 2. **So tần suất sự kiện cũ / mới trên ít nhất 3.000 đời mỗi bản**: cùng bot và cùng cách chọn ngẫu nhiên; bản cũ = nhánh trước khi đổi thang, bản mới = nhánh đã triển khai. Đếm theo mã sự kiện: số lần xuất hiện mỗi đời và tỉ lệ qua thử chỉ số; thêm số lượt mỗi đời và bậc cao nhất đạt được.
 3. **Chênh quá 10% thì báo** (cả sự kiện và các số tổng hợp), kèm nguyên nhân nghi ngờ (ngưỡng nào, dòng nào). Sự kiện có dưới 100 lần ở bản cũ ghi chú "ít mẫu": sai số ngẫu nhiên đã gần 10%, cần chạy thêm đời trước khi kết luận.
+
+### Kết quả sau phần A (2026-11-20)
+Lệnh `node tools/sim-stats.js 6000 gate 0.5` (đọc hằng số và hàm thẳng từ `genesis.js` đã triển khai, p = 0,5):
+1. Tới T9: **2.463 / 6.000 nhân vật (41%)**; 59% hết thọ trước T9 (chưa tính tai nạn). Tới được các tầng: T5 99%, T6 96%, T7 84%, T8 69%, T9 41%.
+2. Lượt Tu luyện mỗi tầng: T0→T1 5,9 · T1→T2 8,2 · T2→T3 10,3 · T3→T4 20,2 · T4→T5 42,3 · T5→T6 13,6 (`durOf` ×6) · T6→T7 24,3 · T7→T8 45,4 · T8→T9 85,4.
+3. Tuổi tới tầng / thọ lúc đó: T4 57 / 109 · T5 97 / 149 · T6 171 / 229 · T7 304 / 379 · T8 551 / 679 · T9 1.007 / 1.179 (tuổi/thọ 0,3 → 0,9).
+4. Ngưỡng chỉ số thêm khoảng 14 lượt (≈ 13 năm) ở T0–T4 so với chỉ chờ thanh; từ T5 không còn khác biệt (so với `nogate`: T9 42%).
+5. Kiểm tích hợp trên game thật (bot, ngoài repo): 2.500 bước / 2 đời không vi phạm 1 ≤ chỉ số ≤ trần; mỗi lượt Tu luyện cộng đúng `pathRate × ngày/365` vào thanh (tỉ lệ 1,000); lên tầng luôn khi chỉ số chính ≥ ngưỡng (25 / 35 / 45 / 55 / 65 / 75…).
+Phần "so tần suất sự kiện cũ / mới trên ≥ 3.000 đời" ở trên làm sau khi cả B và C xong.

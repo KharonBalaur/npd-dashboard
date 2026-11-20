@@ -44,7 +44,7 @@ Chủ dự án sửa web thường xuyên; tiến độ tu luyện, hồ sơ… 
 - Bí kíp đã đạt (done) giữ mãi, kể cả khi bí kíp được thêm trang / quiz / đề thực hành; cảnh giới chỉ tiến, không tự lùi.
 - Đổi định dạng dữ liệu cá nhân → tăng LIB_VER, thêm một bước nâng cấp trong libUpgrade (giữ bản trước ở L.prev, không bỏ
   trường lạ), và test nâng cấp từ dữ liệu của mọi phiên bản cũ (v1, v2, …) trước khi tạo PR.
-- Dữ liệu cá nhân khác (npdCave, npdOT, npdFairy, npdEng, npdZh, npdFun) cũng vậy: chỉ thêm trường, đổi cấu trúc thì viết hàm nâng cấp.
+- Dữ liệu cá nhân khác (npdCave, npdOT, npdFairy, npdEng, npdZh, npdFun) cũng vậy: chỉ thêm trường, đổi cấu trúc thì viết hàm nâng cấp. npdFun: chỉ số thang 100 đổi một lần bằng cờ C.sv = 2, số cũ ở C.s20 (docs/relax-genesis.md).
 
 ## Quy tắc bảo mật (bắt buộc)
 - Không đưa dữ liệu thật, mật khẩu, email, link Sheet vào repo (repo public)
