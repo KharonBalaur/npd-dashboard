@@ -15,3 +15,11 @@ Cách đo: bot Playwright ngoài repo, hai trình duyệt riêng ("máy A" = PC,
 - `sheets-bridge.js`: `npdPersonalReady()`; `sendMine` không ghi `npdFun` rỗng đè bản đã đồng bộ; `applyMine` với `npdFun`: bản trên máy rỗng, hoặc là một đời mới khác với số kiếp không hơn máy chủ, thì giữ bản máy chủ và cất bản máy vào `npdFun~bak@user`; phát `npd:mine-ready`.
 - `sheets-auth.js`: phát `npd:mine-fail` khi tải dữ liệu lỗi / thiếu phần `mine`. `fun.js`: `fsave` không ghi khi chưa sẵn sàng.
 - Bot (`sync_repro.js`, dữ liệu giả): fresh / race / race_click / race_play / stale / fail / retry / guard — máy chủ luôn giữ đời của máy A; máy B chỉ hiện khung chờ cho tới khi dữ liệu về.
+
+## Kết quả đo tên (nhóm B, 500 đời giả lập: sinh + người thương + sư phụ + bạn đời + 1–3 con)
+| | Trước (main) | Sau |
+|---|---|---|
+| Đời có hai người trùng tên đầy đủ | 48/500 (9,6 %) | 0/500 |
+| Đời có hai người trùng tên gọi | 366/500 (73,2 %) | 0/500 |
+| Con có họ | 0/977 | 1000/1000 (đều mang họ gia tộc) |
+Quy tắc họ của con: họ gia tộc `C.clan` của nhân vật đang chơi (trùng quy tắc sẵn có: hậu duệ kiếp sau lấy `par.cl`). Game không có khái niệm "họ cha / họ mẹ" riêng, nên chưa hỏi lại; nếu muốn đổi (ví dụ theo họ bạn đời) thì sửa `newKid`.
