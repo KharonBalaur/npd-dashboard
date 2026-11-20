@@ -48,6 +48,10 @@ Chuyển từ `CLAUDE.md` nguyên văn (chỉ đổi chỗ, không bỏ thông t
   Lưu npdFun@user.gen {v:1, life, books (≤ 12), arch, lore, lives, legacy, phuc, draft} – giữ dưới 30 000 ký tự (ô Sheet ≤ 45 000 cho
   cả npdFun; C.log giữ 70 dòng). Đời đang dở từ bản cũ: upgrade(C) chỉ thêm trường (al, npc, segs, deeds, kidn, innate, sk = dị năng
   đang đủ điều kiện, inv, offers, fruit, days, since, gap), không đổi id sự kiện cũ.
+  Giao diện lưu riêng trên máy: khóa npdFunUi@user (trạng thái gập các khối, bộ lọc chợ shopf), không đồng bộ lên máy chủ.
+  Chợ: kho C.shop = { y:tuổi, it:[mã vật phẩm], black, sold:[mã đã mua] } sinh theo hạt giống hash(C.sid | tuổi) (shopMake), đổi đúng một lần mỗi năm game
+  (shopEnsure trong passTime / khi bấm / mount); vẽ chỉ đọc (shopOf). Nút mua theo mã vật phẩm, món đã mua ở lại kho ("Đã mua"). C.sid: nhân vật
+  mới ngẫu nhiên, bản lưu cũ suy ra từ tên + ngày sinh + nơi sinh + chủng tộc + điềm + tóc + giới tính. Kho kiểu cũ { y, it, black } vẫn đọc được.
   Nội dung tự viết, chỉ lấy cảm hứng mô-típ dân gian / thể loại (không dùng tên riêng / nhân vật của tác phẩm có bản quyền).
 
 - Huyết Sử (sách lore của game): chương nguồn `genesis-lore-src/cNN.txt` (c01–c22) + `story/`:

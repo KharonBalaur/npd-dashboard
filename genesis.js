@@ -1331,6 +1331,7 @@
     if (C.r === 'animal' && !C.paths.beast) C.paths.beast = { t:0, xp:0 };
     C.bl = Array.isArray(C.bl) ? C.bl : C.line2 ? [`${C.line2.k}.${C.line2.sub}`] : [];
     C.kidl = Array.isArray(C.kidl) ? C.kidl : []; C.ak = C.ak || ''; C.pk = C.pk && C.paths[C.pk] ? C.pk : '';
+    if (C.sid == null) C.sid = sidOf(C);   // mã gốc để sinh kho hàng: bản lưu cũ suy ra từ các trường không đổi
     if (!C.fate || !FATE[C.fate.k]) C.fate = { k:'old', at:0 };
     if (!C.clan) C.clan = clanOf(C);
     if (C.ph === 'ev' && !evOf(C)) { C.ph = 'act'; C.ev = null; }
@@ -1405,7 +1406,7 @@
       al:{ ...r.al }, npc:{ ban:{ n:npcName(), aff:rnd(5, 25), st:'ok' }, dich:{ n:npcName(), aff:rnd(-15, 0), st:'ok' } },
       age:0, turn:0, hair:dr.hair != null ? dr.hair : rnd(0, 5), ph:'act', ev:null, born:new Date().toISOString().slice(0, 10),
       days:0, since:0, segs:makeSegs(0, 130), sk:[], inv:[], offers:[], innate:[], fruit:0,
-      w:WEALTH[dr.w] ? dr.w : 'common', ak:dr.ak || '', paths:{}, pk:'', bl:[], kidl:[], shop:null, clan:'', par:dr.par || null, fate:null };
+      w:WEALTH[dr.w] ? dr.w : 'common', ak:dr.ak || '', paths:{}, pk:'', bl:[], kidl:[], shop:null, clan:'', par:dr.par || null, fate:null, sid:rnd(1, 2147483646) };
     if (r.tr.includes('orph')) { C.npc.ban.n = npcName(); C.npc.su = { n:npcName(), aff:15, st:'ok', role:'người lạ dẫn lối' }; }
     C.lifeMax = dr.r === 'animal' ? rnd(15, 30) + Math.round(C.s.the / 2) + (r.tr.includes('longev') ? 8 : 0) : 62 + Math.round(C.s.the * 1.5) + rnd(-4, 10) + RACE[dr.r][3] + (r.tr.includes('longev') ? 15 : 0);
     if (dr.r === 'animal') { C.paths.beast = { t:0, xp:0 }; C.pk = 'beast'; }
@@ -1719,11 +1720,11 @@
 
   // ---- bảo vật: rút ngẫu nhiên theo phẩm cấp, Vận khí càng cao càng dễ ra đồ quý ----
   const SPECIAL = ['b_fruit', 'b_godbone', 'b_death', 'b_peach'];
-  function pickBao(C, mode) {
+  function pickBao(C, mode, rng) {
     const lo = mode === 'low' ? 0 : mode === 'mid' ? 1 : mode === 'rare' ? 2 : 0, hi = mode === 'low' ? 1 : mode === 'mid' ? 2 : mode === 'rare' ? 3 : 4;
     const L_ = BAO.filter(b => !SPECIAL.includes(b[0]) && GRADES.indexOf(b[4]) >= lo && GRADES.indexOf(b[4]) <= hi), van = C ? C.s.van : 10;
     const w = b => BAO_GW[b[4]] * (1 + Math.max(0, van - 10) * .06 * GRADES.indexOf(b[4]));
-    let r = Math.random() * L_.reduce((a, b) => a + w(b), 0); for (const b of L_) { r -= w(b); if (r <= 0) return b[0]; } return L_[0][0];
+    let r = (rng || Math.random)() * L_.reduce((a, b) => a + w(b), 0); for (const b of L_) { r -= w(b); if (r <= 0) return b[0]; } return L_[0][0];
   }
   // Vạn Huyết Quả trông như quả dại: cần Trí tuệ ≥ 14, học giả, hoặc đã từng gặp (Bách khoa Bảo vật) mới nhận ra
   const fruitKnown = C => !!C && (C.s.tri >= 14 || carRk(C, 'scholar') >= 1 || (G && G.seenB || []).includes('b_fruit') || !!C.flags.fruitid);
@@ -1731,20 +1732,29 @@
   const baoDesc = (C, id) => id === 'b_fruit' && !fruitKnown(C) ? 'Một quả nhỏ xám xịt như táo dại héo, nhặt được ở nơi đất thấm máu. Chẳng ai trả giá cao.' : BAOM[id] ? BAOM[id][5] : '';
   const priceOf = (C, id) => Math.round(PRICE[BAOM[id][4]] * (carRk(C, 'merchant') >= 1 ? .8 : 1) * (eraOf(C) === 'gold' ? .9 : ['famine', 'war', 'tribes'].includes(eraOf(C)) ? 1.25 : 1));
   const sellOf = (C, id) => id === 'b_fruit' && !fruitKnown(C) ? 2 : Math.round(PRICE[BAOM[id][4]] * (carRk(C, 'merchant') >= 1 ? .6 : .45));
-  // chợ: đổi hàng mỗi năm; chợ đen (khu ổ chuột, đạo tặc, thương nhân lớn) có thêm đồ quý
-  function shopOf(C) {
-    if (C.shop && C.shop.y === C.age && Array.isArray(C.shop.it)) return C.shop;
-    const black = C.o === 'slum' || C.o === 'port' || carRk(C, 'thief') >= 0 || carRk(C, 'merchant') >= 2, it = [];
-    for (let i = 0; i < 6; i++) it.push(pickBao(C, i < 3 ? 'low' : 'mid'));
-    if (black) it.push(pickBao(C, 'rare'), pickBao(C, 'rare'));
-    if (['opened', 'tribes'].includes(eraOf(C)) && black && Math.random() < .25) it.push('b_fruit');
-    C.shop = { y:C.age, it:[...new Set(it)].slice(0, 8), black:black ? 1 : 0 }; return C.shop;
+  // chợ: đổi hàng đúng một lần mỗi năm trong game (khi tuổi tăng). Kho sinh theo hạt giống = hash(sid nhân vật + tuổi) nên cùng kết quả mỗi lần,
+  // được lưu trong C.shop = { y:tuổi, it:[id…], black, sold:[id đã mua] }; vẽ chỉ ĐỌC (shopOf), ghi ở shopEnsure (khi qua năm / khi bấm).
+  const hashStr = t => { let h = 2166136261; for (let i = 0; i < t.length; i++) { h ^= t.charCodeAt(i); h = Math.imul(h, 16777619); } return h >>> 0; };
+  const mulberry = a => () => { a = (a + 0x6D2B79F5) | 0; let t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
+  const sidOf = C => C.sid != null ? C.sid : hashStr([C.n, C.born, C.o, C.r, C.omen, C.hair, C.g].join('|')) || 1;   // bản lưu cũ chưa có sid: suy ra từ các trường không đổi
+  const shopValid = C => !!(C.shop && C.shop.y === C.age && Array.isArray(C.shop.it));
+  function shopMake(C) {
+    const black = C.o === 'slum' || C.o === 'port' || carRk(C, 'thief') >= 0 || carRk(C, 'merchant') >= 2, rng = mulberry(hashStr(`${sidOf(C)}|shop|${C.age}`)), it = [];
+    for (let i = 0; i < 6; i++) it.push(pickBao(C, i < 3 ? 'low' : 'mid', rng));
+    if (black) it.push(pickBao(C, 'rare', rng), pickBao(C, 'rare', rng));
+    if (['opened', 'tribes'].includes(eraOf(C)) && black && rng() < .25) it.push('b_fruit');
+    return { y:C.age, it:[...new Set(it)].slice(0, 8), black:black ? 1 : 0, sold:[] };
   }
-  function buy(i) {
-    const C = G.life, sh = C && shopOf(C), id = sh && sh.it[i]; if (!id || C.ph !== 'act') return;
-    const pr = priceOf(C, id); if (C.gold < pr) return;
+  const shopOf = C => shopValid(C) ? C.shop : shopMake(C);          // chỉ đọc: không ghi vào C
+  function shopEnsure(C) { if (!shopValid(C)) { C.shop = shopMake(C); return true; } if (!Array.isArray(C.shop.sold)) C.shop.sold = []; return false; }   // true = vừa tạo, cần lưu
+  // mua theo MÃ vật phẩm (không theo vị trí); món đã mua vẫn nằm trong kho (nút "Đã mua") nên danh sách không dồn lên và chạm đúp không mua thêm món khác
+  function buy(id) {
+    const C = G.life; if (!C || C.ph !== 'act') return render();
+    const sh = shopOf(C), sold = sh.sold || [];
+    if (!BAOM[id] || !sh.it.includes(id) || sold.includes(id)) { UI.note = { txt:'Món này không còn trong kho năm nay.', chips:[] }; return render(); }
+    const pr = priceOf(C, id); if (C.gold < pr) { UI.note = { txt:'Không đủ vàng.', chips:[] }; return render(); }
     if ((C.inv || []).length >= 8) { UI.note = { txt:'Túi đầy (8 món) – dùng hoặc bán bớt trước.', chips:[] }; save(G); return render(); }
-    const chips = []; C.gold -= pr; chips.push(['down', `−${pr} vàng`]); gainBao(C, id, chips); sh.it.splice(i, 1);
+    const chips = []; C.shop = sh; sh.sold = sold.concat(id); C.gold -= pr; chips.push(['down', `−${pr} vàng`]); gainBao(C, id, chips);
     if (sh.black && GRADES.indexOf(BAOM[id][4]) >= 2) apply(C, { want:3 }, chips);
     UI.note = { txt:`Mua ${baoName(C, id)}.`, chips }; save(G); render();
   }
@@ -1911,7 +1921,9 @@
   function passTime(C, days, chips) {
     C.days = (C.days != null ? C.days : C.age * 365) + days; C.since = (C.since || 0) + days;
     const to = Math.floor(C.days / 365);
+    const a0 = C.age;
     while (C.age < to) { C.age++; yearTick(C, chips); if (C.hp <= 0 || C.age >= C.lifeMax) break; }
+    if (C.age !== a0 && !isAnimal(C)) shopEnsure(C);   // chợ đổi hàng đúng một lần mỗi năm
   }
   // sau một quãng thời gian: biến cố lớn, tình huống đời thường hoặc chỉ là những ngày bình yên
   const fateDue = C => !!(C.fate && !C.fate.done && C.fate.k !== 'old' && C.age >= C.fate.at && !isAnimal(C));
@@ -2545,6 +2557,7 @@
   .gx-lg small{display:block;font-size:10.5px;color:var(--cy)} .gx-lg b{font-size:12.5px} .gx-lg.lock small{color:#5b6377} .gx-lg.lock b{color:#5b6377}
   .gx-term{margin-top:10px;padding:14px;border-radius:10px;background:var(--bg);border:1px solid #262a3d;font-size:12.5px;line-height:1.7;color:#cbd5e1;min-height:90px;white-space:pre-wrap}
   .gx-note{font-size:11.5px;color:var(--mu);margin:10px 0 0;line-height:1.5}
+  #fnBox button,#fnBox .gx-opt,#fnBox .gx-act,#fnBox .gx-pk{touch-action:manipulation}   /* chạm đúp không phóng to trang (iOS) */
   .gx-fd{margin:10px 0 0} .gx-fb{padding-top:8px}
   .gx-fh{display:flex;align-items:center;gap:8px;width:100%;min-height:44px;padding:8px 12px;border:1px solid var(--ln);border-radius:12px;background:var(--pn2);color:var(--tx);font:inherit;font-size:13px;font-weight:700;text-align:left;cursor:pointer;-webkit-tap-highlight-color:transparent}
   .gx-fh span{flex:1;min-width:0} .gx-fh small{color:var(--mu);font-weight:500;font-size:11px} .gx-fh i{font-style:normal;color:var(--cy)} .gx-fd.open>.gx-fh{border-color:rgba(0,229,255,.35)}
@@ -2584,7 +2597,7 @@
     #fnBox .gx-main.cols .gx-life>div{min-height:0;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
     #fnBox .gx-main.cols .gx-life>div:first-child{order:2} #fnBox .gx-main.cols .gx-life>div:last-child{order:1}
     #fnBox .gx-main.cols .gx-mini{display:none}
-    #fnBox .gx-main.cols .gx-life>div:first-child>.gx-actbar{margin:8px -2px 0;border-radius:12px;border:1px solid #2a2e45}
+    #fnBox .gx-main.cols .gx-life>div:first-child>.gx-actbar{margin:8px 0 0;border-radius:12px;border:1px solid #2a2e45}
   }
   .gx-rel{display:grid;gap:5px;margin-top:8px} .gx-rel div{display:flex;justify-content:space-between;gap:8px;font-size:12px;padding:5px 8px;border-radius:8px;background:var(--bg);border:1px solid #262a3d}
   .gx-rel span{color:var(--mu)} .gx-rel b{color:#fff;font-weight:600}
@@ -2668,7 +2681,12 @@
   .gx-ev.fate{border-color:rgba(244,63,94,.55);box-shadow:0 0 18px rgba(244,63,94,.15)}
   .gx-kv{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px 14px;margin:8px 0;font-size:12px} .gx-kv span{display:block;color:var(--mu)} .gx-kv b{color:#e2e8f0}
   .gx-shop{margin-top:10px;padding:12px;border-radius:12px;border:1px solid rgba(234,179,8,.3);background:#14120c}
-  .gx-shi{display:flex;align-items:center;gap:10px;padding:8px 0;border-top:1px solid #ffffff10} .gx-shi .ic{font-size:22px} .gx-shi .t{flex:1;min-width:0}
+  .gx-shi{display:flex;align-items:center;gap:10px;padding:8px 0;border-top:1px solid #ffffff10} .gx-shi .ic{font-size:22px} .gx-shi.sold{opacity:.5}
+  .gx-sf{position:relative;display:flex;gap:8px;overflow-x:auto;padding:4px 0 8px;margin:0 0 2px;scrollbar-width:none;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
+  .gx-sf::-webkit-scrollbar{display:none}
+  #fnBox .gx-sf .gx-sfb{flex:none;display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:0 14px;border-radius:99px;border:1px solid var(--ln);background:#141622;color:var(--tx);font:inherit;font-size:13px;font-weight:600;white-space:nowrap;cursor:pointer}
+  #fnBox .gx-sf .gx-sfb small{font-size:11px;color:var(--mu);font-weight:500} #fnBox .gx-sf .gx-sfb.on{border-color:rgba(0,229,255,.55);color:var(--cy);background:rgba(0,229,255,.08)}
+  #fnBox .gx-shi .gx-btn{min-height:44px;min-width:78px} .gx-shi .t{flex:1;min-width:0}
   .gx-shi .t b{color:#fff;font-size:13px} .gx-shi .t small{display:block;color:var(--mu);font-size:11.5px}
   .gx-bag{display:inline-flex;gap:2px} .gx-offer.bd{border-color:rgba(234,179,8,.45)}
   .gx-lorebook{display:grid;grid-template-columns:230px minmax(0,1fr);gap:14px;align-items:start}
@@ -2840,12 +2858,20 @@
         ${!inf.block ? inf.items.map(([id, i]) => `<button class="gx-opt sk" data-g="btgo" data-k="${k}" data-i="${i}"><span>${BAOM[id][1]} Dùng ${E(baoName(C, id))} <span class="gx-gr" style="color:${GCOL[BAOM[id][4]]}">${E(BAOM[id][4])}</span></span><small class="mono">${Math.min(99, inf.odds + 20)}%</small></button>`).join('') : ''}
         <button class="gx-opt" data-g="bt" data-k=""><span>↩ Để sau</span></button></div></div>`;
   }
+  // bộ lọc chợ theo hệ: chỉ ẩn / hiện, không đổi giá, mã vật phẩm hay luật kỵ hệ. "Chung" = vật phẩm không thuộc hệ nào (hoặc hợp mọi hệ như Thần Cốt, Bàn Đào)
+  const HE_SHORT = { noi:'Nội lực', body:'Luyện thể', witch:'Phù thủy', dau:'Đấu khí', nin:'Nhẫn thuật', dao:'Đạo sĩ', phap:'Pháp sư Đông', vampE:'Huyết Tiến hóa', vampM:'Huyết Biến dị', wolf:'Lang tộc', jiang:'Cương thi', mutant:'Dị nhân', beast:'Yêu tu' };
+  const itemHe = id => { const L = (BT[id] || BT_PATH[id] || []).filter(k => PATHS[k]); return L.length >= Object.keys(PATHS).length ? [] : L; };
+  const shopFilter = () => { const f = prefs().shopf; return f === 'all' || f === 'gen' || PATHS[f] ? f : 'all'; };
+  const shopMatch = (f, id) => f === 'all' || (f === 'gen' ? !itemHe(id).length : itemHe(id).includes(f));
+  function setShopF(k) { const p = prefs(); p.shopf = k; lsSet(UIK(), p); }
   function shopPanel(C) {
-    const sh = shopOf(C);
-    return `<div class="gx-shop"><div class="gx-h" style="margin-bottom:6px"><h4 style="font-size:13px">🏪 ${sh.black ? 'Chợ & chợ đen' : 'Chợ phiên'}</h4><small class="mono">💰 ${C.gold} vàng · hàng đổi mỗi năm</small></div>
-      ${sh.it.length ? sh.it.map((id, i) => { const b = BAOM[id], pr = priceOf(C, id), gr = id === 'b_fruit' && !fruitKnown(C) ? 'Phàm' : b[4];
-        return `<div class="gx-shi"><span class="ic">${b[1]}</span><div class="t"><b>${E(baoName(C, id))}</b> <span class="gx-gr" style="color:${GCOL[gr]};border-color:${GCOL[gr]}66">${E(gr)}</span><small>${E(b[3])} · ${E(baoDesc(C, id)).slice(0, 110)}</small></div>
-          <button class="gx-btn sm" data-g="buy" data-k="${i}" ${C.gold < pr || (C.inv || []).length >= 8 ? 'disabled' : ''}>${pr} vàng</button></div>`; }).join('') : '<p class="gx-note">Hết hàng – sang năm quay lại.</p>'}
+    const sh = shopOf(C), sold = sh.sold || [], full = (C.inv || []).length >= 8, left = 365 - ((C.days != null ? C.days : C.age * 365) % 365), f = shopFilter(), shown = sh.it.filter(id => shopMatch(f, id));
+    const fl = [['all', '🧺', 'Tất cả'], ['gen', '🎒', 'Chung'], ...Object.keys(PATHS).map(k => [k, PATHS[k].ic, HE_SHORT[k] || PATHS[k].n])];
+    return `<div class="gx-shop"><div class="gx-h" style="margin-bottom:6px"><h4 style="font-size:13px">🏪 ${sh.black ? 'Chợ & chợ đen' : 'Chợ phiên'}</h4><small class="mono">💰 ${C.gold} vàng · đổi hàng sau ${fmtDur(left)}</small></div>
+      <div class="gx-sf" role="group" aria-label="Lọc theo hệ">${fl.map(([k, ic, n]) => `<button class="gx-sfb${f === k ? ' on' : ''}" data-g="shopf" data-k="${k}" aria-pressed="${f === k}">${ic} ${E(n)} <small>${sh.it.filter(id => shopMatch(k, id)).length}</small></button>`).join('')}</div>
+      ${shown.length ? shown.map(id => { const b = BAOM[id], pr = priceOf(C, id), gr = id === 'b_fruit' && !fruitKnown(C) ? 'Phàm' : b[4], sd = sold.includes(id);
+        return `<div class="gx-shi${sd ? ' sold' : ''}"><span class="ic">${b[1]}</span><div class="t"><b>${E(baoName(C, id))}</b> <span class="gx-gr" style="color:${GCOL[gr]};border-color:${GCOL[gr]}66">${E(gr)}</span><small>${E(b[3])} · ${E(baoDesc(C, id)).slice(0, 110)}</small></div>
+          <button class="gx-btn sm" data-g="buy" data-k="${id}" ${sd || C.gold < pr || full ? 'disabled' : ''}>${sd ? 'Đã mua' : pr + ' vàng'}</button></div>`; }).join('') : `<p class="gx-note">${sh.it.length ? 'Kho năm nay không có món thuộc nhóm này – chọn "Tất cả" để xem hết.' : 'Hết hàng – sang năm quay lại.'}</p>`}
       ${sh.black ? '<p class="gx-note">🕶 Đồ quý ở chợ đen có thể khiến bạn bị để ý (+ Truy nã).</p>' : ''}</div>`;
   }
   function viewLife() {
@@ -3176,6 +3202,8 @@
   const barHtml = L => L.length ? `<div class="gx-actbar" role="toolbar">${L.join('')}</div>` : '';
   let root = null;
   // cuộn về đầu khung game (khung toàn màn hình tự cuộn riêng)
+  let lastPhk = null, progAt = 0;   // pha lần vẽ trước (để biết khi nào đổi pha); lúc bấm nút tiến trình gần nhất
+  const PROG = ['act', 'auto', 'next', 'pick', 'nm', 'nmno', 'skill', 'btgo'];   // nút làm game tiến lên: chạm đúp liên tiếp chỉ tính một lần
   let keep = null;   // vị trí cuộn cần giữ sau lần vẽ lại: { y: cuộn trang / khung, sc: cuộn từng cột, sig } (toTop() hủy)
   const scrollers = () => root ? [...root.querySelectorAll('.gx-main, .gx-life > div')] : [];   // các vùng cuộn riêng (chỉ có khi nằm ngang)
   function toTop() { keep = null; scrollers().forEach(e => { e.scrollTop = 0; }); const bx = root && root.closest('#fnBox'); if (!bx) return; const st = window.getComputedStyle(bx).position === 'fixed';
@@ -3188,10 +3216,12 @@
     const bx = root.closest('#fnBox'), own0 = !!bx && window.getComputedStyle(bx).position === 'fixed', y0 = own0 ? bx.scrollTop : window.scrollY;   // đọc vị trí cuộn trước khi gán lại nội dung
     if (bx) bx.classList.toggle('gx-max', !!UI.max);
     curBar = ''; curCols = false;
-    const sc0 = scrollers().map(e => e.scrollTop), sig0 = UI.tab + (G.life ? 'L' : 'C');
+    const sc0 = scrollers().map(e => e.scrollTop), sig0 = UI.tab + (G.life ? 'L' : 'C'), sfx = (root.querySelector('.gx-sf') || {}).scrollLeft || 0;
+    const phk = G.life ? `${G.life.ph}|${G.life.ev ? G.life.ev.id : ''}|${UI.bt || ''}` : '-', phChanged = lastPhk !== null && phk !== lastPhk && t === 'life' && !!G.life; lastPhk = phk;
     const view = t === 'lore' ? viewLore() : t === 'books' ? viewBooks() : t === 'dna' ? viewDna() : t === 'skills' ? viewSkills() : G.life ? viewLife() : viewCreate();
     root.innerHTML = `<div class="gx">${topBar()}<div class="gx-main${curBar ? ' has-bar' : ''}${curCols ? ' cols' : ''}">${view}
       ${fold('note', 'ⓘ Lưu trữ & nội dung game', '<p class="gx-note" style="margin:0">Lưu tự động theo tài khoản. Thế giới, tên riêng và cốt truyện là nội dung tự viết, chỉ lấy cảm hứng từ mô-típ dân gian và thể loại (ma cà rồng, người sói, học viện phù thủy, dị nhân, cương thi, võ hiệp, nhẫn giả, đấu sĩ, xác ướp, thần thoại) – không dùng nhân vật hay tên riêng của tác phẩm có bản quyền.</p>')}</div>${curBar}</div>`;
+    const sf = root.querySelector('.gx-sf'); if (sf) { sf.scrollLeft = sfx; if (UI.sfCenter) { const on = sf.querySelector('.on'); if (on) sf.scrollLeft = Math.max(0, on.offsetLeft - (sf.clientWidth - on.offsetWidth) / 2); } } UI.sfCenter = 0;
     if (curBar) { const nv = root.querySelector('.gx-nav'), br = root.querySelector('.gx-actbar');
       if (nv) root.style.setProperty('--gx-nav-h', nv.offsetHeight + 'px'); if (br) root.style.setProperty('--gx-bar-h', br.offsetHeight + 'px'); }
     // giữ vị trí cuộn: mỗi lần bấm game vẽ lại cả khung; một số trình duyệt (Safari iOS) đặt lại về đầu → đặt lại ngay và ở khung hình kế tiếp
@@ -3200,10 +3230,20 @@
       if (o) { if (Math.abs(bx.scrollTop - keep.y) > 1) bx.scrollTop = keep.y; } else if (Math.abs(window.scrollY - keep.y) > 1) window.scrollTo(0, keep.y);
       if (keep.sig === UI.tab + (G.life ? 'L' : 'C')) scrollers().forEach((e, i) => { const v = keep.sc[i]; if (v && Math.abs(e.scrollTop - v) > 1) e.scrollTop = v; }); };
     put(); requestAnimationFrame(put);
+    if (phChanged) {   // đổi pha (vd. "trôi nhanh": khối hoạt động + chợ + túi đồ → thẻ sự kiện ngắn hơn): nếu đầu thẻ mới đã trôi lên khỏi màn hình thì đưa nó vào tầm nhìn, đừng để rơi xuống khung nhật ký
+      const an = root.querySelector('.gx-life .gx-scn, .gx-life .gx-ev');
+      if (an) { const col = curCols ? an.closest('.gx-life > div') : null, o = !!bx && window.getComputedStyle(bx).position === 'fixed', hdr = (root.querySelector('.gx-top') || {}).offsetHeight || 0;
+        if (col) { const d = an.getBoundingClientRect().top - col.getBoundingClientRect().top; if (d < 0) col.scrollTop += d - 4; }
+        else if (o) { const d = an.getBoundingClientRect().top - bx.getBoundingClientRect().top - hdr; if (d < 0) bx.scrollTop += d - 8; }
+        else { const d = an.getBoundingClientRect().top - 70; if (d < 0) window.scrollBy(0, d); }
+        keep.y = o ? bx.scrollTop : window.scrollY; keep.sc = scrollers().map(e => e.scrollTop); } }
   }
   function onClick(e) {
     const b = e.target.closest('[data-g]'); if (!b || !root || !root.contains(b) || b.disabled) return;
-    const g = b.dataset.g, k = b.dataset.k; G = load();
+    const g = b.dataset.g, k = b.dataset.k;
+    if (e.isTrusted && PROG.includes(g)) { const now = performance.now(); if (now - progAt < 350) return; progAt = now; }   // chạm đúp: cú thứ hai (rơi vào nút / phương án mới hiện ra) bị bỏ qua
+    G = load();
+    if (G.life && !isAnimal(G.life) && shopEnsure(G.life)) save(G);   // qua năm: kho mới được tạo và lưu ở đây, không ở lúc vẽ
     if (g === 'tab') { UI.tab = k; render(); return toTop(); }
     if (g === 'max') { UI.max = !UI.max; return render(true); }
     if (g === 'fold') { setOpen(k, !isOpen(k)); return render(); }
@@ -3223,8 +3263,9 @@
       if (g === 'bt') { UI.bt = k; UI.shop = 0; render(); return toTop(); }
       if (g === 'btgo') return breakthrough(k, b.dataset.i);
       if (g === 'mainp') { if (C.paths && C.paths[k]) { C.pk = k; save(G); } return render(); }
-      if (g === 'shop') { UI.shop = UI.shop ? 0 : 1; UI.bt = ''; if (UI.shop) { shopOf(C); save(G); } return render(); }
-      if (g === 'buy') return buy(+k); }
+      if (g === 'shop') { UI.shop = UI.shop ? 0 : 1; UI.bt = ''; return render(); }
+      if (g === 'shopf') { setShopF(k); UI.sfCenter = 1; return render(); }
+      if (g === 'buy') { b.disabled = true; return buy(k); } }   // khóa nút ngay khi bấm; xử lý mua trước, vẽ lại một lần
     if (g === 'skc') { UI.skc = k; return render(); }
     if (g === 'cut') { const C = G.life, free = carRk(C, 'scholar') >= 3; if (!C || C.ph !== 'act' || innateOf(C).includes(k) || (!free && C.gold < 30)) return;
       const chips = []; removeGene(C, k, chips); apply(C, free ? { hum:5 } : { gold:-30, hp:-10, hum:5 }, chips); UI.note = { txt:'', chips }; save(G); return render(); }
@@ -3261,8 +3302,8 @@
     if (mq.addEventListener) mq.addEventListener('change', on); else if (mq.addListener) mq.addListener(on); }
   document.addEventListener('input', e => { if (!root || e.target.id !== 'gxSkq' || !root.contains(e.target)) return; UI.skq = e.target.value; const p = e.target.selectionStart; render(); const i = root.querySelector('#gxSkq'); if (i) { i.focus({ preventScroll:true }); i.setSelectionRange(p, p); } });
   window.GenesisGame = {
-    mount(el) { root = el; const bx = el.closest('#fnBox'); if (bx) bx.classList.add('gx-wide'); ensureCss(); G = load(); render(); },
+    mount(el) { root = el; const bx = el.closest('#fnBox'); if (bx) bx.classList.add('gx-wide'); ensureCss(); G = load(); if (G.life && !isAnimal(G.life) && shopEnsure(G.life)) save(G); render(); },
     summary() { const g = load(); return g.life ? `${g.life.n} · ${g.life.age} tuổi` : g.books.length ? `${g.books.length} cuốn sách · ${g.lives} kiếp` : 'Chưa bắt đầu'; },
-    debug: () => ({ G:load(), UI, EV, LORE, apply, canKids, lifeSum, avatar, avatarAdult, avatarKid, avatarBeast, eligible, SKILLS, skillsOf, BAO, geneCap, skillCap, fusedOf, eraOf, PATHS, btInfo, btReady, maxTier, mainPath, BD, WEALTH, FATE, upgrade, pathRate }),
+    debug: () => ({ G:load(), UI, EV, LORE, apply, canKids, lifeSum, avatar, avatarAdult, avatarKid, avatarBeast, eligible, SKILLS, skillsOf, BAO, geneCap, skillCap, fusedOf, eraOf, PATHS, btInfo, btReady, maxTier, mainPath, BD, WEALTH, FATE, upgrade, pathRate, shopOf, shopMake, shopEnsure, hashStr, roll, newDraft, birth, itemHe, shopMatch }),
   };
 })();
