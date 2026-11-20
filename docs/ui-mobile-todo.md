@@ -20,8 +20,13 @@ Số dòng theo `genesis.js` trên `main` trước bản sửa.
 - Mặc định gập trên màn nhỏ (`max-width:760px`, hoặc ngang + `max-height:500px`); màn rộng mở sẵn. Bấm gập / mở thì nhớ theo máy trong khóa riêng `npdFunUi@<tài khoản>` (`{"fold":{"stats":1,...}}`), không đồng bộ lên máy chủ, không đụng bản lưu `npdFun`; mất khóa này chỉ quay về mặc định.
 - Kết quả (390×844, cùng ván): trang cao khoảng 2.830px → khoảng 1.650–2.100px khi mặc định; nhớ qua lần nạp lại; không tràn ngang; hồi quy `upg4` 3.040 lượt, `kids1` 1.000 lượt, `life1`: 0 lỗi.
 
-## 3. Nút hành động chính xuống thanh dưới (chưa làm)
-Nút cao tối thiểu 44px, khoảng cách đủ để không bấm nhầm.
+## 3. Nút hành động chính xuống thanh dưới (xong)
+- Thanh `.gx-actbar` cố định ngay trên thanh tab (đo chiều cao thanh tab bằng JS nên đúng cả khi có vùng an toàn), nút cao 52px, cách nhau 10px; chỉ có trên màn nhỏ (cùng điều kiện `compact()` với mục 2). Trên màn nhỏ các nút này chỉ vẽ ở thanh, không vẽ trùng trong trang; máy tính giữ nguyên như cũ.
+- Nút chính theo pha: **chọn hoạt động** = "⏩ Để thời gian trôi" (kèm thời gian dự kiến); **kết quả** = "Tiếp tục ▸" / "🕯 Tiếp…"; **thất bại thử chỉ số** = "☯ Lật kèo" + "Chấp nhận số phận"; **viết sách** = "📚 Đóng sách & cất vào thư viện"; **tạo nhân vật** = "🎲 Gieo quẻ / Gieo lại" + "👶 Chào đời". Lựa chọn của sự kiện, lưới hoạt động, chợ, túi đồ vẫn ở trong trang. `data-g`, `data-k` và id không đổi.
+- Nút bấm trong game ≥ 44px (chip dạng nút, nút lọc, nút tab, nút ✕), khoảng cách giữa các ô lưới / nút ≥ 10px; thanh tab đáy dùng lại 52px như thiết kế ban đầu.
+- Lỗi có sẵn tìm thấy: trang Relax có luật `#fun button{min-height:40px}` (độ ưu tiên ID) đè mọi `min-height` theo class của game (kể cả luật 46px và thanh tab 52px) nên nút thực tế chỉ 40px; luật mới dùng tiền tố `#fnBox`. Lớp `.gx-bar` đã là thanh chỉ số nên thanh mới đặt tên `gx-actbar`.
+- Kiểm (390×844): mọi nút trong khung ≥ 44px ở các pha tạo nhân vật / hoạt động / sự kiện / kết quả; thanh nằm sát trên thanh tab, nội dung cuối trang nằm trên thanh; bot chơi 15 đời (2.500 lượt) trên điện thoại và 10 đời (1.500 lượt) ở khung ngang: 0 lỗi, 0 kẹt; hồi quy `upg4` 2.881 lượt, `kids1` 1.000 lượt, `life1`: 0 lỗi.
+- Khung ngang đang tạm dùng thanh dính đáy (`position:sticky`); bố cục hai cột hoàn thiện ở mục 4.
 
 ## 4. Bố cục ngang (chưa làm)
 `@media (orientation: landscape) and (max-height: 500px)`: 2 cột (trái: nhân vật + chỉ số; phải: nhật ký + nút), mỗi cột cuộn riêng.

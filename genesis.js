@@ -2547,6 +2547,22 @@
   .gx-fh{display:flex;align-items:center;gap:8px;width:100%;min-height:44px;padding:8px 12px;border:1px solid var(--ln);border-radius:12px;background:var(--pn2);color:var(--tx);font:inherit;font-size:13px;font-weight:700;text-align:left;cursor:pointer;-webkit-tap-highlight-color:transparent}
   .gx-fh span{flex:1;min-width:0} .gx-fh small{color:var(--mu);font-weight:500;font-size:11px} .gx-fh i{font-style:normal;color:var(--cy)} .gx-fd.open>.gx-fh{border-color:rgba(0,229,255,.35)}
   .gx-more{width:100%;min-height:44px;margin:8px 0 0}
+  /* màn nhỏ (điện thoại dọc, hoặc ngang thấp): nút bấm ≥ 44px, cách nhau ≥ 10px; nút chính của pha nằm ở thanh dưới.
+     Tiền tố #fnBox vì trang Relax có luật #fun button {min-height:40px} (độ ưu tiên ID) đè các luật theo class */
+  @media (max-width:760px), (orientation:landscape) and (max-height:500px){
+    #fnBox .gx-btn,#fnBox .gx-opt,#fnBox .gx-act,#fnBox .gx-pk,#fnBox .gx-fh,#fnBox button.gx-chip,#fnBox .gx-nav button,#fnBox .gx-seg button{min-height:44px}
+    #fnBox .gx-top button{min-height:44px;min-width:44px}
+    #fnBox .gx-acts,#fnBox .gx-opts,#fnBox .gx-pick,#fnBox .gx-row{gap:10px} #fnBox .gx-bag{display:inline-flex;gap:8px}
+    .gx-actbar{display:flex;gap:10px;padding:8px max(10px,env(safe-area-inset-right)) 8px max(10px,env(safe-area-inset-left));background:rgba(15,16,22,.97);border-top:1px solid #2a2e45;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+    #fnBox .gx-actbar .gx-btn{flex:1 1 0;min-height:52px;flex-direction:column;gap:1px;padding:6px 12px;font-size:15px;line-height:1.2}
+    .gx-actbar .gx-btn small{font-size:11px;font-weight:600;opacity:.8}
+  }
+  @media (max-width:760px){
+    #fnBox .gx-nav button{min-height:52px}
+    .gx-actbar{position:fixed;left:0;right:0;bottom:var(--gx-nav-h,61px);z-index:6}
+    .gx-main.has-bar{padding-bottom:calc(var(--gx-nav-h,61px) + var(--gx-bar-h,68px) + 16px)}
+  }
+  @media (orientation:landscape) and (max-height:500px) and (min-width:761px){ .gx-actbar{position:sticky;bottom:0;z-index:6} }
   .gx-rel{display:grid;gap:5px;margin-top:8px} .gx-rel div{display:flex;justify-content:space-between;gap:8px;font-size:12px;padding:5px 8px;border-radius:8px;background:var(--bg);border:1px solid #262a3d}
   .gx-rel span{color:var(--mu)} .gx-rel b{color:#fff;font-weight:600}
   @media (max-width:980px){ .gx-life,.gx-dna,.gx-two{grid-template-columns:minmax(0,1fr)} .gx-g3{grid-template-columns:minmax(0,1fr)} }
@@ -2714,8 +2730,9 @@
     const first = G.lives === 0, inn = d.r && INNATE[d.r] ? (d.r === 'beast' ? ['g_cat'] : INNATE[d.r]) : [];
     const lgTxt = !lg ? '' : lg.k === 'gene' ? `gene ${E(GENE[lg.v] ? GENE[lg.v][0] : '')} từ ${E(lg.from || '')}` : lg.k === 'rr' ? '+2 lượt gieo lại' : lg.k === 'gold' ? '+40 vàng khởi đầu' : lg.k === 'heir' ? `sinh làm hậu duệ của ${E(lg.from || 'đời trước')}` : '+1 Nghịch Mệnh';
     const pk = (lab, on, b, sub) => `<div class="gx-pk${on ? ' on' : ''}"><small class="mono">${lab}</small><b>${b}</b><small>${sub}</small></div>`;
+    if (compact()) curBar = barHtml([!r ? barBtn('roll', null, '', '🎲 Gieo quẻ') : barBtn('roll', null, 'ghost', `🎲 Gieo lại (${d.rr})`, '', d.rr <= 0), barBtn('born', null, 'gold', '👶 Chào đời', '', !r)]);
     return `<div class="gx-two"><div class="gx-pn"><div class="gx-h"><h4>🎲 Gieo Quẻ Định Mệnh</h4>
-        ${!r ? `<button class="gx-btn" data-g="roll">🎲 Gieo quẻ</button>` : `<button class="gx-btn ghost" data-g="roll" ${d.rr <= 0 ? 'disabled' : ''}>🎲 Gieo lại (${d.rr})</button>`}</div>
+        ${compact() ? '' : !r ? `<button class="gx-btn" data-g="roll">🎲 Gieo quẻ</button>` : `<button class="gx-btn ghost" data-g="roll" ${d.rr <= 0 ? 'disabled' : ''}>🎲 Gieo lại (${d.rr})</button>`}</div>
       <p class="gx-note" style="margin:0 0 8px">Chủng tộc, nơi sinh, gia cảnh, chỉ số, thiên phú và vận mệnh đều do trời định – bạn chỉ chọn tên, giới tính, màu tóc. ${first ? 'Kiếp đầu tiên chỉ được gieo <b style="color:var(--go)">một lần</b>.' : `Lượt gieo lại đến từ <b style="color:var(--go)">phúc duyên</b> tích lũy các kiếp trước (đang có ${G.phuc}).`}</p>
       ${lg ? `<div class="gx-chips" style="margin:0 0 6px"><span class="gx-chip lore">🎁 Di sản đang chờ: ${lgTxt}</span></div>` : ''}
       <div class="gx-two" style="gap:10px"><div><span class="gx-lab mono" style="margin-top:0">Tên nhân vật</span><input class="gx-in" id="gxName" maxlength="24" value="${E(d.n)}"></div>
@@ -2735,7 +2752,7 @@
       <div class="gx-stage">${avatar(d.ak ? { ak:d.ak, bt:0 } : { r:d.r || 'human', g:d.g, genes:inn, hair:d.hair, age:22 }, 220)}</div>
       ${r ? statBars(r.s) : `<p class="gx-note" style="text-align:center">Hình thái trưởng thành dự kiến</p>`}
       <p class="gx-note">* <b>Thể chất</b>: máu, sức chứa gene. <b>Tinh thần</b>: trên 10 mới thành phù thủy, rất khó tăng. <b>Trí tuệ</b>: học và tu luyện nhanh. <b>Sức mạnh</b>: sát thương, luyện thể, đấu khí. <b>Vận khí</b>: cơ duyên, bảo vật quý. <b>Mị lực</b>: giao tiếp, tình duyên. Kẻ kém may có nhiều Nghịch Mệnh hơn.</p>
-      <div class="gx-row"><button class="gx-btn gold" data-g="born" ${r ? '' : 'disabled'} style="flex:1">👶 Chào đời</button></div></div></div>`;
+      ${compact() ? '' : `<div class="gx-row"><button class="gx-btn gold" data-g="born" ${r ? '' : 'disabled'} style="flex:1">👶 Chào đời</button></div>`}</div></div>`;
   }
   function liveBook(C) {
     return `<div class="gx-book"><span class="kick mono">— THỦ BẢN ĐANG VIẾT —</span><h3>${E(title(C))}</h3><div class="by mono">Tác giả: ${E(C.n)} · ${C.age} tuổi</div>
@@ -2813,7 +2830,7 @@
     const cal = calOf(C.days || C.age * 365), mp = mainPath(C), W = WEALTH[C.w] || WEALTH.common, an = isAnimal(C);
     const hud = `<div class="gx-hud mono"><div><small>Tuổi</small><b style="color:var(--cy)">${C.age}<span style="font-size:11px;color:var(--mu)"> · th.${cal.m}</span></b></div><div><small>Vàng</small><b style="color:var(--go)">${C.gold}</b></div>
       <div><small>Danh vọng</small><b style="color:var(--gr)">${C.fame}</b></div><div><small>Cảnh giới</small><b style="color:var(--pu)">${mp ? `T${C.paths[mp].t} ${E(tierName(mp, C.paths[mp].t))}` : 'Phàm nhân'}</b></div><div><small>Thời thế</small><b>${er[0]} ${E(er[1])}</b></div></div>`;
-    const wait = C.offers && C.offers.length, left = Math.max(20, (C.gap || 365) - (C.since || 0)), ready = btReady(C);
+    const wait = C.offers && C.offers.length, left = Math.max(20, (C.gap || 365) - (C.since || 0)), ready = btReady(C), cp = compact();
     const startAge = an ? 1 : W[4], canCult = pathsOf(C).some(([k]) => PATHS[k].blood) || (pathsOf(C).length && C.age >= startAge);
     const actDis = k => wait ? 'Trả lời lời mời phía trên trước' : k === 'blood' && !pathsOf(C).length ? 'Chưa nhập môn hệ nào – chờ cơ duyên' : k === 'blood' && !canCult ? `Gia cảnh ${W[1]}: tu luyện từ ${startAge} tuổi` : '';
     const actName = (k, n) => k === 'blood' && mp ? `Tu luyện · ${PATHS[mp].ic}` : C.age < 13 && k === 'work' ? (C.w === 'poor' || C.w === 'orphan' ? 'Làm thuê kiếm sống' : 'Phụ việc nhà') : n;
@@ -2821,7 +2838,7 @@
     else if (C.ph === 'act') main = `${noteHtml()}${offerBox(C)}${ready.length && !wait ? `<div class="gx-dk gx-ready"><b>🏯 Bình cảnh đã tới:</b> ${ready.map(k => `<button class="gx-chip lore" data-g="bt" data-k="${k}">${PATHS[k].ic} ${E(tierName(k, C.paths[k].t + 1))} – bế quan đột phá</button>`).join(' ')}</div>` : ''}
       <div class="gx-ev"><div class="yr mono"><span>📅 Tháng ${cal.m} · ${C.age} tuổi · ${stageOf(C.age)[0]}</span><span>${er[0]} ${E(er[1])}</span></div><h5>Sắp tới bạn dành thời gian cho…</h5>
         <div class="gx-acts">${actsOf(C).map(([k, ic, n, sub]) => { const dis = actDis(k); return `<button class="gx-act" data-g="act" data-k="${k}" ${dis ? `disabled title="${E(dis)}"` : ''}><b>${ic} ${E(actName(k, n))}</b><small>${k === 'blood' && mp ? `${E(PATHS[mp].en)} ${Math.floor(C.paths[mp].xp)}% → ${E(tierName(mp, C.paths[mp].t + 1))}` : sub}</small><small style="color:var(--cy)">⏱ ${fmtDur(durOf(C, k)[0])} – ${fmtDur(durOf(C, k)[1])}</small></button>`; }).join('')}</div>
-        <div class="gx-row"><button class="gx-btn ghost" data-g="auto" ${wait ? 'disabled' : ''} style="flex:1">⏩ Để thời gian trôi (≈ ${fmtDur(left)} tới biến cố kế tiếp)</button>
+        <div class="gx-row">${cp ? '' : `<button class="gx-btn ghost" data-g="auto" ${wait ? 'disabled' : ''} style="flex:1">⏩ Để thời gian trôi (≈ ${fmtDur(left)} tới biến cố kế tiếp)</button>`}
           ${!an ? `<button class="gx-btn ghost${UI.shop ? ' on' : ''}" data-g="shop">🏪 Chợ</button>` : ''}
           ${C.age >= 60 || C.lifeMax > 200 && C.age >= 40 ? `<button class="gx-btn ghost" data-g="endlife">📕 Khép lại cuốn sách đời mình</button>` : ''}</div>
         ${UI.shop && !an ? shopPanel(C) : ''}
@@ -2833,18 +2850,18 @@
       main = `${scenesHtml(UI.res && UI.res.scenes)}${UI.res && UI.res.chips && UI.res.chips.length ? `<div class="gx-chips" style="margin:0 0 8px">${chipsHtml(UI.res.chips)}</div>` : ''}
         <div class="gx-ev${ev.fate ? ' fate' : ''}"><div class="yr mono"><span>📅 Tháng ${cal.m} · ${C.age} tuổi${ev.fate ? ' · ⚠ Vận mệnh tới hẹn' : ev.enc ? ' · Gặp gỡ ngẫu nhiên' : ev.dl ? ' · Đời thường' : ''}</span><span>${stageOf(C.age)[0]}</span></div><h5>${E(tx(C, ev.t))}</h5><p>${E(tx(C, ev.d))}</p>
         ${p ? `<div class="gx-res"><b style="color:var(--re)">Thất bại!</b><div class="gx-dice mono">Kiểm tra ${SN[p.roll.s]}: <b>${p.roll.v}</b> + 🎲${p.roll.d6}${p.roll.bonus ? ` + 🍀${p.roll.bonus}` : ''} = <b>${p.roll.sum}</b> &lt; ${p.roll.dc}</div>
-            <div class="gx-row"><button class="gx-btn" data-g="nm" data-k="${p.i}">☯ Dùng 1 Nghịch Mệnh lật kèo (còn ${C.nm})</button><button class="gx-btn ghost" data-g="nmno" data-k="${p.i}">Chấp nhận số phận</button></div></div>`
+            ${cp ? '' : `<div class="gx-row"><button class="gx-btn" data-g="nm" data-k="${p.i}">☯ Dùng 1 Nghịch Mệnh lật kèo (còn ${C.nm})</button><button class="gx-btn ghost" data-g="nmno" data-k="${p.i}">Chấp nhận số phận</button></div>`}</div>`
           : `<div class="gx-opts">${ev.c.map((c, i) => c.if && !c.if(C) ? '' : `<button class="gx-opt" data-g="pick" data-k="${i}"><span>${E(tx(C, c.t))}</span>${c.chk ? `<small class="mono">🎲 ${SN[c.chk[0]]} ${C.s[c.chk[0]]}/${c.chk[1]}</small>` : ''}</button>`).join('')}
             ${sks.map(s => `<button class="gx-opt sk" data-g="skill" data-k="${s[0]}"><span>⚡ Dùng dị năng: ${s[1]} ${E(s[2])}</span><small class="mono">${s[4]} · chắc thắng</small></button>`).join('')}</div>`}</div>`;
     } else if (C.ph === 'res') {
       const r = UI.res || {};
       if (r.quiet) main = `${scenesHtml(r.scenes)}<div class="gx-ev"><div class="yr mono"><span>📅 Tháng ${cal.m} · ${C.age} tuổi</span><span>⏱ ${fmtDur(r.days || 0)}</span></div>
         <h5>${r.bt ? (r.bt.ok ? `🌟 Đột phá thành công: ${E(tierName(r.bt.k, r.bt.t))}` : `💥 Đột phá ${E(tierName(r.bt.k, r.bt.t))} thất bại`) : 'Những ngày bình yên'}</h5><div class="gx-chips">${chipsHtml(r.chips)}</div>${offerBox(C)}
-        <div class="gx-row"><button class="gx-btn" data-g="next">Tiếp tục ▸</button></div></div>`;
+        ${cp ? '' : `<div class="gx-row"><button class="gx-btn" data-g="next">Tiếp tục ▸</button></div>`}</div>`;
       else main = `<div class="gx-ev"><div class="yr mono"><span>📅 Tháng ${cal.m} · ${C.age} tuổi · ${E(r.ev || '')}</span><span>${r.ok === false ? '✗ Thất bại' : '✓ Kết quả'}</span></div><h5>${E(r.pick || '')}</h5>
         ${r.roll ? `<div class="gx-dice mono">Kiểm tra ${SN[r.roll.s]}: <b>${r.roll.v}</b> + 🎲${r.roll.d6}${r.roll.bonus ? ` + 🍀${r.roll.bonus}` : ''} = <b>${r.roll.sum}</b> ${r.roll.sum >= r.roll.dc ? '≥' : '<'} ${r.roll.dc} ${r.roll.nm ? '· ☯ Nghịch Mệnh lật kèo!' : r.ok ? '✓' : '✗'}</div>` : ''}
         <p>${E(r.txt || '')}</p><div class="gx-chips">${chipsHtml(r.chips2)}</div>${offerBox(C)}
-        <div class="gx-row"><button class="gx-btn" data-g="next">${C.death ? '🕯 Tiếp…' : 'Tiếp tục ▸'}</button></div></div>`;
+        ${cp ? '' : `<div class="gx-row"><button class="gx-btn" data-g="next">${C.death ? '🕯 Tiếp…' : 'Tiếp tục ▸'}</button></div>`}</div>`;
     } else if (C.ph === 'dying') {
       const canJ = !C.ending && C.nm > 0 && !an && (C.o === 'east' || (C.line && C.line.k === 'jiang' && C.line.sub === 'dao')) && !(C.line && C.line.sub === 'corpse');
       const canP = !C.ending && C.flags.syn_rebirth && !C.flags.reborn, canR = !C.ending && C.nm > 0 && C.age < C.lifeMax, canM = !C.ending && C.flags.deathbook && !an;
@@ -2861,7 +2878,13 @@
         <span class="gx-lab mono">Di sản cho đời sau (chọn 1)</span>
         <div class="gx-pick">${[['gene', '🧬 Một gene của đời này', C.genes.length ? 'Đời sau thừa hưởng ngẫu nhiên 1 gene bạn đang có.' : 'Đời này chưa có gene nào.'], ['heir', '🌳 Sinh làm hậu duệ', C.kids ? `Đời sau chắc chắn sinh ra trong gia tộc ${C.clan || clanOf(C)}, làm cháu chắt của bạn.` : 'Đời này chưa có con.'], ['rr', '🎲 +2 lượt gieo lại', 'Chọn định mệnh kỹ hơn.'], ['gold', '💰 +40 vàng', 'Khởi đầu khá giả hơn.'], ['nm', '☯ +1 Nghịch Mệnh', 'Thêm một lần lật kèo số phận.']]
           .map(([k, n, sub]) => `<button class="gx-pk${UI.leg === k ? ' on' : ''}" data-g="leg" data-k="${k}" ${k === 'gene' && !C.genes.length || k === 'heir' && !C.kids ? 'disabled' : ''}><b>${n}</b><small>${sub}</small></button>`).join('')}</div>
-        <div class="gx-row"><button class="gx-btn gold" data-g="close">📚 Đóng sách & cất vào thư viện</button></div></div>`;
+        ${cp ? '' : `<div class="gx-row"><button class="gx-btn gold" data-g="close">📚 Đóng sách & cất vào thư viện</button></div>`}</div>`;
+    }
+    if (cp) {   // nút chính của pha → thanh dưới
+      if (C.ph === 'act' && !(UI.bt && C.paths[UI.bt] && C.paths[UI.bt].xp >= 100)) curBar = barHtml([barBtn('auto', null, '', '⏩ Để thời gian trôi', `≈ ${fmtDur(left)} tới biến cố kế tiếp`, wait)]);
+      else if (C.ph === 'ev' && UI.pend) curBar = barHtml([barBtn('nm', UI.pend.i, '', `☯ Lật kèo (còn ${C.nm})`), barBtn('nmno', UI.pend.i, 'ghost', 'Chấp nhận số phận')]);
+      else if (C.ph === 'res') curBar = barHtml([barBtn('next', null, '', !(UI.res || {}).quiet && C.death ? '🕯 Tiếp…' : 'Tiếp tục ▸')]);
+      else if (C.ph === 'book') curBar = barHtml([barBtn('close', null, 'gold', '📚 Đóng sách & cất vào thư viện')]);
     }
     const rel = Object.entries(C.npc || {}).filter(([, v]) => v).map(([k, v]) => `<div><span>${NPCR[k][0]} ${NPCR[k][1]}</span><b>${E(v.n)}${v.st === 'dead' ? ' ✝' : v.st === 'gone' ? ' (đã xa)' : ` · ${v.aff >= 40 ? 'thân thiết' : v.aff >= 10 ? 'quý mến' : v.aff > -10 ? 'bình thường' : v.aff > -40 ? 'không ưa' : 'thù hận'}`}</b></div>`).join('');
     const lgAll = C.log.slice().reverse(), lgs = lgAll.slice(0, UI.logMore ? 40 : 10), Rg = regOf(C.o);
@@ -3121,6 +3144,10 @@
   function setOpen(k, v) { const p = prefs(); p.fold = p.fold && typeof p.fold === 'object' ? p.fold : {}; p.fold[k] = v ? 1 : 0; lsSet(UIK(), p); }
   const fold = (k, title, body, sub) => { const o = isOpen(k);
     return `<div class="gx-fd${o ? ' open' : ''}"><button class="gx-fh" data-g="fold" data-k="${k}" aria-expanded="${o}"><span>${title}</span>${sub ? `<small class="mono">${sub}</small>` : ''}<i>${o ? '▾' : '▸'}</i></button>${o ? `<div class="gx-fb">${body}</div>` : ''}</div>`; };
+  // thanh hành động dưới (chỉ màn nhỏ): nút chính của pha hiện tại nằm tầm ngón cái, ngay trên thanh tab; trong trang không vẽ lại các nút này
+  let curBar = '';
+  const barBtn = (g, k, cls, label, sub, dis) => `<button class="gx-btn ${cls || ''}" data-g="${g}"${k != null ? ` data-k="${k}"` : ''}${dis ? ' disabled' : ''}>${label}${sub ? `<small>${sub}</small>` : ''}</button>`;
+  const barHtml = L => L.length ? `<div class="gx-actbar" role="toolbar">${L.join('')}</div>` : '';
   let root = null;
   // cuộn về đầu khung game (khung toàn màn hình tự cuộn riêng)
   let keepY = null;   // vị trí cuộn cần giữ sau lần vẽ lại (toTop() hủy)
@@ -3133,8 +3160,12 @@
     const t = UI.tab;
     const bx = root.closest('#fnBox'), own0 = !!bx && window.getComputedStyle(bx).position === 'fixed', y0 = own0 ? bx.scrollTop : window.scrollY;   // đọc vị trí cuộn trước khi gán lại nội dung
     if (bx) bx.classList.toggle('gx-max', !!UI.max);
-    root.innerHTML = `<div class="gx">${topBar()}<div class="gx-main">${t === 'lore' ? viewLore() : t === 'books' ? viewBooks() : t === 'dna' ? viewDna() : t === 'skills' ? viewSkills() : G.life ? viewLife() : viewCreate()}
-      ${fold('note', 'ⓘ Lưu trữ & nội dung game', '<p class="gx-note" style="margin:0">Lưu tự động theo tài khoản. Thế giới, tên riêng và cốt truyện là nội dung tự viết, chỉ lấy cảm hứng từ mô-típ dân gian và thể loại (ma cà rồng, người sói, học viện phù thủy, dị nhân, cương thi, võ hiệp, nhẫn giả, đấu sĩ, xác ướp, thần thoại) – không dùng nhân vật hay tên riêng của tác phẩm có bản quyền.</p>')}</div></div>`;
+    curBar = '';
+    const view = t === 'lore' ? viewLore() : t === 'books' ? viewBooks() : t === 'dna' ? viewDna() : t === 'skills' ? viewSkills() : G.life ? viewLife() : viewCreate();
+    root.innerHTML = `<div class="gx">${topBar()}<div class="gx-main${curBar ? ' has-bar' : ''}">${view}
+      ${fold('note', 'ⓘ Lưu trữ & nội dung game', '<p class="gx-note" style="margin:0">Lưu tự động theo tài khoản. Thế giới, tên riêng và cốt truyện là nội dung tự viết, chỉ lấy cảm hứng từ mô-típ dân gian và thể loại (ma cà rồng, người sói, học viện phù thủy, dị nhân, cương thi, võ hiệp, nhẫn giả, đấu sĩ, xác ướp, thần thoại) – không dùng nhân vật hay tên riêng của tác phẩm có bản quyền.</p>')}</div>${curBar}</div>`;
+    if (curBar) { const nv = root.querySelector('.gx-nav'), br = root.querySelector('.gx-actbar');
+      if (nv) root.style.setProperty('--gx-nav-h', nv.offsetHeight + 'px'); if (br) root.style.setProperty('--gx-bar-h', br.offsetHeight + 'px'); }
     // giữ vị trí cuộn: mỗi lần bấm game vẽ lại cả khung; một số trình duyệt (Safari iOS) đặt lại về đầu → đặt lại ngay và ở khung hình kế tiếp
     if (fresh) { keepY = null; return; }
     keepY = y0; const put = () => { if (keepY == null) return; const o = !!bx && window.getComputedStyle(bx).position === 'fixed';
@@ -3197,6 +3228,8 @@
     if (g === 'close') { const ep = (root.querySelector('#gxEp') || {}).value || ''; return closeBook(ep, UI.leg); }
   }
   document.addEventListener('click', onClick);
+  if (window.matchMedia) { const mq = window.matchMedia('(max-width:760px), (orientation:landscape) and (max-height:500px)'), on = () => { if (root && root.isConnected) render(); };
+    if (mq.addEventListener) mq.addEventListener('change', on); else if (mq.addListener) mq.addListener(on); }
   document.addEventListener('input', e => { if (!root || e.target.id !== 'gxSkq' || !root.contains(e.target)) return; UI.skq = e.target.value; const p = e.target.selectionStart; render(); const i = root.querySelector('#gxSkq'); if (i) { i.focus({ preventScroll:true }); i.setSelectionRange(p, p); } });
   window.GenesisGame = {
     mount(el) { root = el; const bx = el.closest('#fnBox'); if (bx) bx.classList.add('gx-wide'); ensureCss(); G = load(); render(); },
