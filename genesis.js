@@ -2526,7 +2526,9 @@
   .gx-sks{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px}
   .gx-sk{padding:12px;border-radius:12px;background:var(--pn);border:1px solid #262a3d} .gx-sk.on{border-color:rgba(0,229,255,.45);box-shadow:0 0 14px rgba(0,229,255,.12)}
   .gx-sk .hd{display:flex;align-items:flex-start;gap:10px} .gx-sk .ic{flex:none;display:grid;place-items:center;width:38px;height:38px;border-radius:10px;background:var(--bg);border:1px solid var(--ln);font-size:18px}
-  .gx-sk h5{margin:0;font-size:14px;color:#fff} .gx-sk .meta{font-size:11px;color:var(--mu)} .gx-sk p{margin:8px 0 0;font-size:12.5px;color:#aeb6c7;line-height:1.5}
+  .gx-sk h5{margin:0;font-size:14px;color:#fff} .gx-sk .meta{font-size:11px;color:var(--mu)}
+  #fnBox .gx-sk .meta{white-space:normal;overflow-wrap:anywhere}   /* dòng 'dùng khi: …' dài không được tràn ra ngoài thẻ */
+  @media (max-width:760px), (orientation:landscape) and (max-height:500px){ #fnBox .gx button[data-g],#fnBox .gx-subnav button{min-height:44px} } .gx-sk p{margin:8px 0 0;font-size:12.5px;color:#aeb6c7;line-height:1.5}
   .gx-tier{flex:none;margin-left:auto;padding:1px 7px;border-radius:6px;font-size:10.5px;font-weight:800;background:#23263a;color:#cbd5e1} .gx-tier.SSR{background:rgba(234,179,8,.15);color:var(--go);border:1px solid rgba(234,179,8,.4)}
   .gx-hero{position:relative;padding:20px;border-radius:16px;border:1px solid #2d3148;background:linear-gradient(90deg,rgba(59,7,100,.55),#11131c,rgba(8,51,68,.55));overflow:hidden}
   .gx-hero h4{margin:6px 0;font-size:22px;color:#fff;font-family:"Noto Serif",Georgia,serif} .gx-hero p{margin:0;color:#cbd5e1;line-height:1.6;max-width:760px}
@@ -2551,18 +2553,39 @@
      Tiền tố #fnBox vì trang Relax có luật #fun button {min-height:40px} (độ ưu tiên ID) đè các luật theo class */
   @media (max-width:760px), (orientation:landscape) and (max-height:500px){
     #fnBox .gx-btn,#fnBox .gx-opt,#fnBox .gx-act,#fnBox .gx-pk,#fnBox .gx-fh,#fnBox button.gx-chip,#fnBox .gx-nav button,#fnBox .gx-seg button{min-height:44px}
-    #fnBox .gx-top button{min-height:44px;min-width:44px}
+    #fnBox .gx-top button,#fnBox .gx-mn{min-height:44px;min-width:44px} #fnBox .gx-btn[style*="min-height"]{min-height:44px!important}
     #fnBox .gx-acts,#fnBox .gx-opts,#fnBox .gx-pick,#fnBox .gx-row{gap:10px} #fnBox .gx-bag{display:inline-flex;gap:8px}
     .gx-actbar{display:flex;gap:10px;padding:8px max(10px,env(safe-area-inset-right)) 8px max(10px,env(safe-area-inset-left));background:rgba(15,16,22,.97);border-top:1px solid #2a2e45;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
-    #fnBox .gx-actbar .gx-btn{flex:1 1 0;min-height:52px;flex-direction:column;gap:1px;padding:6px 12px;font-size:15px;line-height:1.2}
+    #fnBox .gx .gx-actbar button.gx-btn{flex:1 1 0;min-height:52px;flex-direction:column;gap:1px;padding:6px 12px;font-size:15px;line-height:1.2}
     .gx-actbar .gx-btn small{font-size:11px;font-weight:600;opacity:.8}
   }
   @media (max-width:760px){
-    #fnBox .gx-nav button{min-height:52px}
+    #fnBox .gx .gx-nav button[data-g]{min-height:52px}
     .gx-actbar{position:fixed;left:0;right:0;bottom:var(--gx-nav-h,61px);z-index:6}
     .gx-main.has-bar{padding-bottom:calc(var(--gx-nav-h,61px) + var(--gx-bar-h,68px) + 16px)}
   }
-  @media (orientation:landscape) and (max-height:500px) and (min-width:761px){ .gx-actbar{position:sticky;bottom:0;z-index:6} }
+  /* điện thoại nằm ngang: game chiếm toàn màn hình; thanh trên + thanh tab chung một hàng; tab Cuộc đời 2 cột (trái: nhân vật + chỉ số, phải: nhật ký + nút), mỗi cột cuộn riêng */
+  @media (orientation:landscape) and (max-height:500px){
+    #fnBox.gx-wide{position:fixed;inset:0;z-index:2000;max-width:none;margin:0;padding:0;border:0;border-radius:0;background:#0f1016;overflow:hidden}
+    #fnBox.gx-wide>.fn-h{display:none} #fnBox.gx-wide #fnStage{height:100%}
+    #fnBox.gx-wide .gx{display:grid;grid-template-columns:auto minmax(0,1fr);grid-template-rows:auto minmax(0,1fr) auto;height:100%;min-height:0;border:0;border-radius:0;overflow:hidden}
+    #fnBox .gx-top{position:static;grid-column:1;grid-row:1;gap:8px;flex-wrap:nowrap;padding:4px 8px 4px max(10px,env(safe-area-inset-left));border-bottom:0;background:transparent}
+    #fnBox .gx-badge,#fnBox .gx-tt small,#fnBox .gx-max-b{display:none}
+    #fnBox .gx-tt{flex:none;min-width:0} #fnBox .gx-tt h3{font-size:13px;line-height:1.2;padding:0;white-space:nowrap}
+    #fnBox .gx-logo{width:30px;height:30px;border-radius:9px} #fnBox .gx-logo i{font-size:14px}
+    #fnBox .gx-nav{position:static;grid-column:2;grid-row:1;display:flex;gap:4px;align-items:center;padding:4px max(10px,env(safe-area-inset-right)) 4px 0;background:transparent;border:0;overflow-x:auto;-webkit-backdrop-filter:none;backdrop-filter:none}
+    #fnBox .gx-nav button{flex:1 1 0;flex-direction:row;min-height:44px;padding:0 6px;gap:4px;font-size:12px}
+    #fnBox .gx-nav .l{display:none} #fnBox .gx-nav .s{display:inline;white-space:nowrap} #fnBox .gx-nav button i{margin:0;font-size:16px}
+    #fnBox .gx-main{grid-column:1/-1;grid-row:2;min-height:0;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;padding:8px max(10px,env(safe-area-inset-right)) 8px max(10px,env(safe-area-inset-left))}
+    #fnBox .gx-actbar{position:sticky;left:auto;right:auto;bottom:0;grid-column:1/-1;grid-row:3;z-index:6;padding:6px max(10px,env(safe-area-inset-right)) 6px max(10px,env(safe-area-inset-left))}
+    #fnBox .gx .gx-actbar button.gx-btn{min-height:48px}
+    #fnBox .gx-main.cols{overflow:hidden;display:flex;flex-direction:column} #fnBox .gx-main.cols>.gx-fd{display:none}
+    #fnBox .gx-main.cols .gx-life{flex:1;min-height:0;grid-template-columns:minmax(0,5fr) minmax(0,7fr);grid-template-rows:minmax(0,1fr);gap:10px;align-items:stretch}
+    #fnBox .gx-main.cols .gx-life>div{min-height:0;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+    #fnBox .gx-main.cols .gx-life>div:first-child{order:2} #fnBox .gx-main.cols .gx-life>div:last-child{order:1}
+    #fnBox .gx-main.cols .gx-mini{display:none}
+    #fnBox .gx-main.cols .gx-life>div:first-child>.gx-actbar{margin:8px -2px 0;border-radius:12px;border:1px solid #2a2e45}
+  }
   .gx-rel{display:grid;gap:5px;margin-top:8px} .gx-rel div{display:flex;justify-content:space-between;gap:8px;font-size:12px;padding:5px 8px;border-radius:8px;background:var(--bg);border:1px solid #262a3d}
   .gx-rel span{color:var(--mu)} .gx-rel b{color:#fff;font-weight:600}
   @media (max-width:980px){ .gx-life,.gx-dna,.gx-two{grid-template-columns:minmax(0,1fr)} .gx-g3{grid-template-columns:minmax(0,1fr)} }
@@ -2635,7 +2658,7 @@
   .gx-gr{display:inline-block;padding:0 7px;border:1px solid;border-radius:99px;font-size:11px;font-weight:700;line-height:18px;letter-spacing:.3px;white-space:nowrap}
   .gx-paths{display:grid;gap:8px;margin:6px 0 10px}
   .gx-path{padding:10px 12px;border-radius:12px;border:1px solid var(--ln);background:#12141c} .gx-path.on{border-color:rgba(234,179,8,.5);box-shadow:0 0 14px rgba(234,179,8,.12)}
-  .gx-path .hd{display:flex;align-items:center;gap:10px} .gx-path .hd i{font-style:normal;font-size:22px} .gx-path .t{flex:1;min-width:0}
+  .gx-path .hd{display:flex;align-items:center;gap:10px} .gx-path .hd .t{flex:1;min-width:0} .gx-path .hd .t small{white-space:normal;overflow-wrap:anywhere} .gx-path .hd i{font-style:normal;font-size:22px} .gx-path .t{flex:1;min-width:0}
   .gx-path .t b{display:block;color:#fff;font-size:13.5px} .gx-path .t small{color:var(--mu);font-size:11.5px}
   .gx-mn{flex:none;min-height:28px;padding:0 9px;border-radius:8px;border:1px solid var(--ln);background:transparent;color:var(--mu);font:inherit;font-size:11.5px;cursor:pointer} .gx-mn.on{color:var(--go);border-color:rgba(234,179,8,.5)}
   .gx-xp{position:relative;height:16px;margin:8px 0 6px;border-radius:99px;background:#1f2233;overflow:hidden} .gx-xp b{display:block;height:100%;border-radius:99px;transition:width .4s}
@@ -2880,19 +2903,21 @@
           .map(([k, n, sub]) => `<button class="gx-pk${UI.leg === k ? ' on' : ''}" data-g="leg" data-k="${k}" ${k === 'gene' && !C.genes.length || k === 'heir' && !C.kids ? 'disabled' : ''}><b>${n}</b><small>${sub}</small></button>`).join('')}</div>
         ${cp ? '' : `<div class="gx-row"><button class="gx-btn gold" data-g="close">📚 Đóng sách & cất vào thư viện</button></div>`}</div>`;
     }
-    if (cp) {   // nút chính của pha → thanh dưới
-      if (C.ph === 'act' && !(UI.bt && C.paths[UI.bt] && C.paths[UI.bt].xp >= 100)) curBar = barHtml([barBtn('auto', null, '', '⏩ Để thời gian trôi', `≈ ${fmtDur(left)} tới biến cố kế tiếp`, wait)]);
-      else if (C.ph === 'ev' && UI.pend) curBar = barHtml([barBtn('nm', UI.pend.i, '', `☯ Lật kèo (còn ${C.nm})`), barBtn('nmno', UI.pend.i, 'ghost', 'Chấp nhận số phận')]);
-      else if (C.ph === 'res') curBar = barHtml([barBtn('next', null, '', !(UI.res || {}).quiet && C.death ? '🕯 Tiếp…' : 'Tiếp tục ▸')]);
-      else if (C.ph === 'book') curBar = barHtml([barBtn('close', null, 'gold', '📚 Đóng sách & cất vào thư viện')]);
+    let barH = '';
+    if (cp) {   // nút chính của pha → thanh dưới (nằm ngang: thanh dính đáy cột phải)
+      if (C.ph === 'act' && !(UI.bt && C.paths[UI.bt] && C.paths[UI.bt].xp >= 100)) barH = barHtml([barBtn('auto', null, '', '⏩ Để thời gian trôi', `≈ ${fmtDur(left)} tới biến cố kế tiếp`, wait)]);
+      else if (C.ph === 'ev' && UI.pend) barH = barHtml([barBtn('nm', UI.pend.i, '', `☯ Lật kèo (còn ${C.nm})`), barBtn('nmno', UI.pend.i, 'ghost', 'Chấp nhận số phận')]);
+      else if (C.ph === 'res') barH = barHtml([barBtn('next', null, '', !(UI.res || {}).quiet && C.death ? '🕯 Tiếp…' : 'Tiếp tục ▸')]);
+      else if (C.ph === 'book') barH = barHtml([barBtn('close', null, 'gold', '📚 Đóng sách & cất vào thư viện')]);
     }
+    const cols = lsc(); if (cols) curCols = true; else curBar = barH;
     const rel = Object.entries(C.npc || {}).filter(([, v]) => v).map(([k, v]) => `<div><span>${NPCR[k][0]} ${NPCR[k][1]}</span><b>${E(v.n)}${v.st === 'dead' ? ' ✝' : v.st === 'gone' ? ' (đã xa)' : ` · ${v.aff >= 40 ? 'thân thiết' : v.aff >= 10 ? 'quý mến' : v.aff > -10 ? 'bình thường' : v.aff > -40 ? 'không ưa' : 'thù hận'}`}</b></div>`).join('');
     const lgAll = C.log.slice().reverse(), lgs = lgAll.slice(0, UI.logMore ? 40 : 10), Rg = regOf(C.o);
     const mini = `<div class="gx-mini"><div class="av">${avatar(avOf(C), 82)}</div><div style="min-width:0;flex:1"><b>${E(C.n)}</b>
       <small>${C.age} tuổi · ${E(lineName(C))} · ${mp ? E(tierName(mp, C.paths[mp].t)) : E(careerName(C))}</small><small>${persona(C).map(p => p[0] + ' ' + p[1]).join(' · ')} · ☯ ${C.nm}</small>
       <div class="hp"><i style="width:${clamp(C.hp, 0, 100)}%;background:${C.hp < 30 ? 'var(--re)' : C.hp < 60 ? 'var(--go)' : 'var(--gr)'}"></i></div></div></div>`;
     return `<div class="gx-life"><div style="min-width:0">${mini}<div class="gx-pn"><div class="gx-h"><h4>⏳ Mô Phỏng Cuộc Đời</h4><small class="mono">Mỗi lựa chọn viết thêm một trang vào Cuốn Sách Nhân Sinh</small></div>${hud}${main}</div>
-        <div class="gx-pn"><div class="gx-h" style="margin-bottom:8px"><h4 style="font-size:13px">📜 Dòng lịch sử cuộc đời</h4></div><ul class="gx-log mono">${lgs.map(l => `<li><b>[${l[0]}t]</b>${E(l[1])}</li>`).join('')}</ul>${lgAll.length > 10 ? `<button class="gx-btn ghost gx-more" data-g="logmore">${UI.logMore ? '▴ Thu gọn' : `▾ Xem thêm (${Math.min(lgAll.length, 40) - 10})`}</button>` : ''}</div></div>
+        <div class="gx-pn"><div class="gx-h" style="margin-bottom:8px"><h4 style="font-size:13px">📜 Dòng lịch sử cuộc đời</h4></div><ul class="gx-log mono">${lgs.map(l => `<li><b>[${l[0]}t]</b>${E(l[1])}</li>`).join('')}</ul>${lgAll.length > 10 ? `<button class="gx-btn ghost gx-more" data-g="logmore">${UI.logMore ? '▴ Thu gọn' : `▾ Xem thêm (${Math.min(lgAll.length, 40) - 10})`}</button>` : ''}</div>${cols ? barH : ''}</div>
       <div style="min-width:0"><div class="gx-pn"><div class="gx-h"><div><p class="gx-nm">${E(C.n)}</p><div class="gx-sub mono">${E(raceName(C.r, C.ak))}${C.flags.formed ? ' (hóa hình)' : ''} · ${E(lineName(C))} · ${E(careerName(C))}</div></div>
           <span class="gx-luck ${C.hp < 30 ? 'lo' : C.hp < 60 ? 'md' : 'hi'} mono">HP ${C.hp}</span></div>
         ${fold('look', '🪞 Diện mạo & tính cách', `<div class="gx-stage">${avatar(avOf(C), 230)}</div>
@@ -3139,19 +3164,21 @@
   let uip = null;   // bản đọc trong một lần vẽ
   const prefs = () => uip || (uip = lsGet(UIK(), {}));
   const compact = () => !!(window.matchMedia && window.matchMedia('(max-width:760px), (orientation:landscape) and (max-height:500px)').matches);
+  const lsc = () => !!(window.matchMedia && window.matchMedia('(orientation:landscape) and (max-height:500px)').matches);   // điện thoại nằm ngang: tab Cuộc đời chia 2 cột, mỗi cột cuộn riêng
   const FOLD_OPEN = { look:0, stats:0, rel:0, book:0, note:0 };   // mặc định trên màn nhỏ: 0 = gập
   const isOpen = k => { const f = prefs().fold; return f && f[k] != null ? !!f[k] : compact() ? !!FOLD_OPEN[k] : true; };
   function setOpen(k, v) { const p = prefs(); p.fold = p.fold && typeof p.fold === 'object' ? p.fold : {}; p.fold[k] = v ? 1 : 0; lsSet(UIK(), p); }
   const fold = (k, title, body, sub) => { const o = isOpen(k);
     return `<div class="gx-fd${o ? ' open' : ''}"><button class="gx-fh" data-g="fold" data-k="${k}" aria-expanded="${o}"><span>${title}</span>${sub ? `<small class="mono">${sub}</small>` : ''}<i>${o ? '▾' : '▸'}</i></button>${o ? `<div class="gx-fb">${body}</div>` : ''}</div>`; };
   // thanh hành động dưới (chỉ màn nhỏ): nút chính của pha hiện tại nằm tầm ngón cái, ngay trên thanh tab; trong trang không vẽ lại các nút này
-  let curBar = '';
+  let curBar = '', curCols = false;
   const barBtn = (g, k, cls, label, sub, dis) => `<button class="gx-btn ${cls || ''}" data-g="${g}"${k != null ? ` data-k="${k}"` : ''}${dis ? ' disabled' : ''}>${label}${sub ? `<small>${sub}</small>` : ''}</button>`;
   const barHtml = L => L.length ? `<div class="gx-actbar" role="toolbar">${L.join('')}</div>` : '';
   let root = null;
   // cuộn về đầu khung game (khung toàn màn hình tự cuộn riêng)
-  let keepY = null;   // vị trí cuộn cần giữ sau lần vẽ lại (toTop() hủy)
-  function toTop() { keepY = null; const bx = root && root.closest('#fnBox'); if (!bx) return; const st = window.getComputedStyle(bx).position === 'fixed';
+  let keep = null;   // vị trí cuộn cần giữ sau lần vẽ lại: { y: cuộn trang / khung, sc: cuộn từng cột, sig } (toTop() hủy)
+  const scrollers = () => root ? [...root.querySelectorAll('.gx-main, .gx-life > div')] : [];   // các vùng cuộn riêng (chỉ có khi nằm ngang)
+  function toTop() { keep = null; scrollers().forEach(e => { e.scrollTop = 0; }); const bx = root && root.closest('#fnBox'); if (!bx) return; const st = window.getComputedStyle(bx).position === 'fixed';
     if (st) bx.scrollTop = 0; else { const r = bx.getBoundingClientRect(); if (r.top < 0) window.scrollBy(0, r.top - 70); } }
   // fresh = true: đổi chế độ khung (toàn màn hình) nên không khôi phục vị trí cuộn
   function render(fresh) {
@@ -3160,16 +3187,18 @@
     const t = UI.tab;
     const bx = root.closest('#fnBox'), own0 = !!bx && window.getComputedStyle(bx).position === 'fixed', y0 = own0 ? bx.scrollTop : window.scrollY;   // đọc vị trí cuộn trước khi gán lại nội dung
     if (bx) bx.classList.toggle('gx-max', !!UI.max);
-    curBar = '';
+    curBar = ''; curCols = false;
+    const sc0 = scrollers().map(e => e.scrollTop), sig0 = UI.tab + (G.life ? 'L' : 'C');
     const view = t === 'lore' ? viewLore() : t === 'books' ? viewBooks() : t === 'dna' ? viewDna() : t === 'skills' ? viewSkills() : G.life ? viewLife() : viewCreate();
-    root.innerHTML = `<div class="gx">${topBar()}<div class="gx-main${curBar ? ' has-bar' : ''}">${view}
+    root.innerHTML = `<div class="gx">${topBar()}<div class="gx-main${curBar ? ' has-bar' : ''}${curCols ? ' cols' : ''}">${view}
       ${fold('note', 'ⓘ Lưu trữ & nội dung game', '<p class="gx-note" style="margin:0">Lưu tự động theo tài khoản. Thế giới, tên riêng và cốt truyện là nội dung tự viết, chỉ lấy cảm hứng từ mô-típ dân gian và thể loại (ma cà rồng, người sói, học viện phù thủy, dị nhân, cương thi, võ hiệp, nhẫn giả, đấu sĩ, xác ướp, thần thoại) – không dùng nhân vật hay tên riêng của tác phẩm có bản quyền.</p>')}</div>${curBar}</div>`;
     if (curBar) { const nv = root.querySelector('.gx-nav'), br = root.querySelector('.gx-actbar');
       if (nv) root.style.setProperty('--gx-nav-h', nv.offsetHeight + 'px'); if (br) root.style.setProperty('--gx-bar-h', br.offsetHeight + 'px'); }
     // giữ vị trí cuộn: mỗi lần bấm game vẽ lại cả khung; một số trình duyệt (Safari iOS) đặt lại về đầu → đặt lại ngay và ở khung hình kế tiếp
-    if (fresh) { keepY = null; return; }
-    keepY = y0; const put = () => { if (keepY == null) return; const o = !!bx && window.getComputedStyle(bx).position === 'fixed';
-      if (o) { if (Math.abs(bx.scrollTop - keepY) > 1) bx.scrollTop = keepY; } else if (Math.abs(window.scrollY - keepY) > 1) window.scrollTo(0, keepY); };
+    if (fresh) { keep = null; return; }
+    keep = { y:y0, sc:sc0, sig:sig0 }; const put = () => { if (!keep) return; const o = !!bx && window.getComputedStyle(bx).position === 'fixed';
+      if (o) { if (Math.abs(bx.scrollTop - keep.y) > 1) bx.scrollTop = keep.y; } else if (Math.abs(window.scrollY - keep.y) > 1) window.scrollTo(0, keep.y);
+      if (keep.sig === UI.tab + (G.life ? 'L' : 'C')) scrollers().forEach((e, i) => { const v = keep.sc[i]; if (v && Math.abs(e.scrollTop - v) > 1) e.scrollTop = v; }); };
     put(); requestAnimationFrame(put);
   }
   function onClick(e) {

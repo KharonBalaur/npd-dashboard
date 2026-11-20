@@ -28,5 +28,16 @@ Số dòng theo `genesis.js` trên `main` trước bản sửa.
 - Kiểm (390×844): mọi nút trong khung ≥ 44px ở các pha tạo nhân vật / hoạt động / sự kiện / kết quả; thanh nằm sát trên thanh tab, nội dung cuối trang nằm trên thanh; bot chơi 15 đời (2.500 lượt) trên điện thoại và 10 đời (1.500 lượt) ở khung ngang: 0 lỗi, 0 kẹt; hồi quy `upg4` 2.881 lượt, `kids1` 1.000 lượt, `life1`: 0 lỗi.
 - Khung ngang đang tạm dùng thanh dính đáy (`position:sticky`); bố cục hai cột hoàn thiện ở mục 4.
 
-## 4. Bố cục ngang (chưa làm)
-`@media (orientation: landscape) and (max-height: 500px)`: 2 cột (trái: nhân vật + chỉ số; phải: nhật ký + nút), mỗi cột cuộn riêng.
+## 4. Bố cục ngang (xong)
+`@media (orientation:landscape) and (max-height:500px)` (điện thoại nằm ngang, mọi chiều rộng; cũng khớp cửa sổ máy tính cao ≤ 500px):
+- Game chiếm toàn màn hình (`#fnBox` fixed, không cuộn trang); thanh trên (logo + tên + trạng thái lưu + ✕) và thanh tab chung một hàng để dành chiều cao; ẩn các huy hiệu và dòng phụ.
+- Tab Cuộc đời 2 cột (5fr : 7fr), mỗi cột cuộn riêng (`overscroll-behavior:contain`): **trái** = thẻ nhân vật + chỉ số (cột thứ hai trong DOM, đảo bằng `order`), **phải** = hoạt động / nhật ký + thanh nút dính đáy cột (nằm trong cột, không phải thanh toàn màn hình). Ghi chú cuối trang ẩn ở tab này.
+- Các tab khác (Gene, Dị năng, Thế giới, Thư viện, tạo nhân vật): một cột, `.gx-main` tự cuộn; thanh nút của màn tạo nhân vật ở đáy.
+- Vị trí cuộn của từng cột / `.gx-main` cũng được lưu và khôi phục quanh `render()` (cùng cơ chế mục 1, hủy khi đổi tab). Xoay màn hình tự vẽ lại.
+- Sửa kèm (lỗi có sẵn, thấy khi kiểm ở khung hẹp): chữ thẻ hệ không co lại làm nút "★ Chủ tu" tràn ra ngoài (`.gx-path .hd .t{min-width:0}`); dòng "dùng khi: …" của thẻ dị năng tràn ngang 48–69px (nuốt chữ ở `main` gốc cũng vậy); nút phụ tab Thế giới / Thư viện cao 38–40px.
+- Kiểm: 844×390, 667×375, 932×430: 2 cột đúng vị trí, cột trái / phải cuộn riêng và giữ vị trí sau khi bấm nút, không tràn ngang, mọi nút ≥ 44px ở cả 5 tab (dọc và ngang); chiều cao thanh nút 52px (dọc) / 48px (ngang), thanh tab 52px / 44px. Bot chơi 10 đời (1.500 lượt) dọc và 9 đời (1.200 lượt) ngang: 0 lỗi, 0 kẹt; hồi quy `upg4` 2.843 lượt, `kids1` 1.000 lượt, `life1`: 0 lỗi.
+
+## Chưa kiểm được
+- Safari / WebKit thật (môi trường chỉ có Chromium): lỗi nhảy về đầu trang ở mục 1 được kiểm bằng bài test giả lập trình duyệt đặt lại cuộn; nên thử trên iPhone thật: bấm nhiều lần ở giữa trang dài, xoay ngang / dọc khi đang ở giữa nhật ký, kéo quán tính rồi bấm.
+- Vùng an toàn (notch, thanh Home) chỉ dùng `env(safe-area-inset-*)`, chưa thử trên máy có tai thỏ.
+- Cuộn của nguyên nhân 3 (mục 1): sau đăng nhập / làm mới dữ liệu, ván mở sẵn vẫn mount lại và về đầu.
