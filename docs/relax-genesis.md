@@ -53,7 +53,7 @@ Chuyển từ `CLAUDE.md` nguyên văn (chỉ đổi chỗ, không bỏ thông t
   v* = min(25, 7 + 1,3·(Vận − 10)) cho mọi xác suất (vStar). Bản lưu cũ đổi MỘT lần bằng cờ C.sv = 2 trong upgrade(C), số cũ giữ
   ở C.s20 (bản nháp: draft.sv, draft.roll.s20). Thêm ngưỡng chỉ số mới thì viết theo thang mới (f20 chỉ để đổi số cũ).
   upgrade(C) chạy hai bước di cư ĐỘC LẬP, mỗi bước một cờ riêng và chạy lại không đổi thêm: túi bagUpgrade (C.inv → C.bag, cờ C.bagv = 1) và
-  thang chỉ số (cờ C.sv = 2); bản lưu cũ chưa có cả hai nạp vào được đúng cả hai (kiểm bằng tools/ hoặc bài kiểm nâng cấp kép trong PR).
+  thang chỉ số (cờ C.sv = 2); bản lưu cũ chưa có cả hai nạp vào được đúng cả hai (kiểm bằng `node tools/test-migrate.js`, không cần trình duyệt).
   Giao diện lưu riêng trên máy: khóa npdFunUi@user (trạng thái gập các khối, bộ lọc chợ shopf), không đồng bộ lên máy chủ.
   Chợ: kho C.shop = { y:tuổi, it:[mã vật phẩm], black, sold:[mã đã mua] } sinh theo hạt giống hash(C.sid | tuổi) (shopMake), đổi đúng một lần mỗi năm game
   (shopEnsure trong passTime / khi bấm / mount); vẽ chỉ đọc (shopOf). Nút mua theo mã vật phẩm, món đã mua ở lại kho ("Đã mua"). C.sid: nhân vật
