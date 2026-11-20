@@ -2,6 +2,70 @@
  "version": 1,
  "size": 256,
  "assets": {
+  "P-015a": {
+   "file": "P-015a.webp",
+   "w": 1280,
+   "h": 720,
+   "src": "P-015a",
+   "obj": [
+    1
+   ],
+   "kind": "scene",
+   "bg": "scene",
+   "alpha": false,
+   "bytes": 19210,
+   "q": 86,
+   "hint": "Ảnh nền cảnh: Tháp Cổ",
+   "item": "ITM-025"
+  },
+  "P-015b": {
+   "file": "P-015b.webp",
+   "w": 1280,
+   "h": 720,
+   "src": "P-015b",
+   "obj": [
+    1
+   ],
+   "kind": "scene",
+   "bg": "scene",
+   "alpha": false,
+   "bytes": 14030,
+   "q": 86,
+   "hint": "Ảnh nền cảnh: Vực Hắc Uyên",
+   "item": "ITM-025"
+  },
+  "P-015c": {
+   "file": "P-015c.webp",
+   "w": 1280,
+   "h": 720,
+   "src": "P-015c",
+   "obj": [
+    1
+   ],
+   "kind": "scene",
+   "bg": "scene",
+   "alpha": false,
+   "bytes": 46892,
+   "q": 86,
+   "hint": "Ảnh nền cảnh: Chiến Trường Vạn Tộc",
+   "item": "ITM-025"
+  },
+  "P-015d": {
+   "file": "P-015d.webp",
+   "w": 1280,
+   "h": 720,
+   "src": "P-015d",
+   "obj": [
+    1
+   ],
+   "kind": "scene",
+   "bg": "scene",
+   "alpha": false,
+   "bytes": 42882,
+   "q": 86,
+   "hint": "Ảnh nền cảnh: Địa Ngục 18 Tầng (chỉ ~7–8 tầng)",
+   "item": "ITM-025"
+  },
   "itm001_rank_01": {
    "file": "itm001_rank_01.webp",
    "w": 256,
