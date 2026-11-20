@@ -239,8 +239,10 @@
         throw new Error(r.error);
       }
       apply(r);
+      if (!r.mine) document.dispatchEvent(new CustomEvent('npd:mine-fail', { detail: { msg: 'Máy chủ chưa gửi tiến độ cá nhân' } }));
       renew();
     } catch (ex) {
+      document.dispatchEvent(new CustomEvent('npd:mine-fail', { detail: { msg: ex.message } }));     // game đang chờ tiến độ: báo lỗi + nút thử lại
       if (!cached) alert('Không tải được dữ liệu: ' + ex.message);
       else console.warn('Không cập nhật được, đang hiển thị dữ liệu cũ:', ex.message);
     } finally {

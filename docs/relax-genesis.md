@@ -52,10 +52,34 @@ Chuyển từ `CLAUDE.md` nguyên văn (chỉ đổi chỗ, không bỏ thông t
   chỉ số chính ≥ trần − 5 (NEED_T); mỗi điểm tăng lấp 20% khoảng cách tới trần (growVal / statAdd); Vận khí quy về thang cũ
   v* = min(25, 7 + 1,3·(Vận − 10)) cho mọi xác suất (vStar). Bản lưu cũ đổi MỘT lần bằng cờ C.sv = 2 trong upgrade(C), số cũ giữ
   ở C.s20 (bản nháp: draft.sv, draft.roll.s20). Thêm ngưỡng chỉ số mới thì viết theo thang mới (f20 chỉ để đổi số cũ).
-  Giao diện lưu riêng trên máy: khóa npdFunUi@user (trạng thái gập các khối), không đồng bộ lên máy chủ.
+  upgrade(C) chạy hai bước di cư ĐỘC LẬP, mỗi bước một cờ riêng và chạy lại không đổi thêm: túi bagUpgrade (C.inv → C.bag, cờ C.bagv = 1) và
+  thang chỉ số (cờ C.sv = 2); bản lưu cũ chưa có cả hai nạp vào được đúng cả hai (kiểm bằng tools/ hoặc bài kiểm nâng cấp kép trong PR).
+  Giao diện lưu riêng trên máy: khóa npdFunUi@user (trạng thái gập các khối, bộ lọc chợ shopf), không đồng bộ lên máy chủ.
+  Chợ: kho C.shop = { y:tuổi, it:[mã vật phẩm], black, sold:[mã đã mua] } sinh theo hạt giống hash(C.sid | tuổi) (shopMake), đổi đúng một lần mỗi năm game
+  (shopEnsure trong passTime / khi bấm / mount); vẽ chỉ đọc (shopOf). Nút mua theo mã vật phẩm, món đã mua ở lại kho ("Đã mua"). C.sid: nhân vật
+  mới ngẫu nhiên, bản lưu cũ suy ra từ tên + ngày sinh + nơi sinh + chủng tộc + điềm + tóc + giới tính. Kho kiểu cũ { y, it, black } vẫn đọc được.
   Nội dung tự viết, chỉ lấy cảm hứng mô-típ dân gian / thể loại (không dùng tên riêng / nhân vật của tác phẩm có bản quyền).
 
 - Huyết Sử (sách lore của game): chương nguồn `genesis-lore-src/cNN.txt` (c01–c22) + `story/`:
   `continuity.md` (thuật ngữ cố định + dòng thời gian), `chapters-summary.md` (tóm tắt từng chương), `review.md` ("Cần sửa" +
   "Canon mới chờ duyệt"). Mỗi phiên viết CHỈ đọc `story/continuity.md` (+ đề cương chương đang viết), không đọc lại chương cũ;
   mâu thuẫn ghi vào `review.md`, chưa sửa chương cũ khi chủ dự án chưa duyệt.
+
+## Đặt tên (genesis.js, đầu file: SURN / GIVEN_M / GIVEN_F / GIVEN_N / npcName / newKid)
+- Tên = họ (`SURN`, 32 họ) + tên gọi. Tên gọi chia kho nam `GIVEN_M`, nữ `GIVEN_F`, trung tính `GIVEN_N` (dùng cho "phi nhị nguyên"); `GIVEN` là kho gộp cho nhân vật phụ. Kho cũ (16 họ, 20 tên) nằm trọn trong kho mới, nên tên đã sinh ra từ trước vẫn nhận ra được.
+- Màn tạo nhân vật: tên gợi ý theo giới. Đổi giới thì đổi tên gọi, giữ họ; đổi qua lại trả đúng tên đã gợi ý cho giới đó (`d.ag`). Tên người chơi tự gõ đánh dấu `d.nt = 1` và không bao giờ bị đổi (kể cả khi gieo quẻ ra hậu duệ). Bản nháp cũ chưa có `nt`: tên không phải dạng "họ + tên trong kho" coi như tự gõ.
+- `npcName(C, g)`: tên nhân vật phụ (bạn, địch, sư phụ, người thương, bạn đời, người gặp gỡ) không trùng tên đầy đủ, tên gọi hay họ của ai khác trong đời (`namesOf(C)`); hết lựa chọn thì nới dần.
+- Con cái (`newKid`): lấy họ gia tộc `C.clan` (cùng quy tắc hậu duệ kiếp sau mang `par.cl`), giới ngẫu nhiên, tên gọi theo giới, không trùng tên gọi trong nhà. Lưu thêm `kidl[i] = { n, s (họ), g (giới), lk }`; `kidn` vẫn là tên gọi (dùng cho `{con}`). Con sinh từ trước chỉ có tên gọi, giữ nguyên, không sửa. Hiển thị đủ tên qua `kidFull` / `kidsFull`.
+
+## Bậc dị năng R / SR / SSR (genesis.js: TIERS, tierHelp, skCmp, offerBox)
+- Dữ liệu: 38 dị năng (`SKILLS`), bậc ở cột 4: R 14, SR 16, SSR 8. Gene không có bậc. Bậc gán cố định trong bảng; khi biến cố đánh thức (`offerSkill 'crisis'`) trọng số R 6 : SR 3 : SSR 1 trong số dị năng đủ tư chất (đủ cả ba bậc: 60 / 30 / 10 %). Dùng trong sự kiện: dị năng nào cũng "chắc thắng" (`useSkill`); bậc cao hiếm hơn và dùng được ở nhiều loại sự kiện hơn (≈ 30 / 40 / 53 % sự kiện có thẻ), không thắng dễ hơn. Không đổi cân bằng, không đổi id.
+- Màu bậc cố định (CSS `.gx-tier.R/.SR/.SSR`): R `#94a3b8`, SR `#a78bfa`, SSR `#eab308`. Nút "?" (`data-g="tierhelp"`, `UI.tierHelp`) mở bảng chú thích ở hộp lời mời và ở màn Dị năng.
+- Hộp lời mời dị năng: nhãn bậc, tên, tác dụng một dòng (dùng khi gặp…, thưởng, % loại sự kiện), tư chất, "so với bạn đang có" (`skCmp`: Mới / Mạnh hơn / Cùng loại / Yếu hơn, dựa vào thẻ dùng `s[7]` trùng với dị năng đang có và bậc), giá khi ô đầy (quên một dị năng cũ, nút ghi bậc). Nút Bỏ qua ghi rõ "mất": lời mời không được giữ lại, bảo vật sinh ra lời mời đã bị dùng hết.
+
+## Túi bảo vật: chồng vật phẩm, túi đầy, Túi trữ vật (genesis.js: bagList / bagPush / bagTake / bagUpgrade / resolveBag / buyBagUp)
+- Dữ liệu: `C.bag = [{ id, n }]` (mỗi phần tử một ô), cờ `C.bagv = 1`, `C.bagx` = số cấp Túi trữ vật đã mua. Món trong túi không có trạng thái riêng (không độ bền / cường hóa) nên **cùng id thì chồng**, tối đa `BAG_STACK` = 99 mỗi ô (quá thì sang ô mới). Chỉ số ô: nút Dùng / Bán / đột phá (`data-k`, `data-i`) là chỉ số ô; Bán và Dùng lấy 1 món.
+- Sức chứa = `BAG_BASE` 8 + `BAG_STEP` 4 × `bagx`; `BAG_LV` = [250, 600, 1300, 2800] vàng (4 cấp, tối đa 24 ô). Số này đề xuất theo thang vàng đo trên 12 đời bot (trung vị 282 / 896 / 3193 ở tuổi 20 / 40 / 60); sửa ở một chỗ (đầu khối "túi bảo vật").
+- Túi đầy (không còn ô trống và không có chồng cùng id): `gainBao` KHÔNG bỏ món nữa mà đưa lời mời `{ k:'bag', id }` vào `C.offers`; `resolveBag`: nhận (khi đã có chỗ) / bỏ cả một chồng / bán cả một chồng / bán món mới (`sellOf`, thú không bán) / mua Túi trữ vật rồi nhận / không nhận. `offerPush` giữ tối đa 4 lời mời nhưng không bao giờ đẩy lời mời túi ra. `PROG` có thêm `offer`, `bagup` (chạm đúp chỉ tính một lần).
+- Túi trữ vật: dòng riêng `.gx-shbag` ở chợ (nút `data-g="bagup"`), luôn có, không nằm trong kho theo năm `C.shop` và không đi qua `C.shop.sold` / `sid`. Mua món chợ khi túi đầy: món đã có trong túi vẫn mua được (chồng), món mới bị khóa ("Túi đầy").
+- Bản lưu cũ: `bagUpgrade` đổi `C.inv` (mảng id phẳng) sang `C.bag` một lần (cờ `bagv`), không bỏ món nào (chỉ bỏ id không còn trong dữ liệu, như trước), giữ thứ tự xuất hiện đầu tiên; chạy lại không đổi thêm. `C.inv` cũ được giữ nguyên làm bản gốc và mã mới không đọc nữa (tab chạy mã cũ không thấy túi rỗng và không xóa nhầm `bag`).
+- Bỏ / bán cả một chồng từ 2 món (trong hộp thoại túi đầy) hỏi xác nhận `confirm("Bỏ ×N Tên?")` / `confirm("Bán ×N Tên lấy V vàng?")`; ô chỉ 1 món thì làm ngay. Lời mời bị loại khi hàng đợi `C.offers` đầy (tối đa 4) được ghi nhật ký đời: "Bỏ lỡ cơ hội: <lời mời> (hàng đợi lời mời đầy)." (`offerPush`, `offerLbl`); lời mời túi không bao giờ bị loại.
