@@ -1331,6 +1331,7 @@
     if (C.r === 'animal' && !C.paths.beast) C.paths.beast = { t:0, xp:0 };
     C.bl = Array.isArray(C.bl) ? C.bl : C.line2 ? [`${C.line2.k}.${C.line2.sub}`] : [];
     C.kidl = Array.isArray(C.kidl) ? C.kidl : []; C.ak = C.ak || ''; C.pk = C.pk && C.paths[C.pk] ? C.pk : '';
+    if (C.sid == null) C.sid = sidOf(C);   // mã gốc để sinh kho hàng: bản lưu cũ suy ra từ các trường không đổi
     if (!C.fate || !FATE[C.fate.k]) C.fate = { k:'old', at:0 };
     if (!C.clan) C.clan = clanOf(C);
     if (C.ph === 'ev' && !evOf(C)) { C.ph = 'act'; C.ev = null; }
@@ -1405,7 +1406,7 @@
       al:{ ...r.al }, npc:{ ban:{ n:npcName(), aff:rnd(5, 25), st:'ok' }, dich:{ n:npcName(), aff:rnd(-15, 0), st:'ok' } },
       age:0, turn:0, hair:dr.hair != null ? dr.hair : rnd(0, 5), ph:'act', ev:null, born:new Date().toISOString().slice(0, 10),
       days:0, since:0, segs:makeSegs(0, 130), sk:[], inv:[], offers:[], innate:[], fruit:0,
-      w:WEALTH[dr.w] ? dr.w : 'common', ak:dr.ak || '', paths:{}, pk:'', bl:[], kidl:[], shop:null, clan:'', par:dr.par || null, fate:null };
+      w:WEALTH[dr.w] ? dr.w : 'common', ak:dr.ak || '', paths:{}, pk:'', bl:[], kidl:[], shop:null, clan:'', par:dr.par || null, fate:null, sid:rnd(1, 2147483646) };
     if (r.tr.includes('orph')) { C.npc.ban.n = npcName(); C.npc.su = { n:npcName(), aff:15, st:'ok', role:'người lạ dẫn lối' }; }
     C.lifeMax = dr.r === 'animal' ? rnd(15, 30) + Math.round(C.s.the / 2) + (r.tr.includes('longev') ? 8 : 0) : 62 + Math.round(C.s.the * 1.5) + rnd(-4, 10) + RACE[dr.r][3] + (r.tr.includes('longev') ? 15 : 0);
     if (dr.r === 'animal') { C.paths.beast = { t:0, xp:0 }; C.pk = 'beast'; }
@@ -1719,11 +1720,11 @@
 
   // ---- bảo vật: rút ngẫu nhiên theo phẩm cấp, Vận khí càng cao càng dễ ra đồ quý ----
   const SPECIAL = ['b_fruit', 'b_godbone', 'b_death', 'b_peach'];
-  function pickBao(C, mode) {
+  function pickBao(C, mode, rng) {
     const lo = mode === 'low' ? 0 : mode === 'mid' ? 1 : mode === 'rare' ? 2 : 0, hi = mode === 'low' ? 1 : mode === 'mid' ? 2 : mode === 'rare' ? 3 : 4;
     const L_ = BAO.filter(b => !SPECIAL.includes(b[0]) && GRADES.indexOf(b[4]) >= lo && GRADES.indexOf(b[4]) <= hi), van = C ? C.s.van : 10;
     const w = b => BAO_GW[b[4]] * (1 + Math.max(0, van - 10) * .06 * GRADES.indexOf(b[4]));
-    let r = Math.random() * L_.reduce((a, b) => a + w(b), 0); for (const b of L_) { r -= w(b); if (r <= 0) return b[0]; } return L_[0][0];
+    let r = (rng || Math.random)() * L_.reduce((a, b) => a + w(b), 0); for (const b of L_) { r -= w(b); if (r <= 0) return b[0]; } return L_[0][0];
   }
   // Vạn Huyết Quả trông như quả dại: cần Trí tuệ ≥ 14, học giả, hoặc đã từng gặp (Bách khoa Bảo vật) mới nhận ra
   const fruitKnown = C => !!C && (C.s.tri >= 14 || carRk(C, 'scholar') >= 1 || (G && G.seenB || []).includes('b_fruit') || !!C.flags.fruitid);
@@ -1731,20 +1732,29 @@
   const baoDesc = (C, id) => id === 'b_fruit' && !fruitKnown(C) ? 'Một quả nhỏ xám xịt như táo dại héo, nhặt được ở nơi đất thấm máu. Chẳng ai trả giá cao.' : BAOM[id] ? BAOM[id][5] : '';
   const priceOf = (C, id) => Math.round(PRICE[BAOM[id][4]] * (carRk(C, 'merchant') >= 1 ? .8 : 1) * (eraOf(C) === 'gold' ? .9 : ['famine', 'war', 'tribes'].includes(eraOf(C)) ? 1.25 : 1));
   const sellOf = (C, id) => id === 'b_fruit' && !fruitKnown(C) ? 2 : Math.round(PRICE[BAOM[id][4]] * (carRk(C, 'merchant') >= 1 ? .6 : .45));
-  // chợ: đổi hàng mỗi năm; chợ đen (khu ổ chuột, đạo tặc, thương nhân lớn) có thêm đồ quý
-  function shopOf(C) {
-    if (C.shop && C.shop.y === C.age && Array.isArray(C.shop.it)) return C.shop;
-    const black = C.o === 'slum' || C.o === 'port' || carRk(C, 'thief') >= 0 || carRk(C, 'merchant') >= 2, it = [];
-    for (let i = 0; i < 6; i++) it.push(pickBao(C, i < 3 ? 'low' : 'mid'));
-    if (black) it.push(pickBao(C, 'rare'), pickBao(C, 'rare'));
-    if (['opened', 'tribes'].includes(eraOf(C)) && black && Math.random() < .25) it.push('b_fruit');
-    C.shop = { y:C.age, it:[...new Set(it)].slice(0, 8), black:black ? 1 : 0 }; return C.shop;
+  // chợ: đổi hàng đúng một lần mỗi năm trong game (khi tuổi tăng). Kho sinh theo hạt giống = hash(sid nhân vật + tuổi) nên cùng kết quả mỗi lần,
+  // được lưu trong C.shop = { y:tuổi, it:[id…], black, sold:[id đã mua] }; vẽ chỉ ĐỌC (shopOf), ghi ở shopEnsure (khi qua năm / khi bấm).
+  const hashStr = t => { let h = 2166136261; for (let i = 0; i < t.length; i++) { h ^= t.charCodeAt(i); h = Math.imul(h, 16777619); } return h >>> 0; };
+  const mulberry = a => () => { a = (a + 0x6D2B79F5) | 0; let t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
+  const sidOf = C => C.sid != null ? C.sid : hashStr([C.n, C.born, C.o, C.r, C.omen, C.hair, C.g].join('|')) || 1;   // bản lưu cũ chưa có sid: suy ra từ các trường không đổi
+  const shopValid = C => !!(C.shop && C.shop.y === C.age && Array.isArray(C.shop.it));
+  function shopMake(C) {
+    const black = C.o === 'slum' || C.o === 'port' || carRk(C, 'thief') >= 0 || carRk(C, 'merchant') >= 2, rng = mulberry(hashStr(`${sidOf(C)}|shop|${C.age}`)), it = [];
+    for (let i = 0; i < 6; i++) it.push(pickBao(C, i < 3 ? 'low' : 'mid', rng));
+    if (black) it.push(pickBao(C, 'rare', rng), pickBao(C, 'rare', rng));
+    if (['opened', 'tribes'].includes(eraOf(C)) && black && rng() < .25) it.push('b_fruit');
+    return { y:C.age, it:[...new Set(it)].slice(0, 8), black:black ? 1 : 0, sold:[] };
   }
-  function buy(i) {
-    const C = G.life, sh = C && shopOf(C), id = sh && sh.it[i]; if (!id || C.ph !== 'act') return;
-    const pr = priceOf(C, id); if (C.gold < pr) return;
+  const shopOf = C => shopValid(C) ? C.shop : shopMake(C);          // chỉ đọc: không ghi vào C
+  function shopEnsure(C) { if (!shopValid(C)) { C.shop = shopMake(C); return true; } if (!Array.isArray(C.shop.sold)) C.shop.sold = []; return false; }   // true = vừa tạo, cần lưu
+  // mua theo MÃ vật phẩm (không theo vị trí); món đã mua vẫn nằm trong kho (nút "Đã mua") nên danh sách không dồn lên và chạm đúp không mua thêm món khác
+  function buy(id) {
+    const C = G.life; if (!C || C.ph !== 'act') return render();
+    const sh = shopOf(C), sold = sh.sold || [];
+    if (!BAOM[id] || !sh.it.includes(id) || sold.includes(id)) { UI.note = { txt:'Món này không còn trong kho năm nay.', chips:[] }; return render(); }
+    const pr = priceOf(C, id); if (C.gold < pr) { UI.note = { txt:'Không đủ vàng.', chips:[] }; return render(); }
     if ((C.inv || []).length >= 8) { UI.note = { txt:'Túi đầy (8 món) – dùng hoặc bán bớt trước.', chips:[] }; save(G); return render(); }
-    const chips = []; C.gold -= pr; chips.push(['down', `−${pr} vàng`]); gainBao(C, id, chips); sh.it.splice(i, 1);
+    const chips = []; C.shop = sh; sh.sold = sold.concat(id); C.gold -= pr; chips.push(['down', `−${pr} vàng`]); gainBao(C, id, chips);
     if (sh.black && GRADES.indexOf(BAOM[id][4]) >= 2) apply(C, { want:3 }, chips);
     UI.note = { txt:`Mua ${baoName(C, id)}.`, chips }; save(G); render();
   }
@@ -1911,7 +1921,9 @@
   function passTime(C, days, chips) {
     C.days = (C.days != null ? C.days : C.age * 365) + days; C.since = (C.since || 0) + days;
     const to = Math.floor(C.days / 365);
+    const a0 = C.age;
     while (C.age < to) { C.age++; yearTick(C, chips); if (C.hp <= 0 || C.age >= C.lifeMax) break; }
+    if (C.age !== a0 && !isAnimal(C)) shopEnsure(C);   // chợ đổi hàng đúng một lần mỗi năm
   }
   // sau một quãng thời gian: biến cố lớn, tình huống đời thường hoặc chỉ là những ngày bình yên
   const fateDue = C => !!(C.fate && !C.fate.done && C.fate.k !== 'old' && C.age >= C.fate.at && !isAnimal(C));
@@ -2668,7 +2680,7 @@
   .gx-ev.fate{border-color:rgba(244,63,94,.55);box-shadow:0 0 18px rgba(244,63,94,.15)}
   .gx-kv{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px 14px;margin:8px 0;font-size:12px} .gx-kv span{display:block;color:var(--mu)} .gx-kv b{color:#e2e8f0}
   .gx-shop{margin-top:10px;padding:12px;border-radius:12px;border:1px solid rgba(234,179,8,.3);background:#14120c}
-  .gx-shi{display:flex;align-items:center;gap:10px;padding:8px 0;border-top:1px solid #ffffff10} .gx-shi .ic{font-size:22px} .gx-shi .t{flex:1;min-width:0}
+  .gx-shi{display:flex;align-items:center;gap:10px;padding:8px 0;border-top:1px solid #ffffff10} .gx-shi .ic{font-size:22px} .gx-shi.sold{opacity:.5} .gx-shi .t{flex:1;min-width:0}
   .gx-shi .t b{color:#fff;font-size:13px} .gx-shi .t small{display:block;color:var(--mu);font-size:11.5px}
   .gx-bag{display:inline-flex;gap:2px} .gx-offer.bd{border-color:rgba(234,179,8,.45)}
   .gx-lorebook{display:grid;grid-template-columns:230px minmax(0,1fr);gap:14px;align-items:start}
@@ -2841,11 +2853,11 @@
         <button class="gx-opt" data-g="bt" data-k=""><span>↩ Để sau</span></button></div></div>`;
   }
   function shopPanel(C) {
-    const sh = shopOf(C);
-    return `<div class="gx-shop"><div class="gx-h" style="margin-bottom:6px"><h4 style="font-size:13px">🏪 ${sh.black ? 'Chợ & chợ đen' : 'Chợ phiên'}</h4><small class="mono">💰 ${C.gold} vàng · hàng đổi mỗi năm</small></div>
-      ${sh.it.length ? sh.it.map((id, i) => { const b = BAOM[id], pr = priceOf(C, id), gr = id === 'b_fruit' && !fruitKnown(C) ? 'Phàm' : b[4];
-        return `<div class="gx-shi"><span class="ic">${b[1]}</span><div class="t"><b>${E(baoName(C, id))}</b> <span class="gx-gr" style="color:${GCOL[gr]};border-color:${GCOL[gr]}66">${E(gr)}</span><small>${E(b[3])} · ${E(baoDesc(C, id)).slice(0, 110)}</small></div>
-          <button class="gx-btn sm" data-g="buy" data-k="${i}" ${C.gold < pr || (C.inv || []).length >= 8 ? 'disabled' : ''}>${pr} vàng</button></div>`; }).join('') : '<p class="gx-note">Hết hàng – sang năm quay lại.</p>'}
+    const sh = shopOf(C), sold = sh.sold || [], full = (C.inv || []).length >= 8, left = 365 - ((C.days != null ? C.days : C.age * 365) % 365);
+    return `<div class="gx-shop"><div class="gx-h" style="margin-bottom:6px"><h4 style="font-size:13px">🏪 ${sh.black ? 'Chợ & chợ đen' : 'Chợ phiên'}</h4><small class="mono">💰 ${C.gold} vàng · đổi hàng sau ${fmtDur(left)}</small></div>
+      ${sh.it.length ? sh.it.map(id => { const b = BAOM[id], pr = priceOf(C, id), gr = id === 'b_fruit' && !fruitKnown(C) ? 'Phàm' : b[4], sd = sold.includes(id);
+        return `<div class="gx-shi${sd ? ' sold' : ''}"><span class="ic">${b[1]}</span><div class="t"><b>${E(baoName(C, id))}</b> <span class="gx-gr" style="color:${GCOL[gr]};border-color:${GCOL[gr]}66">${E(gr)}</span><small>${E(b[3])} · ${E(baoDesc(C, id)).slice(0, 110)}</small></div>
+          <button class="gx-btn sm" data-g="buy" data-k="${id}" ${sd || C.gold < pr || full ? 'disabled' : ''}>${sd ? 'Đã mua' : pr + ' vàng'}</button></div>`; }).join('') : '<p class="gx-note">Hết hàng – sang năm quay lại.</p>'}
       ${sh.black ? '<p class="gx-note">🕶 Đồ quý ở chợ đen có thể khiến bạn bị để ý (+ Truy nã).</p>' : ''}</div>`;
   }
   function viewLife() {
@@ -3204,6 +3216,7 @@
   function onClick(e) {
     const b = e.target.closest('[data-g]'); if (!b || !root || !root.contains(b) || b.disabled) return;
     const g = b.dataset.g, k = b.dataset.k; G = load();
+    if (G.life && !isAnimal(G.life) && shopEnsure(G.life)) save(G);   // qua năm: kho mới được tạo và lưu ở đây, không ở lúc vẽ
     if (g === 'tab') { UI.tab = k; render(); return toTop(); }
     if (g === 'max') { UI.max = !UI.max; return render(true); }
     if (g === 'fold') { setOpen(k, !isOpen(k)); return render(); }
@@ -3223,8 +3236,8 @@
       if (g === 'bt') { UI.bt = k; UI.shop = 0; render(); return toTop(); }
       if (g === 'btgo') return breakthrough(k, b.dataset.i);
       if (g === 'mainp') { if (C.paths && C.paths[k]) { C.pk = k; save(G); } return render(); }
-      if (g === 'shop') { UI.shop = UI.shop ? 0 : 1; UI.bt = ''; if (UI.shop) { shopOf(C); save(G); } return render(); }
-      if (g === 'buy') return buy(+k); }
+      if (g === 'shop') { UI.shop = UI.shop ? 0 : 1; UI.bt = ''; return render(); }
+      if (g === 'buy') { b.disabled = true; return buy(k); } }   // khóa nút ngay khi bấm; xử lý mua trước, vẽ lại một lần
     if (g === 'skc') { UI.skc = k; return render(); }
     if (g === 'cut') { const C = G.life, free = carRk(C, 'scholar') >= 3; if (!C || C.ph !== 'act' || innateOf(C).includes(k) || (!free && C.gold < 30)) return;
       const chips = []; removeGene(C, k, chips); apply(C, free ? { hum:5 } : { gold:-30, hp:-10, hum:5 }, chips); UI.note = { txt:'', chips }; save(G); return render(); }
@@ -3261,8 +3274,8 @@
     if (mq.addEventListener) mq.addEventListener('change', on); else if (mq.addListener) mq.addListener(on); }
   document.addEventListener('input', e => { if (!root || e.target.id !== 'gxSkq' || !root.contains(e.target)) return; UI.skq = e.target.value; const p = e.target.selectionStart; render(); const i = root.querySelector('#gxSkq'); if (i) { i.focus({ preventScroll:true }); i.setSelectionRange(p, p); } });
   window.GenesisGame = {
-    mount(el) { root = el; const bx = el.closest('#fnBox'); if (bx) bx.classList.add('gx-wide'); ensureCss(); G = load(); render(); },
+    mount(el) { root = el; const bx = el.closest('#fnBox'); if (bx) bx.classList.add('gx-wide'); ensureCss(); G = load(); if (G.life && !isAnimal(G.life) && shopEnsure(G.life)) save(G); render(); },
     summary() { const g = load(); return g.life ? `${g.life.n} · ${g.life.age} tuổi` : g.books.length ? `${g.books.length} cuốn sách · ${g.lives} kiếp` : 'Chưa bắt đầu'; },
-    debug: () => ({ G:load(), UI, EV, LORE, apply, canKids, lifeSum, avatar, avatarAdult, avatarKid, avatarBeast, eligible, SKILLS, skillsOf, BAO, geneCap, skillCap, fusedOf, eraOf, PATHS, btInfo, btReady, maxTier, mainPath, BD, WEALTH, FATE, upgrade, pathRate }),
+    debug: () => ({ G:load(), UI, EV, LORE, apply, canKids, lifeSum, avatar, avatarAdult, avatarKid, avatarBeast, eligible, SKILLS, skillsOf, BAO, geneCap, skillCap, fusedOf, eraOf, PATHS, btInfo, btReady, maxTier, mainPath, BD, WEALTH, FATE, upgrade, pathRate, shopOf, shopMake, shopEnsure, hashStr, roll, newDraft, birth }),
   };
 })();
