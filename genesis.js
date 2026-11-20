@@ -3200,6 +3200,15 @@
   let curBar = '', curCols = false;
   const barBtn = (g, k, cls, label, sub, dis) => `<button class="gx-btn ${cls || ''}" data-g="${g}"${k != null ? ` data-k="${k}"` : ''}${dis ? ' disabled' : ''}>${label}${sub ? `<small>${sub}</small>` : ''}</button>`;
   const barHtml = L => L.length ? `<div class="gx-actbar" role="toolbar">${L.join('')}</div>` : '';
+  // chỉ cho tạo nhân vật / ghi tiến độ SAU khi sheets-bridge đã nhận bản từ máy chủ (npdPersonalReady); trước đó chỉ hiện khung chờ
+  const syncReady = () => !window.npdPersonalReady || window.npdPersonalReady();
+  let syncFail = '';   // lý do không tải được tiến độ (sự kiện npd:mine-fail); rỗng = đang chờ bình thường
+  const WAIT_OK = ['tab', 'max', 'exit', 'fold', 'logmore', 'lore', 'lsec', 'lib', 'legend', 'lgdx', 'reg', 'bks', 'bp', 'book', 'export', 'skc', 'shopf', 'noop', 'syncretry'];   // thao tác chỉ xem: được phép khi đang chờ
+  function viewWait() {
+    return `<div class="gx-pn gx-wait"><div class="gx-h"><h4>${syncFail ? '⚠' : '⏳'} Đang tải tiến độ của bạn từ máy chủ…</h4></div>
+      <p class="gx-note" style="margin:0 0 8px">Game chỉ mở sau khi tiến độ về tới máy này, để không tạo nhân vật mới hay ghi đè đời đang chơi của bạn. Thường mất vài giây.</p>
+      ${syncFail ? `<p class="gx-note" style="color:var(--re);margin:0 0 8px">Chưa tải được: ${E(syncFail)}. Kiểm tra mạng rồi bấm thử lại.</p><div class="gx-row"><button class="gx-btn" data-g="syncretry">↻ Thử lại</button></div>` : ''}</div>`;
+  }
   let root = null;
   // cuộn về đầu khung game (khung toàn màn hình tự cuộn riêng)
   let lastPhk = null, progAt = 0;   // pha lần vẽ trước (để biết khi nào đổi pha); lúc bấm nút tiến trình gần nhất
@@ -3218,7 +3227,7 @@
     curBar = ''; curCols = false;
     const sc0 = scrollers().map(e => e.scrollTop), sig0 = UI.tab + (G.life ? 'L' : 'C'), sfx = (root.querySelector('.gx-sf') || {}).scrollLeft || 0;
     const phk = G.life ? `${G.life.ph}|${G.life.ev ? G.life.ev.id : ''}|${UI.bt || ''}` : '-', phChanged = lastPhk !== null && phk !== lastPhk && t === 'life' && !!G.life; lastPhk = phk;
-    const view = t === 'lore' ? viewLore() : t === 'books' ? viewBooks() : t === 'dna' ? viewDna() : t === 'skills' ? viewSkills() : G.life ? viewLife() : viewCreate();
+    const view = t === 'lore' ? viewLore() : t === 'books' ? viewBooks() : !syncReady() ? viewWait() : t === 'dna' ? viewDna() : t === 'skills' ? viewSkills() : G.life ? viewLife() : viewCreate();
     root.innerHTML = `<div class="gx">${topBar()}<div class="gx-main${curBar ? ' has-bar' : ''}${curCols ? ' cols' : ''}">${view}
       ${fold('note', 'ⓘ Lưu trữ & nội dung game', '<p class="gx-note" style="margin:0">Lưu tự động theo tài khoản. Thế giới, tên riêng và cốt truyện là nội dung tự viết, chỉ lấy cảm hứng từ mô-típ dân gian và thể loại (ma cà rồng, người sói, học viện phù thủy, dị nhân, cương thi, võ hiệp, nhẫn giả, đấu sĩ, xác ướp, thần thoại) – không dùng nhân vật hay tên riêng của tác phẩm có bản quyền.</p>')}</div>${curBar}</div>`;
     const sf = root.querySelector('.gx-sf'); if (sf) { sf.scrollLeft = sfx; if (UI.sfCenter) { const on = sf.querySelector('.on'); if (on) sf.scrollLeft = Math.max(0, on.offsetLeft - (sf.clientWidth - on.offsetWidth) / 2); } } UI.sfCenter = 0;
@@ -3241,9 +3250,11 @@
   function onClick(e) {
     const b = e.target.closest('[data-g]'); if (!b || !root || !root.contains(b) || b.disabled) return;
     const g = b.dataset.g, k = b.dataset.k;
+    if (!syncReady() && !WAIT_OK.includes(g)) return;   // chưa nhận tiến độ từ máy chủ: không tạo nhân vật, không ghi gì
     if (e.isTrusted && PROG.includes(g)) { const now = performance.now(); if (now - progAt < 350) return; progAt = now; }   // chạm đúp: cú thứ hai (rơi vào nút / phương án mới hiện ra) bị bỏ qua
     G = load();
-    if (G.life && !isAnimal(G.life) && shopEnsure(G.life)) save(G);   // qua năm: kho mới được tạo và lưu ở đây, không ở lúc vẽ
+    if (g === 'syncretry') { syncFail = ''; if (window.NPD && NPD.refresh) NPD.refresh(); return render(); }
+    if (syncReady() && G.life && !isAnimal(G.life) && shopEnsure(G.life)) save(G);   // qua năm: kho mới được tạo và lưu ở đây, không ở lúc vẽ
     if (g === 'tab') { UI.tab = k; render(); return toTop(); }
     if (g === 'max') { UI.max = !UI.max; return render(true); }
     if (g === 'fold') { setOpen(k, !isOpen(k)); return render(); }
@@ -3298,11 +3309,13 @@
     if (g === 'close') { const ep = (root.querySelector('#gxEp') || {}).value || ''; return closeBook(ep, UI.leg); }
   }
   document.addEventListener('click', onClick);
+  document.addEventListener('npd:mine-ready', () => { syncFail = ''; if (root && root.isConnected) { G = load(); if (G.life && !isAnimal(G.life) && shopEnsure(G.life)) save(G); render(); } });
+  document.addEventListener('npd:mine-fail', e => { if (syncReady()) return; syncFail = String((e.detail && e.detail.msg) || 'không rõ lý do').slice(0, 120); if (root && root.isConnected) render(); });
   if (window.matchMedia) { const mq = window.matchMedia('(max-width:760px), (orientation:landscape) and (max-height:500px)'), on = () => { if (root && root.isConnected) render(); };
     if (mq.addEventListener) mq.addEventListener('change', on); else if (mq.addListener) mq.addListener(on); }
   document.addEventListener('input', e => { if (!root || e.target.id !== 'gxSkq' || !root.contains(e.target)) return; UI.skq = e.target.value; const p = e.target.selectionStart; render(); const i = root.querySelector('#gxSkq'); if (i) { i.focus({ preventScroll:true }); i.setSelectionRange(p, p); } });
   window.GenesisGame = {
-    mount(el) { root = el; const bx = el.closest('#fnBox'); if (bx) bx.classList.add('gx-wide'); ensureCss(); G = load(); if (G.life && !isAnimal(G.life) && shopEnsure(G.life)) save(G); render(); },
+    mount(el) { root = el; const bx = el.closest('#fnBox'); if (bx) bx.classList.add('gx-wide'); ensureCss(); G = load(); if (syncReady() && G.life && !isAnimal(G.life) && shopEnsure(G.life)) save(G); render(); },
     summary() { const g = load(); return g.life ? `${g.life.n} · ${g.life.age} tuổi` : g.books.length ? `${g.books.length} cuốn sách · ${g.lives} kiếp` : 'Chưa bắt đầu'; },
     debug: () => ({ G:load(), UI, EV, LORE, apply, canKids, lifeSum, avatar, avatarAdult, avatarKid, avatarBeast, eligible, SKILLS, skillsOf, BAO, geneCap, skillCap, fusedOf, eraOf, PATHS, btInfo, btReady, maxTier, mainPath, BD, WEALTH, FATE, upgrade, pathRate, shopOf, shopMake, shopEnsure, hashStr, roll, newDraft, birth, itemHe, shopMatch }),
   };

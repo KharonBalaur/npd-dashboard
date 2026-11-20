@@ -213,6 +213,9 @@
   const unsynced = base => { const v = readLocal(base); return v != null && hashOf(v) !== syncAll()[base]; };
   const mineStatus = (base, st, msg) => { mineSt[base] = { st, msg: msg || '', at: Date.now() }; window.npdMineStatus = mineSt;
     document.dispatchEvent(new CustomEvent('npd:mine', { detail: { key: base, st, msg: msg || '' } })); };
+  // chốt chặn cho tiến độ game (npdFun): bản "trống" = chưa có đời, kiếp nào, sách nào; "danh tính đời" = tên + ngày sinh + nơi sinh + chủng tộc
+  const funOf = v => { const g = (v && v.gen) || {}, L = g.life && typeof g.life === 'object' ? g.life : null; return { lives: +g.lives || 0, books: (g.books || []).length + (g.arch || []).length, life: L ? [L.n, L.born, L.o, L.r].join('|') : '' }; };
+  const funEmpty = v => { const f = funOf(v); return !f.life && !f.lives && !f.books; };
   // mức tiến độ để chọn khi cả máy này lẫn máy chủ cùng đổi
   const progressOf = (base, v) => {
     if (!v || typeof v !== 'object') return 0;
@@ -227,6 +230,7 @@
     if (v == null) return Promise.resolve(true);
     const h = hashOf(v);
     if (h === syncAll()[base]) { mineStatus(base, 'ok'); return Promise.resolve(true); }   // đã khớp máy chủ
+    if (base === 'npdFun' && funEmpty(v) && syncAll()[base]) { mineStatus(base, 'err', 'Bản trên máy đang trống – không ghi đè tiến độ đã lưu trên máy chủ'); return Promise.resolve(false); }   // không bao giờ ghi bản trống đè bản đã lưu
     mineStatus(base, 'sending');
     return NPD.call('mine', { key: base, value: v }, keepalive ? { keepalive: true } : undefined).then(r => {
       if (r && r.ok) { syncSet(base, h); mineStatus(base, 'ok'); if (unsynced(base)) schedule(base, 800); return true; }
@@ -256,6 +260,8 @@
     return Promise.all(MINE.filter(unsynced).map(b => { clearTimeout(mineT[b]); return sendMine(b, 6, !!keepalive); })).then(a => a.every(Boolean));
   };
   window.npdPersonalUnsaved = () => MINE.filter(unsynced);
+  // true khi đã nhận bản từ máy chủ (hoặc chưa đăng nhập): game chỉ được tạo nhân vật / ghi tiến độ sau lúc này
+  window.npdPersonalReady = () => !me() || mineFor === me();
   const flushHidden = () => { if (window.npdPersonalUnsaved().length) window.npdPersonalFlush(true).catch(() => {}); };
   window.addEventListener('pagehide', flushHidden);
   document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden') flushHidden(); });
@@ -273,12 +279,16 @@
       if (hb && !serverChanged) { push.push(k); return; }                                // chỉ máy này đổi mà chưa gửi được
       // cả hai cùng đổi (hoặc lần đầu sau bản cập nhật này): giữ bản tiến xa hơn, cất bản kia
       const pl = progressOf(k, loc), ps = progressOf(k, srv);
+      if (k === 'npdFun') { const fl = funOf(loc), fs = funOf(srv);   // bản máy chủ đã có đời / kiếp: bản trên máy chỉ thắng nếu cùng một đời đi xa hơn hoặc có nhiều kiếp hơn; bản trống / đời khác cùng số kiếp (vd. nhân vật vừa tạo lúc chưa tải xong) thì giữ máy chủ
+        const serverHas = !!fs.life || fs.lives > 0 || fs.books > 0, sameLife = fl.life && fl.life === fs.life;
+        if (serverHas && (funEmpty(loc) || (!sameLife && fl.lives <= fs.lives))) { writeLocal(k, loc, '~bak'); writeLocal(k, srv); syncSet(k, hs); console.warn('Personal data: kept server copy of', k, '(local copy is empty or a different new life)'); return; } }
       if (pl >= 0 && pl > ps) { writeLocal(k, srv, '~bak'); push.push(k); console.warn('Personal data: keeping this device copy of', k); }
       else { writeLocal(k, loc, '~bak'); writeLocal(k, srv); syncSet(k, hs); }
     });
     mineFor = u;
     push.forEach(k => { mineStatus(k, 'pending'); schedule(k, 300); });
     if (typeof CAVE !== 'undefined') CAVE = null;
+    document.dispatchEvent(new CustomEvent('npd:mine-ready'));            // game (và trang khác) chờ sự kiện này rồi mới cho tạo nhân vật / ghi tiến độ
   }
 
   /* ---------- Nhận dữ liệu từ Sheet ---------- */

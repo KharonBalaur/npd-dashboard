@@ -44,7 +44,7 @@
   let cur = '', T = null, timer = 0, raf = 0;                                     // trò đang mở, trạng thái trò, bộ đếm giờ
 
   const fs = () => { const d = lsGet(uKey('npdFun'), {}); d.best = d.best && typeof d.best === 'object' ? d.best : {}; d.plays = d.plays && typeof d.plays === 'object' ? d.plays : {}; d.calm = +d.calm || 0; return d; };
-  const fsave = d => lsSet(uKey('npdFun'), d);
+  const fsave = d => { if (window.npdPersonalReady && !window.npdPersonalReady()) return; lsSet(uKey('npdFun'), d); };   // chưa nhận tiến độ từ máy chủ: không ghi (tránh làm bản trên máy "đã đổi" trước khi đồng bộ)
   const played = k => { const d = fs(); d.plays[k] = (+d.plays[k] || 0) + 1; fsave(d); };
   // kỷ lục: lower = true nghĩa là càng nhỏ càng tốt (ms, số lượt)
   const record = (k, v, lower) => { const d = fs(), o = d.best[k]; const better = o === undefined || (lower ? v < o : v > o); if (better) { d.best[k] = v; fsave(d); } return better; };
