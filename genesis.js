@@ -1678,7 +1678,7 @@
   function pathRate(C, k) {
     const p = C.paths && C.paths[k], P = PATHS[k]; if (!p || p.t >= 9) return 0;
     const st = C.s[P.st] || 10, er = eraOf(C);
-    let f = (0.45 + (st + C.s.tri) / 40) * (C.tr.includes('genius') ? 1.25 : 1);
+    let f = (0.45 + (st + C.s.tri) / (2 * capOf(C))) * (C.tr.includes('genius') ? 1.25 : 1);   // chỉ số tính theo trần (thang 100)
     if (C.tr.includes('martial') && ['noi', 'body', 'dau', 'nin'].includes(k)) f *= 1.3;
     if (C.tr.includes('keen') && ['witch', 'dao', 'phap'].includes(k)) f *= 1.3;
     if (C.tr.includes('early') && P.blood) f *= 1.3;
@@ -1703,7 +1703,7 @@
     else if (t === 8 && k === 'vampE' && !C.flags.vempire) block = 'Đại đế chỉ đạt được khi dung hợp đủ 5 nhánh Huyết tộc (Vạn Huyết Quả)';
     else if (t === 8 && k === 'wolf' && !C.flags.wolfking) block = 'Chung Cực Lang Vương chỉ đạt được khi dung hợp đủ các nhánh Lang tộc (Vạn Huyết Quả)';
     else if (t >= 6 && !items.length) block = `Bậc ${t} bắt buộc có bảo vật hợp hệ phẩm ${GRADES[btMinG(t)]} trở lên`;
-    const odds = clamp(ODDS_T[t] + (st - need) * 2 + Math.floor(C.s.van / 4) - (eraOf(C) === 'mophap' ? 15 : 0) - (C.hp < 40 ? 10 : 0), 5, 95);
+    const odds = clamp(ODDS_T[t] + Math.min(5, Math.max(0, st - need)) + Math.floor(vStar(C) / 4) - (eraOf(C) === 'mophap' ? 15 : 0) - (C.hp < 40 ? 10 : 0), 5, 95);
     return { t, need, st, items, block, odds };
   }
   // bế quan đột phá (game dừng lại để người chơi quyết định có dùng bảo vật không)
@@ -1743,7 +1743,7 @@
   const SPECIAL = ['b_fruit', 'b_godbone', 'b_death', 'b_peach'];
   function pickBao(C, mode) {
     const lo = mode === 'low' ? 0 : mode === 'mid' ? 1 : mode === 'rare' ? 2 : 0, hi = mode === 'low' ? 1 : mode === 'mid' ? 2 : mode === 'rare' ? 3 : 4;
-    const L_ = BAO.filter(b => !SPECIAL.includes(b[0]) && GRADES.indexOf(b[4]) >= lo && GRADES.indexOf(b[4]) <= hi), van = C ? C.s.van : 10;
+    const L_ = BAO.filter(b => !SPECIAL.includes(b[0]) && GRADES.indexOf(b[4]) >= lo && GRADES.indexOf(b[4]) <= hi), van = C ? vStar(C) : 10;
     const w = b => BAO_GW[b[4]] * (1 + Math.max(0, van - 10) * .06 * GRADES.indexOf(b[4]));
     let r = Math.random() * L_.reduce((a, b) => a + w(b), 0); for (const b of L_) { r -= w(b); if (r <= 0) return b[0]; } return L_[0][0];
   }
@@ -1779,7 +1779,7 @@
   // ---- cơ duyên sinh nhật: rút thăm mỗi năm (Vận khí cao → nhiều cơ duyên hơn; nghèo / mồ côi được bù) ----
   function bdDraw(C, chips) {
     if (C.age < 1 || C.ph === 'dying') return;
-    const van = C.s.van, poor = ['poor', 'orphan'].includes(C.w), an = isAnimal(C);
+    const van = vStar(C), poor = ['poor', 'orphan'].includes(C.w), an = isAnimal(C);
     const L_ = Object.entries(BD).filter(([k, b]) => C.age >= b[3][0] && C.age <= b[3][1] && (!an || ['item', 'gene', 'none', 'bad'].includes(k)));
     if (!L_.length) return;                                     // quá mọi khoảng tuổi của bảng quà (huyết mạch trường thọ)
     const wOf = ([k, b]) => b[2] * (k === 'none' ? Math.max(.35, 1 - (van - 10) * .05) * (poor ? .7 : 1) : k === 'bad' ? Math.max(.4, 1 - (van - 10) * .05) : Math.max(.5, 1 + (van - 10) * .05) * (C.tr.includes('lucky') ? 1.3 : 1));
@@ -1972,7 +1972,7 @@
       apply(C, { gold:Math.max(1, Math.round(base * mul * days / 150 * (C.car && C.car.k === 'merchant' ? 1.5 : 1) * (0.8 + Math.random() * .5) * (er === 'gold' ? 1.4 : er === 'steam' ? 1.2 : er === 'famine' ? .6 : 1))) }, chips);
       careerXp(C, days, chips); }
     else if (k === 'explore') { const e = pick(EN); apply(C, { [e[0]]:rnd(3, 8) }, chips);
-      if (['opened', 'tribes'].includes(er) && Math.random() < .05 + C.s.van * .004) apply(C, { bao:'b_fruit' }, chips);
+      if (['opened', 'tribes'].includes(er) && Math.random() < .05 + vStar(C) * .004) apply(C, { bao:'b_fruit' }, chips);
       if (C.hp < 25 && Math.random() < .06 && !C.nm) { C.death = 'Mất tích khi thám hiểm'; }
       const r = Math.random(), bao = .08 + (carRk(C, 'hunter') >= 1 ? .06 : 0) + (carRk(C, 'fisher') >= 2 ? .05 : 0), soul = .12 + (C.tr.includes('beastf') ? .06 : 0) + (carRk(C, 'hunter') >= 2 ? .05 : 0);
       if (r < soul) apply(C, { gene:'beast' }, chips); else if (r < soul + bao) apply(C, { bao:'any' }, chips); else if (r < soul + bao + .08) apply(C, { lore:pick(['L1', 'L2', 'L11']) }, chips);
@@ -2021,7 +2021,7 @@
   function choose(i, useNm) {
     const C = G.life, ev = evOf(C), c = ev && ev.c[i]; if (!c || (c.if && !c.if(C))) return;
     const chips = []; let ok = true, roll = null;
-    if (c.chk) { const [s, dc] = c.chk, d6 = rnd(1, 6), bonus = Math.floor(C.s.van / 5) + chkBonus(C, s);
+    if (c.chk) { const [s, dc] = c.chk, d6 = rnd(1, 6), bonus = Math.floor(vStar(C) / 5) + chkBonus(C, s);
       roll = UI.pend && UI.pend.i === i ? UI.pend.roll : { s, dc, v:C.s[s], d6, bonus, sum:C.s[s] + d6 + bonus }; ok = roll.sum >= dc;   // đã gieo thì dùng lại, không gieo lại
       if (!ok && useNm && C.nm > 0) { C.nm--; ok = true; roll = Object.assign({}, roll, { nm:1 }); } }
     if (!ok && c.chk && C.nm > 0 && useNm === undefined) { UI.pend = { i, roll }; render(); return; }
