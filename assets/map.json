@@ -1,0 +1,1321 @@
+{
+ "version": 1,
+ "note": "Ghép theo nội dung: số = số vật đánh số trong assets/_preview/inspect_<ảnh>.jpg. id tạm itmNNN_<loại>_NN (mã item + thứ tự); legend_01..29. hint = nội dung, guess = id game đoán.",
+ "images": {
+  "P-001": {
+   "bg": "green",
+   "items": {
+    "itm001_rank_01": {
+     "obj": 1,
+     "hint": "Huy hiệu cấp bậc T0–T2: gỗ + đá mộc mạc"
+    },
+    "itm002_rank_01": {
+     "obj": 2,
+     "hint": "Huy hiệu cấp bậc T3–T5: đồng, hào quang xanh lam"
+    },
+    "itm003_rank_01": {
+     "obj": 3,
+     "hint": "Huy hiệu cấp bậc T6–T8: bạc-vàng, hào quang mạnh"
+    },
+    "itm004_rank_01": {
+     "obj": 4,
+     "hint": "Huy hiệu cấp bậc T9: vàng, vòng chòm sao"
+    }
+   }
+  },
+  "P-002": {
+   "bg": "green",
+   "items": {
+    "itm005_stage_01": {
+     "obj": 1,
+     "hint": "Giai đoạn 1: sơ sinh (bò, đốm sáng)"
+    },
+    "itm005_stage_02": {
+     "obj": 2,
+     "hint": "Giai đoạn 2: ấu thơ (kiếm gỗ, lá xanh)"
+    },
+    "itm005_stage_03": {
+     "obj": 3,
+     "hint": "Giai đoạn 3: thiếu niên (đấm tập, năng lượng xanh nhạt)"
+    },
+    "itm005_stage_04": {
+     "obj": 4,
+     "hint": "Giai đoạn 4: thanh niên (hào quang lửa xanh)"
+    },
+    "itm005_stage_06": {
+     "obj": 7,
+     "hint": "Giai đoạn 6: trung niên (pháp sư, vòng phép tím)"
+    },
+    "itm005_stage_07": {
+     "obj": 9,
+     "hint": "Giai đoạn 7: lão (râu trắng, gậy)"
+    },
+    "itm005_stage_08": {
+     "obj": 8,
+     "hint": "Giai đoạn 8: thăng hoa (cánh thiên thần, vầng sáng)"
+    }
+   }
+  },
+  "P-002 (hiệp sĩ)": {
+   "bg": "green",
+   "items": {
+    "itm005_stage_05": {
+     "obj": 1,
+     "hint": "Giai đoạn 5: trưởng thành (hiệp sĩ giáp vàng) – ảnh làm lại, thay ô 6 cũ"
+    }
+   }
+  },
+  "P-003": {
+   "bg": "green",
+   "items": {
+    "itm006_emblem_01": {
+     "obj": 1,
+     "hint": "Huy hiệu Huyết Tộc Nguyên Thủy – Valcrest (hoa hồng + nanh)"
+    },
+    "itm007_emblem_01": {
+     "obj": 2,
+     "hint": "Huy hiệu Băng Huyết – Winterhale (bông tuyết)"
+    },
+    "itm008_emblem_01": {
+     "obj": 3,
+     "hint": "Huy hiệu Huyết Ước – Pactborn (ấn máu + xích)"
+    },
+    "itm009_emblem_01": {
+     "obj": 4,
+     "hint": "Huy hiệu Lycan / Trăng Máu (trăng đỏ + vuốt sói)"
+    },
+    "itm010_emblem_01": {
+     "obj": 5,
+     "hint": "Huy hiệu Phù Thủy – Học Viện Ngũ Tinh"
+    },
+    "itm011_emblem_01": {
+     "obj": 6,
+     "hint": "Huy hiệu Phái Huyền Phù (bùa thư pháp; nét giống chữ Hán – cắt hoặc chấp nhận)"
+    },
+    "itm012_emblem_01": {
+     "obj": 7,
+     "hint": "Huy hiệu Ảnh Môn (bóng người nửa tối)"
+    },
+    "itm015_emblem_01": {
+     "obj": 8,
+     "hint": "Huy hiệu Thần Tộc (vương miện + vầng sáng)"
+    },
+    "itm014_emblem_01": {
+     "obj": 9,
+     "hint": "Huy hiệu Đấu Khí / Võ đạo (nắm đấm khí trong vòng ấn)"
+    }
+   }
+  },
+  "P-004": {
+   "bg": "green",
+   "items": {
+    "itm013_zombie_01": {
+     "obj": 1,
+     "hint": "Cương thi cơ bản (nhảy, bùa trắng)"
+    },
+    "itm013_zombie_02": {
+     "obj": 2,
+     "hint": "Xác ướp quấn băng"
+    },
+    "itm013_zombie_03": {
+     "obj": 3,
+     "hint": "Chiến binh cương thi giáp bạc, hào quang lam"
+    },
+    "itm013_zombie_04": {
+     "obj": 4,
+     "hint": "Chiến binh cương thi giáp vàng, hào quang cam"
+    },
+    "itm013_zombie_05": {
+     "obj": 5,
+     "hint": "Cương thi vương bay, cánh đen lửa tím"
+    },
+    "itm013_zombie_06": {
+     "obj": 6,
+     "hint": "Hiệu ứng gai tím nứt đất"
+    }
+   }
+  },
+  "P-006a": {
+   "bg": "green",
+   "items": {
+    "itm016_gene_01": {
+     "obj": 1,
+     "hint": "Gene Thỏ: đôi tai",
+     "also": [
+      2
+     ]
+    },
+    "itm016_gene_02": {
+     "obj": 3,
+     "hint": "Gene Thỏ: đuôi bông"
+    },
+    "itm016_gene_03": {
+     "obj": 4,
+     "hint": "Gene Thỏ: chân sau"
+    },
+    "itm016_gene_04": {
+     "obj": 5,
+     "hint": "Gene Rồng: đôi sừng",
+     "also": [
+      6
+     ]
+    },
+    "itm016_gene_05": {
+     "obj": 7,
+     "hint": "Gene Rồng: cánh dơi"
+    },
+    "itm016_gene_06": {
+     "obj": 8,
+     "hint": "Gene Rồng: đuôi gai (xanh lục sẫm)"
+    },
+    "itm016_gene_07": {
+     "obj": 9,
+     "hint": "Gene Đại bàng: cánh"
+    },
+    "itm016_gene_08": {
+     "obj": 10,
+     "hint": "Gene Đại bàng: móng vuốt"
+    },
+    "itm016_gene_09": {
+     "obj": 11,
+     "hint": "Gene Đại bàng: mỏ và mắt"
+    }
+   }
+  },
+  "P-006b": {
+   "bg": "green",
+   "items": {
+    "itm016_gene_10": {
+     "obj": 1,
+     "hint": "Gene Báo: đôi tai"
+    },
+    "itm016_gene_11": {
+     "obj": 2,
+     "hint": "Gene Báo: đuôi"
+    },
+    "itm016_gene_12": {
+     "obj": 3,
+     "hint": "Gene Báo: vuốt"
+    },
+    "itm016_gene_13": {
+     "obj": 4,
+     "hint": "Gene Sói: đôi tai",
+     "also": [
+      5
+     ]
+    },
+    "itm016_gene_14": {
+     "obj": 6,
+     "hint": "Gene Sói: đuôi"
+    },
+    "itm016_gene_15": {
+     "obj": 7,
+     "hint": "Gene Sói: nanh và mõm"
+    }
+   }
+  },
+  "P-007": {
+   "bg": "green",
+   "items": {
+    "itm017_meteor_01": {
+     "obj": 1,
+     "hint": "Gene Tinh Thiết: cẳng tay kim loại thiên thạch"
+    },
+    "itm017_meteor_02": {
+     "obj": 2,
+     "hint": "Gene Tinh Thiết: giáp ngực thiên thạch"
+    },
+    "itm017_meteor_03": {
+     "obj": 3,
+     "hint": "Gene Tinh Thiết: lọ gene dịch cam-bạc"
+    }
+   }
+  },
+  "P-007 (Thiên thạch)": {
+   "bg": "green",
+   "items": {
+    "itm017_meteor_04": {
+     "obj": 1,
+     "hint": "Gene Tinh Thiết: mảnh thiên thạch lửa – ảnh làm lại, thay ô 4 cũ"
+    }
+   }
+  },
+  "P-008": {
+   "bg": "green",
+   "items": {
+    "itm018_fruit_01": {
+     "obj": 1,
+     "hint": "Vạn Huyết Quả: xanh (chưa chín)",
+     "guess": "b_fruit"
+    },
+    "itm018_fruit_02": {
+     "obj": 2,
+     "hint": "Vạn Huyết Quả: chín, gân đỏ rực",
+     "guess": "b_fruit"
+    },
+    "itm018_fruit_03": {
+     "obj": 3,
+     "hint": "Vạn Huyết Quả: dị biến (nứt tím, gai)",
+     "guess": "b_fruit"
+    }
+   }
+  },
+  "P-009": {
+   "bg": "green",
+   "items": {
+    "itm019_core_01": {
+     "obj": 1,
+     "hint": "Thú Hạch nhỏ, xanh lam"
+    },
+    "itm019_core_02": {
+     "obj": 2,
+     "hint": "Thú Hạch lớn nứt, ánh đỏ"
+    },
+    "itm019_core_03": {
+     "obj": 6,
+     "hint": "Nấm Bào Tử Cổ phát quang lam-tím",
+     "guess": "b_spore"
+    },
+    "itm019_core_04": {
+     "obj": 7,
+     "hint": "Túi bào tử cổ, hạt sáng bay",
+     "also": [
+      3,
+      4,
+      5
+     ]
+    }
+   }
+  },
+  "P-011": {
+   "bg": "green",
+   "items": {
+    "itm021_virus_01": {
+     "obj": 1,
+     "hint": "Virus từ trời: thiên thạch đuôi vàng-tím"
+    },
+    "itm021_virus_02": {
+     "obj": 2,
+     "hint": "Lây nhiễm: bàn tay gân vàng-tím"
+    },
+    "itm021_virus_03": {
+     "obj": 3,
+     "hint": "Dị nhân biến thể: người que ninja hào quang tím"
+    }
+   }
+  },
+  "P-013 (New)": {
+   "bg": "green",
+   "items": {
+    "itm023_treasure_01": {
+     "obj": 1,
+     "hint": "Bảo vật Phàm: kiếm sắt-gỗ trơn"
+    },
+    "itm023_treasure_02": {
+     "obj": 2,
+     "hint": "Bảo vật Phàm: trượng gỗ trơn"
+    },
+    "itm023_treasure_03": {
+     "obj": 3,
+     "hint": "Bảo vật Phàm: bùa đá treo dây"
+    },
+    "itm023_treasure_04": {
+     "obj": 4,
+     "hint": "Bảo vật Linh: kiếm khắc rune ánh lam"
+    },
+    "itm023_treasure_05": {
+     "obj": 5,
+     "hint": "Bảo vật Linh: trượng pha lê lam"
+    },
+    "itm023_treasure_06": {
+     "obj": 6,
+     "hint": "Bảo vật Linh: bùa khắc rune ánh lam"
+    },
+    "itm023_treasure_07": {
+     "obj": 7,
+     "hint": "Bảo vật Thần: kiếm vũ trụ vàng"
+    },
+    "itm023_treasure_08": {
+     "obj": 8,
+     "hint": "Bảo vật Thần: trượng cầu sáng vàng"
+    },
+    "itm023_treasure_09": {
+     "obj": 9,
+     "hint": "Bảo vật Thần: bùa vũ trụ vàng",
+     "redo": "dấu sao Gemini đậm nằm sát bùa, còn vệt mờ sau khi gỡ"
+    }
+   }
+  },
+  "P-014": {
+   "bg": "green",
+   "items": {
+    "itm024_skill_01": {
+     "obj": 1,
+     "hint": "Kỹ năng Huyết Thuật: dải máu xoáy",
+     "guess": "sk_blood"
+    },
+    "itm024_skill_02": {
+     "obj": 2,
+     "hint": "Kỹ năng Thánh Quang: chùm tia vàng-trắng",
+     "guess": "sk_heal"
+    },
+    "itm024_skill_03": {
+     "obj": 3,
+     "hint": "Kỹ năng Phi Hành: đôi cánh + vệt gió",
+     "guess": "sk_fly"
+    },
+    "itm024_skill_04": {
+     "obj": 4,
+     "hint": "Kỹ năng Thiết Quyền: nắm đấm thép + vòng chấn",
+     "guess": "sk_iron"
+    }
+   }
+  },
+  "P-016": {
+   "bg": "green",
+   "items": {
+    "itm026_rig_01": {
+     "obj": 1,
+     "hint": "Phụ kiện đầu: búi tóc nam đen"
+    },
+    "itm026_rig_02": {
+     "obj": 2,
+     "hint": "Phụ kiện đầu: tóc nữ dài đen"
+    },
+    "itm026_rig_03": {
+     "obj": 3,
+     "hint": "Phụ kiện đầu: mũ giáp chiến binh lông đỏ"
+    },
+    "itm026_rig_04": {
+     "obj": 4,
+     "hint": "Phụ kiện đầu: mũ phù thủy tím"
+    },
+    "itm026_rig_05": {
+     "obj": 5,
+     "hint": "Phụ kiện đầu: trâm cài đính ngọc"
+    },
+    "itm026_rig_06": {
+     "obj": 6,
+     "hint": "Phụ kiện đầu: mũ trùm vải"
+    },
+    "itm026_rig_07": {
+     "obj": 7,
+     "hint": "Phụ kiện đầu: mặt nạ trơn"
+    },
+    "itm026_rig_08": {
+     "obj": 8,
+     "hint": "Phụ kiện đầu: vương miện vàng nhỏ"
+    }
+   }
+  },
+  "P-017": {
+   "bg": "green",
+   "items": {
+    "itm027_qi_01": {
+     "obj": 1,
+     "hint": "Nguồn khí: Thiên khí (xoáy trắng-lam)",
+     "guess": "thanh"
+    },
+    "itm027_qi_02": {
+     "obj": 2,
+     "hint": "Nguồn khí: Địa khí (xoáy vàng-nâu)",
+     "guess": "thu"
+    },
+    "itm027_qi_03": {
+     "obj": 3,
+     "hint": "Nguồn khí: Ngục khí (xoáy đỏ tím)",
+     "guess": "hac"
+    },
+    "itm027_qi_04": {
+     "obj": 4,
+     "hint": "Nguồn khí: Tinh khí (xoáy bạc-lục lam)",
+     "guess": "co"
+    }
+   }
+  },
+  "P-018a": {
+   "bg": "green",
+   "items": {
+    "itm028_system_01": {
+     "obj": 1,
+     "hint": "Huy hiệu hệ tu luyện Võ đạo phương Đông (nắm đấm chân khí)",
+     "guess": "noi"
+    },
+    "itm028_system_02": {
+     "obj": 2,
+     "hint": "Huy hiệu hệ tu luyện Phù thủy (trượng + tinh thạch)",
+     "guess": "witch"
+    },
+    "itm028_system_03": {
+     "obj": 3,
+     "hint": "Huy hiệu hệ tu luyện Đấu khí phương Tây (kiếm lửa)",
+     "guess": "dau"
+    },
+    "itm028_system_04": {
+     "obj": 4,
+     "hint": "Huy hiệu hệ tu luyện Đạo sĩ – Huyền môn (bùa + âm dương)",
+     "guess": "dao"
+    },
+    "itm028_system_05": {
+     "obj": 5,
+     "hint": "Huy hiệu hệ tu luyện Huyết tộc Khế Ước (chén máu + cánh dơi)",
+     "guess": "vampM"
+    },
+    "itm028_system_06": {
+     "obj": 6,
+     "hint": "Huy hiệu hệ tu luyện Yêu tu (vuốt cáo chín đuôi + linh châu)",
+     "guess": "beast"
+    },
+    "itm028_system_07": {
+     "obj": 7,
+     "hint": "Huy hiệu hệ tu luyện Ảnh Môn (mặt nạ ninja + đoản đao)",
+     "guess": "nin"
+    },
+    "itm028_system_08": {
+     "obj": 8,
+     "hint": "Huy hiệu hệ tu luyện Cương thi (bàn tay xác sống)",
+     "guess": "jiang"
+    },
+    "itm028_system_09": {
+     "obj": 9,
+     "hint": "Huy hiệu hệ tu luyện Dị nhân – Gene Ẩn (chuỗi gene + cửa không gian)",
+     "guess": "mutant"
+    }
+   }
+  },
+  "P-018b": {
+   "bg": "green",
+   "items": {
+    "itm028_system_10": {
+     "obj": 1,
+     "hint": "Huy hiệu hệ tu luyện 10: đầu ác quỷ lửa (chưa rõ tên hệ trong game)"
+    },
+    "itm028_system_11": {
+     "obj": 2,
+     "hint": "Huy hiệu hệ tu luyện 11: vương miện cánh + vầng sáng (Thần tộc?)"
+    },
+    "itm028_system_12": {
+     "obj": 3,
+     "hint": "Huy hiệu hệ tu luyện 12: đầu sói + trăng máu (Lang tộc)",
+     "guess": "wolf"
+    },
+    "itm028_system_13": {
+     "obj": 4,
+     "hint": "Huy hiệu hệ tu luyện 13: bánh xe tím + xoáy sao (chưa rõ tên hệ trong game)"
+    }
+   }
+  },
+  "P-020": {
+   "bg": "green",
+   "items": {
+    "itm030_race_01": {
+     "obj": 1,
+     "hint": "Dáng nền: thường dân"
+    },
+    "itm030_race_02": {
+     "obj": 2,
+     "hint": "Dáng nền: võ giả (băng đô, thế đấm)"
+    },
+    "itm030_race_03": {
+     "obj": 3,
+     "hint": "Dáng nền: pháp sư (mũ nhọn + trượng)"
+    },
+    "itm030_race_04": {
+     "obj": 4,
+     "hint": "Dáng nền: huyết tộc (áo choàng cổ cao)"
+    },
+    "itm030_race_05": {
+     "obj": 5,
+     "hint": "Dáng nền: người sói"
+    },
+    "itm030_race_06": {
+     "obj": 6,
+     "hint": "Dáng nền: cương thi (nhảy, bùa trắng)"
+    },
+    "itm030_race_07": {
+     "obj": 7,
+     "hint": "Dáng nền: xác ướp"
+    },
+    "itm030_race_08": {
+     "obj": 8,
+     "hint": "Dáng nền: dị nhân (ninja bịt mặt)"
+    }
+   }
+  },
+  "P-021": {
+   "bg": "green",
+   "items": {
+    "itm031_variant_01": {
+     "obj": 1,
+     "hint": "Võ giả nam (băng đô đỏ, ngực trần)"
+    },
+    "itm031_variant_02": {
+     "obj": 2,
+     "hint": "Võ giả nữ (tóc đuôi ngựa, áo nhẹ)"
+    },
+    "itm031_variant_03": {
+     "obj": 3,
+     "hint": "Pháp sư nam (mũ cao, áo lam, trượng)"
+    },
+    "itm031_variant_04": {
+     "obj": 4,
+     "hint": "Pháp sư nữ (mũ rộng vành, váy lam, đũa phép)"
+    },
+    "itm031_variant_05": {
+     "obj": 5,
+     "hint": "Huyết tộc nam (áo choàng cổ cao)"
+    },
+    "itm031_variant_06": {
+     "obj": 6,
+     "hint": "Huyết tộc nữ (váy đỏ + dơi)"
+    },
+    "itm031_variant_07": {
+     "obj": 7,
+     "hint": "Dị nhân nam (ninja đen + đao)"
+    },
+    "itm031_variant_08": {
+     "obj": 8,
+     "hint": "Dị nhân nữ (ninja tím, phi tiêu)"
+    }
+   }
+  },
+  "P-022": {
+   "bg": "green",
+   "items": {
+    "itm032_beast_01": {
+     "obj": 1,
+     "hint": "Thú nền: thỏ",
+     "redo": "viền neon xanh quanh con vật trùng màu nền nên bị khử, mất viền"
+    },
+    "itm032_beast_02": {
+     "obj": 2,
+     "hint": "Thú nền: rồng nhỏ",
+     "redo": "viền neon xanh quanh con vật trùng màu nền nên bị khử, mất viền"
+    },
+    "itm032_beast_03": {
+     "obj": 3,
+     "hint": "Thú nền: đại bàng",
+     "redo": "viền neon xanh quanh con vật trùng màu nền nên bị khử, mất viền"
+    },
+    "itm032_beast_04": {
+     "obj": 4,
+     "hint": "Thú nền: báo",
+     "redo": "viền neon xanh quanh con vật trùng màu nền nên bị khử, mất viền"
+    },
+    "itm032_beast_05": {
+     "obj": 5,
+     "hint": "Thú nền: sói",
+     "redo": "viền neon xanh quanh con vật trùng màu nền nên bị khử, mất viền"
+    }
+   }
+  },
+  "P-022 (egg)": {
+   "bg": "green",
+   "items": {
+    "itm032_beast_06": {
+     "obj": 1,
+     "hint": "Thú nền: trứng thú nứt phát sáng – ảnh làm lại, thay ô 6"
+    }
+   }
+  },
+  "P-023a (New)": {
+   "bg": "green",
+   "items": {
+    "legend_01": {
+     "obj": 1,
+     "hint": "Nhân vật truyền kỳ 1: Veyra – phù thủy loài người"
+    },
+    "legend_02": {
+     "obj": 2,
+     "hint": "Nhân vật truyền kỳ 2: Malgrath – ác quỷ cổ đại / Chúa Ngục"
+    },
+    "legend_03": {
+     "obj": 3,
+     "hint": "Nhân vật truyền kỳ 3: Theron – anh hùng huyền thoại"
+    },
+    "legend_04": {
+     "obj": 4,
+     "hint": "Nhân vật truyền kỳ 4: Lão Thú – cổ thú hình cáo"
+    },
+    "legend_05": {
+     "obj": 5,
+     "hint": "Nhân vật truyền kỳ 5: Iris Kael – dị nhân nữ"
+    },
+    "legend_06": {
+     "obj": 6,
+     "hint": "Nhân vật truyền kỳ 6: Huyền Chân Tử – đạo sĩ phương Đông"
+    },
+    "legend_07": {
+     "obj": 7,
+     "hint": "Nhân vật truyền kỳ 7: Rhen Valcrest – huyết tộc lai Lang tộc"
+    },
+    "legend_08": {
+     "obj": 8,
+     "hint": "Nhân vật truyền kỳ 8: Edric – Huyết Ước / Pactborn"
+    },
+    "legend_09": {
+     "obj": 9,
+     "hint": "Nhân vật truyền kỳ 9: Tuyết Ảnh – ninja nữ Ảnh Môn",
+     "redo": "dấu sao Gemini đậm đè lên hình, còn vệt mờ sau khi gỡ"
+    }
+   }
+  },
+  "P-023b (New)": {
+   "bg": "green",
+   "items": {
+    "legend_10": {
+     "obj": 1,
+     "hint": "Nhân vật truyền kỳ 10: Thái Hư – thần nguyên sơ"
+    },
+    "legend_11": {
+     "obj": 2,
+     "hint": "Nhân vật truyền kỳ 11: Huyền Nguyệt – nữ thần Mặt Trăng"
+    },
+    "legend_12": {
+     "obj": 3,
+     "hint": "Nhân vật truyền kỳ 12: Lôi Chủ – thần sấm"
+    },
+    "legend_13": {
+     "obj": 4,
+     "hint": "Nhân vật truyền kỳ 13: Nham Mẫu – thần đất"
+    },
+    "legend_14": {
+     "obj": 5,
+     "hint": "Nhân vật truyền kỳ 14: Thương Hải – thần biển"
+    },
+    "legend_15": {
+     "obj": 6,
+     "hint": "Nhân vật truyền kỳ 15: Phán Quan – thần phán xét cõi âm"
+    },
+    "legend_16": {
+     "obj": 7,
+     "hint": "Nhân vật truyền kỳ 16: Caelum Vane – pháp sư / học giả"
+    },
+    "legend_17": {
+     "obj": 8,
+     "hint": "Nhân vật truyền kỳ 17: Aldric Valcrest – thủy tổ Huyết tộc"
+    },
+    "legend_18": {
+     "obj": 9,
+     "hint": "Nhân vật truyền kỳ 18: Torvald – người Hrafn mang lời nguyền Lang tộc",
+     "redo": "dấu sao Gemini đậm đè lên hình, còn vệt mờ sau khi gỡ"
+    }
+   }
+  },
+  "P-023c (New)": {
+   "bg": "green",
+   "items": {
+    "legend_19": {
+     "obj": 1,
+     "hint": "Nhân vật truyền kỳ 19: Seraphine Valcrest – huyết tộc"
+    },
+    "legend_20": {
+     "obj": 2,
+     "hint": "Nhân vật truyền kỳ 20: Corvin Valcrest – huyết tộc"
+    },
+    "legend_21": {
+     "obj": 3,
+     "hint": "Nhân vật truyền kỳ 21: Isolde Valcrest – huyết tộc"
+    },
+    "legend_22": {
+     "obj": 4,
+     "hint": "Nhân vật truyền kỳ 22: Alpha Đầu Bạc – Lang tộc / Hrafn"
+    },
+    "legend_23": {
+     "obj": 5,
+     "hint": "Nhân vật truyền kỳ 23: Vesper – thí nghiệm Vesper–Lycan"
+    },
+    "legend_24": {
+     "obj": 6,
+     "hint": "Nhân vật truyền kỳ 24: Kẻ Gập Thành – dị nhân Omega"
+    },
+    "legend_25": {
+     "obj": 7,
+     "hint": "Nhân vật truyền kỳ 25: Thủy Nương – dị nhân sóng biển"
+    },
+    "legend_26": {
+     "obj": 8,
+     "hint": "Nhân vật truyền kỳ 26: Kael của Hẻm Núi Lửa – anh hùng huyền thoại"
+    }
+   }
+  },
+  "P-023d": {
+   "bg": "green",
+   "items": {
+    "legend_28": {
+     "obj": 1,
+     "hint": "Nhân vật truyền kỳ 28: Đứa trẻ ở Vực Sâu (khói đen-trắng, xích)"
+    }
+   }
+  },
+  "P-024": {
+   "bg": "green",
+   "items": {
+    "itm034_activity_01": {
+     "obj": 1,
+     "hint": "Hoạt động: học hành (đọc cuộn)"
+    },
+    "itm034_activity_02": {
+     "obj": 2,
+     "hint": "Hoạt động: rèn luyện (đấm cọc gỗ)"
+    },
+    "itm034_activity_03": {
+     "obj": 3,
+     "hint": "Hoạt động: kết hôn (hai người + vòng tim)"
+    },
+    "itm034_activity_04": {
+     "obj": 4,
+     "hint": "Hoạt động: chiến đấu (lao tới với kiếm)"
+    },
+    "itm034_activity_05": {
+     "obj": 5,
+     "hint": "Hoạt động: bế quan (thiền trong vòng thái cực)"
+    }
+   }
+  },
+  "P-024 (elderly)": {
+   "bg": "green",
+   "items": {
+    "itm034_activity_06": {
+     "obj": 1,
+     "hint": "Hoạt động: mệnh chung (cụ già tan thành khói) – ảnh làm lại, thay ô 6"
+    }
+   }
+  },
+  "P-026 (New)": {
+   "bg": "green",
+   "items": {
+    "itm036_region_01": {
+     "obj": 1,
+     "hint": "Vùng: Bắc địa (băng, hang băng, thông)"
+    },
+    "itm036_region_02": {
+     "obj": 2,
+     "hint": "Vùng: núi xám, hẻm núi, xích rỉ"
+    },
+    "itm036_region_03": {
+     "obj": 3,
+     "hint": "Vùng: rừng cổ phát sáng"
+    },
+    "itm036_region_04": {
+     "obj": 4,
+     "hint": "Vùng: biển cả, sóng lớn, xoáy vực"
+    },
+    "itm036_region_05": {
+     "obj": 5,
+     "hint": "Vùng: núi xanh sương mù, miếu nhỏ"
+    },
+    "itm036_region_06": {
+     "obj": 6,
+     "hint": "Vùng: thành lũy, đấu trường tròn, tháp vàng"
+    },
+    "itm036_region_07": {
+     "obj": 7,
+     "hint": "Vùng: địa ngục dung nham, xích"
+    },
+    "itm036_region_08": {
+     "obj": 8,
+     "hint": "Vùng: sa mạc, kim tự tháp, cột đổ"
+    }
+   }
+  },
+  "P-027": {
+   "bg": "green",
+   "items": {
+    "itm037_stat_01": {
+     "obj": 1,
+     "hint": "Chỉ số: sinh lực (tim-lá xanh)",
+     "redo": "icon lá xanh nằm trên tấm tròn xanh: phần ruột xanh bị khử cùng màu tấm, chỉ còn nét viền"
+    },
+    "itm037_stat_02": {
+     "obj": 2,
+     "hint": "Chỉ số: hồn lực (ngọn lửa lam)"
+    },
+    "itm037_stat_03": {
+     "obj": 3,
+     "hint": "Chỉ số: huyết khí (giọt máu đỏ)"
+    },
+    "itm037_stat_04": {
+     "obj": 4,
+     "hint": "Chỉ số: vận khí (sao bốn cánh vàng)"
+    },
+    "itm037_stat_05": {
+     "obj": 5,
+     "hint": "Chỉ số: thọ nguyên (đồng hồ cát)"
+    },
+    "itm037_stat_06": {
+     "obj": 6,
+     "hint": "Chỉ số: thăng hồn (linh khí trắng)"
+    },
+    "itm037_stat_07": {
+     "obj": 7,
+     "hint": "Chỉ số: tinh khí (sao băng bạc-lục lam)"
+    },
+    "itm037_stat_08": {
+     "obj": 8,
+     "hint": "Chỉ số: mị lực (tim hồng-vàng lấp lánh)"
+    }
+   },
+   "plate": true
+  },
+  "P-028": {
+   "bg": "green",
+   "items": {
+    "itm038_weapon_05": {
+     "obj": 5,
+     "hint": "Trang bị sơ khai: mũ trùm vải",
+     "redo": "phần tối của mũ hòa vào nền tối của tấm tròn, viền xanh sáng quanh vành"
+    },
+    "itm038_weapon_08": {
+     "obj": 8,
+     "hint": "Trang bị sơ khai: áo choàng rách",
+     "redo": "phần tối của áo hòa vào nền tối của tấm tròn, viền xanh sáng quanh vành"
+    },
+    "itm038_weapon_01": {
+     "obj": 1,
+     "hint": "Trang bị sơ khai: kiếm gỗ"
+    },
+    "itm038_weapon_02": {
+     "obj": 2,
+     "hint": "Trang bị sơ khai: gậy học việc (ngọc tím)"
+    },
+    "itm038_weapon_03": {
+     "obj": 3,
+     "hint": "Trang bị sơ khai: dao găm"
+    },
+    "itm038_weapon_04": {
+     "obj": 4,
+     "hint": "Trang bị sơ khai: sách phép cũ"
+    },
+    "itm038_weapon_06": {
+     "obj": 6,
+     "hint": "Trang bị sơ khai: đôi bông tai ma thuật"
+    },
+    "itm038_weapon_07": {
+     "obj": 7,
+     "hint": "Trang bị sơ khai: găng vuốt"
+    },
+    "itm038_weapon_09": {
+     "obj": 9,
+     "hint": "Trang bị sơ khai: cầu lửa nhỏ"
+    }
+   },
+   "plate": true
+  },
+  "P-029": {
+   "bg": "green",
+   "items": {
+    "itm039_relic_01": {
+     "obj": 1,
+     "hint": "Huyền thoại: kiếm Thiên Đế (lam-trắng vũ trụ)"
+    },
+    "itm039_relic_02": {
+     "obj": 2,
+     "hint": "Huyền thoại: thương Hỗn Độn (tím-đen xoáy hư không)"
+    },
+    "itm039_relic_03": {
+     "obj": 3,
+     "hint": "Huyền thoại: trượng Thần Ma (vàng-tím)"
+    },
+    "itm039_relic_04": {
+     "obj": 4,
+     "hint": "Huyền thoại: bảo vật tối thượng (ba món lơ lửng)"
+    },
+    "itm039_relic_05": {
+     "obj": 5,
+     "hint": "Huyền thoại: cánh Sáng Thế (trắng-vàng)"
+    },
+    "itm039_relic_06": {
+     "obj": 6,
+     "hint": "Huyền thoại: cánh Tinh Không (lam đậm, sao)"
+    },
+    "itm039_relic_07": {
+     "obj": 7,
+     "hint": "Huyền thoại: cánh Hỗn Độn (tím sẫm)"
+    },
+    "itm039_relic_08": {
+     "obj": 8,
+     "hint": "Huyền thoại: cánh Phượng Huyết (đỏ-cam lửa)"
+    }
+   }
+  },
+  "P-029 (vương miện)": {
+   "bg": "green",
+   "items": {
+    "itm039_relic_09": {
+     "obj": 1,
+     "hint": "Huyền thoại: vương miện Sáng Thế (vàng, đá quý, quầng sáng) – ảnh làm lại, thay ô 9"
+    }
+   }
+  },
+  "P-032": {
+   "bg": "green",
+   "items": {
+    "itm042_logo_01": {
+     "obj": 1,
+     "hint": "Biểu tượng game: lõi thiên thạch trong vòng, người que, hào quang bạc-lục lam"
+    }
+   }
+  },
+  "P-012": {
+   "bg": "magenta",
+   "items": {
+    "itm022_herb_01": {
+     "obj": 1,
+     "hint": "Lông Bão Đại Bàng: lông xám-lam xoáy gió"
+    },
+    "itm022_herb_02": {
+     "obj": 2,
+     "hint": "Lông bão nhỏ: tia sét mảnh"
+    },
+    "itm022_herb_03": {
+     "obj": 3,
+     "hint": "Linh Thảo Thanh Tâm: cành lá ngọc, giọt sương"
+    },
+    "itm022_herb_04": {
+     "obj": 4,
+     "hint": "Linh Thảo Thanh Tâm: nụ, ánh nhạt"
+    }
+   }
+  },
+  "P-030a": {
+   "bg": "magenta",
+   "items": {
+    "itm040_book_01": {
+     "obj": 1,
+     "hint": "Sách Vòng Đời 1: bìa da nâu, lá nhỏ"
+    },
+    "itm040_book_02": {
+     "obj": 2,
+     "hint": "Sách Vòng Đời 2: bìa xanh lục đậm, cây nhỏ"
+    },
+    "itm040_book_03": {
+     "obj": 3,
+     "hint": "Sách Vòng Đời 3: bìa xanh lam, sóng nước"
+    },
+    "itm040_book_04": {
+     "obj": 4,
+     "hint": "Sách Vòng Đời 4: bìa tím, ngôi sao"
+    },
+    "itm040_book_05": {
+     "obj": 5,
+     "hint": "Sách Vòng Đời 5: bìa đỏ, ngọn lửa"
+    }
+   }
+  },
+  "P-030b": {
+   "bg": "magenta",
+   "items": {
+    "itm040_book_07": {
+     "obj": 1,
+     "hint": "Sách Vòng Đời 7: bìa vàng, mặt trời"
+    },
+    "itm040_book_08": {
+     "obj": 2,
+     "hint": "Sách Vòng Đời 8: bìa bạc, trăng khuyết"
+    },
+    "itm040_book_09": {
+     "obj": 3,
+     "hint": "Sách Vòng Đời 9: bìa đen, đầu lâu"
+    },
+    "itm040_book_10": {
+     "obj": 4,
+     "hint": "Sách Vòng Đời 10: bìa trắng cẩm thạch, lông vũ"
+    },
+    "itm040_book_11": {
+     "obj": 5,
+     "hint": "Sách Vòng Đời 11: bìa xanh ngọc, xoáy"
+    }
+   }
+  },
+  "P-030b (12 book)": {
+   "bg": "magenta",
+   "items": {
+    "itm040_book_12": {
+     "obj": 1,
+     "hint": "Sách Vòng Đời 12: bìa cam, vương miện – ảnh làm lại"
+    }
+   }
+  },
+  "P-030c": {
+   "bg": "magenta",
+   "items": {
+    "itm040_book_06": {
+     "obj": 1,
+     "hint": "Sách Vòng Đời 6: bìa xám đá, núi – ảnh làm lại, thay cuốn 6 của P-030a"
+    }
+   }
+  },
+  "P-023f": {
+   "bg": "magenta",
+   "items": {
+    "legend_27": {
+     "obj": 1,
+     "hint": "Nhân vật truyền kỳ 27: Lâm Thanh Phong (gió + lá) – ảnh làm lại"
+    },
+    "legend_29": {
+     "obj": 4,
+     "hint": "Nhân vật truyền kỳ 29: Lycan – ảnh làm lại"
+    }
+   },
+   "spare": {
+    "legend_29_alt": {
+     "obj": 3,
+     "hint": "Dự phòng Lycan (ô 3)"
+    }
+   }
+  },
+  "P-005": {
+   "bg": "black",
+   "items": {
+    "itm014_qifx_01": {
+     "obj": 1,
+     "hint": "Khí kình: sóng xung kích quanh lõi cam-trắng"
+    },
+    "itm014_qifx_02": {
+     "obj": 2,
+     "hint": "Khí kình: ấn tay vàng (vòng đường nét)"
+    },
+    "itm014_qifx_03": {
+     "obj": 3,
+     "hint": "Khí kình: cú đấm tia lam-trắng"
+    },
+    "itm014_qifx_04": {
+     "obj": 4,
+     "hint": "Khí kình: vệt gió lưỡi liềm trắng-lam"
+    }
+   }
+  },
+  "P-010": {
+   "bg": "black",
+   "items": {
+    "itm020_fusion_01": {
+     "obj": 1,
+     "hint": "Dung hợp thành công: xoáy lam-đỏ"
+    },
+    "itm020_fusion_02": {
+     "obj": 2,
+     "hint": "Dung hợp hoàn hảo: bùng vàng + vòng xung kích"
+    },
+    "itm020_fusion_03": {
+     "obj": 3,
+     "hint": "Đột biến: vết nứt tím cùng mảnh sắc"
+    }
+   }
+  },
+  "P-019a": {
+   "bg": "black",
+   "items": {
+    "itm029_aura_fire_t1": {
+     "obj": 1,
+     "hint": "Hào quang bậc T1, bảng màu cam-đỏ-vàng lửa (Võ giả, Đấu khí, Thể chất)"
+    },
+    "itm029_aura_fire_t2": {
+     "obj": 2,
+     "hint": "Hào quang bậc T2, bảng màu cam-đỏ-vàng lửa (Võ giả, Đấu khí, Thể chất)"
+    },
+    "itm029_aura_fire_t3": {
+     "obj": 3,
+     "hint": "Hào quang bậc T3, bảng màu cam-đỏ-vàng lửa (Võ giả, Đấu khí, Thể chất)"
+    },
+    "itm029_aura_fire_t4": {
+     "obj": 4,
+     "hint": "Hào quang bậc T4, bảng màu cam-đỏ-vàng lửa (Võ giả, Đấu khí, Thể chất)"
+    },
+    "itm029_aura_fire_t5": {
+     "obj": 5,
+     "hint": "Hào quang bậc T5, bảng màu cam-đỏ-vàng lửa (Võ giả, Đấu khí, Thể chất)"
+    },
+    "itm029_aura_fire_t6": {
+     "obj": 6,
+     "hint": "Hào quang bậc T6, bảng màu cam-đỏ-vàng lửa (Võ giả, Đấu khí, Thể chất)"
+    },
+    "itm029_aura_fire_t7": {
+     "obj": 7,
+     "hint": "Hào quang bậc T7, bảng màu cam-đỏ-vàng lửa (Võ giả, Đấu khí, Thể chất)"
+    },
+    "itm029_aura_fire_t8": {
+     "obj": 8,
+     "hint": "Hào quang bậc T8, bảng màu cam-đỏ-vàng lửa (Võ giả, Đấu khí, Thể chất)"
+    }
+   }
+  },
+  "P-019b": {
+   "bg": "black",
+   "items": {
+    "itm029_aura_arcane_t1": {
+     "obj": 1,
+     "hint": "Hào quang bậc T1, bảng màu lam-tím-tím đậm huyền bí (Phù thủy, Pháp sư, Thần ma)"
+    },
+    "itm029_aura_arcane_t2": {
+     "obj": 2,
+     "hint": "Hào quang bậc T2, bảng màu lam-tím-tím đậm huyền bí (Phù thủy, Pháp sư, Thần ma)"
+    },
+    "itm029_aura_arcane_t3": {
+     "obj": 3,
+     "hint": "Hào quang bậc T3, bảng màu lam-tím-tím đậm huyền bí (Phù thủy, Pháp sư, Thần ma)"
+    },
+    "itm029_aura_arcane_t4": {
+     "obj": 4,
+     "hint": "Hào quang bậc T4, bảng màu lam-tím-tím đậm huyền bí (Phù thủy, Pháp sư, Thần ma)"
+    },
+    "itm029_aura_arcane_t5": {
+     "obj": 5,
+     "hint": "Hào quang bậc T5, bảng màu lam-tím-tím đậm huyền bí (Phù thủy, Pháp sư, Thần ma)"
+    },
+    "itm029_aura_arcane_t6": {
+     "obj": 6,
+     "hint": "Hào quang bậc T6, bảng màu lam-tím-tím đậm huyền bí (Phù thủy, Pháp sư, Thần ma)"
+    },
+    "itm029_aura_arcane_t7": {
+     "obj": 7,
+     "hint": "Hào quang bậc T7, bảng màu lam-tím-tím đậm huyền bí (Phù thủy, Pháp sư, Thần ma)"
+    },
+    "itm029_aura_arcane_t8": {
+     "obj": 8,
+     "hint": "Hào quang bậc T8, bảng màu lam-tím-tím đậm huyền bí (Phù thủy, Pháp sư, Thần ma)"
+    }
+   }
+  },
+  "P-019c": {
+   "bg": "black",
+   "items": {
+    "itm029_aura_blood_t1": {
+     "obj": 1,
+     "hint": "Hào quang bậc T1, bảng màu đỏ thẫm-đen-tím máu (Huyết tộc, Dị nhân)"
+    },
+    "itm029_aura_blood_t2": {
+     "obj": 2,
+     "hint": "Hào quang bậc T2, bảng màu đỏ thẫm-đen-tím máu (Huyết tộc, Dị nhân)"
+    },
+    "itm029_aura_blood_t3": {
+     "obj": 3,
+     "hint": "Hào quang bậc T3, bảng màu đỏ thẫm-đen-tím máu (Huyết tộc, Dị nhân)"
+    },
+    "itm029_aura_blood_t4": {
+     "obj": 4,
+     "hint": "Hào quang bậc T4, bảng màu đỏ thẫm-đen-tím máu (Huyết tộc, Dị nhân)"
+    },
+    "itm029_aura_blood_t5": {
+     "obj": 5,
+     "hint": "Hào quang bậc T5, bảng màu đỏ thẫm-đen-tím máu (Huyết tộc, Dị nhân)"
+    },
+    "itm029_aura_blood_t6": {
+     "obj": 6,
+     "hint": "Hào quang bậc T6, bảng màu đỏ thẫm-đen-tím máu (Huyết tộc, Dị nhân)"
+    },
+    "itm029_aura_blood_t7": {
+     "obj": 7,
+     "hint": "Hào quang bậc T7, bảng màu đỏ thẫm-đen-tím máu (Huyết tộc, Dị nhân)"
+    },
+    "itm029_aura_blood_t8": {
+     "obj": 8,
+     "hint": "Hào quang bậc T8, bảng màu đỏ thẫm-đen-tím máu (Huyết tộc, Dị nhân)"
+    }
+   }
+  },
+  "P-019d": {
+   "bg": "black",
+   "items": {
+    "itm029_aura_wild_t1": {
+     "obj": 1,
+     "hint": "Hào quang bậc T1, bảng màu xanh lục-lam-bạc hoang dã (Lang tộc, Cương thi, Thú)"
+    },
+    "itm029_aura_wild_t2": {
+     "obj": 2,
+     "hint": "Hào quang bậc T2, bảng màu xanh lục-lam-bạc hoang dã (Lang tộc, Cương thi, Thú)"
+    },
+    "itm029_aura_wild_t3": {
+     "obj": 3,
+     "hint": "Hào quang bậc T3, bảng màu xanh lục-lam-bạc hoang dã (Lang tộc, Cương thi, Thú)"
+    },
+    "itm029_aura_wild_t4": {
+     "obj": 4,
+     "hint": "Hào quang bậc T4, bảng màu xanh lục-lam-bạc hoang dã (Lang tộc, Cương thi, Thú)"
+    },
+    "itm029_aura_wild_t5": {
+     "obj": 5,
+     "hint": "Hào quang bậc T5, bảng màu xanh lục-lam-bạc hoang dã (Lang tộc, Cương thi, Thú)"
+    },
+    "itm029_aura_wild_t6": {
+     "obj": 6,
+     "hint": "Hào quang bậc T6, bảng màu xanh lục-lam-bạc hoang dã (Lang tộc, Cương thi, Thú)"
+    },
+    "itm029_aura_wild_t7": {
+     "obj": 7,
+     "hint": "Hào quang bậc T7, bảng màu xanh lục-lam-bạc hoang dã (Lang tộc, Cương thi, Thú)"
+    },
+    "itm029_aura_wild_t8": {
+     "obj": 8,
+     "hint": "Hào quang bậc T8, bảng màu xanh lục-lam-bạc hoang dã (Lang tộc, Cương thi, Thú)"
+    }
+   }
+  },
+  "P-019a (T9)": {
+   "bg": "black",
+   "items": {
+    "itm029_aura_fire_t9": {
+     "obj": 1,
+     "hint": "Hào quang bậc T9 bảng lửa – ảnh làm lại; 3 bảng màu còn lại dùng hue-rotate trong CSS"
+    }
+   }
+  },
+  "P-025": {
+   "bg": "black",
+   "items": {
+    "itm035_vfx_01": {
+     "obj": 1,
+     "hint": "Hiệu ứng đột phá: cột sáng + vòng sét"
+    },
+    "itm035_vfx_02": {
+     "obj": 2,
+     "hint": "Hiệu ứng Thiên kiếp: mây bão, chín tia sét"
+    },
+    "itm035_vfx_03": {
+     "obj": 3,
+     "hint": "Hiệu ứng Nghịch Mệnh: đồng hồ cát nứt, ánh vàng-đỏ"
+    },
+    "itm035_vfx_04": {
+     "obj": 4,
+     "hint": "Hiệu ứng Trang chép: trang sách phát sáng, hồn bay lên"
+    }
+   }
+  },
+  "P-015a": {
+   "bg": "scene",
+   "items": {
+    "P-015a": {
+     "obj": 1,
+     "hint": "Ảnh nền cảnh: Tháp Cổ"
+    }
+   }
+  },
+  "P-015b": {
+   "bg": "scene",
+   "items": {
+    "P-015b": {
+     "obj": 1,
+     "hint": "Ảnh nền cảnh: Vực Hắc Uyên"
+    }
+   }
+  },
+  "P-015c": {
+   "bg": "scene",
+   "items": {
+    "P-015c": {
+     "obj": 1,
+     "hint": "Ảnh nền cảnh: Chiến Trường Vạn Tộc"
+    }
+   }
+  },
+  "P-015d": {
+   "bg": "scene",
+   "items": {
+    "P-015d": {
+     "obj": 1,
+     "hint": "Ảnh nền cảnh: Địa Ngục 18 Tầng (chỉ ~7–8 tầng)"
+    }
+   }
+  }
+ }
+}

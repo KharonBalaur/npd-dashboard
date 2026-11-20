@@ -1,0 +1,77 @@
+{
+ "version": 1,
+ "size": 256,
+ "assets": {
+  "itm040_book_06": {
+   "file": "itm040_book_06.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-030c",
+   "obj": [
+    1
+   ],
+   "kind": "sprite",
+   "bg": "magenta",
+   "alpha": true,
+   "bytes": 14632,
+   "q": 90,
+   "item": "ITM-040",
+   "temp_id": true,
+   "hint": "Sách Vòng Đời 6: bìa xám đá, núi – ảnh làm lại, thay cuốn 6 của P-030a"
+  },
+  "legend_27": {
+   "file": "legend_27.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-023f",
+   "obj": [
+    1
+   ],
+   "kind": "sprite",
+   "bg": "magenta",
+   "alpha": true,
+   "bytes": 25594,
+   "q": 90,
+   "item": "ITM-033",
+   "temp_id": true,
+   "hint": "Nhân vật truyền kỳ 27: Lâm Thanh Phong (gió + lá) – ảnh làm lại"
+  },
+  "legend_29": {
+   "file": "legend_29.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-023f",
+   "obj": [
+    4
+   ],
+   "kind": "sprite",
+   "bg": "magenta",
+   "alpha": true,
+   "bytes": 19714,
+   "q": 90,
+   "item": "ITM-033",
+   "temp_id": true,
+   "hint": "Nhân vật truyền kỳ 29: Lycan – ảnh làm lại"
+  }
+ },
+ "spare": {
+  "legend_29_alt": {
+   "file": "_spare/legend_29_alt.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-023f",
+   "obj": [
+    3
+   ],
+   "kind": "sprite",
+   "bg": "magenta",
+   "alpha": true,
+   "bytes": 20844,
+   "q": 90,
+   "item": "ITM-033",
+   "temp_id": true,
+   "hint": "Dự phòng Lycan (ô 3)"
+  }
+ },
+ "needs_redo": {}
+}
