@@ -66,6 +66,7 @@ RAW = ROOT / 'raw-art'
 OUT = ROOT / 'assets'
 PREV = OUT / '_preview'
 SPARE = OUT / '_spare'
+REDO = OUT / '_needs_redo'
 SIZE = 256
 KB_MAX = 40            # đích dung lượng webp (KB); giảm chất lượng dần nếu vượt
 PLATE_FILL = (18, 22, 32)
@@ -76,7 +77,7 @@ KEYS = {'green': (0, 255, 0), 'magenta': (255, 0, 255)}
 
 # đợt 1: hai ảnh đã đủ, ánh xạ do chủ dự án chốt (map.json, nếu có, được ưu tiên)
 BUILTIN = {
-    'P-030c': {'bg': 'magenta', 'items': {'book_06': 1}},
+    'P-030c': {'bg': 'magenta', 'items': {'itm040_book_06': 1}},
     'P-023f': {'bg': 'magenta', 'items': {'legend_27': 1, 'legend_29': 4}, 'spare': {'legend_29_alt': 3}},
 }
 BATCH_REWORK = ['P-030c', 'P-023f']
@@ -105,6 +106,8 @@ def stems(raw=RAW):
 
 def read_map(path=None):
     p = Path(path) if path else RAW / 'map.json'
+    if not path and not p.exists() and (OUT / 'map.json').exists():
+        p = OUT / 'map.json'                               # bản sao map nằm trong repo (assets/map.json)
     if not p.exists():
         return {'images': {}}
     d = json.loads(p.read_text(encoding='utf-8'))
@@ -147,6 +150,15 @@ def detect_bg(rgb, stem=''):
     if fr['black'] >= 0.35:
         return 'black'
     return 'scene'
+
+
+def find_alpha_lines(alpha, frac=0.97, maxw=0.035):
+    """khe giữa các ô còn lại dạng vạch xanh sẫm chạy suốt chiều cao / chiều rộng (khử nền không loại được): nối mọi vật thành một, nên bỏ đi."""
+    h, w = alpha.shape
+    fg = alpha > 0.5
+    cols = [r for r in runs(fg.mean(axis=0) >= frac) if (r[1] - r[0]) <= maxw * w]
+    rows = [r for r in runs(fg.mean(axis=1) >= frac) if (r[1] - r[0]) <= maxw * h]
+    return cols, rows
 
 
 def find_lines(rgb, vmin=200, smax=70, frac=0.82, maxw=0.045):
@@ -732,6 +744,24 @@ def spill_ratio(im, mode):
     return float(((m > 60) & edge).sum()) / float(edge.sum())
 
 
+def item_fields(gid, opt, redo=None):
+    """thông tin ghép vào game ghi trong manifest: mã item (suy từ id), mô tả, id game đoán (nếu chắc), lý do cần làm lại."""
+    d = {}
+    m = re.match(r'^itm(\d{3})_', gid)
+    if m:
+        d['item'] = 'ITM-' + m.group(1)
+    elif gid.startswith('legend_'):
+        d['item'] = 'ITM-033'
+    if TEMP_ID.match(gid) or m:
+        d['temp_id'] = True
+    for k in ('hint', 'guess'):
+        if opt.get(k):
+            d[k] = opt[k]
+    if redo:
+        d['redo'] = redo
+    return d
+
+
 def export_keyed(stem, rgb, spec, mode, manifest, log, only_ids=None):
     star_note = None
     rgb2, star_cut, star_note = handle_star(rgb, mode, spec, stem)
@@ -745,6 +775,11 @@ def export_keyed(stem, rgb, spec, mode, manifest, log, only_ids=None):
     for (a0, b0) in lc:
         alpha[:, max(0, a0 - 2):b0 + 2] = 0.0
     for (a0, b0) in lr:
+        alpha[max(0, a0 - 2):b0 + 2, :] = 0.0
+    ac, ar_ = find_alpha_lines(alpha)
+    for (a0, b0) in ac:
+        alpha[:, max(0, a0 - 2):b0 + 2] = 0.0
+    for (a0, b0) in ar_:
         alpha[max(0, a0 - 2):b0 + 2, :] = 0.0
     objs, lbl, _ = find_objects(alpha, merge=spec.get('merge'))
     report = {'stem': stem, 'bg': mode, 'palette': info.get('palette'), 'star': star_note, 'objects': len(objs), 'items': {}, 'warn': [], 'white_block': wboxes}
@@ -784,17 +819,18 @@ def export_keyed(stem, rgb, spec, mode, manifest, log, only_ids=None):
         sp = 0.0 if (spec.get('plate') or opt.get('plate')) else spill_ratio(im, mode)
         if sp > 0.002:
             warns.append(f'còn viền màu nền loang {sp * 100:.2f}% điểm ảnh')
-        dest = (SPARE if spare else OUT) / f'{gid}.webp'
+        redo = opt.get('redo')
+        folder, sect, pre = (REDO, 'needs_redo', '_needs_redo/') if redo else ((SPARE, 'spare', '_spare/') if spare else (OUT, 'assets', ''))
+        dest = folder / f'{gid}.webp'
         kb, q = save_webp(im, dest)
         if kb > KB_MAX + 6:
             warns.append(f'nặng {kb:.0f} KB (đích {KB_MAX})')
-        rec = {'file': ('_spare/' if spare else '') + f'{gid}.webp', 'w': SIZE, 'h': SIZE, 'src': stem, 'obj': [o.idx for o in got], 'kind': 'sprite', 'bg': mode,
+        rec = {'file': pre + f'{gid}.webp', 'w': SIZE, 'h': SIZE, 'src': stem, 'obj': [o.idx for o in got], 'kind': 'sprite', 'bg': mode,
                'alpha': True, 'bytes': dest.stat().st_size, 'q': q}
-        if TEMP_ID.match(gid):
-            rec['temp_id'] = True
+        rec.update(item_fields(gid, opt, redo))
         if warns:
             rec['warn'] = warns
-        manifest['spare' if spare else 'assets'][gid] = rec
+        manifest[sect][gid] = rec
         report['items'][gid] = {'obj': [o.idx for o in got], 'kb': round(kb, 1), 'warn': warns}
         for wmsg in warns:
             report['warn'].append(f'{gid}: {wmsg}')
@@ -868,6 +904,7 @@ def export_black(stem, rgb, spec, manifest, log, only_ids=None):
     for gid, sel, spare in jobs:
         if only_ids and gid not in only_ids:
             continue
+        opt = {k: v for k, v in sel.items() if k not in ('obj', 'at', 'also')} if isinstance(sel, dict) else {}
         i = int(sel['obj'] if isinstance(sel, dict) else sel)
         if not 1 <= i <= len(cells):
             report['warn'].append(f'{gid}: ô {i} ngoài khoảng 1..{len(cells)}')
@@ -880,7 +917,9 @@ def export_black(stem, rgb, spec, manifest, log, only_ids=None):
         oy, ox = (side - crop.shape[0]) // 2, (side - crop.shape[1]) // 2
         canvas[oy:oy + crop.shape[0], ox:ox + crop.shape[1]] = crop
         im = Image.fromarray(canvas, 'RGB').resize((SIZE, SIZE), Image.LANCZOS)
-        dest = (SPARE if spare else OUT) / f'{gid}.webp'
+        redo = opt.get('redo')
+        folder, sect, pre = (REDO, 'needs_redo', '_needs_redo/') if redo else ((SPARE, 'spare', '_spare/') if spare else (OUT, 'assets', ''))
+        dest = folder / f'{gid}.webp'
         dest.parent.mkdir(parents=True, exist_ok=True)
         q = 88
         while True:
@@ -890,15 +929,51 @@ def export_black(stem, rgb, spec, manifest, log, only_ids=None):
                 break
             q -= 6
         warns = [f'nặng {kb:.0f} KB'] if kb > KB_MAX + 6 else []
-        rec = {'file': ('_spare/' if spare else '') + f'{gid}.webp', 'w': SIZE, 'h': SIZE, 'src': stem, 'obj': [i], 'kind': 'fx', 'bg': 'black',
+        rec = {'file': pre + f'{gid}.webp', 'w': SIZE, 'h': SIZE, 'src': stem, 'obj': [i], 'kind': 'fx', 'bg': 'black',
                'alpha': False, 'blend': 'screen', 'bytes': dest.stat().st_size, 'q': q}
+        rec.update(item_fields(gid, opt, redo))
         if warns:
             rec['warn'] = warns
-        manifest['spare' if spare else 'assets'][gid] = rec
+        manifest[sect][gid] = rec
         report['items'][gid] = {'obj': [i], 'kb': round(kb, 1), 'warn': warns}
     report['unused'] = [k for k in range(1, len(cells) + 1) if k not in used]
     log.append(report)
     return cells
+
+
+def export_scene(stem, rgb, spec, manifest, log):
+    """ảnh nền cảnh (P-015a-d): KHÔNG khử nền; chỉ gỡ dấu sao; cắt giữa về 16:9 rồi thu về 1280x720 webp (đặt tên theo mã trong items)."""
+    rgb2, _, star_note = handle_star(rgb, 'scene', spec, stem)
+    h, w = rgb2.shape[:2]
+    tw = min(w, int(round(h * 16 / 9)))
+    th = min(h, int(round(w * 9 / 16)))
+    x0, y0 = (w - tw) // 2, (h - th) // 2
+    crop = rgb2[y0:y0 + th, x0:x0 + tw]
+    im = Image.fromarray(crop, 'RGB').resize((1280, 720), Image.LANCZOS)
+    report = {'stem': stem, 'bg': 'scene', 'star': star_note, 'objects': 1, 'items': {}, 'warn': [], 'palette': None, 'unused': []}
+    for gid, sel in (spec.get('items') or {}).items():
+        opt = {k: v for k, v in sel.items() if k not in ('obj', 'at', 'also')} if isinstance(sel, dict) else {}
+        redo = opt.get('redo')
+        folder, sect, pre = (REDO, 'needs_redo', '_needs_redo/') if redo else (OUT, 'assets', '')
+        dest = folder / f'{gid}.webp'
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        q = 86
+        while True:
+            im.save(dest, 'WEBP', quality=q, method=6)
+            kb = dest.stat().st_size / 1024.0
+            if kb <= 140 or q <= 62:
+                break
+            q -= 6
+        rec = {'file': pre + f'{gid}.webp', 'w': 1280, 'h': 720, 'src': stem, 'obj': [1], 'kind': 'scene', 'bg': 'scene', 'alpha': False,
+               'bytes': dest.stat().st_size, 'q': q}
+        rec.update({k: opt[k] for k in ('hint', 'guess') if opt.get(k)})
+        rec['item'] = 'ITM-025'
+        if redo:
+            rec['redo'] = redo
+        manifest[sect][gid] = rec
+        report['items'][gid] = {'obj': [1], 'kb': round(kb, 1), 'warn': []}
+    log.append(report)
+    return im
 
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -928,7 +1003,11 @@ def contact_sheet(files, path, title='', tile=150):
     f = font(13)
     rows = []
     for fp in files:
-        im = Image.open(fp).convert('RGBA').resize((tile, tile), Image.LANCZOS)
+        im0 = Image.open(fp).convert('RGBA')
+        sc = min(tile / im0.width, tile / im0.height)
+        im1 = im0.resize((max(1, int(im0.width * sc)), max(1, int(im0.height * sc))), Image.LANCZOS)
+        im = Image.new('RGBA', (tile, tile), (0, 0, 0, 0))
+        im.paste(im1, ((tile - im1.width) // 2, (tile - im1.height) // 2))
         tiles = [over(checker(tile, tile), im), over(np.full((tile, tile, 3), 235, np.uint8), im), over(np.full((tile, tile, 3), 22, np.uint8), im)]
         rows.append((Path(fp).stem, np.concatenate(tiles, 1)))
     if not rows:
@@ -1016,12 +1095,14 @@ def load_manifest():
     d['size'] = SIZE
     d.setdefault('assets', {})
     d.setdefault('spare', {})
+    d.setdefault('needs_redo', {})
     return d
 
 
 def save_manifest(d):
     d['assets'] = dict(sorted(d['assets'].items()))
     d['spare'] = dict(sorted(d['spare'].items()))
+    d['needs_redo'] = dict(sorted(d.get('needs_redo', {}).items()))
     OUT.mkdir(parents=True, exist_ok=True)
     (OUT / 'manifest.json').write_text(json.dumps(d, ensure_ascii=False, indent=1) + '\n', encoding='utf-8')
 
@@ -1044,7 +1125,10 @@ def process_one(stem, spec, manifest, log, raw=RAW, inspect_only=False):
         if inspect_only:
             inspect_sheet(stem, rgb, objs, alpha, col, mode)
         return mode
-    log.append({'stem': stem, 'bg': mode, 'warn': [f'nền "{mode}" (cảnh / khác): chưa xử lý ở lệnh này'], 'items': {}, 'objects': 0, 'unused': []})
+    if mode == 'scene' and not inspect_only:
+        export_scene(stem, rgb, spec, manifest, log)
+        return mode
+    log.append({'stem': stem, 'bg': mode, 'warn': [f'nền "{mode}" (cảnh): inspect không đánh số, dùng run để xuất'], 'items': {}, 'objects': 0, 'unused': []})
     return mode
 
 
@@ -1071,7 +1155,7 @@ def cmd_inspect(args):
         print('cần tên ảnh hoặc --all')
         return 1
     log = []
-    manifest = {'assets': {}, 'spare': {}}
+    manifest = {'assets': {}, 'spare': {}, 'needs_redo': {}}
     draft = {'version': 1, 'images': {}}
     for s in names:
         spec = spec_for(s, mp)
@@ -1125,12 +1209,16 @@ def cmd_run(args):
     print_report(log)
     files = []
     for gid in exported:
-        rec = manifest['assets'].get(gid) or manifest['spare'].get(gid)
+        rec = manifest['assets'].get(gid) or manifest['spare'].get(gid) or manifest['needs_redo'].get(gid)
         if rec:
             files.append(OUT / rec['file'])
+    tag = args.batch or 'run'
+    outs = []
+    for k in range(0, len(files), 12):
+        part = files[k:k + 12]
+        outs.append(contact_sheet(part, PREV / f'contact_{tag}_{k // 12 + 1:02d}.jpg', f'đợt {tag}: asset {k + 1}-{k + len(part)} / {len(files)} (caro | nền sáng | nền tối)'))
     if files:
-        out = contact_sheet(files, PREV / f'contact_{args.batch or "run"}.jpg', f'đợt {args.batch or "run"}: {len(files)} asset (caro | nền sáng | nền tối)')
-        print(f'\nxuất {len(exported)} asset  ·  contact sheet: {out}')
+        print(f'\nxuất {len(exported)} asset  ·  {len(outs)} contact sheet: {PREV}/contact_{tag}_NN.jpg')
     return 0
 
 
@@ -1165,9 +1253,9 @@ def selftest():
             fails.append(m)
 
     tmp = Path(tempfile.mkdtemp(prefix='slice_art_'))
-    global RAW, OUT, PREV, SPARE
-    old = (RAW, OUT, PREV, SPARE)
-    RAW, OUT, PREV, SPARE = tmp / 'raw', tmp / 'assets', tmp / 'assets' / '_preview', tmp / 'assets' / '_spare'
+    global RAW, OUT, PREV, SPARE, REDO
+    old = (RAW, OUT, PREV, SPARE, REDO)
+    RAW, OUT, PREV, SPARE, REDO = tmp / 'raw', tmp / 'assets', tmp / 'assets' / '_preview', tmp / 'assets' / '_spare', tmp / 'assets' / '_needs_redo'
     RAW.mkdir()
     rng = np.random.RandomState(7)
 
@@ -1191,7 +1279,7 @@ def selftest():
         _star(img, 392, 392)
         Image.fromarray(img).save(RAW / 'T-green.png')
         spec = {'bg': 'green', 'items': {'t_red': 1, 't_blue': 2, 't_ring': 3, 't_purple': 4}}
-        log, man = [], {'assets': {}, 'spare': {}}
+        log, man = [], {'assets': {}, 'spare': {}, 'needs_redo': {}}
         objs, alpha, col = export_keyed('T-green', img, spec, 'green', man, log)
         ok(len(objs) == 4, f'S1: tách đúng 4 vật, bỏ khe giữa các ô ({len(objs)}: ' + ', '.join(str(o.bbox) for o in objs) + ')')
         ok(float((alpha[:20, :20] == 0).mean()) > 0.999 and float((alpha[480:, 280:].mean() == 0)) is not None, 'S1: nền xanh đậm khử sạch')
@@ -1217,7 +1305,7 @@ def selftest():
         img2 = noisy(np.full((512, 512, 3), (8, 252, 6), np.uint8))
         cv2.circle(img2, (150, 200), 70, (200, 30, 30), -1, cv2.LINE_AA)
         _star(img2, 392, 392)
-        log2, man2 = [], {'assets': {}, 'spare': {}}
+        log2, man2 = [], {'assets': {}, 'spare': {}, 'needs_redo': {}}
         o2, a2, _ = export_keyed('T-green2', img2, {'bg': 'green', 'items': {'t_red2': 1}}, 'green', man2, log2)
         ok(len(o2) == 1 and 'ngoài hình' in (log2[0]['star'] or ''), f'S1b: dấu sao ngoài hình bị xoá, không thành vật ({len(o2)} vật; {log2[0]["star"]})')
 
@@ -1251,7 +1339,7 @@ def selftest():
             im3[k * 240 - 2:k * 240 + 2, :] = 230
         _star(im3, W3 - 120, W3 - 120, alpha=0.5)
         spec3 = {'bg': 'black', 'grid': [3, 3], 'items': {f'fx_{i}': i for i in range(1, 10)}}
-        log3, man3 = [], {'assets': {}, 'spare': {}}
+        log3, man3 = [], {'assets': {}, 'spare': {}, 'needs_redo': {}}
         cells = export_black('T-black', im3, spec3, man3, log3)
         ok(len(cells) == 9 and log3[0]['sep_found'], f'S3: nền đen: tìm thấy vạch, cắt đúng 9 ô ({len(cells)})')
         bt = np.array(Image.open(OUT / 'fx_9.webp').convert('RGB')).astype(int)
@@ -1264,7 +1352,7 @@ def selftest():
         im4 = noisy(np.full((W4, W4, 3), (10, 250, 8), np.uint8), 2)
         cv2.circle(im4, (150, 150), 100, (0, 95, 20), 14, cv2.LINE_AA)
         cv2.rectangle(im4, (120, 120), (180, 180), (220, 40, 40), -1)
-        log4, man4 = [], {'assets': {}, 'spare': {}}
+        log4, man4 = [], {'assets': {}, 'spare': {}, 'needs_redo': {}}
         export_keyed('T-plate', im4, {'bg': 'green', 'plate': True, 'items': {'t_plate': 1}}, 'green', man4, log4)
         pa = np.array(Image.open(OUT / 't_plate.webp').convert('RGBA')).astype(int)
         ok(pa[128, 128, 0] > 170 and pa[128, 128, 1] < 90 and pa[128, 128, 3] == 255, 'S4: icon đỏ trong tấm tròn còn nguyên')
@@ -1283,14 +1371,14 @@ def selftest():
         cv2.circle(im5, (160, 440), 6, (240, 240, 240), -1)
         cv2.circle(im5, (150, 420), 5, (240, 240, 240), -1)
         im5[420:600, 440:600] = 255                                                      # khối trắng góc dưới phải
-        log5, man5 = [], {'assets': {}, 'spare': {}}
+        log5, man5 = [], {'assets': {}, 'spare': {}, 'needs_redo': {}}
         o5, _, _ = export_keyed('T-mag', im5, {'bg': 'magenta', 'items': {'a': 1, 'b': [0.43, 0.1], 'c': {'obj': 4}, 'e': 5}, 'spare': {'a_alt': 3}}, 'magenta', man5, log5)
         ok(len(o5) == 5 and log5[0]['white_block'], f'S5: 5 vật (đốm rời gộp vào vật 5), khối trắng bỏ ({len(o5)} vật; khối {log5[0]["white_block"]})')
         ok(man5['assets']['b']['obj'] == [2] and man5['assets']['c']['obj'] == [4] and 'a_alt' in man5['spare'], 'S5: chọn theo số vật và theo toạ độ; spare vào assets/_spare')
         ok(man5['assets']['e']['obj'] == [5], f'S5: số vật theo thứ tự đọc ({man5["assets"]["e"]["obj"]})')
         ok(log5[0]['unused'] == [], f'S5: báo vật không dùng ({log5[0]["unused"]})')
     finally:
-        RAW, OUT, PREV, SPARE = old
+        RAW, OUT, PREV, SPARE, REDO = old
         shutil.rmtree(tmp, ignore_errors=True)
     print('\nTẤT CẢ ĐẠT' if not fails else f'\nTHẤT BẠI {len(fails)}: ' + '; '.join(fails))
     return 0 if not fails else 1
@@ -1306,7 +1394,7 @@ def main(argv=None):
     a.add_argument('--map')
     b = sub.add_parser('run', help='xuất asset theo map.json')
     b.add_argument('names', nargs='*')
-    b.add_argument('--batch', default='rework', choices=['rework', 'green', 'magenta', 'black', 'all'])
+    b.add_argument('--batch', default='rework', choices=['rework', 'green', 'magenta', 'black', 'scene', 'all'])
     b.add_argument('--map')
     sub.add_parser('contact', help='dựng lại contact sheet')
     sub.add_parser('selftest', help='tự kiểm bằng ảnh giả')
