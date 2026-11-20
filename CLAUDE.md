@@ -31,6 +31,7 @@ Ngôn ngữ giao diện: tiếng Anh / tiếng Việt; trao đổi với chủ d
 | Công cụ (Luyện Phỏng Vấn, Chuỗi Dung Sai…) | `JLTN_WEBSITE.html` (TOOLS), `interview.js`, `tools/stackup.html` | tools.md |
 | Trò chơi nhỏ Relax | `fun.js` | relax-genesis.md |
 | Game Bản Nguyên Kỳ Duyên | `genesis.js` | relax-genesis.md, balance-todo.md |
+| Ảnh trong game Bản Nguyên Kỳ Duyên (vật phẩm, dị năng, truyền kỳ, huy hiệu) | `art.js`, `assets/`, `docs/art-mapping.md` | relax-genesis.md |
 | Huyết Sử (22 chương) | `genesis-lore-src/cNN.txt` → `build.js` → `genesis-lore.js`; truyện: `story/` | relax-genesis.md |
 | Cave / CV, Home, English / 中文, giao diện điện thoại | `JLTN_WEBSITE.html`, `study/*` | pages.md |
 | Đăng nhập, đồng bộ dữ liệu cá nhân | `sheets-auth.js`, `sheets-bridge.js` | auth-sync.md |

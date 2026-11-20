@@ -88,6 +88,14 @@ TEMP_ID = re.compile(r'^(legend_\d{2}|legend_\d{2}_alt|book_\d{2})$')
 # ----------------------------------------------------------------------------------------------------------------------
 # vào / ra
 # ----------------------------------------------------------------------------------------------------------------------
+
+def drop_stale(gid, sect, manifest):
+    """xuất sang một mục (assets / _spare / _needs_redo) thì xoá bản cũ cùng id ở mục khác (file + dòng manifest), tránh ảnh nghi ngờ nằm lại trong assets/ chính."""
+    for other, folder in (('assets', OUT), ('spare', SPARE), ('needs_redo', REDO)):
+        if other != sect:
+            (folder / f'{gid}.webp').unlink(missing_ok=True)
+            manifest.get(other, {}).pop(gid, None)
+
 def load_rgb(path):
     return np.array(Image.open(path).convert('RGB'))
 
@@ -828,6 +836,7 @@ def export_keyed(stem, rgb, spec, mode, manifest, log, only_ids=None):
             warns.append(f'còn viền màu nền loang {sp * 100:.2f}% điểm ảnh')
         redo = opt.get('redo')
         folder, sect, pre = (REDO, 'needs_redo', '_needs_redo/') if redo else ((SPARE, 'spare', '_spare/') if spare else (OUT, 'assets', ''))
+        drop_stale(gid, sect, manifest)
         dest = folder / f'{gid}.webp'
         kb, q = save_webp(im, dest)
         if kb > KB_MAX + 6:
@@ -926,6 +935,7 @@ def export_black(stem, rgb, spec, manifest, log, only_ids=None):
         im = Image.fromarray(canvas, 'RGB').resize((SIZE, SIZE), Image.LANCZOS)
         redo = opt.get('redo')
         folder, sect, pre = (REDO, 'needs_redo', '_needs_redo/') if redo else ((SPARE, 'spare', '_spare/') if spare else (OUT, 'assets', ''))
+        drop_stale(gid, sect, manifest)
         dest = folder / f'{gid}.webp'
         dest.parent.mkdir(parents=True, exist_ok=True)
         q = 88
@@ -962,6 +972,7 @@ def export_scene(stem, rgb, spec, manifest, log):
         opt = {k: v for k, v in sel.items() if k not in ('obj', 'at', 'also')} if isinstance(sel, dict) else {}
         redo = opt.get('redo')
         folder, sect, pre = (REDO, 'needs_redo', '_needs_redo/') if redo else (OUT, 'assets', '')
+        drop_stale(gid, sect, manifest)
         dest = folder / f'{gid}.webp'
         dest.parent.mkdir(parents=True, exist_ok=True)
         q = 86

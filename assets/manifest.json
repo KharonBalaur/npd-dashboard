@@ -117,23 +117,6 @@
    "temp_id": true,
    "hint": "Huy hiệu cấp bậc T6–T8: bạc-vàng, hào quang mạnh"
   },
-  "itm004_rank_01": {
-   "file": "itm004_rank_01.webp",
-   "w": 256,
-   "h": 256,
-   "src": "P-001",
-   "obj": [
-    4
-   ],
-   "kind": "sprite",
-   "bg": "green",
-   "alpha": true,
-   "bytes": 22034,
-   "q": 90,
-   "item": "ITM-004",
-   "temp_id": true,
-   "hint": "Huy hiệu cấp bậc T9: vàng, vòng chòm sao"
-  },
   "itm005_stage_01": {
    "file": "itm005_stage_01.webp",
    "w": 256,
