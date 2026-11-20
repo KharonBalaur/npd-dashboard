@@ -14,8 +14,11 @@ Số dòng theo `genesis.js` trên `main` trước bản sửa.
 **Đã sửa:** `render()` đọc `scrollTop` (hoặc `scrollY` khi khung không tự cuộn) trước khi gán lại nội dung rồi đặt lại ngay và ở khung hình kế tiếp; `toTop()` hủy việc khôi phục; đổi chế độ toàn màn hình (`max`) không khôi phục; `focus({ preventScroll:true })` cho ô tìm kiếm. Nguyên nhân 3 chưa sửa (chỉ xảy ra một lần sau đăng nhập / làm mới).
 **Kiểm:** Chromium giữ cuộn sẵn nên không tái hiện được lỗi thật; dùng bài test giả lập trình duyệt đặt lại cuộn về 0 sau khi gán `innerHTML` (ngay lập tức / khung kế tiếp): trước khi sửa mất vị trí 15/36 lần bấm (điện thoại) và 24/36 (máy tính), sau khi sửa 0/36 ở cả 390×844, 844×390, 1300×700; đổi tab vẫn về đầu.
 
-## 2. Rút ngắn trang (chưa làm)
-Nhật ký chỉ hiện 10 dòng gần nhất + nút "Xem thêm"; các khối ít dùng gập mặc định, nhớ trạng thái gập.
+## 2. Rút ngắn trang (xong)
+- Nhật ký chỉ hiện 10 dòng gần nhất + nút "Xem thêm (N)" (tối đa 40 dòng, bấm lại: "Thu gọn"); trạng thái mở chỉ giữ trong phiên (`UI.logMore`). Trên điện thoại bỏ khung cuộn lồng nhau của nhật ký (`max-height:none`).
+- 5 khối gập được (nút ≥ 44px, `data-g="fold"`): Diện mạo & tính cách (`look`), Chỉ số & năng lượng (`stats`, tiêu đề vẫn hiện 6 chỉ số), Quan hệ & gia đình (`rel`), Thủ bản đang viết (`book`), Lưu trữ & nội dung game (`note`).
+- Mặc định gập trên màn nhỏ (`max-width:760px`, hoặc ngang + `max-height:500px`); màn rộng mở sẵn. Bấm gập / mở thì nhớ theo máy trong khóa riêng `npdFunUi@<tài khoản>` (`{"fold":{"stats":1,...}}`), không đồng bộ lên máy chủ, không đụng bản lưu `npdFun`; mất khóa này chỉ quay về mặc định.
+- Kết quả (390×844, cùng ván): trang cao khoảng 2.830px → khoảng 1.650–2.100px khi mặc định; nhớ qua lần nạp lại; không tràn ngang; hồi quy `upg4` 3.040 lượt, `kids1` 1.000 lượt, `life1`: 0 lỗi.
 
 ## 3. Nút hành động chính xuống thanh dưới (chưa làm)
 Nút cao tối thiểu 44px, khoảng cách đủ để không bấm nhầm.
