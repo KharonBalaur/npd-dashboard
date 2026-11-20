@@ -76,6 +76,16 @@ Chuyển từ `CLAUDE.md` nguyên văn (chỉ đổi chỗ, không bỏ thông t
 - Màu bậc cố định (CSS `.gx-tier.R/.SR/.SSR`): R `#94a3b8`, SR `#a78bfa`, SSR `#eab308`. Nút "?" (`data-g="tierhelp"`, `UI.tierHelp`) mở bảng chú thích ở hộp lời mời và ở màn Dị năng.
 - Hộp lời mời dị năng: nhãn bậc, tên, tác dụng một dòng (dùng khi gặp…, thưởng, % loại sự kiện), tư chất, "so với bạn đang có" (`skCmp`: Mới / Mạnh hơn / Cùng loại / Yếu hơn, dựa vào thẻ dùng `s[7]` trùng với dị năng đang có và bậc), giá khi ô đầy (quên một dị năng cũ, nút ghi bậc). Nút Bỏ qua ghi rõ "mất": lời mời không được giữ lại, bảo vật sinh ra lời mời đã bị dùng hết.
 
+## Ảnh cho vật phẩm / dị năng / nhân vật (art.js + assets/)
+- `art.js` (nạp TRƯỚC `genesis.js`, đổi `?v=` của cả hai khi sửa) chỉ chứa phần ảnh: bảng `MAP` id game → tên file webp trong `assets/` (ảnh 256 px do `tools/slice_art.py` tách, danh sách ở `assets/manifest.json`),
+  `artImg(id, {s, alt, cls})` trả `<img>` (loading="lazy", decoding="async", width/height cố định, alt = tên) hoặc '' nếu chưa ghép; `artHtml(id, fb, opts)` trả ảnh hoặc `fb` (emoji / chữ cũ).
+  Khoá: id game đứng một mình (`b_*` bảo vật, `sk_*` dị năng, `g_*` gene, `legend_NN`), `path:<khoá PATHS>`, `rank:a|b|c` (T0–2 / T3–5 / T6–8), `line:<LINE>.<nhánh>`, `aura:<họ>:<bậc>`, `region:` / `act:` / `stat:` (đã ghép, chưa hiển thị).
+- `genesis.js` chỉ gọi vài hàm móc nhỏ khi vẽ (`gA`, `gIc`, `baoA`, `baoIc`, `baoBig`, `pathBadge`): túi, chợ, bảng bảo vật + Bách khoa, lời mời dị năng / gene / túi đầy / cơ duyên sinh nhật, nút dùng bảo vật khi bế quan, huy hiệu hệ + hào quang + cấp bậc ở bảng hệ tu luyện, dòng Huyết mạch, cây nhân vật truyền kỳ (+ hộp chi tiết).
+  Không có `window.GXArt` (art.js không tải được), id chưa ghép, hoặc file ảnh lỗi → hiện emoji / chữ như cũ (ảnh lỗi được thay bằng `data-fb`). Quả dại xám (b_fruit chưa giám định) luôn giữ emoji để không lộ ảnh.
+- Ảnh nền đen (hào quang, hiệu ứng) dùng `mix-blend-mode: screen` (lớp `.gx-art.scr`, nhận theo tên file). T9 các họ màu ngoài lửa dùng ảnh T9 lửa + `hue-rotate` (tạm).
+- Điện thoại: icon danh sách 48–52 px, chân dung truyền kỳ 96 px (thẻ) / 112 px (hộp chi tiết), ảnh lớn trong hộp lời mời 72 px; ảnh chưa mở chương Huyết Sử bị tối đi (`.lockd`). Nút vẫn ≥ 44 px.
+- Thêm ảnh: ghi id → file vào `MAP` (art.js), chạy `node tools/test-art.js` (mọi id phải trỏ tới file có thật trong `assets/` và là id có thật trong game). Cái chưa chắc ghi ở `docs/art-mapping.md`, không đoán. Ảnh ở `assets/_needs_redo/` không ghép.
+
 ## Túi bảo vật: chồng vật phẩm, túi đầy, Túi trữ vật (genesis.js: bagList / bagPush / bagTake / bagUpgrade / resolveBag / buyBagUp)
 - Dữ liệu: `C.bag = [{ id, n }]` (mỗi phần tử một ô), cờ `C.bagv = 1`, `C.bagx` = số cấp Túi trữ vật đã mua. Món trong túi không có trạng thái riêng (không độ bền / cường hóa) nên **cùng id thì chồng**, tối đa `BAG_STACK` = 99 mỗi ô (quá thì sang ô mới). Chỉ số ô: nút Dùng / Bán / đột phá (`data-k`, `data-i`) là chỉ số ô; Bán và Dùng lấy 1 món.
 - Sức chứa = `BAG_BASE` 8 + `BAG_STEP` 4 × `bagx`; `BAG_LV` = [250, 600, 1300, 2800] vàng (4 cấp, tối đa 24 ô). Số này đề xuất theo thang vàng đo trên 12 đời bot (trung vị 282 / 896 / 3193 ở tuổi 20 / 40 / 60); sửa ở một chỗ (đầu khối "túi bảo vật").
