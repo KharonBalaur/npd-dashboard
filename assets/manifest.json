@@ -2,6 +2,3585 @@
  "version": 1,
  "size": 256,
  "assets": {
+  "P-015a": {
+   "file": "P-015a.webp",
+   "w": 1280,
+   "h": 720,
+   "src": "P-015a",
+   "obj": [
+    1
+   ],
+   "kind": "scene",
+   "bg": "scene",
+   "alpha": false,
+   "bytes": 19210,
+   "q": 86,
+   "hint": "Ảnh nền cảnh: Tháp Cổ",
+   "item": "ITM-025"
+  },
+  "P-015b": {
+   "file": "P-015b.webp",
+   "w": 1280,
+   "h": 720,
+   "src": "P-015b",
+   "obj": [
+    1
+   ],
+   "kind": "scene",
+   "bg": "scene",
+   "alpha": false,
+   "bytes": 14030,
+   "q": 86,
+   "hint": "Ảnh nền cảnh: Vực Hắc Uyên",
+   "item": "ITM-025"
+  },
+  "P-015c": {
+   "file": "P-015c.webp",
+   "w": 1280,
+   "h": 720,
+   "src": "P-015c",
+   "obj": [
+    1
+   ],
+   "kind": "scene",
+   "bg": "scene",
+   "alpha": false,
+   "bytes": 46892,
+   "q": 86,
+   "hint": "Ảnh nền cảnh: Chiến Trường Vạn Tộc",
+   "item": "ITM-025"
+  },
+  "P-015d": {
+   "file": "P-015d.webp",
+   "w": 1280,
+   "h": 720,
+   "src": "P-015d",
+   "obj": [
+    1
+   ],
+   "kind": "scene",
+   "bg": "scene",
+   "alpha": false,
+   "bytes": 42882,
+   "q": 86,
+   "hint": "Ảnh nền cảnh: Địa Ngục 18 Tầng (chỉ ~7–8 tầng)",
+   "item": "ITM-025"
+  },
+  "itm001_rank_01": {
+   "file": "itm001_rank_01.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-001",
+   "obj": [
+    1
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 15468,
+   "q": 90,
+   "item": "ITM-001",
+   "temp_id": true,
+   "hint": "Huy hiệu cấp bậc T0–T2: gỗ + đá mộc mạc"
+  },
+  "itm002_rank_01": {
+   "file": "itm002_rank_01.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-001",
+   "obj": [
+    2
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 28742,
+   "q": 90,
+   "item": "ITM-002",
+   "temp_id": true,
+   "hint": "Huy hiệu cấp bậc T3–T5: đồng, hào quang xanh lam"
+  },
+  "itm003_rank_01": {
+   "file": "itm003_rank_01.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-001",
+   "obj": [
+    3
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 26410,
+   "q": 90,
+   "item": "ITM-003",
+   "temp_id": true,
+   "hint": "Huy hiệu cấp bậc T6–T8: bạc-vàng, hào quang mạnh"
+  },
+  "itm004_rank_01": {
+   "file": "itm004_rank_01.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-001",
+   "obj": [
+    4
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 22034,
+   "q": 90,
+   "item": "ITM-004",
+   "temp_id": true,
+   "hint": "Huy hiệu cấp bậc T9: vàng, vòng chòm sao"
+  },
+  "itm005_stage_01": {
+   "file": "itm005_stage_01.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-002",
+   "obj": [
+    1
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 11404,
+   "q": 90,
+   "item": "ITM-005",
+   "temp_id": true,
+   "hint": "Giai đoạn 1: sơ sinh (bò, đốm sáng)"
+  },
+  "itm005_stage_02": {
+   "file": "itm005_stage_02.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-002",
+   "obj": [
+    2
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 16928,
+   "q": 90,
+   "item": "ITM-005",
+   "temp_id": true,
+   "hint": "Giai đoạn 2: ấu thơ (kiếm gỗ, lá xanh)",
+   "warn": [
+    "còn viền màu nền loang 0.59% điểm ảnh"
+   ]
+  },
+  "itm005_stage_03": {
+   "file": "itm005_stage_03.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-002",
+   "obj": [
+    3
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 11340,
+   "q": 90,
+   "item": "ITM-005",
+   "temp_id": true,
+   "hint": "Giai đoạn 3: thiếu niên (đấm tập, năng lượng xanh nhạt)"
+  },
+  "itm005_stage_04": {
+   "file": "itm005_stage_04.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-002",
+   "obj": [
+    4
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 15456,
+   "q": 90,
+   "item": "ITM-005",
+   "temp_id": true,
+   "hint": "Giai đoạn 4: thanh niên (hào quang lửa xanh)"
+  },
+  "itm005_stage_05": {
+   "file": "itm005_stage_05.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-002 (hiệp sĩ)",
+   "obj": [
+    1
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 16318,
+   "q": 90,
+   "item": "ITM-005",
+   "temp_id": true,
+   "hint": "Giai đoạn 5: trưởng thành (hiệp sĩ giáp vàng) – ảnh làm lại, thay ô 6 cũ"
+  },
+  "itm005_stage_06": {
+   "file": "itm005_stage_06.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-002",
+   "obj": [
+    7
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 15638,
+   "q": 90,
+   "item": "ITM-005",
+   "temp_id": true,
+   "hint": "Giai đoạn 6: trung niên (pháp sư, vòng phép tím)"
+  },
+  "itm005_stage_07": {
+   "file": "itm005_stage_07.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-002",
+   "obj": [
+    9
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 13306,
+   "q": 90,
+   "item": "ITM-005",
+   "temp_id": true,
+   "hint": "Giai đoạn 7: lão (râu trắng, gậy)"
+  },
+  "itm005_stage_08": {
+   "file": "itm005_stage_08.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-002",
+   "obj": [
+    8
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 18500,
+   "q": 90,
+   "item": "ITM-005",
+   "temp_id": true,
+   "hint": "Giai đoạn 8: thăng hoa (cánh thiên thần, vầng sáng)"
+  },
+  "itm006_emblem_01": {
+   "file": "itm006_emblem_01.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-003",
+   "obj": [
+    1
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 18992,
+   "q": 90,
+   "item": "ITM-006",
+   "temp_id": true,
+   "hint": "Huy hiệu Huyết Tộc Nguyên Thủy – Valcrest (hoa hồng + nanh)"
+  },
+  "itm007_emblem_01": {
+   "file": "itm007_emblem_01.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-003",
+   "obj": [
+    2
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 19870,
+   "q": 90,
+   "item": "ITM-007",
+   "temp_id": true,
+   "hint": "Huy hiệu Băng Huyết – Winterhale (bông tuyết)"
+  },
+  "itm008_emblem_01": {
+   "file": "itm008_emblem_01.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-003",
+   "obj": [
+    3
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 17878,
+   "q": 90,
+   "item": "ITM-008",
+   "temp_id": true,
+   "hint": "Huy hiệu Huyết Ước – Pactborn (ấn máu + xích)"
+  },
+  "itm009_emblem_01": {
+   "file": "itm009_emblem_01.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-003",
+   "obj": [
+    4
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 16470,
+   "q": 90,
+   "item": "ITM-009",
+   "temp_id": true,
+   "hint": "Huy hiệu Lycan / Trăng Máu (trăng đỏ + vuốt sói)"
+  },
+  "itm010_emblem_01": {
+   "file": "itm010_emblem_01.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-003",
+   "obj": [
+    5
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 19208,
+   "q": 90,
+   "item": "ITM-010",
+   "temp_id": true,
+   "hint": "Huy hiệu Phù Thủy – Học Viện Ngũ Tinh"
+  },
+  "itm011_emblem_01": {
+   "file": "itm011_emblem_01.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-003",
+   "obj": [
+    6
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 17202,
+   "q": 90,
+   "item": "ITM-011",
+   "temp_id": true,
+   "hint": "Huy hiệu Phái Huyền Phù (bùa thư pháp; nét giống chữ Hán – cắt hoặc chấp nhận)"
+  },
+  "itm012_emblem_01": {
+   "file": "itm012_emblem_01.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-003",
+   "obj": [
+    7
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 11032,
+   "q": 90,
+   "item": "ITM-012",
+   "temp_id": true,
+   "hint": "Huy hiệu Ảnh Môn (bóng người nửa tối)"
+  },
+  "itm013_zombie_01": {
+   "file": "itm013_zombie_01.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-004",
+   "obj": [
+    1
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 10836,
+   "q": 90,
+   "item": "ITM-013",
+   "temp_id": true,
+   "hint": "Cương thi cơ bản (nhảy, bùa trắng)",
+   "warn": [
+    "còn viền màu nền loang 1.99% điểm ảnh"
+   ]
+  },
+  "itm013_zombie_02": {
+   "file": "itm013_zombie_02.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-004",
+   "obj": [
+    2
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 15366,
+   "q": 90,
+   "item": "ITM-013",
+   "temp_id": true,
+   "hint": "Xác ướp quấn băng"
+  },
+  "itm013_zombie_03": {
+   "file": "itm013_zombie_03.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-004",
+   "obj": [
+    3
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 16900,
+   "q": 90,
+   "item": "ITM-013",
+   "temp_id": true,
+   "hint": "Chiến binh cương thi giáp bạc, hào quang lam"
+  },
+  "itm013_zombie_04": {
+   "file": "itm013_zombie_04.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-004",
+   "obj": [
+    4
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 17208,
+   "q": 90,
+   "item": "ITM-013",
+   "temp_id": true,
+   "hint": "Chiến binh cương thi giáp vàng, hào quang cam"
+  },
+  "itm013_zombie_05": {
+   "file": "itm013_zombie_05.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-004",
+   "obj": [
+    5
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 16578,
+   "q": 90,
+   "item": "ITM-013",
+   "temp_id": true,
+   "hint": "Cương thi vương bay, cánh đen lửa tím"
+  },
+  "itm013_zombie_06": {
+   "file": "itm013_zombie_06.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-004",
+   "obj": [
+    6
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 17832,
+   "q": 90,
+   "item": "ITM-013",
+   "temp_id": true,
+   "hint": "Hiệu ứng gai tím nứt đất"
+  },
+  "itm014_emblem_01": {
+   "file": "itm014_emblem_01.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-003",
+   "obj": [
+    9
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 20836,
+   "q": 90,
+   "item": "ITM-014",
+   "temp_id": true,
+   "hint": "Huy hiệu Đấu Khí / Võ đạo (nắm đấm khí trong vòng ấn)"
+  },
+  "itm014_qifx_01": {
+   "file": "itm014_qifx_01.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-005",
+   "obj": [
+    1
+   ],
+   "kind": "fx",
+   "bg": "black",
+   "alpha": false,
+   "blend": "screen",
+   "bytes": 8882,
+   "q": 88,
+   "item": "ITM-014",
+   "temp_id": true,
+   "hint": "Khí kình: sóng xung kích quanh lõi cam-trắng"
+  },
+  "itm014_qifx_02": {
+   "file": "itm014_qifx_02.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-005",
+   "obj": [
+    2
+   ],
+   "kind": "fx",
+   "bg": "black",
+   "alpha": false,
+   "blend": "screen",
+   "bytes": 13152,
+   "q": 88,
+   "item": "ITM-014",
+   "temp_id": true,
+   "hint": "Khí kình: ấn tay vàng (vòng đường nét)"
+  },
+  "itm014_qifx_03": {
+   "file": "itm014_qifx_03.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-005",
+   "obj": [
+    3
+   ],
+   "kind": "fx",
+   "bg": "black",
+   "alpha": false,
+   "blend": "screen",
+   "bytes": 4772,
+   "q": 88,
+   "item": "ITM-014",
+   "temp_id": true,
+   "hint": "Khí kình: cú đấm tia lam-trắng"
+  },
+  "itm014_qifx_04": {
+   "file": "itm014_qifx_04.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-005",
+   "obj": [
+    4
+   ],
+   "kind": "fx",
+   "bg": "black",
+   "alpha": false,
+   "blend": "screen",
+   "bytes": 4114,
+   "q": 88,
+   "item": "ITM-014",
+   "temp_id": true,
+   "hint": "Khí kình: vệt gió lưỡi liềm trắng-lam"
+  },
+  "itm015_emblem_01": {
+   "file": "itm015_emblem_01.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-003",
+   "obj": [
+    8
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 17392,
+   "q": 90,
+   "item": "ITM-015",
+   "temp_id": true,
+   "hint": "Huy hiệu Thần Tộc (vương miện + vầng sáng)"
+  },
+  "itm016_gene_01": {
+   "file": "itm016_gene_01.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-006a",
+   "obj": [
+    1,
+    2
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 14046,
+   "q": 90,
+   "item": "ITM-016",
+   "temp_id": true,
+   "hint": "Gene Thỏ: đôi tai"
+  },
+  "itm016_gene_02": {
+   "file": "itm016_gene_02.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-006a",
+   "obj": [
+    3
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 13258,
+   "q": 90,
+   "item": "ITM-016",
+   "temp_id": true,
+   "hint": "Gene Thỏ: đuôi bông"
+  },
+  "itm016_gene_03": {
+   "file": "itm016_gene_03.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-006a",
+   "obj": [
+    4
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 11578,
+   "q": 90,
+   "item": "ITM-016",
+   "temp_id": true,
+   "hint": "Gene Thỏ: chân sau"
+  },
+  "itm016_gene_04": {
+   "file": "itm016_gene_04.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-006a",
+   "obj": [
+    5,
+    6
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 12798,
+   "q": 90,
+   "item": "ITM-016",
+   "temp_id": true,
+   "hint": "Gene Rồng: đôi sừng"
+  },
+  "itm016_gene_05": {
+   "file": "itm016_gene_05.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-006a",
+   "obj": [
+    7
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 11170,
+   "q": 90,
+   "item": "ITM-016",
+   "temp_id": true,
+   "hint": "Gene Rồng: cánh dơi"
+  },
+  "itm016_gene_06": {
+   "file": "itm016_gene_06.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-006a",
+   "obj": [
+    8
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 14786,
+   "q": 90,
+   "item": "ITM-016",
+   "temp_id": true,
+   "hint": "Gene Rồng: đuôi gai (xanh lục sẫm)"
+  },
+  "itm016_gene_07": {
+   "file": "itm016_gene_07.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-006a",
+   "obj": [
+    9
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 16412,
+   "q": 90,
+   "item": "ITM-016",
+   "temp_id": true,
+   "hint": "Gene Đại bàng: cánh"
+  },
+  "itm016_gene_08": {
+   "file": "itm016_gene_08.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-006a",
+   "obj": [
+    10
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 14812,
+   "q": 90,
+   "item": "ITM-016",
+   "temp_id": true,
+   "hint": "Gene Đại bàng: móng vuốt"
+  },
+  "itm016_gene_09": {
+   "file": "itm016_gene_09.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-006a",
+   "obj": [
+    11
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 13544,
+   "q": 90,
+   "item": "ITM-016",
+   "temp_id": true,
+   "hint": "Gene Đại bàng: mỏ và mắt"
+  },
+  "itm016_gene_10": {
+   "file": "itm016_gene_10.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-006b",
+   "obj": [
+    1
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 12388,
+   "q": 90,
+   "item": "ITM-016",
+   "temp_id": true,
+   "hint": "Gene Báo: đôi tai"
+  },
+  "itm016_gene_11": {
+   "file": "itm016_gene_11.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-006b",
+   "obj": [
+    2
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 15672,
+   "q": 90,
+   "item": "ITM-016",
+   "temp_id": true,
+   "hint": "Gene Báo: đuôi"
+  },
+  "itm016_gene_12": {
+   "file": "itm016_gene_12.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-006b",
+   "obj": [
+    3
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 17678,
+   "q": 90,
+   "item": "ITM-016",
+   "temp_id": true,
+   "hint": "Gene Báo: vuốt"
+  },
+  "itm016_gene_13": {
+   "file": "itm016_gene_13.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-006b",
+   "obj": [
+    4,
+    5
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 11132,
+   "q": 90,
+   "item": "ITM-016",
+   "temp_id": true,
+   "hint": "Gene Sói: đôi tai"
+  },
+  "itm016_gene_14": {
+   "file": "itm016_gene_14.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-006b",
+   "obj": [
+    6
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 9528,
+   "q": 90,
+   "item": "ITM-016",
+   "temp_id": true,
+   "hint": "Gene Sói: đuôi"
+  },
+  "itm016_gene_15": {
+   "file": "itm016_gene_15.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-006b",
+   "obj": [
+    7
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 13638,
+   "q": 90,
+   "item": "ITM-016",
+   "temp_id": true,
+   "hint": "Gene Sói: nanh và mõm"
+  },
+  "itm017_meteor_01": {
+   "file": "itm017_meteor_01.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-007",
+   "obj": [
+    1
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 14766,
+   "q": 90,
+   "item": "ITM-017",
+   "temp_id": true,
+   "hint": "Gene Tinh Thiết: cẳng tay kim loại thiên thạch"
+  },
+  "itm017_meteor_02": {
+   "file": "itm017_meteor_02.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-007",
+   "obj": [
+    2
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 19054,
+   "q": 90,
+   "item": "ITM-017",
+   "temp_id": true,
+   "hint": "Gene Tinh Thiết: giáp ngực thiên thạch"
+  },
+  "itm017_meteor_03": {
+   "file": "itm017_meteor_03.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-007",
+   "obj": [
+    3
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 16018,
+   "q": 90,
+   "item": "ITM-017",
+   "temp_id": true,
+   "hint": "Gene Tinh Thiết: lọ gene dịch cam-bạc"
+  },
+  "itm017_meteor_04": {
+   "file": "itm017_meteor_04.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-007 (Thiên thạch)",
+   "obj": [
+    1
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 22070,
+   "q": 90,
+   "item": "ITM-017",
+   "temp_id": true,
+   "hint": "Gene Tinh Thiết: mảnh thiên thạch lửa – ảnh làm lại, thay ô 4 cũ"
+  },
+  "itm018_fruit_01": {
+   "file": "itm018_fruit_01.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-008",
+   "obj": [
+    1
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 11276,
+   "q": 90,
+   "item": "ITM-018",
+   "temp_id": true,
+   "hint": "Vạn Huyết Quả: xanh (chưa chín)",
+   "guess": "b_fruit"
+  },
+  "itm018_fruit_02": {
+   "file": "itm018_fruit_02.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-008",
+   "obj": [
+    2
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 13420,
+   "q": 90,
+   "item": "ITM-018",
+   "temp_id": true,
+   "hint": "Vạn Huyết Quả: chín, gân đỏ rực",
+   "guess": "b_fruit"
+  },
+  "itm018_fruit_03": {
+   "file": "itm018_fruit_03.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-008",
+   "obj": [
+    3
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 17578,
+   "q": 90,
+   "item": "ITM-018",
+   "temp_id": true,
+   "hint": "Vạn Huyết Quả: dị biến (nứt tím, gai)",
+   "guess": "b_fruit"
+  },
+  "itm019_core_01": {
+   "file": "itm019_core_01.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-009",
+   "obj": [
+    1
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 17184,
+   "q": 90,
+   "item": "ITM-019",
+   "temp_id": true,
+   "hint": "Thú Hạch nhỏ, xanh lam",
+   "warn": [
+    "còn viền màu nền loang 1.30% điểm ảnh"
+   ]
+  },
+  "itm019_core_02": {
+   "file": "itm019_core_02.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-009",
+   "obj": [
+    2
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 16724,
+   "q": 90,
+   "item": "ITM-019",
+   "temp_id": true,
+   "hint": "Thú Hạch lớn nứt, ánh đỏ"
+  },
+  "itm019_core_03": {
+   "file": "itm019_core_03.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-009",
+   "obj": [
+    6
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 20592,
+   "q": 90,
+   "item": "ITM-019",
+   "temp_id": true,
+   "hint": "Nấm Bào Tử Cổ phát quang lam-tím",
+   "guess": "b_spore"
+  },
+  "itm019_core_04": {
+   "file": "itm019_core_04.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-009",
+   "obj": [
+    7,
+    3,
+    4,
+    5
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 12568,
+   "q": 90,
+   "item": "ITM-019",
+   "temp_id": true,
+   "hint": "Túi bào tử cổ, hạt sáng bay",
+   "warn": [
+    "còn viền màu nền loang 0.52% điểm ảnh"
+   ]
+  },
+  "itm020_fusion_01": {
+   "file": "itm020_fusion_01.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-010",
+   "obj": [
+    1
+   ],
+   "kind": "fx",
+   "bg": "black",
+   "alpha": false,
+   "blend": "screen",
+   "bytes": 9404,
+   "q": 88,
+   "item": "ITM-020",
+   "temp_id": true,
+   "hint": "Dung hợp thành công: xoáy lam-đỏ"
+  },
+  "itm020_fusion_02": {
+   "file": "itm020_fusion_02.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-010",
+   "obj": [
+    2
+   ],
+   "kind": "fx",
+   "bg": "black",
+   "alpha": false,
+   "blend": "screen",
+   "bytes": 8296,
+   "q": 88,
+   "item": "ITM-020",
+   "temp_id": true,
+   "hint": "Dung hợp hoàn hảo: bùng vàng + vòng xung kích"
+  },
+  "itm020_fusion_03": {
+   "file": "itm020_fusion_03.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-010",
+   "obj": [
+    3
+   ],
+   "kind": "fx",
+   "bg": "black",
+   "alpha": false,
+   "blend": "screen",
+   "bytes": 6914,
+   "q": 88,
+   "item": "ITM-020",
+   "temp_id": true,
+   "hint": "Đột biến: vết nứt tím cùng mảnh sắc"
+  },
+  "itm021_virus_01": {
+   "file": "itm021_virus_01.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-011",
+   "obj": [
+    1
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 17682,
+   "q": 90,
+   "item": "ITM-021",
+   "temp_id": true,
+   "hint": "Virus từ trời: thiên thạch đuôi vàng-tím",
+   "warn": [
+    "còn viền màu nền loang 0.92% điểm ảnh"
+   ]
+  },
+  "itm021_virus_02": {
+   "file": "itm021_virus_02.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-011",
+   "obj": [
+    2
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 15038,
+   "q": 90,
+   "item": "ITM-021",
+   "temp_id": true,
+   "hint": "Lây nhiễm: bàn tay gân vàng-tím",
+   "warn": [
+    "vật chạm mép ảnh (có thể bị cắt)",
+    "còn viền màu nền loang 23.99% điểm ảnh"
+   ]
+  },
+  "itm021_virus_03": {
+   "file": "itm021_virus_03.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-011",
+   "obj": [
+    3
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 14842,
+   "q": 90,
+   "item": "ITM-021",
+   "temp_id": true,
+   "hint": "Dị nhân biến thể: người que ninja hào quang tím"
+  },
+  "itm022_herb_01": {
+   "file": "itm022_herb_01.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-012",
+   "obj": [
+    1
+   ],
+   "kind": "sprite",
+   "bg": "magenta",
+   "alpha": true,
+   "bytes": 12430,
+   "q": 90,
+   "item": "ITM-022",
+   "temp_id": true,
+   "hint": "Lông Bão Đại Bàng: lông xám-lam xoáy gió",
+   "warn": [
+    "còn viền màu nền loang 1.29% điểm ảnh"
+   ]
+  },
+  "itm022_herb_02": {
+   "file": "itm022_herb_02.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-012",
+   "obj": [
+    2
+   ],
+   "kind": "sprite",
+   "bg": "magenta",
+   "alpha": true,
+   "bytes": 14384,
+   "q": 90,
+   "item": "ITM-022",
+   "temp_id": true,
+   "hint": "Lông bão nhỏ: tia sét mảnh"
+  },
+  "itm022_herb_03": {
+   "file": "itm022_herb_03.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-012",
+   "obj": [
+    3
+   ],
+   "kind": "sprite",
+   "bg": "magenta",
+   "alpha": true,
+   "bytes": 21846,
+   "q": 90,
+   "item": "ITM-022",
+   "temp_id": true,
+   "hint": "Linh Thảo Thanh Tâm: cành lá ngọc, giọt sương"
+  },
+  "itm022_herb_04": {
+   "file": "itm022_herb_04.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-012",
+   "obj": [
+    4
+   ],
+   "kind": "sprite",
+   "bg": "magenta",
+   "alpha": true,
+   "bytes": 15888,
+   "q": 90,
+   "item": "ITM-022",
+   "temp_id": true,
+   "hint": "Linh Thảo Thanh Tâm: nụ, ánh nhạt"
+  },
+  "itm023_treasure_01": {
+   "file": "itm023_treasure_01.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-013 (New)",
+   "obj": [
+    1
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 7972,
+   "q": 90,
+   "item": "ITM-023",
+   "temp_id": true,
+   "hint": "Bảo vật Phàm: kiếm sắt-gỗ trơn"
+  },
+  "itm023_treasure_02": {
+   "file": "itm023_treasure_02.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-013 (New)",
+   "obj": [
+    2
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 5494,
+   "q": 90,
+   "item": "ITM-023",
+   "temp_id": true,
+   "hint": "Bảo vật Phàm: trượng gỗ trơn"
+  },
+  "itm023_treasure_03": {
+   "file": "itm023_treasure_03.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-013 (New)",
+   "obj": [
+    3
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 9048,
+   "q": 90,
+   "item": "ITM-023",
+   "temp_id": true,
+   "hint": "Bảo vật Phàm: bùa đá treo dây"
+  },
+  "itm023_treasure_04": {
+   "file": "itm023_treasure_04.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-013 (New)",
+   "obj": [
+    4
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 11116,
+   "q": 90,
+   "item": "ITM-023",
+   "temp_id": true,
+   "hint": "Bảo vật Linh: kiếm khắc rune ánh lam"
+  },
+  "itm023_treasure_05": {
+   "file": "itm023_treasure_05.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-013 (New)",
+   "obj": [
+    5
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 9638,
+   "q": 90,
+   "item": "ITM-023",
+   "temp_id": true,
+   "hint": "Bảo vật Linh: trượng pha lê lam",
+   "warn": [
+    "còn viền màu nền loang 0.47% điểm ảnh"
+   ]
+  },
+  "itm023_treasure_06": {
+   "file": "itm023_treasure_06.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-013 (New)",
+   "obj": [
+    6
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 10992,
+   "q": 90,
+   "item": "ITM-023",
+   "temp_id": true,
+   "hint": "Bảo vật Linh: bùa khắc rune ánh lam",
+   "warn": [
+    "còn viền màu nền loang 0.82% điểm ảnh"
+   ]
+  },
+  "itm023_treasure_07": {
+   "file": "itm023_treasure_07.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-013 (New)",
+   "obj": [
+    7
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 17890,
+   "q": 90,
+   "item": "ITM-023",
+   "temp_id": true,
+   "hint": "Bảo vật Thần: kiếm vũ trụ vàng"
+  },
+  "itm023_treasure_08": {
+   "file": "itm023_treasure_08.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-013 (New)",
+   "obj": [
+    8
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 13080,
+   "q": 90,
+   "item": "ITM-023",
+   "temp_id": true,
+   "hint": "Bảo vật Thần: trượng cầu sáng vàng",
+   "warn": [
+    "còn viền màu nền loang 0.29% điểm ảnh"
+   ]
+  },
+  "itm024_skill_01": {
+   "file": "itm024_skill_01.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-014",
+   "obj": [
+    1
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 19820,
+   "q": 90,
+   "item": "ITM-024",
+   "temp_id": true,
+   "hint": "Kỹ năng Huyết Thuật: dải máu xoáy",
+   "guess": "sk_blood"
+  },
+  "itm024_skill_02": {
+   "file": "itm024_skill_02.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-014",
+   "obj": [
+    2
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 15116,
+   "q": 90,
+   "item": "ITM-024",
+   "temp_id": true,
+   "hint": "Kỹ năng Thánh Quang: chùm tia vàng-trắng",
+   "guess": "sk_heal"
+  },
+  "itm024_skill_03": {
+   "file": "itm024_skill_03.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-014",
+   "obj": [
+    3
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 19656,
+   "q": 90,
+   "item": "ITM-024",
+   "temp_id": true,
+   "hint": "Kỹ năng Phi Hành: đôi cánh + vệt gió",
+   "guess": "sk_fly"
+  },
+  "itm024_skill_04": {
+   "file": "itm024_skill_04.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-014",
+   "obj": [
+    4
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 18796,
+   "q": 90,
+   "item": "ITM-024",
+   "temp_id": true,
+   "hint": "Kỹ năng Thiết Quyền: nắm đấm thép + vòng chấn",
+   "guess": "sk_iron"
+  },
+  "itm026_rig_01": {
+   "file": "itm026_rig_01.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-016",
+   "obj": [
+    1
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 10772,
+   "q": 90,
+   "item": "ITM-026",
+   "temp_id": true,
+   "hint": "Phụ kiện đầu: búi tóc nam đen"
+  },
+  "itm026_rig_02": {
+   "file": "itm026_rig_02.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-016",
+   "obj": [
+    2
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 10616,
+   "q": 90,
+   "item": "ITM-026",
+   "temp_id": true,
+   "hint": "Phụ kiện đầu: tóc nữ dài đen"
+  },
+  "itm026_rig_03": {
+   "file": "itm026_rig_03.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-016",
+   "obj": [
+    3
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 15364,
+   "q": 90,
+   "item": "ITM-026",
+   "temp_id": true,
+   "hint": "Phụ kiện đầu: mũ giáp chiến binh lông đỏ"
+  },
+  "itm026_rig_04": {
+   "file": "itm026_rig_04.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-016",
+   "obj": [
+    4
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 9752,
+   "q": 90,
+   "item": "ITM-026",
+   "temp_id": true,
+   "hint": "Phụ kiện đầu: mũ phù thủy tím"
+  },
+  "itm026_rig_05": {
+   "file": "itm026_rig_05.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-016",
+   "obj": [
+    5
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 14306,
+   "q": 90,
+   "item": "ITM-026",
+   "temp_id": true,
+   "hint": "Phụ kiện đầu: trâm cài đính ngọc"
+  },
+  "itm026_rig_06": {
+   "file": "itm026_rig_06.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-016",
+   "obj": [
+    6
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 9652,
+   "q": 90,
+   "item": "ITM-026",
+   "temp_id": true,
+   "hint": "Phụ kiện đầu: mũ trùm vải"
+  },
+  "itm026_rig_07": {
+   "file": "itm026_rig_07.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-016",
+   "obj": [
+    7
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 8720,
+   "q": 90,
+   "item": "ITM-026",
+   "temp_id": true,
+   "hint": "Phụ kiện đầu: mặt nạ trơn"
+  },
+  "itm026_rig_08": {
+   "file": "itm026_rig_08.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-016",
+   "obj": [
+    8
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 16716,
+   "q": 90,
+   "item": "ITM-026",
+   "temp_id": true,
+   "hint": "Phụ kiện đầu: vương miện vàng nhỏ"
+  },
+  "itm027_qi_01": {
+   "file": "itm027_qi_01.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-017",
+   "obj": [
+    1
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 12274,
+   "q": 90,
+   "item": "ITM-027",
+   "temp_id": true,
+   "hint": "Nguồn khí: Thiên khí (xoáy trắng-lam)",
+   "guess": "thanh"
+  },
+  "itm027_qi_02": {
+   "file": "itm027_qi_02.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-017",
+   "obj": [
+    2
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 15256,
+   "q": 90,
+   "item": "ITM-027",
+   "temp_id": true,
+   "hint": "Nguồn khí: Địa khí (xoáy vàng-nâu)",
+   "guess": "thu"
+  },
+  "itm027_qi_03": {
+   "file": "itm027_qi_03.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-017",
+   "obj": [
+    3
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 10970,
+   "q": 90,
+   "item": "ITM-027",
+   "temp_id": true,
+   "hint": "Nguồn khí: Ngục khí (xoáy đỏ tím)",
+   "guess": "hac"
+  },
+  "itm027_qi_04": {
+   "file": "itm027_qi_04.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-017",
+   "obj": [
+    4
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 14754,
+   "q": 90,
+   "item": "ITM-027",
+   "temp_id": true,
+   "hint": "Nguồn khí: Tinh khí (xoáy bạc-lục lam)",
+   "guess": "co"
+  },
+  "itm028_system_01": {
+   "file": "itm028_system_01.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-018a",
+   "obj": [
+    1
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 20442,
+   "q": 90,
+   "item": "ITM-028",
+   "temp_id": true,
+   "hint": "Huy hiệu hệ tu luyện Võ đạo phương Đông (nắm đấm chân khí)",
+   "guess": "noi"
+  },
+  "itm028_system_02": {
+   "file": "itm028_system_02.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-018a",
+   "obj": [
+    2
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 18634,
+   "q": 90,
+   "item": "ITM-028",
+   "temp_id": true,
+   "hint": "Huy hiệu hệ tu luyện Phù thủy (trượng + tinh thạch)",
+   "guess": "witch"
+  },
+  "itm028_system_03": {
+   "file": "itm028_system_03.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-018a",
+   "obj": [
+    3
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 18582,
+   "q": 90,
+   "item": "ITM-028",
+   "temp_id": true,
+   "hint": "Huy hiệu hệ tu luyện Đấu khí phương Tây (kiếm lửa)",
+   "guess": "dau"
+  },
+  "itm028_system_04": {
+   "file": "itm028_system_04.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-018a",
+   "obj": [
+    4
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 18672,
+   "q": 90,
+   "item": "ITM-028",
+   "temp_id": true,
+   "hint": "Huy hiệu hệ tu luyện Đạo sĩ – Huyền môn (bùa + âm dương)",
+   "guess": "dao"
+  },
+  "itm028_system_05": {
+   "file": "itm028_system_05.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-018a",
+   "obj": [
+    5
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 16454,
+   "q": 90,
+   "item": "ITM-028",
+   "temp_id": true,
+   "hint": "Huy hiệu hệ tu luyện Huyết tộc Khế Ước (chén máu + cánh dơi)",
+   "guess": "vampM"
+  },
+  "itm028_system_06": {
+   "file": "itm028_system_06.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-018a",
+   "obj": [
+    6
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 17568,
+   "q": 90,
+   "item": "ITM-028",
+   "temp_id": true,
+   "hint": "Huy hiệu hệ tu luyện Yêu tu (vuốt cáo chín đuôi + linh châu)",
+   "guess": "beast"
+  },
+  "itm028_system_07": {
+   "file": "itm028_system_07.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-018a",
+   "obj": [
+    7
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 14922,
+   "q": 90,
+   "item": "ITM-028",
+   "temp_id": true,
+   "hint": "Huy hiệu hệ tu luyện Ảnh Môn (mặt nạ ninja + đoản đao)",
+   "guess": "nin"
+  },
+  "itm028_system_08": {
+   "file": "itm028_system_08.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-018a",
+   "obj": [
+    8
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 18082,
+   "q": 90,
+   "item": "ITM-028",
+   "temp_id": true,
+   "hint": "Huy hiệu hệ tu luyện Cương thi (bàn tay xác sống)",
+   "guess": "jiang"
+  },
+  "itm028_system_09": {
+   "file": "itm028_system_09.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-018a",
+   "obj": [
+    9
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 16570,
+   "q": 90,
+   "item": "ITM-028",
+   "temp_id": true,
+   "hint": "Huy hiệu hệ tu luyện Dị nhân – Gene Ẩn (chuỗi gene + cửa không gian)",
+   "guess": "mutant"
+  },
+  "itm028_system_10": {
+   "file": "itm028_system_10.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-018b",
+   "obj": [
+    1
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 17656,
+   "q": 90,
+   "item": "ITM-028",
+   "temp_id": true,
+   "hint": "Huy hiệu hệ tu luyện 10: đầu ác quỷ lửa (chưa rõ tên hệ trong game)"
+  },
+  "itm028_system_11": {
+   "file": "itm028_system_11.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-018b",
+   "obj": [
+    2
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 22426,
+   "q": 90,
+   "item": "ITM-028",
+   "temp_id": true,
+   "hint": "Huy hiệu hệ tu luyện 11: vương miện cánh + vầng sáng (Thần tộc?)"
+  },
+  "itm028_system_12": {
+   "file": "itm028_system_12.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-018b",
+   "obj": [
+    3
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 20058,
+   "q": 90,
+   "item": "ITM-028",
+   "temp_id": true,
+   "hint": "Huy hiệu hệ tu luyện 12: đầu sói + trăng máu (Lang tộc)",
+   "guess": "wolf"
+  },
+  "itm028_system_13": {
+   "file": "itm028_system_13.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-018b",
+   "obj": [
+    4
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 19180,
+   "q": 90,
+   "item": "ITM-028",
+   "temp_id": true,
+   "hint": "Huy hiệu hệ tu luyện 13: bánh xe tím + xoáy sao (chưa rõ tên hệ trong game)"
+  },
+  "itm029_aura_arcane_t1": {
+   "file": "itm029_aura_arcane_t1.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-019b",
+   "obj": [
+    1
+   ],
+   "kind": "fx",
+   "bg": "black",
+   "alpha": false,
+   "blend": "screen",
+   "bytes": 820,
+   "q": 88,
+   "item": "ITM-029",
+   "temp_id": true,
+   "hint": "Hào quang bậc T1, bảng màu lam-tím-tím đậm huyền bí (Phù thủy, Pháp sư, Thần ma)"
+  },
+  "itm029_aura_arcane_t2": {
+   "file": "itm029_aura_arcane_t2.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-019b",
+   "obj": [
+    2
+   ],
+   "kind": "fx",
+   "bg": "black",
+   "alpha": false,
+   "blend": "screen",
+   "bytes": 1418,
+   "q": 88,
+   "item": "ITM-029",
+   "temp_id": true,
+   "hint": "Hào quang bậc T2, bảng màu lam-tím-tím đậm huyền bí (Phù thủy, Pháp sư, Thần ma)"
+  },
+  "itm029_aura_arcane_t3": {
+   "file": "itm029_aura_arcane_t3.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-019b",
+   "obj": [
+    3
+   ],
+   "kind": "fx",
+   "bg": "black",
+   "alpha": false,
+   "blend": "screen",
+   "bytes": 2784,
+   "q": 88,
+   "item": "ITM-029",
+   "temp_id": true,
+   "hint": "Hào quang bậc T3, bảng màu lam-tím-tím đậm huyền bí (Phù thủy, Pháp sư, Thần ma)"
+  },
+  "itm029_aura_arcane_t4": {
+   "file": "itm029_aura_arcane_t4.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-019b",
+   "obj": [
+    4
+   ],
+   "kind": "fx",
+   "bg": "black",
+   "alpha": false,
+   "blend": "screen",
+   "bytes": 3262,
+   "q": 88,
+   "item": "ITM-029",
+   "temp_id": true,
+   "hint": "Hào quang bậc T4, bảng màu lam-tím-tím đậm huyền bí (Phù thủy, Pháp sư, Thần ma)"
+  },
+  "itm029_aura_arcane_t5": {
+   "file": "itm029_aura_arcane_t5.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-019b",
+   "obj": [
+    5
+   ],
+   "kind": "fx",
+   "bg": "black",
+   "alpha": false,
+   "blend": "screen",
+   "bytes": 4212,
+   "q": 88,
+   "item": "ITM-029",
+   "temp_id": true,
+   "hint": "Hào quang bậc T5, bảng màu lam-tím-tím đậm huyền bí (Phù thủy, Pháp sư, Thần ma)"
+  },
+  "itm029_aura_arcane_t6": {
+   "file": "itm029_aura_arcane_t6.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-019b",
+   "obj": [
+    6
+   ],
+   "kind": "fx",
+   "bg": "black",
+   "alpha": false,
+   "blend": "screen",
+   "bytes": 10976,
+   "q": 88,
+   "item": "ITM-029",
+   "temp_id": true,
+   "hint": "Hào quang bậc T6, bảng màu lam-tím-tím đậm huyền bí (Phù thủy, Pháp sư, Thần ma)"
+  },
+  "itm029_aura_arcane_t7": {
+   "file": "itm029_aura_arcane_t7.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-019b",
+   "obj": [
+    7
+   ],
+   "kind": "fx",
+   "bg": "black",
+   "alpha": false,
+   "blend": "screen",
+   "bytes": 8140,
+   "q": 88,
+   "item": "ITM-029",
+   "temp_id": true,
+   "hint": "Hào quang bậc T7, bảng màu lam-tím-tím đậm huyền bí (Phù thủy, Pháp sư, Thần ma)"
+  },
+  "itm029_aura_arcane_t8": {
+   "file": "itm029_aura_arcane_t8.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-019b",
+   "obj": [
+    8
+   ],
+   "kind": "fx",
+   "bg": "black",
+   "alpha": false,
+   "blend": "screen",
+   "bytes": 7446,
+   "q": 88,
+   "item": "ITM-029",
+   "temp_id": true,
+   "hint": "Hào quang bậc T8, bảng màu lam-tím-tím đậm huyền bí (Phù thủy, Pháp sư, Thần ma)"
+  },
+  "itm029_aura_blood_t1": {
+   "file": "itm029_aura_blood_t1.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-019c",
+   "obj": [
+    1
+   ],
+   "kind": "fx",
+   "bg": "black",
+   "alpha": false,
+   "blend": "screen",
+   "bytes": 756,
+   "q": 88,
+   "item": "ITM-029",
+   "temp_id": true,
+   "hint": "Hào quang bậc T1, bảng màu đỏ thẫm-đen-tím máu (Huyết tộc, Dị nhân)"
+  },
+  "itm029_aura_blood_t2": {
+   "file": "itm029_aura_blood_t2.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-019c",
+   "obj": [
+    2
+   ],
+   "kind": "fx",
+   "bg": "black",
+   "alpha": false,
+   "blend": "screen",
+   "bytes": 1160,
+   "q": 88,
+   "item": "ITM-029",
+   "temp_id": true,
+   "hint": "Hào quang bậc T2, bảng màu đỏ thẫm-đen-tím máu (Huyết tộc, Dị nhân)"
+  },
+  "itm029_aura_blood_t3": {
+   "file": "itm029_aura_blood_t3.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-019c",
+   "obj": [
+    3
+   ],
+   "kind": "fx",
+   "bg": "black",
+   "alpha": false,
+   "blend": "screen",
+   "bytes": 2486,
+   "q": 88,
+   "item": "ITM-029",
+   "temp_id": true,
+   "hint": "Hào quang bậc T3, bảng màu đỏ thẫm-đen-tím máu (Huyết tộc, Dị nhân)"
+  },
+  "itm029_aura_blood_t4": {
+   "file": "itm029_aura_blood_t4.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-019c",
+   "obj": [
+    4
+   ],
+   "kind": "fx",
+   "bg": "black",
+   "alpha": false,
+   "blend": "screen",
+   "bytes": 3220,
+   "q": 88,
+   "item": "ITM-029",
+   "temp_id": true,
+   "hint": "Hào quang bậc T4, bảng màu đỏ thẫm-đen-tím máu (Huyết tộc, Dị nhân)"
+  },
+  "itm029_aura_blood_t5": {
+   "file": "itm029_aura_blood_t5.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-019c",
+   "obj": [
+    5
+   ],
+   "kind": "fx",
+   "bg": "black",
+   "alpha": false,
+   "blend": "screen",
+   "bytes": 4228,
+   "q": 88,
+   "item": "ITM-029",
+   "temp_id": true,
+   "hint": "Hào quang bậc T5, bảng màu đỏ thẫm-đen-tím máu (Huyết tộc, Dị nhân)"
+  },
+  "itm029_aura_blood_t6": {
+   "file": "itm029_aura_blood_t6.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-019c",
+   "obj": [
+    6
+   ],
+   "kind": "fx",
+   "bg": "black",
+   "alpha": false,
+   "blend": "screen",
+   "bytes": 9848,
+   "q": 88,
+   "item": "ITM-029",
+   "temp_id": true,
+   "hint": "Hào quang bậc T6, bảng màu đỏ thẫm-đen-tím máu (Huyết tộc, Dị nhân)"
+  },
+  "itm029_aura_blood_t7": {
+   "file": "itm029_aura_blood_t7.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-019c",
+   "obj": [
+    7
+   ],
+   "kind": "fx",
+   "bg": "black",
+   "alpha": false,
+   "blend": "screen",
+   "bytes": 5980,
+   "q": 88,
+   "item": "ITM-029",
+   "temp_id": true,
+   "hint": "Hào quang bậc T7, bảng màu đỏ thẫm-đen-tím máu (Huyết tộc, Dị nhân)"
+  },
+  "itm029_aura_blood_t8": {
+   "file": "itm029_aura_blood_t8.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-019c",
+   "obj": [
+    8
+   ],
+   "kind": "fx",
+   "bg": "black",
+   "alpha": false,
+   "blend": "screen",
+   "bytes": 7368,
+   "q": 88,
+   "item": "ITM-029",
+   "temp_id": true,
+   "hint": "Hào quang bậc T8, bảng màu đỏ thẫm-đen-tím máu (Huyết tộc, Dị nhân)"
+  },
+  "itm029_aura_fire_t1": {
+   "file": "itm029_aura_fire_t1.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-019a",
+   "obj": [
+    1
+   ],
+   "kind": "fx",
+   "bg": "black",
+   "alpha": false,
+   "blend": "screen",
+   "bytes": 912,
+   "q": 88,
+   "item": "ITM-029",
+   "temp_id": true,
+   "hint": "Hào quang bậc T1, bảng màu cam-đỏ-vàng lửa (Võ giả, Đấu khí, Thể chất)"
+  },
+  "itm029_aura_fire_t2": {
+   "file": "itm029_aura_fire_t2.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-019a",
+   "obj": [
+    2
+   ],
+   "kind": "fx",
+   "bg": "black",
+   "alpha": false,
+   "blend": "screen",
+   "bytes": 2094,
+   "q": 88,
+   "item": "ITM-029",
+   "temp_id": true,
+   "hint": "Hào quang bậc T2, bảng màu cam-đỏ-vàng lửa (Võ giả, Đấu khí, Thể chất)"
+  },
+  "itm029_aura_fire_t3": {
+   "file": "itm029_aura_fire_t3.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-019a",
+   "obj": [
+    3
+   ],
+   "kind": "fx",
+   "bg": "black",
+   "alpha": false,
+   "blend": "screen",
+   "bytes": 3314,
+   "q": 88,
+   "item": "ITM-029",
+   "temp_id": true,
+   "hint": "Hào quang bậc T3, bảng màu cam-đỏ-vàng lửa (Võ giả, Đấu khí, Thể chất)"
+  },
+  "itm029_aura_fire_t4": {
+   "file": "itm029_aura_fire_t4.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-019a",
+   "obj": [
+    4
+   ],
+   "kind": "fx",
+   "bg": "black",
+   "alpha": false,
+   "blend": "screen",
+   "bytes": 4054,
+   "q": 88,
+   "item": "ITM-029",
+   "temp_id": true,
+   "hint": "Hào quang bậc T4, bảng màu cam-đỏ-vàng lửa (Võ giả, Đấu khí, Thể chất)"
+  },
+  "itm029_aura_fire_t5": {
+   "file": "itm029_aura_fire_t5.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-019a",
+   "obj": [
+    5
+   ],
+   "kind": "fx",
+   "bg": "black",
+   "alpha": false,
+   "blend": "screen",
+   "bytes": 5580,
+   "q": 88,
+   "item": "ITM-029",
+   "temp_id": true,
+   "hint": "Hào quang bậc T5, bảng màu cam-đỏ-vàng lửa (Võ giả, Đấu khí, Thể chất)"
+  },
+  "itm029_aura_fire_t6": {
+   "file": "itm029_aura_fire_t6.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-019a",
+   "obj": [
+    6
+   ],
+   "kind": "fx",
+   "bg": "black",
+   "alpha": false,
+   "blend": "screen",
+   "bytes": 11290,
+   "q": 88,
+   "item": "ITM-029",
+   "temp_id": true,
+   "hint": "Hào quang bậc T6, bảng màu cam-đỏ-vàng lửa (Võ giả, Đấu khí, Thể chất)"
+  },
+  "itm029_aura_fire_t7": {
+   "file": "itm029_aura_fire_t7.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-019a",
+   "obj": [
+    7
+   ],
+   "kind": "fx",
+   "bg": "black",
+   "alpha": false,
+   "blend": "screen",
+   "bytes": 9940,
+   "q": 88,
+   "item": "ITM-029",
+   "temp_id": true,
+   "hint": "Hào quang bậc T7, bảng màu cam-đỏ-vàng lửa (Võ giả, Đấu khí, Thể chất)"
+  },
+  "itm029_aura_fire_t8": {
+   "file": "itm029_aura_fire_t8.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-019a",
+   "obj": [
+    8
+   ],
+   "kind": "fx",
+   "bg": "black",
+   "alpha": false,
+   "blend": "screen",
+   "bytes": 8832,
+   "q": 88,
+   "item": "ITM-029",
+   "temp_id": true,
+   "hint": "Hào quang bậc T8, bảng màu cam-đỏ-vàng lửa (Võ giả, Đấu khí, Thể chất)"
+  },
+  "itm029_aura_fire_t9": {
+   "file": "itm029_aura_fire_t9.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-019a (T9)",
+   "obj": [
+    1
+   ],
+   "kind": "fx",
+   "bg": "black",
+   "alpha": false,
+   "blend": "screen",
+   "bytes": 17980,
+   "q": 88,
+   "item": "ITM-029",
+   "temp_id": true,
+   "hint": "Hào quang bậc T9 bảng lửa – ảnh làm lại; 3 bảng màu còn lại dùng hue-rotate trong CSS"
+  },
+  "itm029_aura_wild_t1": {
+   "file": "itm029_aura_wild_t1.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-019d",
+   "obj": [
+    1
+   ],
+   "kind": "fx",
+   "bg": "black",
+   "alpha": false,
+   "blend": "screen",
+   "bytes": 1042,
+   "q": 88,
+   "item": "ITM-029",
+   "temp_id": true,
+   "hint": "Hào quang bậc T1, bảng màu xanh lục-lam-bạc hoang dã (Lang tộc, Cương thi, Thú)"
+  },
+  "itm029_aura_wild_t2": {
+   "file": "itm029_aura_wild_t2.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-019d",
+   "obj": [
+    2
+   ],
+   "kind": "fx",
+   "bg": "black",
+   "alpha": false,
+   "blend": "screen",
+   "bytes": 1768,
+   "q": 88,
+   "item": "ITM-029",
+   "temp_id": true,
+   "hint": "Hào quang bậc T2, bảng màu xanh lục-lam-bạc hoang dã (Lang tộc, Cương thi, Thú)"
+  },
+  "itm029_aura_wild_t3": {
+   "file": "itm029_aura_wild_t3.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-019d",
+   "obj": [
+    3
+   ],
+   "kind": "fx",
+   "bg": "black",
+   "alpha": false,
+   "blend": "screen",
+   "bytes": 2408,
+   "q": 88,
+   "item": "ITM-029",
+   "temp_id": true,
+   "hint": "Hào quang bậc T3, bảng màu xanh lục-lam-bạc hoang dã (Lang tộc, Cương thi, Thú)"
+  },
+  "itm029_aura_wild_t4": {
+   "file": "itm029_aura_wild_t4.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-019d",
+   "obj": [
+    4
+   ],
+   "kind": "fx",
+   "bg": "black",
+   "alpha": false,
+   "blend": "screen",
+   "bytes": 2918,
+   "q": 88,
+   "item": "ITM-029",
+   "temp_id": true,
+   "hint": "Hào quang bậc T4, bảng màu xanh lục-lam-bạc hoang dã (Lang tộc, Cương thi, Thú)"
+  },
+  "itm029_aura_wild_t5": {
+   "file": "itm029_aura_wild_t5.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-019d",
+   "obj": [
+    5
+   ],
+   "kind": "fx",
+   "bg": "black",
+   "alpha": false,
+   "blend": "screen",
+   "bytes": 5952,
+   "q": 88,
+   "item": "ITM-029",
+   "temp_id": true,
+   "hint": "Hào quang bậc T5, bảng màu xanh lục-lam-bạc hoang dã (Lang tộc, Cương thi, Thú)"
+  },
+  "itm029_aura_wild_t6": {
+   "file": "itm029_aura_wild_t6.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-019d",
+   "obj": [
+    6
+   ],
+   "kind": "fx",
+   "bg": "black",
+   "alpha": false,
+   "blend": "screen",
+   "bytes": 10886,
+   "q": 88,
+   "item": "ITM-029",
+   "temp_id": true,
+   "hint": "Hào quang bậc T6, bảng màu xanh lục-lam-bạc hoang dã (Lang tộc, Cương thi, Thú)"
+  },
+  "itm029_aura_wild_t7": {
+   "file": "itm029_aura_wild_t7.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-019d",
+   "obj": [
+    7
+   ],
+   "kind": "fx",
+   "bg": "black",
+   "alpha": false,
+   "blend": "screen",
+   "bytes": 7112,
+   "q": 88,
+   "item": "ITM-029",
+   "temp_id": true,
+   "hint": "Hào quang bậc T7, bảng màu xanh lục-lam-bạc hoang dã (Lang tộc, Cương thi, Thú)"
+  },
+  "itm029_aura_wild_t8": {
+   "file": "itm029_aura_wild_t8.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-019d",
+   "obj": [
+    8
+   ],
+   "kind": "fx",
+   "bg": "black",
+   "alpha": false,
+   "blend": "screen",
+   "bytes": 7536,
+   "q": 88,
+   "item": "ITM-029",
+   "temp_id": true,
+   "hint": "Hào quang bậc T8, bảng màu xanh lục-lam-bạc hoang dã (Lang tộc, Cương thi, Thú)"
+  },
+  "itm030_race_01": {
+   "file": "itm030_race_01.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-020",
+   "obj": [
+    1
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 6332,
+   "q": 90,
+   "item": "ITM-030",
+   "temp_id": true,
+   "hint": "Dáng nền: thường dân"
+  },
+  "itm030_race_02": {
+   "file": "itm030_race_02.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-020",
+   "obj": [
+    2
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 8486,
+   "q": 90,
+   "item": "ITM-030",
+   "temp_id": true,
+   "hint": "Dáng nền: võ giả (băng đô, thế đấm)"
+  },
+  "itm030_race_03": {
+   "file": "itm030_race_03.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-020",
+   "obj": [
+    3
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 8758,
+   "q": 90,
+   "item": "ITM-030",
+   "temp_id": true,
+   "hint": "Dáng nền: pháp sư (mũ nhọn + trượng)"
+  },
+  "itm030_race_04": {
+   "file": "itm030_race_04.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-020",
+   "obj": [
+    4
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 8586,
+   "q": 90,
+   "item": "ITM-030",
+   "temp_id": true,
+   "hint": "Dáng nền: huyết tộc (áo choàng cổ cao)"
+  },
+  "itm030_race_05": {
+   "file": "itm030_race_05.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-020",
+   "obj": [
+    5
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 9794,
+   "q": 90,
+   "item": "ITM-030",
+   "temp_id": true,
+   "hint": "Dáng nền: người sói"
+  },
+  "itm030_race_06": {
+   "file": "itm030_race_06.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-020",
+   "obj": [
+    6
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 7570,
+   "q": 90,
+   "item": "ITM-030",
+   "temp_id": true,
+   "hint": "Dáng nền: cương thi (nhảy, bùa trắng)"
+  },
+  "itm030_race_07": {
+   "file": "itm030_race_07.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-020",
+   "obj": [
+    7
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 20322,
+   "q": 90,
+   "item": "ITM-030",
+   "temp_id": true,
+   "hint": "Dáng nền: xác ướp"
+  },
+  "itm030_race_08": {
+   "file": "itm030_race_08.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-020",
+   "obj": [
+    8
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 9360,
+   "q": 90,
+   "item": "ITM-030",
+   "temp_id": true,
+   "hint": "Dáng nền: dị nhân (ninja bịt mặt)"
+  },
+  "itm031_variant_01": {
+   "file": "itm031_variant_01.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-021",
+   "obj": [
+    1
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 12460,
+   "q": 90,
+   "item": "ITM-031",
+   "temp_id": true,
+   "hint": "Võ giả nam (băng đô đỏ, ngực trần)"
+  },
+  "itm031_variant_02": {
+   "file": "itm031_variant_02.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-021",
+   "obj": [
+    2
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 13996,
+   "q": 90,
+   "item": "ITM-031",
+   "temp_id": true,
+   "hint": "Võ giả nữ (tóc đuôi ngựa, áo nhẹ)"
+  },
+  "itm031_variant_03": {
+   "file": "itm031_variant_03.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-021",
+   "obj": [
+    3
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 12110,
+   "q": 90,
+   "item": "ITM-031",
+   "temp_id": true,
+   "hint": "Pháp sư nam (mũ cao, áo lam, trượng)"
+  },
+  "itm031_variant_04": {
+   "file": "itm031_variant_04.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-021",
+   "obj": [
+    4
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 13218,
+   "q": 90,
+   "item": "ITM-031",
+   "temp_id": true,
+   "hint": "Pháp sư nữ (mũ rộng vành, váy lam, đũa phép)"
+  },
+  "itm031_variant_05": {
+   "file": "itm031_variant_05.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-021",
+   "obj": [
+    5
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 10410,
+   "q": 90,
+   "item": "ITM-031",
+   "temp_id": true,
+   "hint": "Huyết tộc nam (áo choàng cổ cao)"
+  },
+  "itm031_variant_06": {
+   "file": "itm031_variant_06.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-021",
+   "obj": [
+    6
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 13382,
+   "q": 90,
+   "item": "ITM-031",
+   "temp_id": true,
+   "hint": "Huyết tộc nữ (váy đỏ + dơi)"
+  },
+  "itm031_variant_07": {
+   "file": "itm031_variant_07.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-021",
+   "obj": [
+    7
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 14226,
+   "q": 90,
+   "item": "ITM-031",
+   "temp_id": true,
+   "hint": "Dị nhân nam (ninja đen + đao)"
+  },
+  "itm031_variant_08": {
+   "file": "itm031_variant_08.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-021",
+   "obj": [
+    8
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 14414,
+   "q": 90,
+   "item": "ITM-031",
+   "temp_id": true,
+   "hint": "Dị nhân nữ (ninja tím, phi tiêu)"
+  },
+  "itm032_beast_06": {
+   "file": "itm032_beast_06.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-022 (egg)",
+   "obj": [
+    1
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 18024,
+   "q": 90,
+   "item": "ITM-032",
+   "temp_id": true,
+   "hint": "Thú nền: trứng thú nứt phát sáng – ảnh làm lại, thay ô 6"
+  },
+  "itm034_activity_01": {
+   "file": "itm034_activity_01.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-024",
+   "obj": [
+    1
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 8652,
+   "q": 90,
+   "item": "ITM-034",
+   "temp_id": true,
+   "hint": "Hoạt động: học hành (đọc cuộn)"
+  },
+  "itm034_activity_02": {
+   "file": "itm034_activity_02.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-024",
+   "obj": [
+    2
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 9254,
+   "q": 90,
+   "item": "ITM-034",
+   "temp_id": true,
+   "hint": "Hoạt động: rèn luyện (đấm cọc gỗ)"
+  },
+  "itm034_activity_03": {
+   "file": "itm034_activity_03.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-024",
+   "obj": [
+    3
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 21406,
+   "q": 90,
+   "item": "ITM-034",
+   "temp_id": true,
+   "hint": "Hoạt động: kết hôn (hai người + vòng tim)"
+  },
+  "itm034_activity_04": {
+   "file": "itm034_activity_04.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-024",
+   "obj": [
+    4
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 16622,
+   "q": 90,
+   "item": "ITM-034",
+   "temp_id": true,
+   "hint": "Hoạt động: chiến đấu (lao tới với kiếm)"
+  },
+  "itm034_activity_05": {
+   "file": "itm034_activity_05.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-024",
+   "obj": [
+    5
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 22120,
+   "q": 90,
+   "item": "ITM-034",
+   "temp_id": true,
+   "hint": "Hoạt động: bế quan (thiền trong vòng thái cực)"
+  },
+  "itm034_activity_06": {
+   "file": "itm034_activity_06.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-024 (elderly)",
+   "obj": [
+    1
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 16146,
+   "q": 90,
+   "item": "ITM-034",
+   "temp_id": true,
+   "hint": "Hoạt động: mệnh chung (cụ già tan thành khói) – ảnh làm lại, thay ô 6"
+  },
+  "itm035_vfx_01": {
+   "file": "itm035_vfx_01.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-025",
+   "obj": [
+    1
+   ],
+   "kind": "fx",
+   "bg": "black",
+   "alpha": false,
+   "blend": "screen",
+   "bytes": 12034,
+   "q": 88,
+   "item": "ITM-035",
+   "temp_id": true,
+   "hint": "Hiệu ứng đột phá: cột sáng + vòng sét"
+  },
+  "itm035_vfx_02": {
+   "file": "itm035_vfx_02.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-025",
+   "obj": [
+    2
+   ],
+   "kind": "fx",
+   "bg": "black",
+   "alpha": false,
+   "blend": "screen",
+   "bytes": 10508,
+   "q": 88,
+   "item": "ITM-035",
+   "temp_id": true,
+   "hint": "Hiệu ứng Thiên kiếp: mây bão, chín tia sét"
+  },
+  "itm035_vfx_03": {
+   "file": "itm035_vfx_03.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-025",
+   "obj": [
+    3
+   ],
+   "kind": "fx",
+   "bg": "black",
+   "alpha": false,
+   "blend": "screen",
+   "bytes": 8464,
+   "q": 88,
+   "item": "ITM-035",
+   "temp_id": true,
+   "hint": "Hiệu ứng Nghịch Mệnh: đồng hồ cát nứt, ánh vàng-đỏ"
+  },
+  "itm035_vfx_04": {
+   "file": "itm035_vfx_04.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-025",
+   "obj": [
+    4
+   ],
+   "kind": "fx",
+   "bg": "black",
+   "alpha": false,
+   "blend": "screen",
+   "bytes": 9182,
+   "q": 88,
+   "item": "ITM-035",
+   "temp_id": true,
+   "hint": "Hiệu ứng Trang chép: trang sách phát sáng, hồn bay lên"
+  },
+  "itm036_region_01": {
+   "file": "itm036_region_01.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-026 (New)",
+   "obj": [
+    1
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 21068,
+   "q": 90,
+   "item": "ITM-036",
+   "temp_id": true,
+   "hint": "Vùng: Bắc địa (băng, hang băng, thông)"
+  },
+  "itm036_region_02": {
+   "file": "itm036_region_02.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-026 (New)",
+   "obj": [
+    2
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 17258,
+   "q": 90,
+   "item": "ITM-036",
+   "temp_id": true,
+   "hint": "Vùng: núi xám, hẻm núi, xích rỉ"
+  },
+  "itm036_region_03": {
+   "file": "itm036_region_03.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-026 (New)",
+   "obj": [
+    3
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 17618,
+   "q": 90,
+   "item": "ITM-036",
+   "temp_id": true,
+   "hint": "Vùng: rừng cổ phát sáng",
+   "warn": [
+    "còn viền màu nền loang 0.57% điểm ảnh"
+   ]
+  },
+  "itm036_region_04": {
+   "file": "itm036_region_04.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-026 (New)",
+   "obj": [
+    4
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 15812,
+   "q": 90,
+   "item": "ITM-036",
+   "temp_id": true,
+   "hint": "Vùng: biển cả, sóng lớn, xoáy vực"
+  },
+  "itm036_region_05": {
+   "file": "itm036_region_05.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-026 (New)",
+   "obj": [
+    5
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 18232,
+   "q": 90,
+   "item": "ITM-036",
+   "temp_id": true,
+   "hint": "Vùng: núi xanh sương mù, miếu nhỏ",
+   "warn": [
+    "còn viền màu nền loang 0.91% điểm ảnh"
+   ]
+  },
+  "itm036_region_06": {
+   "file": "itm036_region_06.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-026 (New)",
+   "obj": [
+    6
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 19172,
+   "q": 90,
+   "item": "ITM-036",
+   "temp_id": true,
+   "hint": "Vùng: thành lũy, đấu trường tròn, tháp vàng"
+  },
+  "itm036_region_07": {
+   "file": "itm036_region_07.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-026 (New)",
+   "obj": [
+    7
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 16186,
+   "q": 90,
+   "item": "ITM-036",
+   "temp_id": true,
+   "hint": "Vùng: địa ngục dung nham, xích"
+  },
+  "itm036_region_08": {
+   "file": "itm036_region_08.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-026 (New)",
+   "obj": [
+    8
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 16294,
+   "q": 90,
+   "item": "ITM-036",
+   "temp_id": true,
+   "hint": "Vùng: sa mạc, kim tự tháp, cột đổ"
+  },
+  "itm037_stat_02": {
+   "file": "itm037_stat_02.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-027",
+   "obj": [
+    2
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 13368,
+   "q": 90,
+   "item": "ITM-037",
+   "temp_id": true,
+   "hint": "Chỉ số: hồn lực (ngọn lửa lam)"
+  },
+  "itm037_stat_03": {
+   "file": "itm037_stat_03.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-027",
+   "obj": [
+    3
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 13262,
+   "q": 90,
+   "item": "ITM-037",
+   "temp_id": true,
+   "hint": "Chỉ số: huyết khí (giọt máu đỏ)"
+  },
+  "itm037_stat_04": {
+   "file": "itm037_stat_04.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-027",
+   "obj": [
+    4
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 13392,
+   "q": 90,
+   "item": "ITM-037",
+   "temp_id": true,
+   "hint": "Chỉ số: vận khí (sao bốn cánh vàng)"
+  },
+  "itm037_stat_05": {
+   "file": "itm037_stat_05.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-027",
+   "obj": [
+    5
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 13758,
+   "q": 90,
+   "item": "ITM-037",
+   "temp_id": true,
+   "hint": "Chỉ số: thọ nguyên (đồng hồ cát)"
+  },
+  "itm037_stat_06": {
+   "file": "itm037_stat_06.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-027",
+   "obj": [
+    6
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 12076,
+   "q": 90,
+   "item": "ITM-037",
+   "temp_id": true,
+   "hint": "Chỉ số: thăng hồn (linh khí trắng)"
+  },
+  "itm037_stat_07": {
+   "file": "itm037_stat_07.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-027",
+   "obj": [
+    7
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 13346,
+   "q": 90,
+   "item": "ITM-037",
+   "temp_id": true,
+   "hint": "Chỉ số: tinh khí (sao băng bạc-lục lam)"
+  },
+  "itm037_stat_08": {
+   "file": "itm037_stat_08.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-027",
+   "obj": [
+    8
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 15846,
+   "q": 90,
+   "item": "ITM-037",
+   "temp_id": true,
+   "hint": "Chỉ số: mị lực (tim hồng-vàng lấp lánh)"
+  },
+  "itm038_weapon_01": {
+   "file": "itm038_weapon_01.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-028",
+   "obj": [
+    1
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 14754,
+   "q": 90,
+   "item": "ITM-038",
+   "temp_id": true,
+   "hint": "Trang bị sơ khai: kiếm gỗ"
+  },
+  "itm038_weapon_02": {
+   "file": "itm038_weapon_02.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-028",
+   "obj": [
+    2
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 12354,
+   "q": 90,
+   "item": "ITM-038",
+   "temp_id": true,
+   "hint": "Trang bị sơ khai: gậy học việc (ngọc tím)"
+  },
+  "itm038_weapon_03": {
+   "file": "itm038_weapon_03.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-028",
+   "obj": [
+    3
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 12334,
+   "q": 90,
+   "item": "ITM-038",
+   "temp_id": true,
+   "hint": "Trang bị sơ khai: dao găm"
+  },
+  "itm038_weapon_04": {
+   "file": "itm038_weapon_04.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-028",
+   "obj": [
+    4
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 17760,
+   "q": 90,
+   "item": "ITM-038",
+   "temp_id": true,
+   "hint": "Trang bị sơ khai: sách phép cũ"
+  },
+  "itm038_weapon_06": {
+   "file": "itm038_weapon_06.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-028",
+   "obj": [
+    6
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 15982,
+   "q": 90,
+   "item": "ITM-038",
+   "temp_id": true,
+   "hint": "Trang bị sơ khai: đôi bông tai ma thuật"
+  },
+  "itm038_weapon_07": {
+   "file": "itm038_weapon_07.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-028",
+   "obj": [
+    7
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 18836,
+   "q": 90,
+   "item": "ITM-038",
+   "temp_id": true,
+   "hint": "Trang bị sơ khai: găng vuốt"
+  },
+  "itm038_weapon_09": {
+   "file": "itm038_weapon_09.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-028",
+   "obj": [
+    9
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 17258,
+   "q": 90,
+   "item": "ITM-038",
+   "temp_id": true,
+   "hint": "Trang bị sơ khai: cầu lửa nhỏ"
+  },
+  "itm039_relic_01": {
+   "file": "itm039_relic_01.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-029",
+   "obj": [
+    1
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 15032,
+   "q": 90,
+   "item": "ITM-039",
+   "temp_id": true,
+   "hint": "Huyền thoại: kiếm Thiên Đế (lam-trắng vũ trụ)"
+  },
+  "itm039_relic_02": {
+   "file": "itm039_relic_02.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-029",
+   "obj": [
+    2
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 10306,
+   "q": 90,
+   "item": "ITM-039",
+   "temp_id": true,
+   "hint": "Huyền thoại: thương Hỗn Độn (tím-đen xoáy hư không)"
+  },
+  "itm039_relic_03": {
+   "file": "itm039_relic_03.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-029",
+   "obj": [
+    3
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 11748,
+   "q": 90,
+   "item": "ITM-039",
+   "temp_id": true,
+   "hint": "Huyền thoại: trượng Thần Ma (vàng-tím)"
+  },
+  "itm039_relic_04": {
+   "file": "itm039_relic_04.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-029",
+   "obj": [
+    4,
+    5,
+    6
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 22214,
+   "q": 90,
+   "item": "ITM-039",
+   "temp_id": true,
+   "hint": "Huyền thoại: bảo vật tối thượng (ba món lơ lửng: cầu, vương miện, cuộn)"
+  },
+  "itm039_relic_05": {
+   "file": "itm039_relic_05.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-029",
+   "obj": [
+    7
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 18584,
+   "q": 90,
+   "item": "ITM-039",
+   "temp_id": true,
+   "hint": "Huyền thoại: cánh Sáng Thế (trắng-vàng)"
+  },
+  "itm039_relic_06": {
+   "file": "itm039_relic_06.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-029",
+   "obj": [
+    8,
+    9
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 9262,
+   "q": 90,
+   "item": "ITM-039",
+   "temp_id": true,
+   "hint": "Huyền thoại: cánh Tinh Không (lam đậm, sao; hai cánh rời ghép lại)"
+  },
+  "itm039_relic_07": {
+   "file": "itm039_relic_07.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-029",
+   "obj": [
+    10
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 19004,
+   "q": 90,
+   "item": "ITM-039",
+   "temp_id": true,
+   "hint": "Huyền thoại: cánh Hỗn Độn (tím sẫm)"
+  },
+  "itm039_relic_08": {
+   "file": "itm039_relic_08.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-029",
+   "obj": [
+    11
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 24784,
+   "q": 90,
+   "item": "ITM-039",
+   "temp_id": true,
+   "hint": "Huyền thoại: cánh Phượng Huyết (đỏ-cam lửa)"
+  },
+  "itm039_relic_09": {
+   "file": "itm039_relic_09.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-029 (vương miện)",
+   "obj": [
+    1
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 28816,
+   "q": 90,
+   "item": "ITM-039",
+   "temp_id": true,
+   "hint": "Huyền thoại: vương miện Sáng Thế (vàng, đá quý, quầng sáng) – ảnh làm lại, thay ô 9"
+  },
+  "itm040_book_01": {
+   "file": "itm040_book_01.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-030a",
+   "obj": [
+    1
+   ],
+   "kind": "sprite",
+   "bg": "magenta",
+   "alpha": true,
+   "bytes": 33616,
+   "q": 90,
+   "item": "ITM-040",
+   "temp_id": true,
+   "hint": "Sách Vòng Đời 1: bìa da nâu, lá nhỏ"
+  },
+  "itm040_book_02": {
+   "file": "itm040_book_02.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-030a",
+   "obj": [
+    2
+   ],
+   "kind": "sprite",
+   "bg": "magenta",
+   "alpha": true,
+   "bytes": 19550,
+   "q": 90,
+   "item": "ITM-040",
+   "temp_id": true,
+   "hint": "Sách Vòng Đời 2: bìa xanh lục đậm, cây nhỏ"
+  },
+  "itm040_book_03": {
+   "file": "itm040_book_03.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-030a",
+   "obj": [
+    3
+   ],
+   "kind": "sprite",
+   "bg": "magenta",
+   "alpha": true,
+   "bytes": 34862,
+   "q": 90,
+   "item": "ITM-040",
+   "temp_id": true,
+   "hint": "Sách Vòng Đời 3: bìa xanh lam, sóng nước"
+  },
+  "itm040_book_04": {
+   "file": "itm040_book_04.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-030a",
+   "obj": [
+    4
+   ],
+   "kind": "sprite",
+   "bg": "magenta",
+   "alpha": true,
+   "bytes": 25864,
+   "q": 90,
+   "item": "ITM-040",
+   "temp_id": true,
+   "hint": "Sách Vòng Đời 4: bìa tím, ngôi sao",
+   "warn": [
+    "còn viền màu nền loang 1.46% điểm ảnh"
+   ]
+  },
+  "itm040_book_05": {
+   "file": "itm040_book_05.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-030a",
+   "obj": [
+    5
+   ],
+   "kind": "sprite",
+   "bg": "magenta",
+   "alpha": true,
+   "bytes": 24042,
+   "q": 90,
+   "item": "ITM-040",
+   "temp_id": true,
+   "hint": "Sách Vòng Đời 5: bìa đỏ, ngọn lửa"
+  },
   "itm040_book_06": {
    "file": "itm040_book_06.webp",
    "w": 256,
@@ -19,6 +3598,545 @@
    "temp_id": true,
    "hint": "Sách Vòng Đời 6: bìa xám đá, núi – ảnh làm lại, thay cuốn 6 của P-030a"
   },
+  "itm040_book_07": {
+   "file": "itm040_book_07.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-030b",
+   "obj": [
+    1
+   ],
+   "kind": "sprite",
+   "bg": "magenta",
+   "alpha": true,
+   "bytes": 23062,
+   "q": 90,
+   "item": "ITM-040",
+   "temp_id": true,
+   "hint": "Sách Vòng Đời 7: bìa vàng, mặt trời"
+  },
+  "itm040_book_08": {
+   "file": "itm040_book_08.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-030b",
+   "obj": [
+    2
+   ],
+   "kind": "sprite",
+   "bg": "magenta",
+   "alpha": true,
+   "bytes": 29860,
+   "q": 90,
+   "item": "ITM-040",
+   "temp_id": true,
+   "hint": "Sách Vòng Đời 8: bìa bạc, trăng khuyết"
+  },
+  "itm040_book_09": {
+   "file": "itm040_book_09.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-030b",
+   "obj": [
+    3
+   ],
+   "kind": "sprite",
+   "bg": "magenta",
+   "alpha": true,
+   "bytes": 12286,
+   "q": 90,
+   "item": "ITM-040",
+   "temp_id": true,
+   "hint": "Sách Vòng Đời 9: bìa đen, đầu lâu"
+  },
+  "itm040_book_10": {
+   "file": "itm040_book_10.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-030b",
+   "obj": [
+    4
+   ],
+   "kind": "sprite",
+   "bg": "magenta",
+   "alpha": true,
+   "bytes": 22502,
+   "q": 90,
+   "item": "ITM-040",
+   "temp_id": true,
+   "hint": "Sách Vòng Đời 10: bìa trắng cẩm thạch, lông vũ"
+  },
+  "itm040_book_11": {
+   "file": "itm040_book_11.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-030b",
+   "obj": [
+    5
+   ],
+   "kind": "sprite",
+   "bg": "magenta",
+   "alpha": true,
+   "bytes": 19614,
+   "q": 90,
+   "item": "ITM-040",
+   "temp_id": true,
+   "hint": "Sách Vòng Đời 11: bìa xanh ngọc, xoáy"
+  },
+  "itm040_book_12": {
+   "file": "itm040_book_12.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-030b (12 book)",
+   "obj": [
+    1
+   ],
+   "kind": "sprite",
+   "bg": "magenta",
+   "alpha": true,
+   "bytes": 19336,
+   "q": 90,
+   "item": "ITM-040",
+   "temp_id": true,
+   "hint": "Sách Vòng Đời 12: bìa cam, vương miện – ảnh làm lại"
+  },
+  "itm042_logo_01": {
+   "file": "itm042_logo_01.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-032",
+   "obj": [
+    1
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 40546,
+   "q": 90,
+   "item": "ITM-042",
+   "temp_id": true,
+   "hint": "Biểu tượng game: lõi thiên thạch trong vòng, người que, hào quang bạc-lục lam"
+  },
+  "legend_01": {
+   "file": "legend_01.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-023a (New)",
+   "obj": [
+    1
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 19378,
+   "q": 90,
+   "item": "ITM-033",
+   "temp_id": true,
+   "hint": "Nhân vật truyền kỳ 1: Veyra – phù thủy loài người"
+  },
+  "legend_02": {
+   "file": "legend_02.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-023a (New)",
+   "obj": [
+    2
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 17954,
+   "q": 90,
+   "item": "ITM-033",
+   "temp_id": true,
+   "hint": "Nhân vật truyền kỳ 2: Malgrath – ác quỷ cổ đại / Chúa Ngục"
+  },
+  "legend_03": {
+   "file": "legend_03.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-023a (New)",
+   "obj": [
+    3
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 20008,
+   "q": 90,
+   "item": "ITM-033",
+   "temp_id": true,
+   "hint": "Nhân vật truyền kỳ 3: Theron – anh hùng huyền thoại",
+   "warn": [
+    "còn viền màu nền loang 0.20% điểm ảnh"
+   ]
+  },
+  "legend_04": {
+   "file": "legend_04.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-023a (New)",
+   "obj": [
+    4
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 27382,
+   "q": 90,
+   "item": "ITM-033",
+   "temp_id": true,
+   "hint": "Nhân vật truyền kỳ 4: Lão Thú – cổ thú hình cáo",
+   "warn": [
+    "còn viền màu nền loang 3.99% điểm ảnh"
+   ]
+  },
+  "legend_05": {
+   "file": "legend_05.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-023a (New)",
+   "obj": [
+    5
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 18062,
+   "q": 90,
+   "item": "ITM-033",
+   "temp_id": true,
+   "hint": "Nhân vật truyền kỳ 5: Iris Kael – dị nhân nữ",
+   "warn": [
+    "còn viền màu nền loang 0.59% điểm ảnh"
+   ]
+  },
+  "legend_06": {
+   "file": "legend_06.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-023a (New)",
+   "obj": [
+    6
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 17884,
+   "q": 90,
+   "item": "ITM-033",
+   "temp_id": true,
+   "hint": "Nhân vật truyền kỳ 6: Huyền Chân Tử – đạo sĩ phương Đông"
+  },
+  "legend_07": {
+   "file": "legend_07.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-023a (New)",
+   "obj": [
+    7
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 21008,
+   "q": 90,
+   "item": "ITM-033",
+   "temp_id": true,
+   "hint": "Nhân vật truyền kỳ 7: Rhen Valcrest – huyết tộc lai Lang tộc",
+   "warn": [
+    "còn viền màu nền loang 0.39% điểm ảnh"
+   ]
+  },
+  "legend_08": {
+   "file": "legend_08.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-023a (New)",
+   "obj": [
+    8
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 15524,
+   "q": 90,
+   "item": "ITM-033",
+   "temp_id": true,
+   "hint": "Nhân vật truyền kỳ 8: Edric – Huyết Ước / Pactborn"
+  },
+  "legend_10": {
+   "file": "legend_10.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-023b (New)",
+   "obj": [
+    1
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 18836,
+   "q": 90,
+   "item": "ITM-033",
+   "temp_id": true,
+   "hint": "Nhân vật truyền kỳ 10: Thái Hư – thần nguyên sơ"
+  },
+  "legend_11": {
+   "file": "legend_11.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-023b (New)",
+   "obj": [
+    2
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 23682,
+   "q": 90,
+   "item": "ITM-033",
+   "temp_id": true,
+   "hint": "Nhân vật truyền kỳ 11: Huyền Nguyệt – nữ thần Mặt Trăng"
+  },
+  "legend_12": {
+   "file": "legend_12.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-023b (New)",
+   "obj": [
+    3
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 21050,
+   "q": 90,
+   "item": "ITM-033",
+   "temp_id": true,
+   "hint": "Nhân vật truyền kỳ 12: Lôi Chủ – thần sấm"
+  },
+  "legend_13": {
+   "file": "legend_13.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-023b (New)",
+   "obj": [
+    4
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 19202,
+   "q": 90,
+   "item": "ITM-033",
+   "temp_id": true,
+   "hint": "Nhân vật truyền kỳ 13: Nham Mẫu – thần đất"
+  },
+  "legend_14": {
+   "file": "legend_14.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-023b (New)",
+   "obj": [
+    5
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 26976,
+   "q": 90,
+   "item": "ITM-033",
+   "temp_id": true,
+   "hint": "Nhân vật truyền kỳ 14: Thương Hải – thần biển"
+  },
+  "legend_15": {
+   "file": "legend_15.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-023b (New)",
+   "obj": [
+    6
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 18836,
+   "q": 90,
+   "item": "ITM-033",
+   "temp_id": true,
+   "hint": "Nhân vật truyền kỳ 15: Phán Quan – thần phán xét cõi âm"
+  },
+  "legend_16": {
+   "file": "legend_16.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-023b (New)",
+   "obj": [
+    7
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 24052,
+   "q": 90,
+   "item": "ITM-033",
+   "temp_id": true,
+   "hint": "Nhân vật truyền kỳ 16: Caelum Vane – pháp sư / học giả"
+  },
+  "legend_17": {
+   "file": "legend_17.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-023b (New)",
+   "obj": [
+    8
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 19700,
+   "q": 90,
+   "item": "ITM-033",
+   "temp_id": true,
+   "hint": "Nhân vật truyền kỳ 17: Aldric Valcrest – thủy tổ Huyết tộc"
+  },
+  "legend_19": {
+   "file": "legend_19.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-023c (New)",
+   "obj": [
+    1
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 16870,
+   "q": 90,
+   "item": "ITM-033",
+   "temp_id": true,
+   "hint": "Nhân vật truyền kỳ 19: Seraphine Valcrest – huyết tộc"
+  },
+  "legend_20": {
+   "file": "legend_20.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-023c (New)",
+   "obj": [
+    2
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 15356,
+   "q": 90,
+   "item": "ITM-033",
+   "temp_id": true,
+   "hint": "Nhân vật truyền kỳ 20: Corvin Valcrest – huyết tộc"
+  },
+  "legend_21": {
+   "file": "legend_21.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-023c (New)",
+   "obj": [
+    3
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 20392,
+   "q": 90,
+   "item": "ITM-033",
+   "temp_id": true,
+   "hint": "Nhân vật truyền kỳ 21: Isolde Valcrest – huyết tộc"
+  },
+  "legend_22": {
+   "file": "legend_22.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-023c (New)",
+   "obj": [
+    4
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 16248,
+   "q": 90,
+   "item": "ITM-033",
+   "temp_id": true,
+   "hint": "Nhân vật truyền kỳ 22: Alpha Đầu Bạc – Lang tộc / Hrafn"
+  },
+  "legend_23": {
+   "file": "legend_23.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-023c (New)",
+   "obj": [
+    5
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 14552,
+   "q": 90,
+   "item": "ITM-033",
+   "temp_id": true,
+   "hint": "Nhân vật truyền kỳ 23: Vesper – thí nghiệm Vesper–Lycan"
+  },
+  "legend_24": {
+   "file": "legend_24.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-023c (New)",
+   "obj": [
+    6
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 18490,
+   "q": 90,
+   "item": "ITM-033",
+   "temp_id": true,
+   "hint": "Nhân vật truyền kỳ 24: Kẻ Gập Thành – dị nhân Omega"
+  },
+  "legend_25": {
+   "file": "legend_25.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-023c (New)",
+   "obj": [
+    7
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 26232,
+   "q": 90,
+   "item": "ITM-033",
+   "temp_id": true,
+   "hint": "Nhân vật truyền kỳ 25: Thủy Nương – dị nhân sóng biển"
+  },
+  "legend_26": {
+   "file": "legend_26.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-023c (New)",
+   "obj": [
+    8
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 20766,
+   "q": 90,
+   "item": "ITM-033",
+   "temp_id": true,
+   "hint": "Nhân vật truyền kỳ 26: Kael của Hẻm Núi Lửa – anh hùng huyền thoại"
+  },
   "legend_27": {
    "file": "legend_27.webp",
    "w": 256,
@@ -35,6 +4153,26 @@
    "item": "ITM-033",
    "temp_id": true,
    "hint": "Nhân vật truyền kỳ 27: Lâm Thanh Phong (gió + lá) – ảnh làm lại"
+  },
+  "legend_28": {
+   "file": "legend_28.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-023d",
+   "obj": [
+    1
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 17360,
+   "q": 90,
+   "item": "ITM-033",
+   "temp_id": true,
+   "hint": "Nhân vật truyền kỳ 28: Đứa trẻ ở Vực Sâu (khói đen-trắng, xích)",
+   "warn": [
+    "còn viền màu nền loang 3.22% điểm ảnh"
+   ]
   },
   "legend_29": {
    "file": "legend_29.webp",
@@ -73,5 +4211,222 @@
    "hint": "Dự phòng Lycan (ô 3)"
   }
  },
- "needs_redo": {}
+ "needs_redo": {
+  "itm004_rank_01": {
+   "file": "_needs_redo/itm004_rank_01.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-001",
+   "obj": [
+    4
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 22034,
+   "q": 90,
+   "item": "ITM-004",
+   "temp_id": true,
+   "hint": "Huy hiệu cấp bậc T9: vàng, vòng chòm sao",
+   "redo": "vòng quầng xanh lá bao quanh huy hiệu (hào quang trùng màu nền) còn sót sau khi khử"
+  },
+  "itm023_treasure_09": {
+   "file": "_needs_redo/itm023_treasure_09.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-013 (New)",
+   "obj": [
+    9
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 20572,
+   "q": 90,
+   "item": "ITM-023",
+   "temp_id": true,
+   "hint": "Bảo vật Thần: bùa vũ trụ vàng",
+   "redo": "dấu sao Gemini đậm nằm sát bùa, còn vệt mờ sau khi gỡ"
+  },
+  "itm032_beast_01": {
+   "file": "_needs_redo/itm032_beast_01.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-022",
+   "obj": [
+    1
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 9166,
+   "q": 90,
+   "item": "ITM-032",
+   "temp_id": true,
+   "hint": "Thú nền: thỏ",
+   "redo": "viền neon xanh quanh con vật trùng màu nền nên bị khử, mất viền"
+  },
+  "itm032_beast_02": {
+   "file": "_needs_redo/itm032_beast_02.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-022",
+   "obj": [
+    2
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 13360,
+   "q": 90,
+   "item": "ITM-032",
+   "temp_id": true,
+   "hint": "Thú nền: rồng nhỏ",
+   "redo": "viền neon xanh quanh con vật trùng màu nền nên bị khử, mất viền"
+  },
+  "itm032_beast_03": {
+   "file": "_needs_redo/itm032_beast_03.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-022",
+   "obj": [
+    3
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 10138,
+   "q": 90,
+   "item": "ITM-032",
+   "temp_id": true,
+   "hint": "Thú nền: đại bàng",
+   "redo": "viền neon xanh quanh con vật trùng màu nền nên bị khử, mất viền"
+  },
+  "itm032_beast_04": {
+   "file": "_needs_redo/itm032_beast_04.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-022",
+   "obj": [
+    4
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 9720,
+   "q": 90,
+   "item": "ITM-032",
+   "temp_id": true,
+   "hint": "Thú nền: báo",
+   "redo": "viền neon xanh quanh con vật trùng màu nền nên bị khử, mất viền"
+  },
+  "itm032_beast_05": {
+   "file": "_needs_redo/itm032_beast_05.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-022",
+   "obj": [
+    5
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 10546,
+   "q": 90,
+   "item": "ITM-032",
+   "temp_id": true,
+   "hint": "Thú nền: sói",
+   "redo": "viền neon xanh quanh con vật trùng màu nền nên bị khử, mất viền"
+  },
+  "itm037_stat_01": {
+   "file": "_needs_redo/itm037_stat_01.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-027",
+   "obj": [
+    1
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 14518,
+   "q": 90,
+   "item": "ITM-037",
+   "temp_id": true,
+   "hint": "Chỉ số: sinh lực (tim-lá xanh)",
+   "redo": "icon lá xanh nằm trên tấm tròn xanh: phần ruột xanh bị khử cùng màu tấm, chỉ còn nét viền"
+  },
+  "itm038_weapon_05": {
+   "file": "_needs_redo/itm038_weapon_05.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-028",
+   "obj": [
+    5
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 13494,
+   "q": 90,
+   "item": "ITM-038",
+   "temp_id": true,
+   "hint": "Trang bị sơ khai: mũ trùm vải",
+   "redo": "phần tối của mũ hòa vào nền tối của tấm tròn, viền xanh sáng quanh vành"
+  },
+  "itm038_weapon_08": {
+   "file": "_needs_redo/itm038_weapon_08.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-028",
+   "obj": [
+    8
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 17084,
+   "q": 90,
+   "item": "ITM-038",
+   "temp_id": true,
+   "hint": "Trang bị sơ khai: áo choàng rách",
+   "redo": "phần tối của áo hòa vào nền tối của tấm tròn, viền xanh sáng quanh vành"
+  },
+  "legend_09": {
+   "file": "_needs_redo/legend_09.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-023a (New)",
+   "obj": [
+    9
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 21332,
+   "q": 90,
+   "item": "ITM-033",
+   "temp_id": true,
+   "hint": "Nhân vật truyền kỳ 9: Tuyết Ảnh – ninja nữ Ảnh Môn",
+   "redo": "dấu sao Gemini đậm đè lên hình, còn vệt mờ sau khi gỡ"
+  },
+  "legend_18": {
+   "file": "_needs_redo/legend_18.webp",
+   "w": 256,
+   "h": 256,
+   "src": "P-023b (New)",
+   "obj": [
+    9
+   ],
+   "kind": "sprite",
+   "bg": "green",
+   "alpha": true,
+   "bytes": 20498,
+   "q": 90,
+   "item": "ITM-033",
+   "temp_id": true,
+   "hint": "Nhân vật truyền kỳ 18: Torvald – người Hrafn mang lời nguyền Lang tộc",
+   "redo": "dấu sao Gemini đậm đè lên hình, còn vệt mờ sau khi gỡ"
+  }
+ }
 }

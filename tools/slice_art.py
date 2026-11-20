@@ -325,6 +325,12 @@ def despill(rgb, alpha, mode):
         out[..., 1] = np.where(band, np.minimum(G, np.maximum(R, B)), G)
     else:
         s = np.where(band, np.maximum(0.0, np.minimum(R, B) - G), 0.0)
+        # hào quang hồng nhạt (hào quang của vật trộn với nền magenta) rộng hơn 2px: ở dải 6px quanh biên, chỉ xử lý điểm sáng
+        # (L > 45) để không đổi màu nét viền tím sẫm của vật; trừ phần ám magenta, giữ phần "sáng" của hào quang
+        dist = cv2.distanceTransform((alpha >= 0.5).astype(np.uint8), cv2.DIST_L2, 3)
+        lum = cv2.cvtColor(np.clip(rgb, 0, 255).astype(np.uint8), cv2.COLOR_RGB2LAB)[..., 0].astype(np.float32) * 100.0 / 255.0
+        wide = (alpha > 0) & (dist <= 6.0) & (lum > 45)
+        s = np.where(wide, np.maximum(s, np.maximum(0.0, np.minimum(R, B) - G)), s)
         out[..., 0] = R - s
         out[..., 2] = B - s
     return np.clip(out, 0, 255)
@@ -547,10 +553,11 @@ def find_objects(alpha, merge=None, min_area=None):
     thin = []
     for i in keep:                                         # đường mảnh dài (vạch giữa ô, mép khe): không phải vật
         bx, by, bw, bh, _ = st[i]
-        if max(bw, bh) >= 0.12 * m:
+        if max(bw, bh) >= 0.05 * m and (max(bw, bh) >= 0.12 * m or max(bw, bh) >= 6 * min(bw, bh)):
             sub = (lbl[by:by + bh, bx:bx + bw] == i).astype(np.uint8)
+            sub = cv2.copyMakeBorder(sub, 1, 1, 1, 1, cv2.BORDER_CONSTANT, value=0)   # vạch 1-4px lấp đầy khung: thiếu điểm 0 thì dtm vô hạn
             dtm = cv2.distanceTransform(sub, cv2.DIST_L2, 3).max()
-            if dtm < 2.6 or (dtm < 7 and st[i][4] < 0.12 * bw * bh and max(bw, bh) >= 0.3 * m):   # vạch mảnh / khung lưới thưa
+            if dtm < 2.6 or (dtm < 7 and st[i][4] < 0.12 * bw * bh and max(bw, bh) >= 0.3 * m) or (dtm < 5 and max(bw, bh) >= 8 * min(bw, bh) and max(bw, bh) >= 0.1 * m):   # vạch mảnh / khung lưới thưa / mẩu khe dài hẹp
                 thin.append(i)
     keep = [i for i in keep if i not in thin]
     if not keep:
@@ -999,7 +1006,8 @@ def over(bg, im):
 
 
 def contact_sheet(files, path, title='', tile=150):
-    """mỗi asset 3 ô: trên nền caro, nền sáng, nền tối – viền xanh / hồng sót lại lộ ra ở nền sáng hoặc tối."""
+    """mỗi asset 3 ô: trên nền caro, nền sáng, nền tối – viền xanh / hồng sót lại lộ ra ở nền sáng hoặc tối.
+    Ảnh nền đen (không alpha): screen trên nền tối game | screen trên nền sáng vừa | ảnh gốc."""
     f = font(13)
     rows = []
     for fp in files:
@@ -1008,7 +1016,12 @@ def contact_sheet(files, path, title='', tile=150):
         im1 = im0.resize((max(1, int(im0.width * sc)), max(1, int(im0.height * sc))), Image.LANCZOS)
         im = Image.new('RGBA', (tile, tile), (0, 0, 0, 0))
         im.paste(im1, ((tile - im1.width) // 2, (tile - im1.height) // 2))
-        tiles = [over(checker(tile, tile), im), over(np.full((tile, tile, 3), 235, np.uint8), im), over(np.full((tile, tile, 3), 22, np.uint8), im)]
+        if int(np.asarray(im0)[..., 3].min()) == 255:                      # ảnh nền đen (RGB, mix-blend-mode: screen): 3 ô = screen trên nền tối game | nền sáng vừa | ảnh gốc
+            rgb_t = np.asarray(im.convert('RGB')).astype(np.float32)
+            scr = lambda bgc: np.clip(255.0 - (255.0 - rgb_t) * (255.0 - np.array(bgc, np.float32)) / 255.0, 0, 255).astype(np.uint8)
+            tiles = [scr((24, 28, 44)), scr((96, 104, 128)), rgb_t.astype(np.uint8)]
+        else:
+            tiles = [over(checker(tile, tile), im), over(np.full((tile, tile, 3), 235, np.uint8), im), over(np.full((tile, tile, 3), 22, np.uint8), im)]
         rows.append((Path(fp).stem, np.concatenate(tiles, 1)))
     if not rows:
         return None
@@ -1216,7 +1229,7 @@ def cmd_run(args):
     outs = []
     for k in range(0, len(files), 12):
         part = files[k:k + 12]
-        outs.append(contact_sheet(part, PREV / f'contact_{tag}_{k // 12 + 1:02d}.jpg', f'đợt {tag}: asset {k + 1}-{k + len(part)} / {len(files)} (caro | nền sáng | nền tối)'))
+        outs.append(contact_sheet(part, PREV / f'contact_{tag}_{k // 12 + 1:02d}.jpg', f'đợt {tag}: asset {k + 1}-{k + len(part)} / {len(files)} ' + ('(nền đen: screen trên nền tối | screen trên nền sáng vừa | gốc)' if tag in ('black', 'scene') else '(caro | nền sáng | nền tối)')))
     if files:
         print(f'\nxuất {len(exported)} asset  ·  {len(outs)} contact sheet: {PREV}/contact_{tag}_NN.jpg')
     return 0
