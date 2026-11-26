@@ -28,6 +28,7 @@ Ngôn ngữ giao diện: tiếng Anh / tiếng Việt; trao đổi với chủ d
 |---|---|---|
 | Bài học, quiz, lộ trình Training | `lessons-*.js`, `quiz-bank.js`, `realms.js` | training.md |
 | Sổ tay QC, thư viện có sẵn | `notebook.js`, `library-builtin.js` | training.md |
+| Học sử dụng AI (bài học, nền tảng AI, trình tạo prompt) | `ai-learning/index.html`, `data-lessons.js`, `data-platforms.js` | tools.md |
 | Công cụ (Luyện Phỏng Vấn, Chuỗi Dung Sai…) | `JLTN_WEBSITE.html` (TOOLS), `interview.js`, `tools/stackup.html` | tools.md |
 | Trò chơi nhỏ Relax | `fun.js` | relax-genesis.md |
 | Game Bản Nguyên Kỳ Duyên | `genesis.js` | relax-genesis.md, balance-todo.md |

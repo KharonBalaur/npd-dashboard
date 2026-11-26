@@ -1,6 +1,6 @@
 # Kế hoạch tool "Học sử dụng AI" (ai-learning/)
 
-Ghi lại kết quả đọc repo (2026-11-26) để các bước sau dùng lại. CHƯA có code. Quy tắc bắt buộc vẫn ở `CLAUDE.md`
+Ghi lại kết quả đọc repo (2026-11-26). Bước 1 đã làm: tool dựng xong với dữ liệu mẫu, đã nối vào Tools (nhóm "Học tập", key ai); lưu tiến độ chỉ ở localStorage. Quy tắc bắt buộc vẫn ở `CLAUDE.md`
 (repo public: không đưa dữ liệu thật / mật khẩu / email / link Sheet; escape mọi dữ liệu trước khi chèn HTML).
 
 ## 1. Màu, font, style của web hiện tại

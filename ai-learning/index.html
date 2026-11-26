@@ -1,0 +1,411 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#14213d">
+<title>Học sử dụng AI · Thiên Công Tông</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap">
+<style>
+/* Học sử dụng AI – công cụ 1 trang (HTML/CSS/JS thuần). Chạy riêng hoặc nhúng trong Tools của JLTN_WEBSITE
+   (?embed=1&k=<khóa lưu>). Cùng bảng màu navy / lime với web chính; có chế độ sáng / tối (html[data-theme]).
+   Tiến độ lưu ở localStorage theo khóa k (xem docs/tools.md). Dữ liệu: data-lessons.js, data-platforms.js. */
+:root{--navy:#14213d;--navy2:#22335a;--lime:#c8d400;--ink:#1b2333;--ink2:#3d4555;--muted:#6b7385;--line:#dde2ea;--bg:#eef1f5;--card:#fff;--soft:#f6f7f9;
+  --ok:#17803f;--ok-bg:#e3f5ea;--ok-bar:#1f9d55;--late:#d6312b;--late-bg:#fde8e7;--prog:#b86e00;--prog-bg:#fff2dc;--info:#3b6fd8;--info-bg:#e6eefc;
+  --pri-bg:#14213d;--pri-fg:#fff;--code:#f2f4f8;--r:14px;color-scheme:light}
+html[data-theme=dark]{--ink:#e6eaf2;--ink2:#c3cadb;--muted:#9aa5bd;--line:#2c3a5a;--bg:#0e1730;--card:#16223f;--soft:#1b2a4b;
+  --ok:#52c987;--ok-bg:#12382a;--ok-bar:#2fae68;--late:#ff837b;--late-bg:#41201f;--prog:#f0aa42;--prog-bg:#3e2f12;--info:#86abf7;--info-bg:#1c2d55;
+  --pri-bg:#c8d400;--pri-fg:#14213d;--code:#0e1730;color-scheme:dark}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;font:14px/1.55 Inter,"Segoe UI",Roboto,Arial,sans-serif;color:var(--ink);background:var(--bg)}
+button,input,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+a{color:var(--info)}
+:focus-visible{outline:2px solid var(--info);outline-offset:2px}
+.hide{display:none!important}
+/* header */
+.hd{display:flex;align-items:center;gap:12px;padding:10px 18px;padding-left:max(18px,env(safe-area-inset-left));padding-right:max(18px,env(safe-area-inset-right));
+  background:var(--navy);color:#fff;box-shadow:0 2px 10px rgba(15,23,42,.18)}
+.hd .lg{flex:none;width:38px;height:38px;border-radius:10px;background:var(--lime);display:grid;place-items:center}
+.hd .lg svg{width:24px;height:24px;fill:none;stroke:var(--navy);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.hd h1{margin:0;font-size:17px;font-weight:800;line-height:1.2} .hd h1 small{display:block;font-size:11.5px;font-weight:500;color:#aab6cf}
+.hd .tt{flex:1;min-width:0}
+.app{max-width:1280px;margin:0 auto;padding:14px 18px 24px}
+/* buttons */
+.btn{display:inline-flex;align-items:center;gap:6px;min-height:36px;padding:0 14px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--ink);font-weight:600;font-size:13px;text-decoration:none;white-space:nowrap}
+.btn:hover{border-color:var(--muted)} .btn:disabled{opacity:.45;cursor:default}
+.btn.pri{background:var(--pri-bg);color:var(--pri-fg);border-color:var(--pri-bg)} .btn.pri:hover{filter:brightness(1.08)}
+.btn.warn{color:var(--late);border-color:var(--late)}
+.btn.sm{min-height:30px;padding:0 10px;font-size:12px}
+.hd .btn{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.25);color:#fff}
+/* tabs */
+.tabs{display:flex;align-items:center;gap:2px;flex-wrap:wrap;margin-bottom:14px;border-bottom:1px solid var(--line)}
+.tab{background:transparent;border:0;border-bottom:3px solid transparent;border-radius:0;padding:10px 14px;color:var(--muted);font-weight:600;min-height:44px}
+.tab:hover{color:var(--ink)} .tab.on{color:var(--ink);border-bottom-color:var(--lime);box-shadow:0 2px 0 -1px var(--lime)}
+.tabs .tr{margin-left:auto;display:flex;gap:6px;padding-bottom:4px}
+#note{min-height:0;margin:0 0 10px}
+#note:not(:empty){padding:8px 12px;border-radius:8px;background:var(--prog-bg);color:var(--prog);border:1px solid var(--prog);font-weight:600}
+/* cards */
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:16px 18px;min-width:0}
+.card h2,.card h3{margin:0 0 8px}
+.chip{display:inline-block;padding:2px 9px;border-radius:99px;font-size:12px;font-weight:600;background:var(--soft);border:1px solid var(--line);color:var(--ink2)}
+.chip.ok{background:var(--ok-bg);color:var(--ok);border-color:transparent} .chip.bad{background:var(--late-bg);color:var(--late);border-color:transparent}
+.chip.info{background:var(--info-bg);color:var(--info);border-color:transparent} .chip.warn{background:var(--prog-bg);color:var(--prog);border-color:transparent}
+.muted{color:var(--muted)}
+.bar{height:8px;border-radius:99px;background:var(--soft);border:1px solid var(--line);overflow:hidden} .bar i{display:block;height:100%;background:var(--ok-bar);border-radius:99px}
+/* learn */
+.learn{display:grid;grid-template-columns:290px minmax(0,1fr);gap:14px;align-items:start}
+.side{padding:0;overflow:hidden}
+.side-tg{display:none;width:100%;padding:12px 16px;border:0;background:transparent;font-weight:700;text-align:left}
+.lv{padding:12px 12px 6px} .lv+.lv{border-top:1px solid var(--line)}
+.lv-h{display:flex;align-items:baseline;gap:8px;margin:0 4px 6px} .lv-h b{font-size:13.5px} .lv-h small{margin-left:auto;color:var(--muted);font-weight:600}
+.lv .bar{margin:0 4px 8px;height:5px}
+.li{display:flex;align-items:flex-start;gap:8px;width:100%;margin:0 0 4px;padding:8px 10px;border:1px solid transparent;border-radius:8px;background:transparent;text-align:left;line-height:1.35}
+.li:hover:not(.lock){background:var(--soft)} .li.on{background:var(--info-bg);border-color:var(--info)}
+.li .ic{flex:none;width:18px;text-align:center;color:var(--muted)} .li.done .ic{color:var(--ok)} .li.lock{opacity:.55;cursor:not-allowed}
+.li .fin{display:block;font-size:11.5px;color:var(--muted)}
+.lv-empty{margin:0 4px 10px;color:var(--muted);font-size:12.5px}
+.lesson{padding:0}
+.ls-hd{padding:18px 20px;border-bottom:1px solid var(--line)} .ls-hd h2{font-size:21px;line-height:1.25;margin:6px 0 0}
+.ls-body{padding:6px 20px 22px}
+.sec{margin-top:18px} .sec>h3{font-size:12px;letter-spacing:.8px;text-transform:uppercase;color:var(--muted);margin:0 0 8px}
+.goal{padding:12px 14px;border-radius:10px;background:var(--info-bg);border-left:4px solid var(--info)}
+.prose h4{margin:16px 0 6px;font-size:15px} .prose p{margin:8px 0} .prose ul,.prose ol{margin:6px 0;padding-left:22px} .prose li{margin:4px 0}
+.prose code{background:var(--code);padding:1px 5px;border-radius:4px}
+.pbox{border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.pbox .ph{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 12px;background:var(--soft);border-bottom:1px solid var(--line);font-weight:600}
+.pbox pre{margin:0;padding:12px 14px;white-space:pre-wrap;word-break:break-word;font:13px/1.55 ui-monospace,Consolas,"Courier New",monospace;background:var(--code)}
+.pit{margin:0;padding-left:0;list-style:none} .pit li{padding:6px 0 6px 26px;position:relative} .pit li:before{content:"⚠";position:absolute;left:2px;color:var(--prog)}
+.src{margin:0;padding-left:20px} .src li{margin:3px 0}
+/* quiz */
+.q{margin:0 0 14px;padding:14px;border:1px solid var(--line);border-radius:10px}
+.q-t{margin:0 0 10px;font-weight:700}
+.opt{display:flex;align-items:flex-start;gap:10px;width:100%;margin:0 0 6px;padding:9px 12px;border:1px solid var(--line);border-radius:8px;background:var(--card);text-align:left;line-height:1.4;min-height:40px}
+.opt .lt{flex:none;width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font-size:12px;font-weight:700;background:var(--soft);border:1px solid var(--line)}
+.opt:hover:not(:disabled){border-color:var(--info)} .opt:disabled{cursor:default}
+.opt.right{background:var(--ok-bg);border-color:var(--ok-bar);color:var(--ok)} .opt.wrong{background:var(--late-bg);border-color:var(--late);color:var(--late)}
+.opt.dim{opacity:.6}
+.exp{margin:8px 0 0;padding:9px 12px;border-radius:8px;background:var(--soft);border-left:4px solid var(--muted)}
+.exp.ok{border-left-color:var(--ok-bar)} .exp.bad{border-left-color:var(--late)}
+.res{padding:14px 16px;border-radius:10px;border:1px solid var(--line)} .res.pass{background:var(--ok-bg);border-color:var(--ok-bar)} .res.fail{background:var(--late-bg);border-color:var(--late)}
+.res b.big{font-size:22px}
+.acts{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+/* platforms */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:14px}
+.pc h3{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap} .pc h3 small{font-size:12.5px;font-weight:500;color:var(--muted)}
+.pc ul{margin:4px 0 10px;padding-left:20px} .pc h4{margin:12px 0 4px;font-size:12px;letter-spacing:.6px;text-transform:uppercase;color:var(--muted)}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.tw{overflow-x:auto;border:1px solid var(--line);border-radius:10px}
+table{border-collapse:collapse;width:100%;min-width:720px;background:var(--card)}
+th,td{padding:9px 12px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top} th{background:var(--soft);font-size:12.5px;position:sticky;top:0}
+td.f b{display:block} td.f small{color:var(--muted)} tr:last-child td{border-bottom:0}
+input[type=search],input[type=text],textarea{width:100%;padding:9px 12px;border:1px solid var(--line);border-radius:8px;background:var(--card);resize:vertical}
+.srch{max-width:360px;margin:0 0 10px}
+/* builder */
+.bld{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px;align-items:start}
+.fld{margin:0 0 12px} .fld label{display:block;font-weight:700;margin-bottom:4px} .fld small{display:block;color:var(--muted);margin-top:2px}
+.out pre{margin:0;min-height:180px;padding:12px 14px;white-space:pre-wrap;word-break:break-word;font:13px/1.55 ui-monospace,Consolas,"Courier New",monospace;background:var(--code);border:1px solid var(--line);border-radius:10px}
+/* progress */
+.pg{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-bottom:14px}
+.pg .big{font-size:30px;font-weight:800}
+.sc{width:100%;min-width:0} .sc td:last-child{white-space:nowrap}
+footer{margin-top:18px;color:var(--muted);font-size:12.5px}
+/* nhúng trong web chính */
+html.embed body{background:transparent} html.embed .hd{display:none} html.embed .app{padding:0 0 10px;max-width:none}
+html:not(.embed) .tabs .tr .full{display:none}
+/* điện thoại */
+@media (max-width:760px){
+  .app{padding:10px 12px 20px} .learn{grid-template-columns:1fr} .bld{grid-template-columns:1fr}
+  .side-tg{display:block} .side:not(.open) .side-body{display:none} .side.open .side-tg{border-bottom:1px solid var(--line)}
+  .tab{padding:8px 10px;min-height:44px} .tabs .tr{width:100%;margin-left:0;padding:4px 0}
+  .btn{min-height:40px} .btn.sm{min-height:36px} input,textarea{font-size:16px!important}
+  .ls-hd{padding:14px} .ls-body{padding:4px 14px 18px}
+}
+@media (prefers-reduced-motion:no-preference){.bar i{transition:width .3s}}
+</style>
+</head>
+<body>
+<header class="hd">
+  <div class="lg"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l1.8 4.7L18.5 9.5l-4.7 1.8L12 16l-1.8-4.7L5.5 9.5l4.7-1.8Z"/><path d="M18.5 15v4M16.5 17h4M5.5 15.5v3M4 17h3"/></svg></div>
+  <div class="tt"><h1>Học sử dụng AI<small>AI literacy · dùng được trên mọi nền tảng</small></h1></div>
+  <a class="btn" href="../JLTN_WEBSITE.html#tool/ai" title="Về web QE Workspace">← Về web chính</a>
+</header>
+<div class="app">
+  <div class="tabs" role="tablist" id="tabs"></div>
+  <p id="note" role="status" aria-live="polite"></p>
+  <main id="view"></main>
+  <footer>Nội dung mang tính tham khảo cho người mới. Tính năng, gói và giới hạn của từng AI thay đổi nhanh – luôn kiểm tra trên trang chính thức. Đừng nhập dữ liệu mật vào AI công cộng.</footer>
+</div>
+
+<script src="data-lessons.js?v=20261126a"></script>
+<script src="data-platforms.js?v=20261126a"></script>
+<script>
+"use strict";
+const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[c]));
+const safeUrl = u => /^https?:\/\//i.test(String(u || "")) ? String(u) : "";
+const Q = new URLSearchParams(location.search), EMBED = Q.get("embed") === "1";
+const KEY = (Q.get("k") || "npdAi").replace(/[^\w@.\-]/g, "").slice(0, 120) || "npdAi";
+const PASS = 80;                                                          // % tối thiểu để mở bài sau
+if (EMBED) { document.documentElement.classList.add("embed"); }
+
+/* ---------- Tiến độ (localStorage, bọc try/catch; chỉ thêm trường, giữ trường lạ) ---------- */
+const isObj = o => !!o && typeof o === "object" && !Array.isArray(o);
+function clean(o) {
+  o = isObj(o) ? o : {};
+  return Object.assign({}, o, { v: 1, passed: isObj(o.passed) ? o.passed : {}, best: isObj(o.best) ? o.best : {},
+    theme: o.theme === "dark" || o.theme === "light" ? o.theme : "", last: typeof o.last === "string" ? o.last : "" });
+}
+let storeOk = true;
+function load() { try { return clean(JSON.parse(localStorage.getItem(KEY))); } catch (e) { storeOk = false; return clean(null); } }
+function save() { try { localStorage.setItem(KEY, JSON.stringify(P)); } catch (e) { storeOk = false; note("Không lưu được tiến độ trên trình duyệt này (bị chặn hoặc đầy bộ nhớ). Tiến độ chỉ giữ đến khi đóng trang."); } }
+const P = load();
+
+/* ---------- Dữ liệu ---------- */
+const HAS = typeof LESSONS !== "undefined" && Array.isArray(LESSONS) && typeof PLATFORMS !== "undefined" && typeof FEATURE_MAP !== "undefined";
+const LEVELS = typeof AI_LEVELS !== "undefined" ? AI_LEVELS : [{ level: 1, name: "Nền tảng" }, { level: 2, name: "Prompt cho mọi AI" }, { level: 3, name: "Nâng cao" }];
+// Thứ tự học: theo cấp, bài kiểm tra tổng ở cuối cấp (giữ nguyên thứ tự khai báo trong cùng nhóm).
+const ALL = HAS ? LESSONS.map((l, i) => ({ l, i })).sort((a, b) => (a.l.level - b.l.level) || ((a.l.isFinalTest ? 1 : 0) - (b.l.isFinalTest ? 1 : 0)) || (a.i - b.i)).map(x => x.l) : [];
+const byId = id => ALL.find(l => l.id === id);
+const lvName = n => (LEVELS.find(x => x.level === n) || {}).name || "Cấp " + n;
+// Mở khóa: bài đầu, hoặc bài ngay trước đã đạt. Bài đã đạt (hoặc có bài sau đã đạt) luôn mở – thêm bài mới vào giữa không khóa lại người cũ.
+const unlocked = i => i === 0 || ALL.slice(i).some(l => P.passed[l.id]) || !!P.passed[ALL[i - 1].id];
+const lvStat = lv => { const L = ALL.filter(l => l.level === lv), d = L.filter(l => P.passed[l.id]).length; return { n: L.length, d, pct: L.length ? Math.round(d / L.length * 100) : 0 }; };
+
+let tab = "learn", curId = "", noteT = 0;
+const QZ = {};                                                            // trạng thái quiz đang làm (không lưu): {a:[chỉ số đã chọn], res}
+const DRAFT = { role: "", ctx: "", task: "", fmt: "", note: "" };
+
+function note(msg) { const n = $("#note"); if (!n) return; n.textContent = msg; clearTimeout(noteT); noteT = setTimeout(() => { n.textContent = ""; }, 4500); }
+const norm = s => String(s || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/đ/g, "d");
+const fmtDate = iso => /^\d{4}-\d{2}-\d{2}$/.test(iso || "") ? iso.slice(8) + "/" + iso.slice(5, 7) + "/" + iso.slice(0, 4) : esc(iso || "—");
+const ageDays = iso => { const t = Date.parse(iso); return isNaN(t) ? 0 : (Date.now() - t) / 864e5; };
+
+/* ---------- Khung: tab ---------- */
+const TABS = [["learn", "📚 Lộ trình học"], ["plat", "🧭 Các nền tảng AI"], ["build", "✍️ Trình tạo prompt"], ["prog", "📈 Tiến độ"]];
+function renderTabs() {
+  $("#tabs").innerHTML = TABS.map(([k, n]) => `<button class="tab${k === tab ? " on" : ""}" role="tab" aria-selected="${k === tab}" data-x="tab" data-k="${k}">${n}</button>`).join("")
+    + `<div class="tr"><a class="btn sm full" href="index.html?k=${encodeURIComponent(KEY)}" target="_blank" rel="noopener" title="Mở toàn màn hình">⤢ Toàn màn hình</a>`
+    + `<button class="btn sm" data-x="theme" title="Chế độ sáng / tối">${document.documentElement.dataset.theme === "dark" ? "☀️ Sáng" : "🌙 Tối"}</button></div>`;
+}
+function go(k) {
+  tab = k; renderTabs();
+  const v = $("#view");
+  if (!HAS) { v.innerHTML = `<div class="card">Không tải được dữ liệu bài học (data-lessons.js / data-platforms.js). Tải lại trang.</div>`; return; }
+  if (k === "learn") renderLearn(); else if (k === "plat") renderPlat(); else if (k === "build") renderBuild(); else renderProg();
+}
+function applyTheme() {
+  const t = P.theme || "light";
+  document.documentElement.dataset.theme = t;
+}
+
+/* ---------- Tab 1: Lộ trình học ---------- */
+function renderLearn() {
+  if (!ALL.length) { $("#view").innerHTML = `<div class="card">Chưa có bài học.</div>`; return; }
+  if (!curId || !byId(curId)) {
+    const last = byId(P.last);
+    const first = ALL.findIndex((l, i) => !P.passed[l.id] && unlocked(i));
+    curId = last && unlocked(ALL.indexOf(last)) ? last.id : (first >= 0 ? ALL[first].id : ALL[0].id);
+  }
+  $("#view").innerHTML = `<div class="learn"><aside class="card side" id="side"><button class="side-tg" data-x="sideTg" aria-expanded="false">☰ Danh sách bài học <span class="muted" id="sideCnt"></span></button>
+    <div class="side-body" id="sideBody"></div></aside><article class="card lesson" id="lesson" tabindex="-1"></article></div>`;
+  renderSide(); renderLesson();
+}
+function renderSide() {
+  const b = $("#sideBody"); if (!b) return;
+  const done = ALL.filter(l => P.passed[l.id]).length;
+  $("#sideCnt").textContent = `(${done}/${ALL.length} đã đạt)`;
+  b.innerHTML = LEVELS.map(lv => {
+    const S = lvStat(lv.level), L = ALL.filter(l => l.level === lv.level);
+    return `<section class="lv"><div class="lv-h"><b>Cấp ${lv.level} · ${esc(lv.name)}</b><small>${S.n ? S.d + "/" + S.n : "—"}</small></div>
+      <div class="bar" aria-hidden="true"><i style="width:${S.pct}%"></i></div>
+      ${L.length ? L.map(l => { const i = ALL.indexOf(l), ok = !!P.passed[l.id], lock = !unlocked(i);
+        return `<button class="li${l.id === curId ? " on" : ""}${ok ? " done" : ""}${lock ? " lock" : ""}" data-x="open" data-id="${esc(l.id)}"${lock ? ' aria-disabled="true" title="Đạt từ 80% bài trước để mở bài này"' : ""}>
+          <span class="ic">${ok ? "✓" : lock ? "🔒" : "○"}</span><span>${esc(l.title)}${l.isFinalTest ? `<span class="fin">Bài kiểm tra tổng</span>` : ""}</span></button>`; }).join("")
+        : `<p class="lv-empty">Sắp có bài học.</p>`}</section>`;
+  }).join("");
+}
+function openLesson(id, noScroll) {
+  const i = ALL.findIndex(l => l.id === id);
+  if (i < 0) return;
+  if (!unlocked(i)) { note(`Hãy đạt từ ${PASS}% bài “${ALL[i - 1].title}” trước khi mở bài này.`); return; }
+  curId = id; P.last = id; save();
+  renderSide(); renderLesson();
+  $("#side").classList.remove("open");
+  if (!noScroll) { const el = $("#lesson"); if (el) el.scrollIntoView({ block: "start" }); }
+}
+function renderLesson() {
+  const l = byId(curId), el = $("#lesson"); if (!l || !el) return;
+  const sec = (t, h) => h ? `<section class="sec"><h3>${t}</h3>${h}</section>` : "";
+  const src = (l.sources || []).filter(s => safeUrl(s.url));
+  el.innerHTML = `<div class="ls-hd"><span class="chip info">Cấp ${l.level} · ${esc(lvName(l.level))}</span>${l.isFinalTest ? ` <span class="chip warn">Bài kiểm tra tổng</span>` : ""}${P.passed[l.id] ? ` <span class="chip ok">Đã đạt${P.best[l.id] != null ? " · tốt nhất " + P.best[l.id] + "%" : ""}</span>` : ""}
+      <h2>${esc(l.title)}</h2></div>
+    <div class="ls-body">
+    ${sec("Mục tiêu", l.goal ? `<div class="goal">${esc(l.goal)}</div>` : "")}
+    ${sec("Nội dung", l.content ? `<div class="prose">${l.content}</div>` : "")}
+    ${sec("Ví dụ prompt", l.promptExample ? `<div class="pbox"><div class="ph"><span>Dùng được trên mọi AI</span><button class="btn sm" data-x="copy">Copy</button></div><pre>${esc(l.promptExample)}</pre></div>` : "")}
+    ${sec("Lỗi hay gặp", (l.pitfalls || []).length ? `<ul class="pit">${l.pitfalls.map(p => `<li>${esc(p)}</li>`).join("")}</ul>` : "")}
+    ${sec("Nguồn tham khảo", src.length ? `<ul class="src">${src.map(s => `<li><a href="${esc(safeUrl(s.url))}" target="_blank" rel="noopener noreferrer">${esc(s.name || s.url)}</a></li>`).join("")}</ul>` : "")}
+    <section class="sec"><h3>${l.isFinalTest ? "Bài kiểm tra" : "Quiz"} · đạt từ ${PASS}% để mở bài sau</h3><div id="qz"></div></section></div>`;
+  renderQuiz();
+}
+const LET = "ABCDEFGH";
+function renderQuiz() {
+  const l = byId(curId), box = $("#qz"); if (!l || !box) return;
+  const Z = l.quiz || [];
+  if (!Z.length) { box.innerHTML = `<p class="muted">Bài này chưa có câu hỏi.</p>`; return; }
+  const st = QZ[l.id] || (QZ[l.id] = { a: Z.map(() => null), res: null });
+  let h = Z.map((q, qi) => {
+    const a = st.a[qi], shown = a != null, ok = shown && a === q.answer;
+    return `<div class="q"><p class="q-t">Câu ${qi + 1}/${Z.length}. ${esc(q.q)}</p>
+      ${(q.options || []).map((o, oi) => {
+        let c = "opt"; if (shown) { if (oi === q.answer) c += " right"; else if (oi === a) c += " wrong"; else c += " dim"; }
+        return `<button class="${c}" data-x="ans" data-q="${qi}" data-o="${oi}"${shown ? " disabled" : ""}><span class="lt">${LET[oi] || oi + 1}</span><span>${esc(o)}${shown && oi === q.answer ? " ✓" : ""}${shown && oi === a && !ok ? " ✗" : ""}</span></button>`; }).join("")}
+      ${shown ? `<p class="exp ${ok ? "ok" : "bad"}"><b>${ok ? "Đúng." : "Chưa đúng."}</b> ${esc(q.explain || "")}</p>` : ""}</div>`;
+  }).join("");
+  const left = st.a.filter(x => x == null).length;
+  if (st.res) {
+    const r = st.res, i = ALL.indexOf(l), nx = ALL[i + 1];
+    h += `<div class="res ${r.pass ? "pass" : "fail"}"><b class="big">${r.c}/${r.n} đúng · ${r.pct}%</b><p style="margin:6px 0 0">${r.pass
+      ? `Đạt! ${nx ? "Bài tiếp theo đã được mở." : "Bạn đã hoàn thành toàn bộ bài hiện có."}`
+      : `Chưa đạt – cần từ ${PASS}% để mở bài sau. Xem lại nội dung rồi làm lại.`}</p>
+      <div class="acts"><button class="btn" data-x="retry">↻ Làm lại</button>${r.pass && nx ? `<button class="btn pri" data-x="open" data-id="${esc(nx.id)}">Bài tiếp theo →</button>` : ""}</div></div>`;
+  } else {
+    h += `<p class="muted">${left === Z.length ? "Chọn một đáp án cho mỗi câu – đúng / sai và giải thích hiện ngay." : `Còn ${left} câu chưa trả lời.`}</p>`;
+  }
+  box.innerHTML = h;
+}
+function answer(qi, oi) {
+  const l = byId(curId), st = QZ[l.id]; if (!st || st.a[qi] != null || st.res) return;
+  st.a[qi] = oi;
+  if (st.a.every(x => x != null)) {
+    const n = l.quiz.length, c = l.quiz.reduce((s, q, i) => s + (st.a[i] === q.answer ? 1 : 0), 0), pct = Math.round(c / n * 100), pass = pct >= PASS;
+    st.res = { c, n, pct, pass };
+    if (P.best[l.id] == null || pct > P.best[l.id]) P.best[l.id] = pct;
+    if (pass) P.passed[l.id] = true;                                       // đã đạt thì giữ mãi, làm lại điểm thấp hơn không làm mất
+    save(); renderSide();
+    const ch = $("#lesson .ls-hd"); if (ch && pass && !ch.querySelector(".chip.ok")) renderLessonHead();
+  }
+  renderQuiz();
+}
+function renderLessonHead() {                                             // cập nhật nhãn "Đã đạt" mà không dựng lại quiz
+  const l = byId(curId), hd = $("#lesson .ls-hd"); if (!l || !hd) return;
+  hd.innerHTML = `<span class="chip info">Cấp ${l.level} · ${esc(lvName(l.level))}</span>${l.isFinalTest ? ` <span class="chip warn">Bài kiểm tra tổng</span>` : ""}${P.passed[l.id] ? ` <span class="chip ok">Đã đạt · tốt nhất ${P.best[l.id]}%</span>` : ""}<h2>${esc(l.title)}</h2>`;
+}
+
+/* ---------- Tab 2: Nền tảng AI ---------- */
+const COLS = [["chatgpt", "ChatGPT"], ["gemini", "Gemini"], ["claude", "Claude"], ["copilot", "Copilot"], ["perplexity", "Perplexity"]];
+function renderPlat() {
+  const cards = PLATFORMS.map(p => {
+    const u = safeUrl(p.url), old = ageDays(p.lastUpdated) > 90;
+    return `<article class="card pc"><h3>${esc(p.name)} <small>${esc(p.company)}</small></h3>
+      <h4>Điểm mạnh</h4><ul>${(p.strengths || []).map(s => `<li>${esc(s)}</li>`).join("")}</ul>
+      <h4>Phù hợp việc</h4><div class="chips">${(p.bestFor || []).map(s => `<span class="chip">${esc(s)}</span>`).join("")}</div>
+      <h4>Gói miễn phí</h4><p style="margin:0">${esc(p.freeTier || "—")}</p>
+      <div class="acts" style="align-items:center">${u ? `<a class="btn pri sm" href="${esc(u)}" target="_blank" rel="noopener noreferrer">Trang chính thức ↗</a>` : ""}
+        <span class="muted" style="font-size:12.5px">Cập nhật: ${fmtDate(p.lastUpdated)}</span>${old ? ` <span class="chip warn">Đã lâu – hãy kiểm tra lại</span>` : ""}</div></article>`; }).join("");
+  const head = COLS.map(([k, n]) => `<th>${n}</th>`).join("");
+  const rows = FEATURE_MAP.map(r => `<tr data-s="${esc(norm([r.feature, r.description].concat(COLS.map(([k]) => r[k])).join(" ")))}"><td class="f"><b>${esc(r.feature)}</b><small>${esc(r.description)}</small></td>${COLS.map(([k]) => `<td>${esc(r[k] || "—")}</td>`).join("")}</tr>`).join("");
+  $("#view").innerHTML = `<div class="grid">${cards}</div>
+    <div class="card" style="margin-top:14px"><h3>Tính năng tương đương giữa các ứng dụng</h3>
+      <p class="muted" style="margin:0 0 10px">Tên gọi khác nhau nhưng việc làm được thì gần giống nhau. Bảng chỉ mang tính tham khảo – tính năng thay đổi theo gói, vùng và thời điểm.</p>
+      <input class="srch" type="search" id="fq" placeholder="Tìm tính năng… (vd: ảnh, tìm web)" aria-label="Tìm tính năng" autocomplete="off">
+      <div class="tw"><table><thead><tr><th>Tính năng</th>${head}</tr></thead><tbody id="ftb">${rows}<tr id="fnone" class="hide"><td colspan="${COLS.length + 1}" class="muted">Không có tính năng nào khớp.</td></tr></tbody></table></div></div>`;
+}
+function filterFeat(q) {
+  const T = norm(q).split(/\s+/).filter(Boolean); let n = 0;              // mọi từ gõ vào đều phải có trong dòng (không cần đúng thứ tự)
+  $$("#ftb tr[data-s]").forEach(tr => { const h = !T.every(w => tr.dataset.s.includes(w)); tr.hidden = h; if (!h) n++; });
+  const none = $("#fnone"); if (none) none.classList.toggle("hide", n > 0);
+}
+
+/* ---------- Tab 3: Trình tạo prompt ---------- */
+const BF = [["role", "Vai trò", "Vai trò", "input", "Ví dụ: Kỹ sư chất lượng có kinh nghiệm", "AI nên đóng vai ai."],
+  ["ctx", "Bối cảnh", "Bối cảnh", "area", "Ví dụ: Tôi báo cáo cho quản lý không chuyên kỹ thuật…", "Tình huống, người đọc, mục đích."],
+  ["task", "Nhiệm vụ", "Nhiệm vụ", "area", "Ví dụ: Tóm tắt nguyên nhân gốc có thể và đề xuất 3 hành động", "Việc cụ thể cần làm – nên có."],
+  ["fmt", "Định dạng", "Định dạng đầu ra", "input", "Ví dụ: Gạch đầu dòng, tối đa 150 từ, tiếng Việt", "Hình thức, độ dài, ngôn ngữ."],
+  ["note", "Lưu ý", "Lưu ý", "area", "Ví dụ: Không bịa số liệu; chỗ thiếu dữ liệu ghi “cần xác nhận”", "Điều cần tránh hoặc bắt buộc."]];
+const buildPrompt = () => BF.map(([k, , h]) => DRAFT[k].trim() ? `# ${h}\n${DRAFT[k].trim()}` : "").filter(Boolean).join("\n\n");
+const EXAMPLE = { role: "Bạn là kỹ sư chất lượng (QE) có nhiều năm kinh nghiệm trong ngành cơ khí.", ctx: "Tôi cần báo cáo cho quản lý về một lô hàng bị trả do lỗi xước bề mặt; người đọc không chuyên kỹ thuật.",
+  task: "Viết bản tóm tắt các nguyên nhân gốc có thể và 3 hành động khắc phục.", fmt: "Gạch đầu dòng, tối đa 150 từ, tiếng Việt.", note: "Không bịa số liệu; chỗ nào thiếu dữ liệu hãy ghi “cần xác nhận”." };
+function renderBuild() {
+  $("#view").innerHTML = `<div class="bld"><div class="card"><h3>Điền các ô</h3>
+    ${BF.map(([k, n, , t, ph, hint]) => `<div class="fld"><label for="bf_${k}">${n}</label>${t === "input"
+      ? `<input type="text" id="bf_${k}" data-f="${k}" placeholder="${esc(ph)}" value="${esc(DRAFT[k])}" autocomplete="off">`
+      : `<textarea id="bf_${k}" data-f="${k}" rows="3" placeholder="${esc(ph)}">${esc(DRAFT[k])}</textarea>`}<small>${hint}</small></div>`).join("")}
+    <div class="acts"><button class="btn sm" data-x="bExample">Điền ví dụ</button><button class="btn sm" data-x="bClear">Xóa hết</button></div></div>
+    <div class="card out"><h3>Prompt hoàn chỉnh</h3><pre id="bOut"></pre><p class="muted" id="bInfo" style="margin:6px 0"></p>
+      <div class="acts"><button class="btn pri" data-x="bCopy" id="bCopy">Copy prompt</button></div>
+      <h4 style="margin:16px 0 6px">Mở nhanh một AI (tab mới)</h4>
+      <div class="acts"><a class="btn" data-open="1" href="https://chatgpt.com/" target="_blank" rel="noopener noreferrer">ChatGPT ↗</a><a class="btn" data-open="1" href="https://gemini.google.com/" target="_blank" rel="noopener noreferrer">Gemini ↗</a><a class="btn" data-open="1" href="https://claude.ai/" target="_blank" rel="noopener noreferrer">Claude ↗</a></div>
+      <p class="muted" style="margin:8px 0 0;font-size:12.5px">Bấm nút mở sẽ tự copy prompt (nếu đã có) để bạn dán vào ô chat bằng Ctrl+V. Đừng đưa dữ liệu mật vào AI công cộng.</p></div></div>`;
+  updBuild();
+}
+function updBuild() {
+  const p = buildPrompt(), o = $("#bOut"); if (!o) return;
+  o.textContent = p || "(Điền vào các ô bên trái, prompt sẽ hiện ở đây.)";
+  $("#bCopy").disabled = !p;
+  $("#bInfo").textContent = !p ? "" : (DRAFT.task.trim() ? "" : "Gợi ý: nên điền ô Nhiệm vụ để AI biết cần làm gì. ") + p.length + " ký tự";
+}
+
+/* ---------- Tab 4: Tiến độ ---------- */
+function renderProg() {
+  const tot = ALL.length, done = ALL.filter(l => P.passed[l.id]).length, pct = tot ? Math.round(done / tot * 100) : 0;
+  const sc = ALL.filter(l => P.best[l.id] != null);
+  $("#view").innerHTML = `<div class="pg"><div class="card"><div class="muted">Tổng quan</div><div class="big">${pct}%</div><div class="bar"><i style="width:${pct}%"></i></div><p class="muted" style="margin:6px 0 0">${done}/${tot} bài đã đạt</p></div>
+    ${LEVELS.map(lv => { const S = lvStat(lv.level); return `<div class="card"><div class="muted">Cấp ${lv.level} · ${esc(lv.name)}</div><div class="big">${S.n ? S.pct + "%" : "—"}</div><div class="bar"><i style="width:${S.pct}%"></i></div><p class="muted" style="margin:6px 0 0">${S.n ? S.d + "/" + S.n + " bài đã đạt" : "Chưa có bài học"}</p></div>`; }).join("")}</div>
+    <div class="card"><h3>Điểm quiz</h3>${sc.length ? `<div class="tw"><table class="sc"><thead><tr><th>Bài</th><th>Cấp</th><th>Điểm tốt nhất</th><th>Trạng thái</th></tr></thead><tbody>
+      ${sc.map(l => `<tr><td>${esc(l.title)}</td><td>${l.level}</td><td>${P.best[l.id]}%</td><td>${P.passed[l.id] ? `<span class="chip ok">Đã đạt</span>` : `<span class="chip bad">Chưa đạt</span>`}</td></tr>`).join("")}</tbody></table></div>`
+      : `<p class="muted">Chưa có điểm. Làm quiz ở tab Lộ trình học.</p>`}
+      <div class="acts" style="margin-top:14px"><button class="btn warn" data-x="reset">Reset tiến độ</button></div>
+      ${storeOk ? "" : `<p class="muted">⚠ Trình duyệt đang chặn lưu trữ: tiến độ chỉ giữ đến khi đóng trang.</p>`}</div>`;
+}
+
+/* ---------- Copy ---------- */
+async function copyText(t) {
+  try { await navigator.clipboard.writeText(t); return true; } catch (e) { /* thử cách cũ bên dưới */ }
+  try { const a = document.createElement("textarea"); a.value = t; a.style.cssText = "position:fixed;left:-9999px;top:0"; document.body.appendChild(a); a.select(); const ok = document.execCommand("copy"); a.remove(); return ok; } catch (e) { return false; }
+}
+async function doCopy(btn, text) {
+  const ok = await copyText(text), old = btn.dataset.t || (btn.dataset.t = btn.textContent);
+  btn.textContent = ok ? "✓ Đã copy" : "Không copy được – hãy bôi đen và copy tay"; setTimeout(() => { btn.textContent = old; }, 1800);
+}
+
+/* ---------- Sự kiện ---------- */
+document.addEventListener("click", e => {
+  const o = e.target.closest("a[data-open]");
+  if (o) { const p = buildPrompt(); if (p) { copyText(p).then(ok => note(ok ? "Đã copy prompt – dán (Ctrl+V) vào ô chat." : "Không copy được tự động – hãy bấm Copy prompt trước.")); } return; }
+  const b = e.target.closest("[data-x]"); if (!b) return;
+  const x = b.dataset.x;
+  if (x === "tab") go(b.dataset.k);
+  else if (x === "theme") { P.theme = document.documentElement.dataset.theme === "dark" ? "light" : "dark"; save(); applyTheme(); renderTabs(); }
+  else if (x === "open") { if (b.classList.contains("lock")) { const i = ALL.findIndex(l => l.id === b.dataset.id); note(`Hãy đạt từ ${PASS}% bài “${ALL[i - 1].title}” trước khi mở bài này.`); } else openLesson(b.dataset.id); }
+  else if (x === "sideTg") { const s = $("#side"); s.classList.toggle("open"); b.setAttribute("aria-expanded", s.classList.contains("open")); }
+  else if (x === "ans") answer(+b.dataset.q, +b.dataset.o);
+  else if (x === "retry") { delete QZ[curId]; renderQuiz(); const el = $("#qz"); if (el) el.scrollIntoView({ block: "start" }); }
+  else if (x === "copy") doCopy(b, b.closest(".pbox").querySelector("pre").textContent);
+  else if (x === "bCopy") doCopy(b, buildPrompt());
+  else if (x === "bExample") { Object.assign(DRAFT, EXAMPLE); renderBuild(); }
+  else if (x === "bClear") { Object.keys(DRAFT).forEach(k => { DRAFT[k] = ""; }); renderBuild(); }
+  else if (x === "reset") {
+    if (!confirm("Xóa toàn bộ điểm và tiến độ học? Không thể hoàn tác.")) return;
+    P.passed = {}; P.best = {}; P.last = ""; save(); Object.keys(QZ).forEach(k => delete QZ[k]); curId = ""; go("prog"); note("Đã reset tiến độ.");
+  }
+});
+document.addEventListener("input", e => {
+  if (e.target.id === "fq") filterFeat(e.target.value);
+  else if (e.target.dataset && e.target.dataset.f) { DRAFT[e.target.dataset.f] = e.target.value; updBuild(); }
+});
+
+/* ---------- Nhúng: báo chiều cao cho khung cha (cùng kênh {stackH} với Chuỗi Dung Sai) ---------- */
+let lastH = 0;
+function postH() { if (!EMBED || parent === window) return; const h = Math.ceil(document.body.getBoundingClientRect().height) + 4; if (Math.abs(h - lastH) > 2) { lastH = h; try { parent.postMessage({ stackH: h }, location.origin); } catch (e) {} } }
+if (window.ResizeObserver) new ResizeObserver(postH).observe(document.body);
+
+applyTheme();
+go("learn");
+postH();
+</script>
+</body>
+</html>

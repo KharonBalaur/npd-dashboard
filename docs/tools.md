@@ -32,3 +32,12 @@ Chuyển từ `CLAUDE.md` nguyên văn (chỉ đổi chỗ, không bỏ thông t
   (cdnjs, tải khi mở tab) dựng từ chuỗi kích thước – hàng trên vector +, hàng dưới vector −, trụ / cầu theo Ø, khe hở / cấn tô
   màu, bản vẽ của Part treo trên khối của Part (không đọc hình học từ ảnh bản vẽ). Export PDF = window.print() với #report
   (kèm ảnh 3D + mọi bản vẽ), Lưu / Mở .json. window.stackDebug cho test.
+
+- "Học Sử Dụng AI" (key ai, nhóm "l" Học tập, thư mục `ai-learning/`) – kiến thức AI chung cho người mới, không gắn với một nền tảng:
+  `index.html` (trang riêng, JS thuần, 4 tab: Lộ trình học / Các nền tảng AI / Trình tạo prompt / Tiến độ; sáng / tối; nhúng bằng iframe .tl-fr
+  `?k=uKey("npdAi")&embed=1&v=…`, báo chiều cao qua postMessage {stackH} – dùng chung bộ nghe với Chuỗi Dung Sai),
+  `data-lessons.js` (AI_LEVELS, LESSONS {id, level 1–3, title, goal, content HTML, promptExample, pitfalls[], sources[], quiz[{q, options, answer, explain}], isFinalTest}),
+  `data-platforms.js` (PLATFORMS, FEATURE_MAP). Sửa file .js → đổi `?v=` trong index.html (và `v=` trong TOOL_RUN.ai nếu sửa index.html).
+  Tiến độ npdAi@user trong localStorage (CHƯA đồng bộ lên Sheet): {v:1, passed:{id:true}, best:{id:%}, theme, last}; lưu theo id bài, bài đã đạt giữ mãi
+  (không đổi id đã phát hành); đạt >= 80% mở bài sau, thêm bài vào giữa không khóa lại người đã học. Chỉ thêm trường; đổi cấu trúc thì viết hàm nâng cấp.
+  Nội dung bài / nền tảng hiện là DỮ LIỆU MẪU (2 bài + 1 kiểm tra tổng cấp 1, 3 nền tảng); link nguồn chưa kiểm tra được từ môi trường soạn.
