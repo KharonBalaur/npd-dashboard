@@ -55,3 +55,4 @@ Chuyển từ `CLAUDE.md` nguyên văn (chỉ đổi chỗ, không bỏ thông t
   trường tùy chọn `flow:[…]` vẽ sơ đồ chip ở tab Nền tảng. Thêm module = thêm file JSON + một dòng trong modules.json (không sửa code). body/example hỗ trợ **đậm** và xuống dòng.
 - Tiến độ npdAcademy@user (localStorage, chưa đồng bộ Sheet): {v:1, mods:{id:{basics,adv,best,badge}}, known:{"modId|term":true}, theme}. Quiz >= 80% → badge (giữ mãi). Không đổi id module đã phát hành.
 - Nội dung diễn đạt lại, không chép nguyên văn manual AIAG; cần mở qua http(s) (fetch JSON không chạy với file://).
+- Widget trong tab Nâng cao: mục `advanced[i].widget = {type, …}`; loại hiện có `ap` (tra Action Priority từ S/O/D; cấu hình `rules` [[sMin,sMax,oMin,oMax,dMin,dMax,"H|M|L"]] khớp đầu tiên thắng, `labels`, `note`). Bảng trong 02-fmea.json là xấp xỉ giáo khoa, CHƯA phải bảng AP chính thức: thay `rules` bằng bảng chính thức khi có. Thêm loại widget mới = thêm vào `WIDGETS` trong academy.js.

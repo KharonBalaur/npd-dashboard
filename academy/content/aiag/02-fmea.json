@@ -1,0 +1,159 @@
+{
+  "id": "02-fmea",
+  "title": "FMEA – Phân tích dạng & hậu quả hỏng",
+  "edition": "AIAG & VDA FMEA Handbook, 1st Edition (2019)",
+  "icon": "⚠️",
+  "flow": ["1 Phạm vi", "2 Cấu trúc", "3 Chức năng", "4 Hỏng", "5 Rủi ro", "6 Tối ưu", "7 Hồ sơ"],
+  "basics": [
+    {
+      "heading": "FMEA để làm gì?",
+      "body": "FMEA (Failure Mode and Effects Analysis) là cách nhóm ngồi lại và hỏi một cách có hệ thống: **cái gì có thể hỏng, hỏng thì ảnh hưởng ai, vì sao hỏng, và ta đang phòng ngừa / phát hiện nó thế nào**. Giá trị nằm ở cuộc thảo luận liên chức năng và các hành động cải tiến, không nằm ở bảng tính.\nBản AIAG & VDA 2019 hài hòa phương pháp của Mỹ và Đức, thay cho các bản FMEA 4th Edition cũ.",
+      "example": "Bình xịt cầm tay: \"gioăng bơm bị rò\" → ảnh hưởng: người dùng bị ướt, khách hàng trả hàng; nguyên nhân: gioăng bị cắt khi lắp; phát hiện: test rò cuối chuyền."
+    },
+    {
+      "heading": "7 bước của phương pháp AIAG-VDA",
+      "body": "Chia 3 giai đoạn lớn:\n**Hoạch định & chuẩn bị:** 1) Lập phạm vi (InTent, Timing, Team, Task, Tools); \n**Phân tích hệ thống:** 2) Phân tích cấu trúc (hệ thống → thành phần / bước quá trình); 3) Phân tích chức năng (chức năng và yêu cầu); 4) Phân tích hỏng (chuỗi hỏng: ảnh hưởng – dạng hỏng – nguyên nhân);\n**Đánh giá & cải tiến:** 5) Phân tích rủi ro (kiểm soát hiện có, S/O/D, Action Priority); 6) Tối ưu hóa (hành động, phân công, hạn, đánh giá lại); 7) Lập hồ sơ kết quả (truyền đạt, lưu trữ).\nTên các bước có thể được dịch khác nhau, thứ tự thì cố định.",
+      "example": "Bước 2 của PFMEA trạm hàn tab pin: cấu trúc = quá trình \"Hàn tab\" → bước \"Hàn laser\" → yếu tố 4M (máy laser, jig, vật liệu, người)."
+    },
+    {
+      "heading": "DFMEA, PFMEA và FMEA-MSR",
+      "body": "**DFMEA** (thiết kế): rủi ro nằm ở thiết kế sản phẩm, do bên thiết kế làm, QE tham gia. **PFMEA** (quá trình): rủi ro khi sản xuất / lắp ráp, do nhóm quá trình / QE chủ trì. **FMEA-MSR** (Supplemental FMEA for Monitoring and System Response): phân tích rủi ro khi sản phẩm **đang vận hành** và hệ thống giám sát có thể phát hiện / phản ứng (ví dụ BMS pin phát hiện quá nhiệt và ngắt).\nDFMEA là đầu vào cho PFMEA: đặc tính thiết kế quan trọng phải được kiểm soát ở quá trình.",
+      "example": "Pack pin: DFMEA xét cell chịu nhiệt; PFMEA xét hàn tab gây nóng cell; FMEA-MSR xét khi cell nóng thì BMS có ngắt kịp không."
+    },
+    {
+      "heading": "Severity – Occurrence – Detection",
+      "body": "Mỗi chuỗi hỏng được chấm 3 thang 1–10:\n- **Severity (S)** – độ nghiêm trọng của **ảnh hưởng**. Chỉ phụ thuộc ảnh hưởng, không giảm được bằng kiểm soát quá trình; muốn giảm S phải đổi thiết kế.\n- **Occurrence (O)** – khả năng **nguyên nhân** xảy ra, xét theo các biện pháp phòng ngừa hiện có.\n- **Detection (D)** – khả năng các biện pháp **phát hiện** hiện có bắt được nguyên nhân / dạng hỏng trước khi sản phẩm đến khách hàng.\nĐiểm cao = tồi hơn ở cả ba thang (D=10 nghĩa là gần như không phát hiện được).",
+      "example": "\"Gioăng bị cắt\": S=7 (rò, hỏng sản phẩm), O=4 (có jig dẫn hướng), D=3 (test rò 100% cuối chuyền)."
+    },
+    {
+      "heading": "Action Priority (AP) thay cho RPN",
+      "body": "Bản cũ nhân S×O×D ra RPN rồi so với ngưỡng. Phương pháp này bị phê phán vì các tổ hợp khác nhau cho cùng RPN nhưng rủi ro rất khác (S=10 O=1 D=1 → 10 ít bị chú ý trong khi S rất cao).\nBản 2019 dùng **Action Priority**: tra bảng theo (S, O, D) ra mức **H** (cao – bắt buộc xử lý hoặc có lý giải), **M** (trung bình – nên xử lý), **L** (thấp). Bảng ưu tiên S trước, rồi O, rồi D. Xem widget ở tab Nâng cao.",
+      "example": "S=10 O=3 D=4 → AP cao hoặc trung bình tùy bảng, dù RPN = 120 trông \"nhỏ\". Đó chính là lý do bỏ RPN."
+    },
+    {
+      "heading": "Lỗi hay gặp khi audit",
+      "body": "- FMEA làm sau khi sản phẩm đã sản xuất, chỉ để có hồ sơ.\n- Không có nhóm liên chức năng; một mình QE điền.\n- Dạng hỏng và nguyên nhân bị lẫn lộn (ghi \"người vận hành sai\" cho mọi nguyên nhân).\n- S/O/D chấm không theo bảng tiêu chí của công ty, mỗi người một kiểu.\n- Kiểm soát hiện có ghi chung chung (\"đào tạo\", \"kiểm tra\") thay vì mô tả cụ thể.\n- Không có hành động cho AP = H, cũng không có lý giải.\n- Không cập nhật khi có khiếu nại, thay đổi thiết kế, thay đổi quá trình.\n- PFMEA và Control Plan không khớp nhau.",
+      "example": "Auditor mở Control Plan, hỏi: \"dòng kiểm 100% test rò này xuất phát từ dòng nào trong PFMEA?\" Nếu không chỉ ra được, đó là một finding."
+    }
+  ],
+  "quiz": [
+    {
+      "q": "FMEA chủ yếu để làm gì?",
+      "options": ["Điền biểu mẫu cho audit", "Phân tích có hệ thống cái gì có thể hỏng, ảnh hưởng ra sao và kiểm soát thế nào", "Tính Cpk", "Chọn nhà cung cấp"],
+      "answer": 1,
+      "explain": "FMEA là phân tích rủi ro phòng ngừa, thực hiện bởi nhóm liên chức năng."
+    },
+    {
+      "q": "Phương pháp AIAG-VDA 2019 có mấy bước?",
+      "options": ["5", "6", "7", "10"],
+      "answer": 2,
+      "explain": "7 bước: lập phạm vi, phân tích cấu trúc, phân tích chức năng, phân tích hỏng, phân tích rủi ro, tối ưu hóa, lập hồ sơ kết quả."
+    },
+    {
+      "q": "FMEA-MSR khác DFMEA / PFMEA ở điểm nào?",
+      "options": ["Chỉ dùng cho nhà cung cấp", "Xét rủi ro khi sản phẩm đang vận hành và hệ thống giám sát có thể phát hiện / phản ứng", "Chỉ dùng trong kiểm tra đầu vào", "Thay thế Control Plan"],
+      "answer": 1,
+      "explain": "MSR (Monitoring and System Response) phân tích hành vi hệ thống trong vận hành, ví dụ BMS ngắt khi cell quá nhiệt."
+    },
+    {
+      "q": "Điểm Severity (S) phụ thuộc vào yếu tố nào?",
+      "options": ["Nguyên nhân hỏng", "Ảnh hưởng của hỏng đối với khách hàng / người dùng", "Chi phí kiểm tra", "Số lần phát hiện"],
+      "answer": 1,
+      "explain": "S chỉ gắn với ảnh hưởng. Thêm kiểm soát quá trình không làm giảm S; muốn giảm S phải đổi thiết kế."
+    },
+    {
+      "q": "Detection (D) = 10 có nghĩa là gì?",
+      "options": ["Phát hiện rất tốt", "Gần như không có khả năng phát hiện bằng kiểm soát hiện có", "Không có hậu quả", "Đã kiểm 100% bằng máy"],
+      "answer": 1,
+      "explain": "Điểm càng cao càng tệ ở cả ba thang; D=10 nghĩa là không có biện pháp phát hiện đáng tin."
+    },
+    {
+      "q": "Vì sao bản 2019 thay RPN bằng Action Priority?",
+      "options": ["Vì RPN quá khó tính", "Vì cùng RPN có thể che khuất tổ hợp rủi ro khác nhau, đặc biệt S cao", "Vì khách hàng yêu cầu bỏ S", "Vì AP không cần nhóm"],
+      "answer": 1,
+      "explain": "Nhân S×O×D làm mờ mức nghiêm trọng. AP ưu tiên S, rồi O, rồi D theo bảng tra."
+    },
+    {
+      "q": "Với dòng có AP = H, nhóm cần làm gì?",
+      "options": ["Bỏ qua nếu RPN thấp", "Xác định hành động phòng ngừa / phát hiện, hoặc lý giải có hồ sơ vì sao mức kiểm soát hiện có đã đủ", "Chỉ ghi chú", "Giảm điểm S"],
+      "answer": 1,
+      "explain": "AP cao phải có hành động hoặc lý giải. Hạ điểm cho \"đẹp\" mà không có thay đổi thực chất là lỗi nghiêm trọng khi audit."
+    },
+    {
+      "q": "Phát biểu nào đúng về quan hệ DFMEA và PFMEA?",
+      "options": ["Hai tài liệu độc lập", "Đặc tính quan trọng từ DFMEA phải được cân nhắc và kiểm soát trong PFMEA", "PFMEA luôn làm trước", "DFMEA chỉ cho sản phẩm cơ khí"],
+      "answer": 1,
+      "explain": "Đặc tính thiết kế quan trọng là đầu vào của PFMEA, để quá trình có kiểm soát tương xứng."
+    },
+    {
+      "q": "Lỗi nào sau đây hay gặp khi audit FMEA?",
+      "options": ["Có nhóm liên chức năng và bảng tiêu chí S/O/D", "Kiểm soát hiện có chỉ ghi \"kiểm tra\" chung chung và không cập nhật sau khiếu nại", "FMEA khớp Control Plan", "AP = H có hành động"],
+      "answer": 1,
+      "explain": "Kiểm soát mơ hồ và FMEA bị bỏ quên là các finding rất phổ biến."
+    },
+    {
+      "q": "Khi nào nên cập nhật FMEA?",
+      "options": ["Chỉ trước audit", "Khi có thay đổi thiết kế / quá trình, khiếu nại, hoặc dữ liệu sản xuất cho thấy rủi ro mới", "Mỗi 10 năm", "Chỉ khi khách hàng yêu cầu"],
+      "answer": 1,
+      "explain": "FMEA là tài liệu sống; dữ liệu thực tế (SPC, khiếu nại, hàng trả) phải quay về cập nhật."
+    }
+  ],
+  "advanced": [
+    {
+      "heading": "Mini-tool: tra Action Priority từ S / O / D",
+      "body": "Nhập điểm S, O, D để xem mức ưu tiên H / M / L và ý nghĩa. **Lưu ý quan trọng:** bảng bên dưới là bản xấp xỉ giáo khoa để luyện tư duy (S trước, O sau, D cuối), **không phải bảng AP chính thức** của AIAG-VDA. Khi làm FMEA thật, luôn tra bảng AP chính thức trong handbook.",
+      "widget": {
+        "type": "ap",
+        "note": "Bản xấp xỉ giáo khoa – đối chiếu bảng AP chính thức của AIAG-VDA trước khi dùng cho FMEA thật.",
+        "rules": [
+          [1, 1, 1, 10, 1, 10, "L"],
+          [9, 10, 8, 10, 1, 10, "H"],
+          [9, 10, 6, 7, 2, 10, "H"],
+          [9, 10, 6, 7, 1, 1, "M"],
+          [9, 10, 4, 5, 5, 10, "H"],
+          [9, 10, 4, 5, 1, 4, "M"],
+          [9, 10, 2, 3, 7, 10, "M"],
+          [7, 8, 8, 10, 1, 10, "H"],
+          [7, 8, 4, 7, 5, 10, "H"],
+          [7, 8, 4, 7, 1, 4, "M"],
+          [7, 8, 2, 3, 7, 10, "M"],
+          [4, 6, 8, 10, 5, 10, "H"],
+          [4, 6, 8, 10, 1, 4, "M"],
+          [4, 6, 4, 7, 5, 10, "M"],
+          [2, 3, 8, 10, 5, 10, "M"]
+        ],
+        "labels": {
+          "H": "Cao – phải có hành động cải tiến hoặc lý giải có hồ sơ vì sao đủ",
+          "M": "Trung bình – nên có hành động; nếu không, lý giải có hồ sơ",
+          "L": "Thấp – có thể cải tiến thêm nhưng không bắt buộc"
+        }
+      }
+    },
+    {
+      "heading": "Phát biểu chuỗi hỏng đúng cách",
+      "body": "Một chuỗi hỏng gồm ba phần luôn đi cùng: **Ảnh hưởng** (failure effect) ← **Dạng hỏng** (failure mode) ← **Nguyên nhân** (failure cause). Dạng hỏng là sự phủ định của chức năng (ví dụ \"không kín\"), nguyên nhân là lý do kỹ thuật (\"gioăng bị cắt khi lắp\"). Viết nguyên nhân ở mức đủ cụ thể để có thể hành động và đo hiệu quả."
+    },
+    {
+      "heading": "Liên kết FMEA ↔ Control Plan",
+      "body": "Mỗi biện pháp phòng ngừa / phát hiện đáng kể trong PFMEA nên xuất hiện trong Control Plan, và mỗi dòng Control Plan nên truy được về một rủi ro. Duy trì ID chuỗi hỏng hoặc đánh số tham chiếu giúp audit nhanh và cập nhật đồng bộ."
+    }
+  ],
+  "glossary": [
+    { "en": "Failure mode", "vi": "Dạng hỏng", "def": "Cách mà chức năng hoặc yêu cầu không được đáp ứng." },
+    { "en": "Failure effect", "vi": "Ảnh hưởng của hỏng", "def": "Hậu quả của dạng hỏng đối với khách hàng, người dùng hoặc quá trình tiếp theo." },
+    { "en": "Failure cause", "vi": "Nguyên nhân hỏng", "def": "Lý do kỹ thuật khiến dạng hỏng xảy ra." },
+    { "en": "Severity (S)", "vi": "Độ nghiêm trọng", "def": "Mức độ nghiêm trọng của ảnh hưởng, thang 1–10." },
+    { "en": "Occurrence (O)", "vi": "Tần suất xảy ra", "def": "Khả năng nguyên nhân xảy ra, xét theo kiểm soát phòng ngừa hiện có." },
+    { "en": "Detection (D)", "vi": "Khả năng phát hiện", "def": "Khả năng kiểm soát hiện có phát hiện được nguyên nhân hoặc dạng hỏng." },
+    { "en": "Action Priority (AP)", "vi": "Mức ưu tiên hành động", "def": "H / M / L tra theo S, O, D; thay RPN trong bản 2019." },
+    { "en": "RPN", "vi": "Số ưu tiên rủi ro", "def": "S × O × D, phương pháp cũ bị thay bởi AP." },
+    { "en": "FMEA-MSR", "vi": "FMEA bổ sung cho giám sát và phản ứng hệ thống", "def": "Phân tích rủi ro khi sản phẩm vận hành có giám sát và phản ứng." },
+    { "en": "Prevention control", "vi": "Kiểm soát phòng ngừa", "def": "Biện pháp ngăn nguyên nhân xảy ra (ảnh hưởng điểm O)." },
+    { "en": "Detection control", "vi": "Kiểm soát phát hiện", "def": "Biện pháp phát hiện nguyên nhân hoặc dạng hỏng (ảnh hưởng điểm D)." },
+    { "en": "Scope (5T)", "vi": "Phạm vi (5T)", "def": "InTent, Timing, Team, Task, Tools – nền tảng của bước 1." }
+  ],
+  "sources": [
+    { "title": "AIAG – FMEA (trang chính thức)", "url": "https://www.aiag.org/quality" },
+    { "title": "VDA QMC – Quality Management Center", "url": "https://vda-qmc.de/en/" }
+  ]
+}

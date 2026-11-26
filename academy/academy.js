@@ -67,7 +67,29 @@ function renderModule() {
   else h += advHtml(d, p);
   h += sourcesHtml(d);
   main.innerHTML = h;
+  if (tab === "adv") Array.prototype.forEach.call(main.querySelectorAll(".wg"), function (el) {
+    var w = (d.advanced[+el.dataset.w] || {}).widget, f = w && WIDGETS[w.type];
+    if (f) f(el, w); else el.innerHTML = '<p class="muted">Widget "' + esc(w && w.type) + '" chưa được hỗ trợ.</p>';
+  });
 }
+
+/* ---------- Widget dùng lại: khai báo trong JSON ở mục advanced[].widget = {type, ...cấu hình}; thêm loại mới = thêm vào WIDGETS ---------- */
+var WIDGETS = {
+  /* ap: tra Action Priority. cấu hình: rules [[sMin,sMax,oMin,oMax,dMin,dMax,"H|M|L"], …] (quy tắc khớp đầu tiên thắng, không khớp = L), labels, note */
+  ap: function (el, w) {
+    var sel = function (id, l) { var o = ""; for (var i = 1; i <= 10; i++) o += '<option value="' + i + '">' + i + "</option>"; return '<label class="wl">' + l + '<select id="' + id + '">' + o + "</select></label>"; };
+    el.innerHTML = '<div class="wbox"><div class="wrow">' + sel("ws", "Severity (S)") + sel("wo", "Occurrence (O)") + sel("wd", "Detection (D)") + '</div><div id="wr" class="wres" aria-live="polite"></div><p class="muted wn">' + esc(w.note || "") + "</p></div>";
+    var S = el.querySelector("#ws"), O = el.querySelector("#wo"), D = el.querySelector("#wd"), R = el.querySelector("#wr");
+    function calc() {
+      var s = +S.value, o = +O.value, d = +D.value, ap = "L";
+      (w.rules || []).some(function (r) { if (s >= r[0] && s <= r[1] && o >= r[2] && o <= r[3] && d >= r[4] && d <= r[5]) { ap = r[6]; return true; } return false; });
+      var rpn = s * o * d, lab = (w.labels || {})[ap] || "";
+      R.className = "wres ap" + esc(ap);
+      R.innerHTML = '<b class="apv">AP = ' + esc(ap) + "</b> " + esc(lab) + '<div class="muted wn">So sánh: RPN cũ = ' + s + "×" + o + "×" + d + " = " + rpn + " – cùng RPN có thể ứng với AP khác nhau.</div>";
+    }
+    [S, O, D].forEach(function (x) { x.addEventListener("change", calc); }); S.value = 8; O.value = 4; D.value = 5; calc();
+  }
+};
 
 function basicsHtml(d, p) {
   var h = "";
@@ -80,7 +102,7 @@ function basicsHtml(d, p) {
 }
 function advHtml(d, p) {
   var h = "";
-  (d.advanced || []).forEach(function (b) { h += '<section class="card"><h2>' + esc(b.heading) + "</h2><div>" + rich(b.body) + "</div></section>"; });
+  (d.advanced || []).forEach(function (b, i) { h += '<section class="card"><h2>' + esc(b.heading) + "</h2><div>" + rich(b.body) + "</div>" + (b.widget ? '<div class="wg" data-w="' + i + '"></div>' : "") + "</section>"; });
   h += '<div class="row">' + (p.adv ? '<span class="done">✓ Đã đọc xong phần Nâng cao</span>' : '<button class="btn" data-a="adv">Đánh dấu đã đọc xong</button>') + "</div>";
   return h;
 }
