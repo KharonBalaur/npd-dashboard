@@ -3,7 +3,13 @@
   "title": "SPC – Kiểm soát quá trình bằng thống kê",
   "edition": "SPC 2nd Edition (2005)",
   "icon": "📈",
-  "flow": ["Dữ liệu", "Biểu đồ kiểm soát", "Ổn định?", "Năng lực Cp/Cpk", "Cải tiến"],
+  "flow": [
+    "Dữ liệu",
+    "Biểu đồ kiểm soát",
+    "Ổn định?",
+    "Năng lực Cp/Cpk",
+    "Cải tiến"
+  ],
   "basics": [
     {
       "heading": "Common cause và special cause",
@@ -38,62 +44,112 @@
   "quiz": [
     {
       "q": "Special cause là gì?",
-      "options": ["Biến động tự nhiên luôn có trong quá trình", "Biến động bất thường do một sự kiện cụ thể", "Giới hạn dung sai", "Lỗi của biểu đồ"],
-      "answer": 1,
+      "options": [
+        "Biến động tự nhiên luôn có trong quá trình",
+        "Giới hạn dung sai",
+        "Lỗi của biểu đồ",
+        "Biến động bất thường do một sự kiện cụ thể"
+      ],
+      "answer": 3,
       "explain": "Special cause là nguyên nhân đặc biệt, tìm và loại bỏ được; common cause là biến động nền của hệ thống."
     },
     {
       "q": "Quá trình chỉ có common cause được gọi là gì?",
-      "options": ["Mất kiểm soát", "Ổn định (in control), dự đoán được", "Không đủ năng lực", "Đã đạt Cpk 2"],
-      "answer": 1,
+      "options": [
+        "Ổn định (in control), dự đoán được",
+        "Mất kiểm soát",
+        "Không đủ năng lực",
+        "Đã đạt Cpk 2"
+      ],
+      "answer": 0,
       "explain": "Ổn định nghĩa là biến động chỉ do common cause; chưa chắc đã đủ năng lực."
     },
     {
       "q": "Dữ liệu đo liên tục theo nhóm 5 sản phẩm mỗi giờ nên dùng biểu đồ nào?",
-      "options": ["p chart", "X̄-R", "c chart", "Pareto"],
+      "options": [
+        "p chart",
+        "X̄-R",
+        "c chart",
+        "Pareto"
+      ],
       "answer": 1,
       "explain": "X̄-R phù hợp dữ liệu liên tục theo nhóm nhỏ."
     },
     {
       "q": "Khi mỗi lần chỉ có một giá trị đo (đo phá hủy), biểu đồ phù hợp là?",
-      "options": ["X̄-R", "I-MR", "p chart", "np chart"],
-      "answer": 1,
+      "options": [
+        "X̄-R",
+        "p chart",
+        "I-MR",
+        "np chart"
+      ],
+      "answer": 2,
       "explain": "I-MR dùng giá trị riêng và khoảng di động khi không có nhóm."
     },
     {
       "q": "p chart dùng cho loại dữ liệu nào?",
-      "options": ["Đo liên tục", "Tỉ lệ sản phẩm lỗi (dữ liệu đếm / thuộc tính)", "Thời gian chu kỳ", "Nhiệt độ"],
-      "answer": 1,
+      "options": [
+        "Đo liên tục",
+        "Thời gian chu kỳ",
+        "Nhiệt độ",
+        "Tỉ lệ sản phẩm lỗi (dữ liệu đếm / thuộc tính)"
+      ],
+      "answer": 3,
       "explain": "p chart theo dõi tỉ lệ lỗi; cỡ mẫu có thể thay đổi."
     },
     {
       "q": "Giới hạn kiểm soát (UCL/LCL) được xác định từ đâu?",
-      "options": ["Từ dung sai bản vẽ", "Từ dữ liệu của chính quá trình", "Do khách hàng đặt", "Từ ý kiến quản lý"],
-      "answer": 1,
+      "options": [
+        "Từ dữ liệu của chính quá trình",
+        "Từ dung sai bản vẽ",
+        "Do khách hàng đặt",
+        "Từ ý kiến quản lý"
+      ],
+      "answer": 0,
       "explain": "UCL/LCL phản ánh \"tiếng nói của quá trình\"; USL/LSL là \"tiếng nói của khách hàng\"."
     },
     {
       "q": "Công thức Cpk là gì?",
-      "options": ["(USL − LSL) / 6σ", "min[(USL − μ)/3σ, (μ − LSL)/3σ]", "σ / mean", "(USL + LSL) / 2"],
+      "options": [
+        "(USL − LSL) / 6σ",
+        "min[(USL − μ)/3σ, (μ − LSL)/3σ]",
+        "σ / mean",
+        "(USL + LSL) / 2"
+      ],
       "answer": 1,
       "explain": "Cpk tính khoảng cách từ mean tới giới hạn gần hơn, tính bằng 3σ. Công thức đầu là Cp."
     },
     {
       "q": "USL = 10, LSL = 6, mean = 8, σ = 0,5. Cp và Cpk là?",
-      "options": ["Cp = 1,33; Cpk = 1,33", "Cp = 1,33; Cpk = 1,00", "Cp = 2,67; Cpk = 2,67", "Cp = 0,67; Cpk = 0,67"],
-      "answer": 0,
+      "options": [
+        "Cp = 1,33; Cpk = 1,00",
+        "Cp = 2,67; Cpk = 2,67",
+        "Cp = 1,33; Cpk = 1,33",
+        "Cp = 0,67; Cpk = 0,67"
+      ],
+      "answer": 2,
       "explain": "Cp = 4/(6×0,5) = 1,33. Quá trình đúng tâm nên Cpk = (10−8)/(3×0,5) = 1,33."
     },
     {
       "q": "Pp/Ppk khác Cp/Cpk ở điểm nào?",
-      "options": ["Không khác", "Pp/Ppk dùng σ tổng thể (overall), Cp/Cpk dùng σ trong nhóm (within)", "Pp/Ppk chỉ dùng cho dữ liệu đếm", "Cp/Cpk tính cho nhiều quá trình"],
-      "answer": 1,
+      "options": [
+        "Không khác",
+        "Pp/Ppk chỉ dùng cho dữ liệu đếm",
+        "Cp/Cpk tính cho nhiều quá trình",
+        "Pp/Ppk dùng σ tổng thể (overall), Cp/Cpk dùng σ trong nhóm (within)"
+      ],
+      "answer": 3,
       "explain": "Ppk phản ánh toàn bộ biến động theo thời gian; Cpk phản ánh năng lực tiềm năng khi ổn định."
     },
     {
       "q": "Mục tiêu thường gặp trong ngành ô tô cho nghiên cứu ban đầu và sản xuất liên tục là?",
-      "options": ["Ppk ≥ 1,0 và Cpk ≥ 1,0", "Ppk ≥ 1,67 (PPAP) và Cpk ≥ 1,33 (sản xuất)", "Ppk ≥ 3 và Cpk ≥ 3", "Không có mục tiêu"],
-      "answer": 1,
+      "options": [
+        "Ppk ≥ 1,67 (PPAP) và Cpk ≥ 1,33 (sản xuất)",
+        "Ppk ≥ 1,0 và Cpk ≥ 1,0",
+        "Ppk ≥ 3 và Cpk ≥ 3",
+        "Không có mục tiêu"
+      ],
+      "answer": 0,
       "explain": "Đây là quy ước phổ biến; yêu cầu khách hàng có thể khác nên luôn kiểm tra CSR."
     }
   ],
@@ -104,7 +160,10 @@
       "widget": {
         "type": "cpk",
         "note": "Công cụ học tập: giả định quá trình ổn định, dữ liệu xấp xỉ phân phối chuẩn và hệ đo đã qua MSA.",
-        "targets": { "within": 1.33, "overall": 1.67 },
+        "targets": {
+          "within": 1.33,
+          "overall": 1.67
+        },
         "marginal": 1.0
       }
     },
@@ -118,22 +177,81 @@
     }
   ],
   "glossary": [
-    { "en": "Common cause", "vi": "Nguyên nhân thông thường", "def": "Biến động tự nhiên, luôn có mặt trong quá trình." },
-    { "en": "Special cause", "vi": "Nguyên nhân đặc biệt", "def": "Biến động bất thường do sự kiện cụ thể, có thể tìm và loại bỏ." },
-    { "en": "In control", "vi": "Trong kiểm soát / ổn định", "def": "Chỉ có common cause; dự đoán được." },
-    { "en": "Control chart", "vi": "Biểu đồ kiểm soát", "def": "Biểu đồ theo dõi quá trình theo thời gian với giới hạn kiểm soát." },
-    { "en": "UCL / LCL", "vi": "Giới hạn kiểm soát trên / dưới", "def": "Tính từ dữ liệu quá trình, thường ±3σ quanh đường trung tâm." },
-    { "en": "USL / LSL", "vi": "Giới hạn kỹ thuật trên / dưới", "def": "Giới hạn dung sai theo bản vẽ / yêu cầu khách hàng." },
-    { "en": "X̄-R chart", "vi": "Biểu đồ trung bình – khoảng", "def": "Cho dữ liệu liên tục theo nhóm nhỏ." },
-    { "en": "I-MR chart", "vi": "Biểu đồ giá trị riêng – khoảng di động", "def": "Cho dữ liệu liên tục khi mỗi lần chỉ có một giá trị." },
-    { "en": "p chart", "vi": "Biểu đồ tỉ lệ lỗi", "def": "Cho tỉ lệ sản phẩm không đạt, cỡ mẫu có thể đổi." },
-    { "en": "Cp", "vi": "Chỉ số năng lực tiềm năng", "def": "(USL − LSL) / 6σ, không tính lệch tâm." },
-    { "en": "Cpk", "vi": "Chỉ số năng lực có tính lệch tâm", "def": "Khoảng cách từ mean đến giới hạn gần nhất chia 3σ." },
-    { "en": "Pp / Ppk", "vi": "Chỉ số hiệu năng", "def": "Giống Cp/Cpk nhưng dùng σ tổng thể (overall)." },
-    { "en": "Rational subgroup", "vi": "Nhóm con hợp lý", "def": "Nhóm mẫu lấy sao cho biến động trong nhóm chỉ do common cause." },
-    { "en": "Tampering", "vi": "Điều chỉnh quá mức", "def": "Chỉnh quá trình vì biến động thông thường, làm biến động tăng lên." }
+    {
+      "en": "Common cause",
+      "vi": "Nguyên nhân thông thường",
+      "def": "Biến động tự nhiên, luôn có mặt trong quá trình."
+    },
+    {
+      "en": "Special cause",
+      "vi": "Nguyên nhân đặc biệt",
+      "def": "Biến động bất thường do sự kiện cụ thể, có thể tìm và loại bỏ."
+    },
+    {
+      "en": "In control",
+      "vi": "Trong kiểm soát / ổn định",
+      "def": "Chỉ có common cause; dự đoán được."
+    },
+    {
+      "en": "Control chart",
+      "vi": "Biểu đồ kiểm soát",
+      "def": "Biểu đồ theo dõi quá trình theo thời gian với giới hạn kiểm soát."
+    },
+    {
+      "en": "UCL / LCL",
+      "vi": "Giới hạn kiểm soát trên / dưới",
+      "def": "Tính từ dữ liệu quá trình, thường ±3σ quanh đường trung tâm."
+    },
+    {
+      "en": "USL / LSL",
+      "vi": "Giới hạn kỹ thuật trên / dưới",
+      "def": "Giới hạn dung sai theo bản vẽ / yêu cầu khách hàng."
+    },
+    {
+      "en": "X̄-R chart",
+      "vi": "Biểu đồ trung bình – khoảng",
+      "def": "Cho dữ liệu liên tục theo nhóm nhỏ."
+    },
+    {
+      "en": "I-MR chart",
+      "vi": "Biểu đồ giá trị riêng – khoảng di động",
+      "def": "Cho dữ liệu liên tục khi mỗi lần chỉ có một giá trị."
+    },
+    {
+      "en": "p chart",
+      "vi": "Biểu đồ tỉ lệ lỗi",
+      "def": "Cho tỉ lệ sản phẩm không đạt, cỡ mẫu có thể đổi."
+    },
+    {
+      "en": "Cp",
+      "vi": "Chỉ số năng lực tiềm năng",
+      "def": "(USL − LSL) / 6σ, không tính lệch tâm."
+    },
+    {
+      "en": "Cpk",
+      "vi": "Chỉ số năng lực có tính lệch tâm",
+      "def": "Khoảng cách từ mean đến giới hạn gần nhất chia 3σ."
+    },
+    {
+      "en": "Pp / Ppk",
+      "vi": "Chỉ số hiệu năng",
+      "def": "Giống Cp/Cpk nhưng dùng σ tổng thể (overall)."
+    },
+    {
+      "en": "Rational subgroup",
+      "vi": "Nhóm con hợp lý",
+      "def": "Nhóm mẫu lấy sao cho biến động trong nhóm chỉ do common cause."
+    },
+    {
+      "en": "Tampering",
+      "vi": "Điều chỉnh quá mức",
+      "def": "Chỉnh quá trình vì biến động thông thường, làm biến động tăng lên."
+    }
   ],
   "sources": [
-    { "title": "AIAG – Quality (trang chính thức)", "url": "https://www.aiag.org/quality" }
+    {
+      "title": "AIAG – Quality (trang chính thức)",
+      "url": "https://www.aiag.org/quality"
+    }
   ]
 }

@@ -38,7 +38,7 @@ function gbar() { $("gfill").style.width = totalPct() + "%"; }
 
 /* ---------- Hiển thị ---------- */
 function setView(v) {
-  view = v; if (v !== "modules") cur = null;
+  view = v; cur = null;
   Array.prototype.forEach.call($("nav").children, function (b) { b.classList.toggle("on", b.dataset.v === v); });
   render(); main.scrollTop = 0;
 }

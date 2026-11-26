@@ -1,9 +1,13 @@
 {
   "id": "03-control-plan",
   "title": "Control Plan – Kế hoạch kiểm soát",
-  "edition": "AIAG & VDA Control Plan, 1st Edition (2024)",
+  "edition": "AIAG Control Plan, 1st Edition (2024)",
   "icon": "📋",
-  "flow": ["PFMEA", "Control Plan", "Work Instruction"],
+  "flow": [
+    "PFMEA",
+    "Control Plan",
+    "Work Instruction"
+  ],
   "basics": [
     {
       "heading": "Control Plan là gì?",
@@ -17,8 +21,8 @@
     },
     {
       "heading": "Safe Launch",
-      "body": "Safe Launch (hay kiểm soát giai đoạn khởi động) là quãng đầu của sản xuất hàng loạt, nơi nhà cung cấp **tạm áp dụng kiểm soát chặt hơn bình thường** (kiểm 100%, thêm điểm kiểm, theo dõi sát) cho đến khi dữ liệu chứng minh quá trình ổn định và đạt năng lực. Cần có **tiêu chí vào và ra** rõ ràng (ví dụ: sau bao nhiêu sản phẩm, hoặc khi Cpk và tỉ lệ lỗi đạt ngưỡng).",
-      "example": "6 tuần đầu: kiểm 100% độ kín và thêm điểm kiểm cuối chuyền. Rời Safe Launch khi 3 lô liên tiếp không lỗi và Cpk ≥ mục tiêu đã thống nhất với khách."
+      "body": "Safe Launch (hay kiểm soát giai đoạn khởi động) là quãng đầu của sản xuất hàng loạt, nơi nhà cung cấp **tạm áp dụng kiểm soát chặt hơn bình thường** (kiểm 100%, thêm điểm kiểm, theo dõi sát) cho đến khi dữ liệu chứng minh quá trình ổn định và đạt năng lực. Cần có **tiêu chí vào và ra** rõ ràng. Theo tóm tắt của AIAG, nhóm phải đặt tiêu chí để thoát Safe Launch, thường là một khoảng thời gian vận hành (ví dụ 90 ngày) không phát sinh vấn đề với khách hàng; có thể bổ sung ngưỡng Cpk hoặc tỉ lệ lỗi. Hãy đối chiếu với manual và yêu cầu của khách.",
+      "example": "6 tuần đầu: kiểm 100% độ kín và thêm điểm kiểm cuối chuyền. Rời Safe Launch khi đủ thời gian đã thống nhất không có vấn đề với khách và Cpk ≥ mục tiêu."
     },
     {
       "heading": "Đặc tính đặc biệt",
@@ -38,62 +42,112 @@
   "quiz": [
     {
       "q": "Control Plan mô tả điều gì?",
-      "options": ["Lịch trình dự án", "Kiểm soát nào được thực hiện ở mỗi bước, trên đặc tính nào, tần suất ra sao và phản ứng khi bất thường", "Bảng lương nhân sự", "Danh sách khách hàng"],
+      "options": [
+        "Lịch trình dự án",
+        "Kiểm soát nào được thực hiện ở mỗi bước, trên đặc tính nào, tần suất ra sao và phản ứng khi bất thường",
+        "Bảng lương nhân sự",
+        "Danh sách khách hàng"
+      ],
       "answer": 1,
       "explain": "CP là tài liệu kiểm soát, cầu nối giữa FMEA và công việc hằng ngày."
     },
     {
       "q": "Ba giai đoạn của Control Plan là?",
-      "options": ["Thiết kế – Mua – Bán", "Prototype – Pre-launch – Production", "Plan – Do – Check", "Sơ bộ – Khởi động – Kết thúc"],
-      "answer": 1,
+      "options": [
+        "Thiết kế – Mua – Bán",
+        "Plan – Do – Check",
+        "Prototype – Pre-launch – Production",
+        "Sơ bộ – Khởi động – Kết thúc"
+      ],
+      "answer": 2,
       "explain": "CP phát triển qua Prototype, Pre-launch và Production, mỗi giai đoạn có mức kiểm soát tương xứng."
     },
     {
       "q": "Safe Launch nhằm mục đích gì?",
-      "options": ["Kiểm soát chặt tạm thời khi bắt đầu sản xuất hàng loạt cho đến khi quá trình chứng minh ổn định", "Bỏ kiểm tra để tăng sản lượng", "Thay thế PPAP", "Chỉ dành cho prototype"],
-      "answer": 0,
+      "options": [
+        "Bỏ kiểm tra để tăng sản lượng",
+        "Thay thế PPAP",
+        "Chỉ dành cho prototype",
+        "Kiểm soát chặt tạm thời khi bắt đầu sản xuất hàng loạt cho đến khi quá trình chứng minh ổn định"
+      ],
+      "answer": 3,
       "explain": "Safe Launch tăng kiểm soát lúc đầu và có tiêu chí ra rõ ràng dựa trên dữ liệu."
     },
     {
       "q": "Tiêu chí ra khỏi Safe Launch nên như thế nào?",
-      "options": ["Do cảm tính của quản lý", "Rõ ràng, đo được (ví dụ số lô không lỗi, Cpk đạt mục tiêu) và thống nhất trước", "Không cần", "Chỉ theo thời gian"],
-      "answer": 1,
+      "options": [
+        "Rõ ràng, đo được (ví dụ số lô không lỗi, Cpk đạt mục tiêu) và thống nhất trước",
+        "Do cảm tính của quản lý",
+        "Không cần",
+        "Chỉ theo thời gian"
+      ],
+      "answer": 0,
       "explain": "Tiêu chí dựa trên dữ liệu giúp thoát Safe Launch có cơ sở thay vì tùy ý."
     },
     {
       "q": "Đặc tính đặc biệt được xác định từ đâu?",
-      "options": ["Từ FMEA và yêu cầu khách hàng / quy định", "Từ danh sách nhà cung cấp", "Do công nhân tự chọn", "Từ bảng giá"],
-      "answer": 0,
+      "options": [
+        "Từ danh sách nhà cung cấp",
+        "Từ FMEA và yêu cầu khách hàng / quy định",
+        "Do công nhân tự chọn",
+        "Từ bảng giá"
+      ],
+      "answer": 1,
       "explain": "DFMEA / PFMEA và yêu cầu khách hàng là nguồn chính; sau đó phải xuất hiện nhất quán trong CP và WI."
     },
     {
       "q": "Thứ tự liên kết đúng là?",
-      "options": ["WI → CP → PFMEA", "PFMEA → CP → WI", "CP → WI → PFMEA", "Không có thứ tự"],
-      "answer": 1,
+      "options": [
+        "WI → CP → PFMEA",
+        "CP → WI → PFMEA",
+        "PFMEA → CP → WI",
+        "Không có thứ tự"
+      ],
+      "answer": 2,
       "explain": "Rủi ro (PFMEA) → kiểm soát (CP) → hướng dẫn thực hiện (WI), và phải nhất quán cả ba."
     },
     {
       "q": "Cột \"kế hoạch phản ứng\" tốt cần có gì?",
-      "options": ["Chỉ ghi \"báo cáo\"", "Hành động cụ thể: cách ly, báo ai, kiểm lại gì, khi nào dừng chuyền", "Để trống", "Tên người vận hành"],
-      "answer": 1,
+      "options": [
+        "Chỉ ghi \"báo cáo\"",
+        "Để trống",
+        "Tên người vận hành",
+        "Hành động cụ thể: cách ly, báo ai, kiểm lại gì, khi nào dừng chuyền"
+      ],
+      "answer": 3,
       "explain": "Kế hoạch phản ứng phải đủ cụ thể để người vận hành làm được ngay khi có bất thường."
     },
     {
       "q": "Dòng CP không truy được về rủi ro nào trong PFMEA cho thấy điều gì?",
-      "options": ["Mọi thứ ổn", "Có thể dòng đó thừa hoặc PFMEA đang thiếu rủi ro", "CP đẹp", "Không có vấn đề"],
-      "answer": 1,
+      "options": [
+        "Có thể dòng đó thừa hoặc PFMEA đang thiếu rủi ro",
+        "Mọi thứ ổn",
+        "CP đẹp",
+        "Không có vấn đề"
+      ],
+      "answer": 0,
       "explain": "Truy xuất hai chiều giúp phát hiện kiểm soát thừa hoặc rủi ro bị bỏ sót."
     },
     {
       "q": "Khi quá trình có Cpk tốt và ổn định sau Safe Launch, điều gì hợp lý?",
-      "options": ["Tiếp tục kiểm 100% mãi mãi", "Điều chỉnh tần suất kiểm theo năng lực đã chứng minh, được khách hàng đồng ý nếu cần", "Bỏ toàn bộ kiểm soát", "Xóa CP"],
+      "options": [
+        "Tiếp tục kiểm 100% mãi mãi",
+        "Điều chỉnh tần suất kiểm theo năng lực đã chứng minh, được khách hàng đồng ý nếu cần",
+        "Bỏ toàn bộ kiểm soát",
+        "Xóa CP"
+      ],
       "answer": 1,
       "explain": "Production CP tối ưu tần suất theo dữ liệu; thay đổi phải có kiểm soát thay đổi."
     },
     {
       "q": "Khi PFMEA thay đổi do khiếu nại thị trường, bạn nên làm gì với CP và WI?",
-      "options": ["Không cần làm gì", "Rà soát và cập nhật CP và WI cho nhất quán", "Chỉ cập nhật WI", "Chỉ cập nhật CP"],
-      "answer": 1,
+      "options": [
+        "Không cần làm gì",
+        "Chỉ cập nhật WI",
+        "Rà soát và cập nhật CP và WI cho nhất quán",
+        "Chỉ cập nhật CP"
+      ],
+      "answer": 2,
       "explain": "Ba tài liệu phải đồng bộ; đổi một thì rà hai tài liệu còn lại."
     }
   ],
@@ -112,20 +166,70 @@
     }
   ],
   "glossary": [
-    { "en": "Control Plan (CP)", "vi": "Kế hoạch kiểm soát", "def": "Tài liệu mô tả kiểm soát sản phẩm và quá trình ở từng bước." },
-    { "en": "Prototype", "vi": "Mẫu thử", "def": "Giai đoạn CP khi chế tạo mẫu để kiểm chứng thiết kế." },
-    { "en": "Pre-launch", "vi": "Tiền sản xuất", "def": "Giai đoạn CP trước sản xuất hàng loạt." },
-    { "en": "Production", "vi": "Sản xuất hàng loạt", "def": "Giai đoạn CP khi sản xuất hàng loạt." },
-    { "en": "Safe Launch", "vi": "Khởi động an toàn", "def": "Kiểm soát chặt tạm thời lúc đầu sản xuất hàng loạt." },
-    { "en": "Reaction plan", "vi": "Kế hoạch phản ứng", "def": "Việc phải làm khi kết quả vượt ngoài tiêu chuẩn." },
-    { "en": "Work Instruction (WI)", "vi": "Hướng dẫn công việc", "def": "Tài liệu chi tiết cách thực hiện một thao tác." },
-    { "en": "Control method", "vi": "Phương pháp kiểm soát", "def": "Cách duy trì đặc tính trong giới hạn (poka-yoke, SPC, kiểm 100%…)." },
-    { "en": "Sample size / frequency", "vi": "Cỡ mẫu / tần suất", "def": "Bao nhiêu sản phẩm và bao lâu một lần được kiểm tra." },
-    { "en": "Poka-yoke", "vi": "Chống sai", "def": "Cơ cấu làm cho lỗi không thể xảy ra hoặc bị phát hiện ngay." },
-    { "en": "Traceability", "vi": "Truy xuất", "def": "Khả năng lần theo từ dòng CP về rủi ro FMEA và ngược lại." }
+    {
+      "en": "Control Plan (CP)",
+      "vi": "Kế hoạch kiểm soát",
+      "def": "Tài liệu mô tả kiểm soát sản phẩm và quá trình ở từng bước."
+    },
+    {
+      "en": "Prototype",
+      "vi": "Mẫu thử",
+      "def": "Giai đoạn CP khi chế tạo mẫu để kiểm chứng thiết kế."
+    },
+    {
+      "en": "Pre-launch",
+      "vi": "Tiền sản xuất",
+      "def": "Giai đoạn CP trước sản xuất hàng loạt."
+    },
+    {
+      "en": "Production",
+      "vi": "Sản xuất hàng loạt",
+      "def": "Giai đoạn CP khi sản xuất hàng loạt."
+    },
+    {
+      "en": "Safe Launch",
+      "vi": "Khởi động an toàn",
+      "def": "Kiểm soát chặt tạm thời lúc đầu sản xuất hàng loạt."
+    },
+    {
+      "en": "Reaction plan",
+      "vi": "Kế hoạch phản ứng",
+      "def": "Việc phải làm khi kết quả vượt ngoài tiêu chuẩn."
+    },
+    {
+      "en": "Work Instruction (WI)",
+      "vi": "Hướng dẫn công việc",
+      "def": "Tài liệu chi tiết cách thực hiện một thao tác."
+    },
+    {
+      "en": "Control method",
+      "vi": "Phương pháp kiểm soát",
+      "def": "Cách duy trì đặc tính trong giới hạn (poka-yoke, SPC, kiểm 100%…)."
+    },
+    {
+      "en": "Sample size / frequency",
+      "vi": "Cỡ mẫu / tần suất",
+      "def": "Bao nhiêu sản phẩm và bao lâu một lần được kiểm tra."
+    },
+    {
+      "en": "Poka-yoke",
+      "vi": "Chống sai",
+      "def": "Cơ cấu làm cho lỗi không thể xảy ra hoặc bị phát hiện ngay."
+    },
+    {
+      "en": "Traceability",
+      "vi": "Truy xuất",
+      "def": "Khả năng lần theo từ dòng CP về rủi ro FMEA và ngược lại."
+    }
   ],
   "sources": [
-    { "title": "AIAG – Quality (trang chính thức)", "url": "https://www.aiag.org/quality" },
-    { "title": "VDA QMC – Quality Management Center", "url": "https://vda-qmc.de/en/" }
+    {
+      "title": "AIAG – Quality (trang chính thức)",
+      "url": "https://www.aiag.org/quality"
+    },
+    {
+      "title": "VDA QMC – Quality Management Center",
+      "url": "https://vda-qmc.de/en/"
+    }
   ]
 }

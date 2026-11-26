@@ -3,7 +3,14 @@
   "title": "Tổng quan AIAG & IATF 16949",
   "edition": "IATF 16949:2016 · bộ Core Tools hiện hành",
   "icon": "🧭",
-  "flow": ["APQP", "FMEA", "Control Plan", "MSA", "SPC", "PPAP"],
+  "flow": [
+    "APQP",
+    "FMEA",
+    "Control Plan",
+    "MSA",
+    "SPC",
+    "PPAP"
+  ],
   "basics": [
     {
       "heading": "AIAG là ai?",
@@ -17,7 +24,7 @@
     },
     {
       "heading": "5 Core Tools (và PPAP)",
-      "body": "Bộ \"Core Tools\" thường được nhắc là 5 công cụ: **APQP** (hoạch định), **FMEA** (phân tích rủi ro), **MSA** (đánh giá hệ đo), **SPC** (kiểm soát quá trình bằng thống kê) và **PPAP** (phê duyệt chi tiết sản xuất). **Control Plan** (kế hoạch kiểm soát) là đầu ra then chốt của APQP và thường được học cùng bộ này.\nMỗi công cụ trả lời một câu hỏi: APQP – làm thế nào để đi đúng lộ trình? FMEA – cái gì có thể sai? Control Plan – kiểm soát nó ra sao? MSA – số đo có đáng tin không? SPC – quá trình có ổn định không? PPAP – đã chứng minh đủ năng lực để sản xuất hàng loạt chưa?",
+      "body": "Bộ \"Core Tools\" thường được nhắc là 5 công cụ: **APQP** (hoạch định), **FMEA** (phân tích rủi ro), **MSA** (đánh giá hệ đo), **SPC** (kiểm soát quá trình bằng thống kê) và **PPAP** (phê duyệt chi tiết sản xuất). **Control Plan** (kế hoạch kiểm soát) là đầu ra then chốt của APQP; từ năm 2024 AIAG phát hành Control Plan thành một manual riêng (1st Edition) tách khỏi APQP, nên thường được học cùng bộ này.\nMỗi công cụ trả lời một câu hỏi: APQP – làm thế nào để đi đúng lộ trình? FMEA – cái gì có thể sai? Control Plan – kiểm soát nó ra sao? MSA – số đo có đáng tin không? SPC – quá trình có ổn định không? PPAP – đã chứng minh đủ năng lực để sản xuất hàng loạt chưa?",
       "example": "Bình xịt cầm tay mới: FMEA chỉ ra rủi ro \"rò nước ở gioăng\", Control Plan quy định test rò 100%, MSA kiểm tra máy test rò có đo đúng không, SPC theo dõi áp suất test theo ca, PPAP gom bằng chứng nộp khách."
     },
     {
@@ -34,37 +41,67 @@
   "quiz": [
     {
       "q": "IATF 16949 chủ yếu là gì?",
-      "options": ["Một sổ tay hướng dẫn cách điền biểu mẫu FMEA", "Tiêu chuẩn hệ thống quản lý chất lượng cho ngành ô tô, xây trên ISO 9001", "Một tiêu chuẩn về an toàn pin lithium", "Tên khác của AIAG"],
-      "answer": 1,
+      "options": [
+        "Tiêu chuẩn hệ thống quản lý chất lượng cho ngành ô tô, xây trên ISO 9001",
+        "Một sổ tay hướng dẫn cách điền biểu mẫu FMEA",
+        "Một tiêu chuẩn về an toàn pin lithium",
+        "Tên khác của AIAG"
+      ],
+      "answer": 0,
       "explain": "IATF 16949 là tiêu chuẩn QMS ngành ô tô (nền ISO 9001 + yêu cầu bổ sung). AIAG là tổ chức xuất bản các sổ tay hướng dẫn như Core Tools, không phải tiêu chuẩn chứng nhận."
     },
     {
       "q": "Quan hệ giữa IATF 16949 và Core Tools là gì?",
-      "options": ["IATF nêu yêu cầu phải làm gì; Core Tools hướng dẫn cách làm", "Core Tools thay thế hoàn toàn IATF", "Hai thứ không liên quan", "IATF chỉ áp dụng cho PPAP"],
-      "answer": 0,
+      "options": [
+        "Core Tools thay thế hoàn toàn IATF",
+        "IATF nêu yêu cầu phải làm gì; Core Tools hướng dẫn cách làm",
+        "Hai thứ không liên quan",
+        "IATF chỉ áp dụng cho PPAP"
+      ],
+      "answer": 1,
       "explain": "Tiêu chuẩn nói \"phải làm gì\", Core Tools cung cấp phương pháp \"làm thế nào\" để đáp ứng."
     },
     {
       "q": "Công cụ nào trả lời câu hỏi \"số đo của chúng ta có đáng tin không?\"",
-      "options": ["APQP", "FMEA", "MSA", "PPAP"],
+      "options": [
+        "APQP",
+        "FMEA",
+        "MSA",
+        "PPAP"
+      ],
       "answer": 2,
       "explain": "MSA (Measurement System Analysis) đánh giá độ biến động của hệ đo, ví dụ bằng Gage R&R."
     },
     {
       "q": "Đầu ra nào của FMEA đi trực tiếp vào Control Plan?",
-      "options": ["Danh sách rủi ro và các biện pháp phòng ngừa / phát hiện", "Báo cáo Cpk của lô đầu", "Chữ ký phê duyệt PPAP", "Danh sách nhà cung cấp"],
-      "answer": 0,
+      "options": [
+        "Báo cáo Cpk của lô đầu",
+        "Chữ ký phê duyệt PPAP",
+        "Danh sách nhà cung cấp",
+        "Danh sách rủi ro và các biện pháp phòng ngừa / phát hiện"
+      ],
+      "answer": 3,
       "explain": "Các rủi ro ưu tiên cao và biện pháp phòng ngừa / phát hiện trong FMEA là nguồn để xây các dòng kiểm soát trong Control Plan."
     },
     {
       "q": "SPC được dùng chủ yếu ở giai đoạn nào?",
-      "options": ["Chỉ khi nhận khiếu nại", "Theo dõi quá trình sản xuất thực tế để phát hiện biến động sớm", "Chỉ khi thiết kế sản phẩm", "Chỉ khi audit"],
-      "answer": 1,
+      "options": [
+        "Theo dõi quá trình sản xuất thực tế để phát hiện biến động sớm",
+        "Chỉ khi nhận khiếu nại",
+        "Chỉ khi thiết kế sản phẩm",
+        "Chỉ khi audit"
+      ],
+      "answer": 0,
       "explain": "SPC dùng dữ liệu sản xuất liên tục để biết quá trình ổn định hay đang trôi, từ đó can thiệp trước khi sinh phế phẩm."
     },
     {
       "q": "Điều nào mô tả đúng sơ đồ liên kết Core Tools?",
-      "options": ["Là chuỗi một chiều, xong bước nào bỏ bước đó", "Là dòng chảy thông tin, có vòng lặp cập nhật khi thực tế thay đổi", "Mỗi công cụ độc lập hoàn toàn", "Chỉ PPAP mới cần cập nhật"],
+      "options": [
+        "Là chuỗi một chiều, xong bước nào bỏ bước đó",
+        "Là dòng chảy thông tin, có vòng lặp cập nhật khi thực tế thay đổi",
+        "Mỗi công cụ độc lập hoàn toàn",
+        "Chỉ PPAP mới cần cập nhật"
+      ],
       "answer": 1,
       "explain": "Dữ liệu từ SPC, khiếu nại, thay đổi quá trình phải quay về cập nhật FMEA và Control Plan – đó là tinh thần cải tiến liên tục."
     }
@@ -84,20 +121,70 @@
     }
   ],
   "glossary": [
-    { "en": "AIAG", "vi": "Nhóm Hành động Công nghiệp Ô tô", "def": "Tổ chức ô tô Bắc Mỹ xuất bản các sổ tay Core Tools." },
-    { "en": "IATF 16949", "vi": "Tiêu chuẩn QMS ngành ô tô", "def": "Tiêu chuẩn hệ thống quản lý chất lượng ô tô, bổ sung yêu cầu cho ISO 9001." },
-    { "en": "Core Tools", "vi": "Bộ công cụ cốt lõi", "def": "APQP, FMEA, MSA, SPC, PPAP (và Control Plan đi kèm)." },
-    { "en": "APQP", "vi": "Hoạch định chất lượng sản phẩm tiên tiến", "def": "Khung hoạch định từ ý tưởng đến sản xuất hàng loạt." },
-    { "en": "FMEA", "vi": "Phân tích dạng và hậu quả hỏng", "def": "Phân tích có hệ thống xem cái gì có thể sai, hậu quả ra sao." },
-    { "en": "Control Plan", "vi": "Kế hoạch kiểm soát", "def": "Tài liệu mô tả cách kiểm soát đặc tính sản phẩm và quá trình." },
-    { "en": "MSA", "vi": "Phân tích hệ thống đo lường", "def": "Đánh giá độ tin cậy của phương pháp và thiết bị đo." },
-    { "en": "SPC", "vi": "Kiểm soát quá trình bằng thống kê", "def": "Dùng biểu đồ kiểm soát và chỉ số năng lực để theo dõi quá trình." },
-    { "en": "PPAP", "vi": "Quy trình phê duyệt chi tiết sản xuất", "def": "Bộ bằng chứng chứng minh nhà cung cấp đủ năng lực sản xuất hàng loạt." },
-    { "en": "CSR", "vi": "Yêu cầu riêng của khách hàng", "def": "Customer-Specific Requirements, bổ sung cho tiêu chuẩn chung." },
-    { "en": "QMS", "vi": "Hệ thống quản lý chất lượng", "def": "Tập hợp quy trình, nguồn lực để quản lý chất lượng của tổ chức." }
+    {
+      "en": "AIAG",
+      "vi": "Nhóm Hành động Công nghiệp Ô tô",
+      "def": "Tổ chức ô tô Bắc Mỹ xuất bản các sổ tay Core Tools."
+    },
+    {
+      "en": "IATF 16949",
+      "vi": "Tiêu chuẩn QMS ngành ô tô",
+      "def": "Tiêu chuẩn hệ thống quản lý chất lượng ô tô, bổ sung yêu cầu cho ISO 9001."
+    },
+    {
+      "en": "Core Tools",
+      "vi": "Bộ công cụ cốt lõi",
+      "def": "APQP, FMEA, MSA, SPC, PPAP (và Control Plan đi kèm)."
+    },
+    {
+      "en": "APQP",
+      "vi": "Hoạch định chất lượng sản phẩm tiên tiến",
+      "def": "Khung hoạch định từ ý tưởng đến sản xuất hàng loạt."
+    },
+    {
+      "en": "FMEA",
+      "vi": "Phân tích dạng và hậu quả hỏng",
+      "def": "Phân tích có hệ thống xem cái gì có thể sai, hậu quả ra sao."
+    },
+    {
+      "en": "Control Plan",
+      "vi": "Kế hoạch kiểm soát",
+      "def": "Tài liệu mô tả cách kiểm soát đặc tính sản phẩm và quá trình."
+    },
+    {
+      "en": "MSA",
+      "vi": "Phân tích hệ thống đo lường",
+      "def": "Đánh giá độ tin cậy của phương pháp và thiết bị đo."
+    },
+    {
+      "en": "SPC",
+      "vi": "Kiểm soát quá trình bằng thống kê",
+      "def": "Dùng biểu đồ kiểm soát và chỉ số năng lực để theo dõi quá trình."
+    },
+    {
+      "en": "PPAP",
+      "vi": "Quy trình phê duyệt chi tiết sản xuất",
+      "def": "Bộ bằng chứng chứng minh nhà cung cấp đủ năng lực sản xuất hàng loạt."
+    },
+    {
+      "en": "CSR",
+      "vi": "Yêu cầu riêng của khách hàng",
+      "def": "Customer-Specific Requirements, bổ sung cho tiêu chuẩn chung."
+    },
+    {
+      "en": "QMS",
+      "vi": "Hệ thống quản lý chất lượng",
+      "def": "Tập hợp quy trình, nguồn lực để quản lý chất lượng của tổ chức."
+    }
   ],
   "sources": [
-    { "title": "AIAG – Quality (trang chính thức)", "url": "https://www.aiag.org/quality" },
-    { "title": "IATF – International Automotive Task Force", "url": "https://www.iatfglobaloversight.org/" }
+    {
+      "title": "AIAG – Quality (trang chính thức)",
+      "url": "https://www.aiag.org/quality"
+    },
+    {
+      "title": "IATF – International Automotive Task Force",
+      "url": "https://www.iatfglobaloversight.org/"
+    }
   ]
 }

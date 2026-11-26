@@ -74,7 +74,7 @@ input.s{width:100%;padding:10px 12px;border:1.5px solid var(--line);border-radiu
 .fc small{display:block;font-weight:500;font-size:14px;color:var(--ink2);margin-top:8px}
 select{padding:8px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--ink)}
 ul.src{padding-left:18px}
-@media(max-width:560px){.top{gap:4px}.nav{margin-left:0;width:100%;order:3}.main{padding:12px}}
+@media(max-width:560px){.top{gap:4px}.nav{margin-left:0;width:100%;order:3;flex-wrap:nowrap;justify-content:space-between}.nav button{padding:6px 9px;font-size:12.5px;white-space:nowrap}.main{padding:12px}}
 @media(prefers-reduced-motion:reduce){*{transition:none!important}}
 .wbox{background:var(--soft);border:1px solid var(--line);border-radius:10px;padding:12px;margin-top:10px}
 .wrow{display:flex;gap:10px;flex-wrap:wrap}
@@ -83,3 +83,4 @@ ul.src{padding-left:18px}
 .wres.apH{border-color:var(--bad);background:var(--bad-bg)}.wres.apM{border-color:var(--gold-bd);background:var(--gold-bg)}.wres.apL{border-color:var(--ex-bd);background:var(--ex-bg)}
 .apv{font-size:18px}.wn{font-size:12.5px;margin:6px 0 0}
 .wi,.wk{padding:8px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--ink);width:110px;font-weight:400}.wk{width:auto}
+@media(max-width:340px){.nav button{padding:6px 6px;font-size:12px}}

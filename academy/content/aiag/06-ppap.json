@@ -3,7 +3,13 @@
   "title": "PPAP – Phê duyệt chi tiết sản xuất",
   "edition": "PPAP 4th Edition (2006)",
   "icon": "✅",
-  "flow": ["Chuẩn bị 18 hạng mục", "Chọn mức nộp", "PSW", "Khách phê duyệt", "Nộp lại khi thay đổi"],
+  "flow": [
+    "Chuẩn bị 18 hạng mục",
+    "Chọn mức nộp",
+    "PSW",
+    "Khách phê duyệt",
+    "Nộp lại khi thay đổi"
+  ],
   "basics": [
     {
       "heading": "PPAP để làm gì?",
@@ -43,62 +49,112 @@
   "quiz": [
     {
       "q": "PPAP chứng minh điều gì?",
-      "options": ["Sản phẩm đẹp", "Nhà cung cấp hiểu yêu cầu và quá trình có thể sản xuất hàng loạt đạt yêu cầu ở đúng nhịp", "Giá thấp nhất", "Đã giao hàng"],
-      "answer": 1,
+      "options": [
+        "Sản phẩm đẹp",
+        "Giá thấp nhất",
+        "Nhà cung cấp hiểu yêu cầu và quá trình có thể sản xuất hàng loạt đạt yêu cầu ở đúng nhịp",
+        "Đã giao hàng"
+      ],
+      "answer": 2,
       "explain": "PPAP là bằng chứng năng lực sản xuất hàng loạt, nộp trước khi giao hàng loạt."
     },
     {
       "q": "PPAP 4th Edition có bao nhiêu hạng mục?",
-      "options": ["10", "14", "18", "22"],
-      "answer": 2,
+      "options": [
+        "10",
+        "14",
+        "22",
+        "18"
+      ],
+      "answer": 3,
       "explain": "18 hạng mục, từ hồ sơ thiết kế đến Part Submission Warrant."
     },
     {
       "q": "Mức nộp mặc định nếu khách hàng không nêu rõ?",
-      "options": ["Mức 1", "Mức 2", "Mức 3", "Mức 5"],
-      "answer": 2,
+      "options": [
+        "Mức 3",
+        "Mức 1",
+        "Mức 2",
+        "Mức 5"
+      ],
+      "answer": 0,
       "explain": "Mức 3: PSW + mẫu + dữ liệu hỗ trợ đầy đủ."
     },
     {
       "q": "Mức 1 yêu cầu nộp gì?",
-      "options": ["Chỉ PSW (và AAR nếu là chi tiết ngoại quan)", "Toàn bộ dữ liệu và mẫu", "Không nộp gì", "Xem xét tại nhà cung cấp"],
-      "answer": 0,
+      "options": [
+        "Toàn bộ dữ liệu và mẫu",
+        "Chỉ PSW (và AAR nếu là chi tiết ngoại quan)",
+        "Không nộp gì",
+        "Xem xét tại nhà cung cấp"
+      ],
+      "answer": 1,
       "explain": "Mức 1 chỉ gửi PSW; các hồ sơ khác giữ tại nhà cung cấp."
     },
     {
       "q": "Mức 5 khác các mức còn lại ở điểm nào?",
-      "options": ["Chỉ nộp PSW", "PSW + mẫu + dữ liệu đầy đủ, được xem xét tại cơ sở của nhà cung cấp", "Không cần mẫu", "Chỉ dành cho chi tiết ngoại quan"],
-      "answer": 1,
+      "options": [
+        "Chỉ nộp PSW",
+        "Không cần mẫu",
+        "PSW + mẫu + dữ liệu đầy đủ, được xem xét tại cơ sở của nhà cung cấp",
+        "Chỉ dành cho chi tiết ngoại quan"
+      ],
+      "answer": 2,
       "explain": "Mức 5 có phần xem xét tại chỗ ở nhà cung cấp."
     },
     {
       "q": "PSW là gì?",
-      "options": ["Báo cáo năng lực", "Phiếu tóm tắt và cam kết của nhà cung cấp, nơi khách ghi quyết định phê duyệt", "Hợp đồng giá", "Kế hoạch kiểm soát"],
-      "answer": 1,
+      "options": [
+        "Báo cáo năng lực",
+        "Hợp đồng giá",
+        "Kế hoạch kiểm soát",
+        "Phiếu tóm tắt và cam kết của nhà cung cấp, nơi khách ghi quyết định phê duyệt"
+      ],
+      "answer": 3,
       "explain": "PSW là biểu mẫu xác nhận; khách ghi Approved / Interim / Rejected."
     },
     {
       "q": "\"Interim approval\" nghĩa là gì?",
-      "options": ["Từ chối", "Phê duyệt có điều kiện, giới hạn thời gian hoặc số lượng, kèm kế hoạch khắc phục", "Phê duyệt vĩnh viễn", "Chưa nộp"],
-      "answer": 1,
+      "options": [
+        "Phê duyệt có điều kiện, giới hạn thời gian hoặc số lượng, kèm kế hoạch khắc phục",
+        "Từ chối",
+        "Phê duyệt vĩnh viễn",
+        "Chưa nộp"
+      ],
+      "answer": 0,
       "explain": "Interim cho phép giao hàng tạm thời trong khi nhà cung cấp xử lý các tồn đọng."
     },
     {
       "q": "Tình huống nào thường phải thông báo khách / nộp lại PPAP?",
-      "options": ["Đổi bàn làm việc", "Chuyển sản xuất sang địa điểm mới hoặc đổi nhà cung cấp vật liệu", "Đổi nhân viên văn phòng", "Đổi logo công ty"],
+      "options": [
+        "Đổi bàn làm việc",
+        "Chuyển sản xuất sang địa điểm mới hoặc đổi nhà cung cấp vật liệu",
+        "Đổi nhân viên văn phòng",
+        "Đổi logo công ty"
+      ],
       "answer": 1,
       "explain": "Thay đổi địa điểm, nguồn vật liệu, quá trình là các trường hợp điển hình."
     },
     {
       "q": "Khuôn không sản xuất quá bao lâu thì sản xuất lại cần xem xét nộp lại PPAP?",
-      "options": ["1 tháng", "3 tháng", "12 tháng", "5 năm"],
+      "options": [
+        "1 tháng",
+        "3 tháng",
+        "12 tháng",
+        "5 năm"
+      ],
       "answer": 2,
       "explain": "Dụng cụ không dùng quá 12 tháng là một trong các điều kiện nộp lại thường gặp."
     },
     {
       "q": "Ppk = 1,40 ở lần nộp ban đầu. Cách hiểu hợp lý nhất?",
-      "options": ["Đạt hoàn toàn", "Nằm trong vùng có thể chấp nhận nhưng cần thảo luận với khách và có kế hoạch cải tiến", "Chắc chắn bị loại", "Không liên quan PPAP"],
-      "answer": 1,
+      "options": [
+        "Đạt hoàn toàn",
+        "Chắc chắn bị loại",
+        "Không liên quan PPAP",
+        "Nằm trong vùng có thể chấp nhận nhưng cần thảo luận với khách và có kế hoạch cải tiến"
+      ],
+      "answer": 3,
       "explain": "Vùng 1,33–1,67 có thể chấp nhận có điều kiện; dưới 1,33 thường chưa đạt."
     }
   ],
@@ -117,19 +173,66 @@
     }
   ],
   "glossary": [
-    { "en": "PPAP", "vi": "Quy trình phê duyệt chi tiết sản xuất", "def": "Bộ bằng chứng chứng minh năng lực sản xuất hàng loạt." },
-    { "en": "PSW", "vi": "Phiếu bảo đảm nộp chi tiết", "def": "Biểu mẫu tóm tắt và cam kết, khách ghi quyết định." },
-    { "en": "Submission level", "vi": "Mức nộp", "def": "Mức 1–5 xác định mức độ hồ sơ phải nộp." },
-    { "en": "Interim approval", "vi": "Phê duyệt tạm thời", "def": "Phê duyệt có điều kiện, giới hạn thời gian / số lượng." },
-    { "en": "AAR", "vi": "Báo cáo phê duyệt ngoại quan", "def": "Báo cáo phê duyệt chi tiết có yêu cầu ngoại quan." },
-    { "en": "Master sample", "vi": "Mẫu chuẩn", "def": "Mẫu được khách và nhà cung cấp ký duyệt để làm chuẩn so sánh." },
-    { "en": "Checking aid", "vi": "Dụng cụ kiểm", "def": "Jig, gauge, đồ gá dùng để kiểm tra chi tiết." },
-    { "en": "Dimensional results", "vi": "Kết quả đo kích thước", "def": "Kết quả đo mọi kích thước ghi trên bản vẽ cho các mẫu đại diện." },
-    { "en": "Initial process study", "vi": "Nghiên cứu quá trình ban đầu", "def": "Đánh giá năng lực (Ppk) cho đặc tính đặc biệt từ lần chạy đại diện." },
-    { "en": "Resubmission", "vi": "Nộp lại", "def": "Nộp PPAP lại khi có thay đổi theo quy định hoặc theo yêu cầu khách." },
-    { "en": "Qualified laboratory", "vi": "Phòng thí nghiệm đủ điều kiện", "def": "Phòng thí nghiệm có phạm vi và năng lực được công nhận / phê duyệt." }
+    {
+      "en": "PPAP",
+      "vi": "Quy trình phê duyệt chi tiết sản xuất",
+      "def": "Bộ bằng chứng chứng minh năng lực sản xuất hàng loạt."
+    },
+    {
+      "en": "PSW",
+      "vi": "Phiếu bảo đảm nộp chi tiết",
+      "def": "Biểu mẫu tóm tắt và cam kết, khách ghi quyết định."
+    },
+    {
+      "en": "Submission level",
+      "vi": "Mức nộp",
+      "def": "Mức 1–5 xác định mức độ hồ sơ phải nộp."
+    },
+    {
+      "en": "Interim approval",
+      "vi": "Phê duyệt tạm thời",
+      "def": "Phê duyệt có điều kiện, giới hạn thời gian / số lượng."
+    },
+    {
+      "en": "AAR",
+      "vi": "Báo cáo phê duyệt ngoại quan",
+      "def": "Báo cáo phê duyệt chi tiết có yêu cầu ngoại quan."
+    },
+    {
+      "en": "Master sample",
+      "vi": "Mẫu chuẩn",
+      "def": "Mẫu được khách và nhà cung cấp ký duyệt để làm chuẩn so sánh."
+    },
+    {
+      "en": "Checking aid",
+      "vi": "Dụng cụ kiểm",
+      "def": "Jig, gauge, đồ gá dùng để kiểm tra chi tiết."
+    },
+    {
+      "en": "Dimensional results",
+      "vi": "Kết quả đo kích thước",
+      "def": "Kết quả đo mọi kích thước ghi trên bản vẽ cho các mẫu đại diện."
+    },
+    {
+      "en": "Initial process study",
+      "vi": "Nghiên cứu quá trình ban đầu",
+      "def": "Đánh giá năng lực (Ppk) cho đặc tính đặc biệt từ lần chạy đại diện."
+    },
+    {
+      "en": "Resubmission",
+      "vi": "Nộp lại",
+      "def": "Nộp PPAP lại khi có thay đổi theo quy định hoặc theo yêu cầu khách."
+    },
+    {
+      "en": "Qualified laboratory",
+      "vi": "Phòng thí nghiệm đủ điều kiện",
+      "def": "Phòng thí nghiệm có phạm vi và năng lực được công nhận / phê duyệt."
+    }
   ],
   "sources": [
-    { "title": "AIAG – Quality (trang chính thức)", "url": "https://www.aiag.org/quality" }
+    {
+      "title": "AIAG – Quality (trang chính thức)",
+      "url": "https://www.aiag.org/quality"
+    }
   ]
 }
