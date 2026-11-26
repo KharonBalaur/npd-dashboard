@@ -40,4 +40,4 @@ Chuyển từ `CLAUDE.md` nguyên văn (chỉ đổi chỗ, không bỏ thông t
   `data-platforms.js` (PLATFORMS, FEATURE_MAP). Sửa file .js → đổi `?v=` trong index.html (và `v=` trong TOOL_RUN.ai nếu sửa index.html).
   Tiến độ npdAi@user trong localStorage (CHƯA đồng bộ lên Sheet): {v:1, passed:{id:true}, best:{id:%}, theme, last}; lưu theo id bài, bài đã đạt giữ mãi
   (không đổi id đã phát hành); đạt >= 80% mở bài sau, thêm bài vào giữa không khóa lại người đã học. Chỉ thêm trường; đổi cấu trúc thì viết hàm nâng cấp.
-  Nội dung bài / nền tảng hiện là DỮ LIỆU MẪU (2 bài + 1 kiểm tra tổng cấp 1, 3 nền tảng); link nguồn chưa kiểm tra được từ môi trường soạn.
+  Bài học: cấp 1 (n1-01…05 + n1-final 10 câu), cấp 2 (n2-01…06 + n2-final 10 câu), cấp 3 chưa có; nguồn dùng chung ở AI_SRC (chỉ trang chính thức / trang chủ). Nền tảng vẫn là dữ liệu mẫu (3 nền tảng). Link nguồn chưa kiểm tra được từ môi trường soạn.
