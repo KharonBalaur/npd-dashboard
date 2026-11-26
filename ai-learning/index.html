@@ -99,6 +99,7 @@ a{color:var(--info)}
 .chips{display:flex;gap:6px;flex-wrap:wrap}
 .tw{overflow-x:auto;border:1px solid var(--line);border-radius:10px}
 table{border-collapse:collapse;width:100%;min-width:720px;background:var(--card)}
+.ft{min-width:1100px} .ft td.f,.ft thead th:first-child{position:sticky;left:0;z-index:1;background:var(--card);min-width:200px;box-shadow:1px 0 0 var(--line)} .ft thead th:first-child{background:var(--soft);z-index:2}
 th,td{padding:9px 12px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top} th{background:var(--soft);font-size:12.5px;position:sticky;top:0}
 td.f b{display:block} td.f small{color:var(--muted)} tr:last-child td{border-bottom:0}
 input[type=search],input[type=text],textarea{width:100%;padding:9px 12px;border:1px solid var(--line);border-radius:8px;background:var(--card);resize:vertical}
@@ -139,8 +140,8 @@ html:not(.embed) .tabs .tr .full{display:none}
   <footer>Nội dung mang tính tham khảo cho người mới. Tính năng, gói và giới hạn của từng AI thay đổi nhanh – luôn kiểm tra trên trang chính thức. Đừng nhập dữ liệu mật vào AI công cộng.</footer>
 </div>
 
-<script src="data-lessons.js?v=20261126b"></script>
-<script src="data-platforms.js?v=20261126a"></script>
+<script src="data-lessons.js?v=20261126c"></script>
+<script src="data-platforms.js?v=20261126c"></script>
 <script>
 "use strict";
 const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
@@ -180,7 +181,8 @@ const DRAFT = { role: "", ctx: "", task: "", fmt: "", note: "" };
 
 function note(msg) { const n = $("#note"); if (!n) return; n.textContent = msg; clearTimeout(noteT); noteT = setTimeout(() => { n.textContent = ""; }, 4500); }
 const norm = s => String(s || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/đ/g, "d");
-const fmtDate = iso => /^\d{4}-\d{2}-\d{2}$/.test(iso || "") ? iso.slice(8) + "/" + iso.slice(5, 7) + "/" + iso.slice(0, 4) : esc(iso || "—");
+const fmtDate = iso => /^\d{4}-\d{2}-\d{2}$/.test(iso || "") ? iso.slice(8) + "/" + iso.slice(5, 7) + "/" + iso.slice(0, 4)
+  : /^\d{4}-\d{2}$/.test(iso || "") ? iso.slice(5) + "/" + iso.slice(0, 4) : esc(iso || "—");      // YYYY-MM-DD hoặc YYYY-MM
 const ageDays = iso => { const t = Date.parse(iso); return isNaN(t) ? 0 : (Date.now() - t) / 864e5; };
 
 /* ---------- Khung: tab ---------- */
@@ -296,7 +298,9 @@ function renderLessonHead() {                                             // c�
 }
 
 /* ---------- Tab 2: Nền tảng AI ---------- */
-const COLS = [["chatgpt", "ChatGPT"], ["gemini", "Gemini"], ["claude", "Claude"], ["copilot", "Copilot"], ["perplexity", "Perplexity"]];
+// Cột bảng tính năng = các nền tảng trong PLATFORMS có cột trong FEATURE_MAP (theo thứ tự PLATFORMS); tên ngắn cho tiêu đề cột.
+const COL_SHORT = { copilot: "Copilot" };
+const COLS = HAS ? PLATFORMS.filter(p => FEATURE_MAP.some(r => p.id in r)).map(p => [p.id, COL_SHORT[p.id] || p.name]) : [];
 function renderPlat() {
   const cards = PLATFORMS.map(p => {
     const u = safeUrl(p.url), old = ageDays(p.lastUpdated) > 90;
@@ -312,7 +316,7 @@ function renderPlat() {
     <div class="card" style="margin-top:14px"><h3>Tính năng tương đương giữa các ứng dụng</h3>
       <p class="muted" style="margin:0 0 10px">Tên gọi khác nhau nhưng việc làm được thì gần giống nhau. Bảng chỉ mang tính tham khảo – tính năng thay đổi theo gói, vùng và thời điểm.</p>
       <input class="srch" type="search" id="fq" placeholder="Tìm tính năng… (vd: ảnh, tìm web)" aria-label="Tìm tính năng" autocomplete="off">
-      <div class="tw"><table><thead><tr><th>Tính năng</th>${head}</tr></thead><tbody id="ftb">${rows}<tr id="fnone" class="hide"><td colspan="${COLS.length + 1}" class="muted">Không có tính năng nào khớp.</td></tr></tbody></table></div></div>`;
+      <div class="tw"><table class="ft"><thead><tr><th>Tính năng</th>${head}</tr></thead><tbody id="ftb">${rows}<tr id="fnone" class="hide"><td colspan="${COLS.length + 1}" class="muted">Không có tính năng nào khớp.</td></tr></tbody></table></div></div>`;
 }
 function filterFeat(q) {
   const T = norm(q).split(/\s+/).filter(Boolean); let n = 0;              // mọi từ gõ vào đều phải có trong dòng (không cần đúng thứ tự)
