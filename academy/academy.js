@@ -88,6 +88,49 @@ var WIDGETS = {
       R.innerHTML = '<b class="apv">AP = ' + esc(ap) + "</b> " + esc(lab) + '<div class="muted wn">So sánh: RPN cũ = ' + s + "×" + o + "×" + d + " = " + rpn + " – cùng RPN có thể ứng với AP khác nhau.</div>";
     }
     [S, O, D].forEach(function (x) { x.addEventListener("change", calc); }); S.value = 8; O.value = 4; D.value = 5; calc();
+  },
+  /* grr: kết luận hệ đo từ %GR&R + ndc. cấu hình: good (mặc định 10), limit (30), ndcMin (5), note */
+  grr: function (el, w) {
+    var good = w.good || 10, lim = w.limit || 30, nm = w.ndcMin || 5;
+    el.innerHTML = '<div class="wbox"><div class="wrow"><label class="wl">%GR&amp;R<input type="number" class="wi" min="0" max="1000" step="any" value="12"></label><label class="wl">ndc<input type="number" class="wi" min="0" step="any" value="6"></label></div><div class="wres" aria-live="polite"></div><p class="muted wn">' + esc(w.note || "") + "</p></div>";
+    var I = el.querySelectorAll(".wi"), R = el.querySelector(".wres");
+    function calc() {
+      var g = parseFloat(I[0].value), n = parseFloat(I[1].value);
+      if (!isFinite(g) || !isFinite(n) || g < 0 || n < 0) { R.className = "wres"; R.textContent = "Nhập %GR&R và ndc (số không âm)."; return; }
+      var c, t;
+      if (g > lim) { c = "apH"; t = "Không chấp nhận: %GR&R > " + lim + "%. Cải tiến hệ đo (thiết bị, phương pháp, đào tạo) rồi đánh giá lại."; }
+      else if (n < nm) { c = "apH"; t = "Chưa đạt: ndc < " + nm + " nên hệ đo chưa đủ khả năng phân biệt. Kiểm tra độ phân giải hoặc mẫu chọn có trải đủ dải quá trình chưa."; }
+      else if (g < good) { c = "apL"; t = "Chấp nhận: %GR&R < " + good + "% và ndc ≥ " + nm + "."; }
+      else { c = "apM"; t = "Chấp nhận có điều kiện: %GR&R trong khoảng " + good + "–" + lim + "%. Cân nhắc tầm quan trọng của ứng dụng, chi phí cải tiến và thỏa thuận với khách hàng."; }
+      R.className = "wres " + c; R.textContent = t;
+    }
+    Array.prototype.forEach.call(I, function (x) { x.addEventListener("input", calc); }); calc();
+  },
+  /* cpk: Cp/Cpk (hoặc Pp/Ppk) từ USL, LSL, mean, sigma. cấu hình: targets {within, overall}, marginal, note. Để trống một giới hạn = đặc tính một phía */
+  cpk: function (el, w) {
+    var T = w.targets || { within: 1.33, overall: 1.67 }, mg = w.marginal || 1;
+    var inp = function (l, v) { return '<label class="wl">' + l + '<input type="number" class="wi" step="any" value="' + v + '"></label>'; };
+    el.innerHTML = '<div class="wbox"><div class="wrow">' + inp("USL", "8.10") + inp("LSL", "7.90") + inp("Mean (μ)", "8.03") + inp("Sigma (σ)", "0.02") +
+      '<label class="wl">Kiểu sigma<select class="wk"><option value="within">Trong nhóm → Cp / Cpk</option><option value="overall">Tổng thể → Pp / Ppk</option></select></label></div><div class="wres" aria-live="polite"></div><p class="muted wn">' + esc(w.note || "") + "</p></div>";
+    var I = el.querySelectorAll(".wi"), K = el.querySelector(".wk"), R = el.querySelector(".wres");
+    var num = function (x) { return x.value.trim() === "" ? null : parseFloat(x.value); }, f2 = function (x) { return (Math.round(x * 100) / 100).toFixed(2); };
+    function calc() {
+      var u = num(I[0]), l = num(I[1]), m = num(I[2]), s = num(I[3]), pre = K.value === "overall" ? "P" : "C", tg = T[K.value] || 1.33;
+      if (m == null || !isFinite(m) || s == null || !isFinite(s) || s <= 0) { R.className = "wres"; R.textContent = "Nhập mean và sigma (> 0)."; return; }
+      if ((u == null || !isFinite(u)) && (l == null || !isFinite(l))) { R.className = "wres"; R.textContent = "Nhập ít nhất một giới hạn (USL hoặc LSL)."; return; }
+      var hasU = u != null && isFinite(u), hasL = l != null && isFinite(l);
+      if (hasU && hasL && u <= l) { R.className = "wres"; R.textContent = "USL phải lớn hơn LSL."; return; }
+      var cu = hasU ? (u - m) / (3 * s) : Infinity, cl = hasL ? (m - l) / (3 * s) : Infinity, k = Math.min(cu, cl), p = hasU && hasL ? (u - l) / (6 * s) : null;
+      var c, t;
+      if (k < 0) { c = "apH"; t = "Mean nằm ngoài giới hạn kỹ thuật: quá trình đang tạo ra sản phẩm ngoài dung sai."; }
+      else if (k >= tg) { c = "apL"; t = "Đạt mục tiêu " + tg + ": năng lực tốt."; }
+      else if (k >= mg) { c = "apM"; t = "Chưa đạt mục tiêu " + tg + ": quá trình tạm ổn nhưng cần cải tiến (giảm biến động hoặc dịch tâm)."; }
+      else { c = "apH"; t = "Thiếu năng lực (< " + mg + "): cần cải tiến hoặc kiểm 100% tạm thời."; }
+      var off = p != null && p > 0 && k < p - 0.005 ? " Cpk thấp hơn Cp → quá trình lệch tâm." : "";
+      R.className = "wres " + c;
+      R.innerHTML = '<b class="apv">' + (p != null ? pre + "p = " + f2(p) + " · " : "") + pre + "pk = " + f2(k) + "</b> " + esc(t + off.replace(/Cpk/g, pre + "pk").replace(/Cp /g, pre + "p ")) + (hasU && hasL ? "" : '<div class="muted wn">Đặc tính một phía: chỉ tính ' + pre + "pk.</div>");
+    }
+    Array.prototype.forEach.call(I, function (x) { x.addEventListener("input", calc); }); K.addEventListener("change", calc); calc();
   }
 };
 

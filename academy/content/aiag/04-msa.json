@@ -1,0 +1,141 @@
+{
+  "id": "04-msa",
+  "title": "MSA – Phân tích hệ thống đo lường",
+  "edition": "MSA 4th Edition (2010)",
+  "icon": "📏",
+  "flow": ["Bias", "Linearity", "Stability", "Gage R&R", "Attribute"],
+  "basics": [
+    {
+      "heading": "Vì sao phải đánh giá hệ đo?",
+      "body": "Mọi số liệu bạn dùng để ra quyết định (đạt / loại, vẽ biểu đồ SPC, tính Cpk) đều đi qua một hệ đo. Biến động quan sát được = **biến động thật của sản phẩm + biến động của hệ đo**. Nếu hệ đo \"nhiễu\" quá lớn, bạn có thể loại nhầm hàng tốt, nhận nhầm hàng xấu, hoặc tưởng quá trình bất ổn trong khi thực ra là thước đo bất ổn.\nMSA là cách định lượng phần nhiễu đó. Hệ đo gồm cả thiết bị, người đo, phương pháp, môi trường và mẫu đo, không chỉ cái thước.",
+      "example": "Hai nhân viên đo cùng một trục motor bằng panme, một người ra 8,02 mm, người kia 8,05 mm. Trục không đổi; chênh lệch đến từ hệ đo, và có thể đủ lớn để vượt dung sai ±0,03."
+    },
+    {
+      "heading": "Bias, Linearity, Stability – độ chính xác theo thời gian và dải đo",
+      "body": "- **Bias (độ lệch)**: chênh lệch giữa trung bình các lần đo và giá trị chuẩn (reference). Đo lặp một chuẩn nhiều lần rồi so sánh trung bình với giá trị chuẩn.\n- **Linearity (tuyến tính)**: bias có thay đổi dọc theo dải đo không. Thiết bị có thể chính xác ở giữa nhưng lệch ở hai đầu.\n- **Stability (ổn định)**: bias có thay đổi theo thời gian không. Thường theo dõi bằng biểu đồ kiểm soát đo chuẩn định kỳ.\nBa đặc tính này nói về **vị trí** (accuracy); còn Repeatability và Reproducibility nói về **độ phân tán** (precision).",
+      "example": "Cân điện tử cho mẫu chuẩn 100 g: trung bình 100,3 g → bias +0,3 g. Cùng cân đó cho mẫu 500 g ra 500,9 g → bias tăng theo tải, nghi ngờ linearity."
+    },
+    {
+      "heading": "Gage R&R: Repeatability và Reproducibility",
+      "body": "- **Repeatability (EV – Equipment Variation)**: cùng một người, cùng thiết bị, đo lặp cùng một mẫu → độ phân tán.\n- **Reproducibility (AV – Appraiser Variation)**: các người đo khác nhau, cùng thiết bị, cùng mẫu → chênh lệch giữa người đo.\n- **GR&R** = kết hợp hai thành phần trên. **PV (Part Variation)** là biến động thật giữa các mẫu. **TV (Total Variation)** gồm cả GR&R và PV.\nThiết kế thường dùng: khoảng 10 mẫu trải rộng khắp dải quá trình, 3 người đo, 2–3 lần đo mỗi mẫu, thứ tự đo ngẫu nhiên và người đo không biết mẫu nào.",
+      "example": "10 trục motor lấy từ các ca khác nhau (không chọn toàn mẫu giống nhau), 3 kỹ thuật viên đo mỗi trục 3 lần theo thứ tự ngẫu nhiên → 90 phép đo."
+    },
+    {
+      "heading": "Average & Range hay ANOVA?",
+      "body": "- **Average & Range (X̄-R)**: tính bằng bảng và hằng số, phù hợp làm tay; tách được EV và AV nhưng **không tách được tương tác** giữa người đo và mẫu.\n- **ANOVA**: phân tích phương sai; tách được EV, AV **và tương tác** người × mẫu, chính xác hơn, thường được ưu tiên khi có phần mềm.\nKết quả hai phương pháp thường gần nhau; nếu khác nhiều, hãy nghi ngờ tương tác (ví dụ một người đo mẫu nào đó theo cách khác).",
+      "example": "Người B đo các mẫu có bề mặt xước thấp hơn người A và C. X̄-R chỉ thấy \"AV cao\"; ANOVA chỉ ra tương tác người × mẫu, gợi ý nguyên nhân cụ thể."
+    },
+    {
+      "heading": "Tiêu chí chấp nhận: %GR&R và ndc",
+      "body": "Quy tắc phổ biến theo MSA:\n- **%GR&R < 10%**: hệ đo chấp nhận được.\n- **10% – 30%**: có thể chấp nhận có điều kiện, tùy tầm quan trọng của ứng dụng, chi phí cải tiến, và thỏa thuận với khách hàng.\n- **> 30%**: không chấp nhận; cần cải tiến hệ đo.\n**ndc** (number of distinct categories) cho biết hệ đo phân biệt được bao nhiêu nhóm giá trị trong biến động quá trình: **ndc ≥ 5** là yêu cầu tối thiểu thông thường. %GR&R có thể tính theo tổng biến động (TV) hoặc theo dung sai; hãy ghi rõ cách tính và thống nhất với khách.",
+      "example": "Test rò: %GR&R = 8%, ndc = 12 → chấp nhận. Máy đo độ nhám: %GR&R = 22%, ndc = 6 → chấp nhận có điều kiện, cần bàn với khách. Panme: %GR&R = 38% → phải cải tiến."
+    },
+    {
+      "heading": "Attribute Agreement Analysis – đo bằng \"đạt / không đạt\"",
+      "body": "Khi đầu ra là phân loại (Go/No-Go, đạt/loại, kiểm tra ngoại quan), ta không có số đo liên tục nên dùng **phân tích mức đồng thuận**: nhiều người đánh giá cùng một bộ mẫu (có cả mẫu tốt, mẫu xấu, mẫu giáp ranh) vài lần.\nChỉ số hay dùng: % đồng thuận trong cùng người, giữa các người, so với chuẩn, và hệ số **Kappa** (thường coi ≥ 0,75 là tốt, < 0,4 là kém). Cũng nên xem tỉ lệ bỏ lọt lỗi và cảnh báo nhầm.",
+      "example": "3 người soát ngoại quan vỏ bình xịt, 50 mẫu có chuẩn từ phòng thí nghiệm. Kappa giữa người = 0,55 → cần chuẩn hóa tiêu chuẩn mẫu giới hạn (limit sample) và đào tạo lại."
+    }
+  ],
+  "quiz": [
+    {
+      "q": "Biến động quan sát được gồm những thành phần nào?",
+      "options": ["Chỉ biến động sản phẩm", "Biến động thật của sản phẩm cộng biến động của hệ đo", "Chỉ lỗi của người đo", "Chỉ biến động môi trường"],
+      "answer": 1,
+      "explain": "Số đo luôn chứa cả biến động thật và biến động do hệ đo; MSA định lượng phần thứ hai."
+    },
+    {
+      "q": "Bias là gì?",
+      "options": ["Độ phân tán giữa các lần đo lặp", "Chênh lệch giữa trung bình các lần đo và giá trị chuẩn", "Chênh lệch giữa hai người đo", "Sai lệch theo thời gian"],
+      "answer": 1,
+      "explain": "Bias là sai lệch vị trí so với giá trị chuẩn. Phân tán lặp là repeatability; theo thời gian là stability."
+    },
+    {
+      "q": "Linearity mô tả điều gì?",
+      "options": ["Bias thay đổi dọc theo dải đo", "Bias thay đổi theo thời gian", "Chênh lệch giữa các người đo", "Số lần đo cần thiết"],
+      "answer": 0,
+      "explain": "Linearity xem bias có đồng đều trên toàn dải đo hay không."
+    },
+    {
+      "q": "Reproducibility (AV) chủ yếu phản ánh điều gì?",
+      "options": ["Biến động giữa các người đo", "Biến động giữa các mẫu", "Sai số chuẩn", "Độ phân giải thiết bị"],
+      "answer": 0,
+      "explain": "Repeatability gắn với thiết bị (cùng người đo lặp), Reproducibility gắn với sự khác biệt giữa người đo."
+    },
+    {
+      "q": "Khi chọn mẫu cho nghiên cứu GR&R, nên làm gì?",
+      "options": ["Chọn các mẫu gần giống nhau", "Chọn mẫu trải rộng đại diện cho biến động của quá trình", "Chỉ chọn mẫu tốt", "Dùng một mẫu duy nhất"],
+      "answer": 1,
+      "explain": "Mẫu cần đại diện dải biến động quá trình, nếu không %GR&R theo TV sẽ bị sai lệch."
+    },
+    {
+      "q": "Ưu điểm chính của ANOVA so với Average & Range là gì?",
+      "options": ["Không cần dữ liệu", "Tách được cả thành phần tương tác giữa người đo và mẫu", "Luôn cho %GR&R thấp hơn", "Chỉ dùng cho dữ liệu đạt/loại"],
+      "answer": 1,
+      "explain": "ANOVA ước lượng được tương tác người × mẫu; X̄-R thì không."
+    },
+    {
+      "q": "%GR&R = 25%, ndc = 6. Kết luận hợp lý nhất?",
+      "options": ["Chấp nhận hoàn toàn", "Chấp nhận có điều kiện, cân nhắc ứng dụng và thỏa thuận với khách", "Loại bỏ ngay", "Không đủ dữ liệu để kết luận"],
+      "answer": 1,
+      "explain": "Từ 10–30% là vùng có điều kiện; ndc = 6 đạt mức ≥ 5."
+    },
+    {
+      "q": "%GR&R = 8% nhưng ndc = 3. Điều gì đúng?",
+      "options": ["Đạt vì %GR&R thấp", "Hệ đo chưa đủ khả năng phân biệt (ndc < 5), cần xem xét lại", "ndc không quan trọng", "Luôn loại"],
+      "answer": 1,
+      "explain": "Cần cả hai: %GR&R thấp và ndc ≥ 5. ndc nhỏ cho thấy hệ đo phân biệt kém so với biến động quá trình (có thể mẫu chọn quá hẹp)."
+    },
+    {
+      "q": "Attribute Agreement Analysis dùng khi nào?",
+      "options": ["Khi có số đo liên tục", "Khi đầu ra là phân loại (đạt / không đạt, Go/No-Go)", "Chỉ cho thiết bị điện", "Chỉ để hiệu chuẩn"],
+      "answer": 1,
+      "explain": "Với dữ liệu thuộc tính, đánh giá bằng mức đồng thuận (Kappa, % agreement) thay vì GR&R."
+    },
+    {
+      "q": "Nên làm gì khi %GR&R > 30%?",
+      "options": ["Vẫn dùng bình thường", "Tìm nguyên nhân (thiết bị, phương pháp, đào tạo, môi trường) và cải tiến hệ đo, sau đó đánh giá lại", "Đổi giới hạn dung sai", "Bỏ phép đo"],
+      "answer": 1,
+      "explain": "Hệ đo không chấp nhận được thì không dùng để ra quyết định; xử lý nguyên nhân rồi lặp lại MSA."
+    }
+  ],
+  "advanced": [
+    {
+      "heading": "Mini-tool: kết luận hệ đo từ %GR&R và ndc",
+      "body": "Nhập %GR&R và ndc từ nghiên cứu của bạn để xem kết luận theo ngưỡng phổ biến (10% / 30% và ndc ≥ 5). Ngưỡng nằm trong JSON nên có thể chỉnh theo yêu cầu khách hàng. Đây là công cụ học tập; quyết định cuối cùng theo quy định công ty và yêu cầu của khách.",
+      "widget": {
+        "type": "grr",
+        "note": "Ngưỡng theo hướng dẫn MSA thông dụng; hãy kiểm tra yêu cầu riêng của khách hàng.",
+        "good": 10,
+        "limit": 30,
+        "ndcMin": 5
+      }
+    },
+    {
+      "heading": "Bảo đảm ổn định lâu dài",
+      "body": "MSA là bức ảnh tại một thời điểm. Để duy trì, kết hợp hiệu chuẩn định kỳ, đo mẫu chuẩn đều đặn (kiểm tra stability bằng biểu đồ kiểm soát), đào tạo người đo, và đánh giá lại khi thay thiết bị, jig, phương pháp hoặc người đo mới. Với đặc tính đặc biệt, nên giữ hồ sơ MSA gắn với Control Plan."
+    },
+    {
+      "heading": "Phân giải và độ chia thiết bị",
+      "body": "Quy tắc kinh nghiệm: độ chia nhỏ nhất của thiết bị nên nhỏ hơn hoặc bằng khoảng 1/10 dung sai hoặc 1/10 biến động quá trình. Độ chia thô khiến số đo bị làm tròn, biểu đồ range chỉ có vài giá trị khác nhau và ndc thấp."
+    }
+  ],
+  "glossary": [
+    { "en": "Measurement system", "vi": "Hệ thống đo lường", "def": "Toàn bộ thiết bị, người đo, phương pháp, môi trường và mẫu tạo ra số đo." },
+    { "en": "Bias", "vi": "Độ lệch", "def": "Chênh lệch giữa trung bình các lần đo và giá trị chuẩn." },
+    { "en": "Linearity", "vi": "Tuyến tính", "def": "Mức thay đổi của bias dọc theo dải đo." },
+    { "en": "Stability", "vi": "Ổn định", "def": "Mức thay đổi của số đo theo thời gian." },
+    { "en": "Repeatability (EV)", "vi": "Độ lặp lại", "def": "Biến động khi một người đo lặp cùng mẫu bằng cùng thiết bị." },
+    { "en": "Reproducibility (AV)", "vi": "Độ tái lập", "def": "Biến động giữa các người đo." },
+    { "en": "Gage R&R", "vi": "Phân tích lặp lại và tái lập", "def": "Kết hợp repeatability và reproducibility." },
+    { "en": "Part variation (PV)", "vi": "Biến động giữa các mẫu", "def": "Biến động thật của sản phẩm." },
+    { "en": "ndc", "vi": "Số nhóm phân biệt", "def": "Số nhóm giá trị mà hệ đo phân biệt được; thường cần ≥ 5." },
+    { "en": "ANOVA", "vi": "Phân tích phương sai", "def": "Phương pháp thống kê tách các nguồn biến động, gồm cả tương tác." },
+    { "en": "Attribute agreement", "vi": "Mức đồng thuận thuộc tính", "def": "Đánh giá độ nhất quán khi đo bằng phân loại." },
+    { "en": "Kappa", "vi": "Hệ số Kappa", "def": "Chỉ số đồng thuận có hiệu chỉnh theo cơ hội ngẫu nhiên." },
+    { "en": "Resolution", "vi": "Độ phân giải", "def": "Giá trị nhỏ nhất mà thiết bị phân biệt được." },
+    { "en": "Calibration", "vi": "Hiệu chuẩn", "def": "So sánh thiết bị với chuẩn truy xuất được và hiệu chỉnh nếu cần." }
+  ],
+  "sources": [
+    { "title": "AIAG – Quality (trang chính thức)", "url": "https://www.aiag.org/quality" }
+  ]
+}

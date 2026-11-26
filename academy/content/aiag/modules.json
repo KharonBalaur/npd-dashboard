@@ -29,6 +29,20 @@
       "title": "Control Plan – Kế hoạch kiểm soát",
       "icon": "📋",
       "summary": "Prototype / Pre-launch / Production, Safe Launch, đặc tính đặc biệt, PFMEA→CP→WI."
+    },
+    {
+      "id": "04-msa",
+      "file": "04-msa.json",
+      "title": "MSA – Phân tích hệ thống đo lường",
+      "icon": "📏",
+      "summary": "Bias, linearity, stability, Gage R&R (ANOVA vs X̄-R), %GR&R, ndc và attribute agreement."
+    },
+    {
+      "id": "05-spc",
+      "file": "05-spc.json",
+      "title": "SPC – Kiểm soát quá trình bằng thống kê",
+      "icon": "📈",
+      "summary": "Common vs special cause, biểu đồ kiểm soát, Cp/Cpk vs Pp/Ppk và mục tiêu PPAP."
     }
   ]
 }
