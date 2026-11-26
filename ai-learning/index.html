@@ -141,6 +141,8 @@ table{border-collapse:collapse;width:100%;min-width:720px;background:var(--card)
 th,td{padding:9px 12px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top} th{background:var(--soft);font-size:12.5px;position:sticky;top:0;z-index:1}
 .ft thead th[style*="--pc"]{border-top:4px solid var(--pc)}
 td.f b{display:block} td.f small{color:var(--muted)} tr:last-child td{border-bottom:0}
+.cell small{font-size:11.5px;font-weight:400;color:var(--muted)} .cell.none{color:var(--muted)} .cell.none .dash{font-weight:700}
+.ftnote{margin:10px 2px 0;font-size:12.5px;color:var(--muted)}
 .ft{min-width:1100px} .ft td.f,.ft thead th:first-child{position:sticky;left:0;z-index:2;background:var(--card);min-width:200px;box-shadow:1px 0 0 var(--line)} .ft thead th:first-child{background:var(--soft);z-index:3}
 input[type=search],input[type=text],textarea{width:100%;padding:9px 12px;border:1px solid var(--line);border-radius:8px;background:var(--card);resize:vertical}
 .srch{max-width:360px;margin:0 0 10px}
@@ -192,7 +194,7 @@ input[type=search],input[type=text],textarea{width:100%;padding:9px 12px;border:
 <p id="note" role="status" aria-live="polite"></p>
 
 <script src="data-lessons.js?v=20261126e"></script>
-<script src="data-platforms.js?v=20261126e"></script>
+<script src="data-platforms.js?v=20261127a"></script>
 <script>
 "use strict";
 const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
@@ -370,6 +372,14 @@ function answer(qi, oi) {
 // Cột bảng tính năng = các nền tảng trong PLATFORMS có cột trong FEATURE_MAP (theo thứ tự PLATFORMS); tên ngắn cho tiêu đề cột.
 const COL_SHORT = { copilot: "Copilot" };
 const COLS = HAS ? PLATFORMS.filter(p => FEATURE_MAP.some(r => p.id in r)).map(p => [p.id, COL_SHORT[p.id] || p.name, safeColor(p.color)]) : [];
+// Ô tính năng: "Không… / Chưa… / Đã ngừng…" = chữ xám nhạt kèm —; phần trong ngoặc (...) = chữ nhỏ xám.
+function cellHtml(v) {
+  v = String(v == null ? "" : v).trim();
+  if (!v) return `<td class="cell none"><span class="dash" aria-hidden="true">—</span></td>`;
+  const none = /^(không|chưa|đã ngừng)/i.test(v), m = v.match(/^([^()]*?)\s*\(([^()]*)\)\s*([^()]*)$/);
+  const main = m ? (m[1] + " " + m[3]).trim() : v, nt = m ? m[2] : "";
+  return `<td class="cell${none ? " none" : ""}">${none ? `<span class="dash" aria-hidden="true">—</span> ` : ""}${esc(main)}${nt ? ` <small>(${esc(nt)})</small>` : ""}</td>`;
+}
 function renderPlat() {
   const cards = PLATFORMS.map(p => {
     const u = safeUrl(p.url), old = ageDays(p.lastUpdated) > 90, col = safeColor(p.color);
@@ -380,12 +390,13 @@ function renderPlat() {
       <div class="row">${u ? `<a class="btn pri sm" href="${esc(u)}" target="_blank" rel="noopener noreferrer">Trang chính thức ↗</a>` : ""}
         <span class="muted" style="font-size:12.5px">Cập nhật: ${fmtDate(p.lastUpdated)}</span>${old ? ` <span class="chip warn">Đã lâu – hãy kiểm tra lại</span>` : ""}</div></article>`; }).join("");
   const head = COLS.map(([k, n, c]) => `<th${c ? ` style="--pc:${c}"` : ""}>${esc(n)}</th>`).join("");
-  const rows = FEATURE_MAP.map(r => `<tr data-s="${esc(norm([r.feature, r.description].concat(COLS.map(([k]) => r[k])).join(" ")))}"><td class="f"><b>${esc(r.feature)}</b><small>${esc(r.description)}</small></td>${COLS.map(([k]) => `<td>${esc(r[k] || "—")}</td>`).join("")}</tr>`).join("");
+  const rows = FEATURE_MAP.map(r => `<tr data-s="${esc(norm([r.feature, r.description].concat(COLS.map(([k]) => r[k])).join(" ")))}"><td class="f"><b>${esc(r.feature)}</b><small>${esc(r.description)}</small></td>${COLS.map(([k]) => cellHtml(r[k])).join("")}</tr>`).join("");
   $("#view").innerHTML = `<div class="scroll"><div class="wrap"><div class="grid">${cards}</div>
     <div class="card" style="margin-top:16px"><h3>Tính năng tương đương giữa các ứng dụng</h3>
       <p class="muted" style="margin:0 0 10px">Tên gọi khác nhau nhưng việc làm được thì gần giống nhau. Bảng chỉ mang tính tham khảo – tính năng thay đổi theo gói, vùng và thời điểm.</p>
       <input class="srch" type="search" id="fq" placeholder="Tìm tính năng… (vd: ảnh, tìm web)" aria-label="Tìm tính năng" autocomplete="off">
-      <div class="tw"><table class="ft"><thead><tr><th>Tính năng</th>${head}</tr></thead><tbody id="ftb">${rows}<tr id="fnone" class="hide"><td colspan="${COLS.length + 1}" class="muted">Không có tính năng nào khớp.</td></tr></tbody></table></div></div>${DISC}</div></div>`;
+      <div class="tw"><table class="ft"><thead><tr><th>Tính năng</th>${head}</tr></thead><tbody id="ftb">${rows}<tr id="fnone" class="hide"><td colspan="${COLS.length + 1}" class="muted">Không có tính năng nào khớp.</td></tr></tbody></table></div>
+      <p class="ftnote">Cập nhật ${fmtDate(typeof FEATURE_UPDATED !== "undefined" ? FEATURE_UPDATED : "")}. Tính năng thay đổi theo gói, vùng và thời điểm – hãy kiểm tra lại trên trang chính thức.</p></div>${DISC}</div></div>`;
 }
 function filterFeat(q) {
   const T = norm(q).split(/\s+/).filter(Boolean); let n = 0;              // mọi từ gõ vào đều phải có trong dòng (không cần đúng thứ tự)

@@ -1,4 +1,4 @@
-/* Học sử dụng AI – dữ liệu các nền tảng AI (8 nền tảng + 8 dòng tính năng tương đương).
+/* Học sử dụng AI – dữ liệu các nền tảng AI (8 nền tảng + 9 dòng tính năng tương đương).
    Quy tắc khi thêm / sửa:
    - Mỗi nền tảng có id cố định (không đổi sau khi phát hành). lastUpdated = tháng kiểm tra lại thông tin (YYYY-MM hoặc YYYY-MM-DD).
    - Gói free, giới hạn, giá, tên mô hình thay đổi rất nhanh → ghi chung chung, luôn dẫn người học tới trang chính thức (url).
@@ -132,29 +132,35 @@ const PLATFORMS = [
   }
 ];
 
+// Tháng cập nhật bảng tính năng (hiện dưới bảng). Ô ghi chú trong ngoặc (...) hiện chữ nhỏ xám; ô bắt đầu bằng
+// "Không" / "Chưa" / "Đã ngừng" hiện chữ xám nhạt kèm dấu —. Ô chưa chắc chắn: ghi "Kiểm tra lại" (hiện chưa có ô nào).
+const FEATURE_UPDATED = "2026-11";
 const FEATURE_MAP = [
-  { feature: "AI tùy chỉnh", description: "Lưu sẵn hướng dẫn + tài liệu thành một trợ lý / không gian riêng để dùng lại nhiều lần.",
-    chatgpt: "Custom GPTs, Projects", gemini: "Gems", claude: "Projects", copilot: "Kiểm tra lại", perplexity: "Spaces",
-    deepseek: "Kiểm tra lại", notebooklm: "Mỗi notebook là một bộ tài liệu riêng", grok: "Kiểm tra lại" },
+  { feature: "AI tùy chỉnh / không gian dự án", description: "Lưu sẵn hướng dẫn + tài liệu thành một trợ lý / không gian riêng để dùng lại nhiều lần.",
+    chatgpt: "Custom GPTs, Projects", gemini: "Gems", claude: "Projects", copilot: "Chưa có ở bản cá nhân", perplexity: "Spaces",
+    deepseek: "Không có", notebooklm: "Mỗi Notebook (AI chỉ trả lời theo tài liệu của sổ)", grok: "Projects" },
   { feature: "Nghiên cứu sâu", description: "AI tự tìm, đọc nhiều nguồn rồi viết báo cáo có trích dẫn; chạy lâu hơn câu trả lời thường.",
-    chatgpt: "Deep research", gemini: "Deep Research", claude: "Research", copilot: "Kiểm tra lại", perplexity: "Research / Deep Research",
-    deepseek: "Kiểm tra lại", notebooklm: "Kiểm tra lại", grok: "DeepSearch" },
+    chatgpt: "Deep Research", gemini: "Deep Research", claude: "Research", copilot: "Đã ngừng (từ 18/8/2026)", perplexity: "Deep Research",
+    deepseek: "Không có riêng (dùng DeepThink + Search)", notebooklm: "Fast Research / Deep Research", grok: "DeepSearch" },
   { feature: "Vùng soạn thảo", description: "Khung riêng cạnh cuộc chat để viết, sửa tài liệu hoặc code cùng AI.",
-    chatgpt: "Canvas", gemini: "Canvas", claude: "Artifacts", copilot: "Pages", perplexity: "Kiểm tra lại",
-    deepseek: "Kiểm tra lại", notebooklm: "Kiểm tra lại", grok: "Kiểm tra lại" },
-  { feature: "Bộ nhớ", description: "AI ghi nhớ thông tin, sở thích của bạn giữa các cuộc chat. Thường xem / tắt được trong cài đặt.",
-    chatgpt: "Có (Memory)", gemini: "Có (tùy gói / vùng)", claude: "Có (tùy gói)", copilot: "Kiểm tra lại", perplexity: "Kiểm tra lại",
-    deepseek: "Kiểm tra lại", notebooklm: "Kiểm tra lại", grok: "Kiểm tra lại" },
+    chatgpt: "Canvas", gemini: "Canvas", claude: "Artifacts", copilot: "Pages", perplexity: "Labs / Pages (gần giống)",
+    deepseek: "Không có", notebooklm: "Studio: báo cáo, slide, infographic (gần giống)", grok: "Grok Studio" },
+  { feature: "Suy nghĩ sâu", description: "AI dành nhiều thời gian suy luận từng bước trước khi trả lời; hợp với bài toán và kế hoạch phức tạp, đổi lại trả lời chậm hơn.",
+    chatgpt: "Chế độ Thinking", gemini: "Thinking", claude: "Extended thinking", copilot: "Think Deeper", perplexity: "Chọn model suy luận",
+    deepseek: "DeepThink", notebooklm: "Không có nút riêng", grok: "Think" },
+  { feature: "Bộ nhớ giữa các chat", description: "AI ghi nhớ thông tin, sở thích của bạn giữa các cuộc chat. Thường xem / tắt được trong cài đặt.",
+    chatgpt: "Memory", gemini: "Có (cá nhân hóa)", claude: "Memory", copilot: "Memory", perplexity: "Memory",
+    deepseek: "Chưa có", notebooklm: "Không (chỉ nhớ trong từng notebook)", grok: "Memory (tắt được)" },
   { feature: "Upload file", description: "Gửi PDF, Word, bảng tính, ảnh cho AI đọc. Loại file và dung lượng khác nhau theo gói.",
     chatgpt: "Có", gemini: "Có", claude: "Có", copilot: "Có", perplexity: "Có",
-    deepseek: "Có", notebooklm: "Có (tính năng chính)", grok: "Có" },
+    deepseek: "Có (chủ yếu đọc chữ)", notebooklm: "Có – là tính năng chính (PDF, Docs, web, YouTube, audio)", grok: "Có" },
   { feature: "Tạo ảnh", description: "Gõ mô tả, AI vẽ ra ảnh mới.",
-    chatgpt: "Có", gemini: "Có", claude: "Không (chỉ đọc / hiểu ảnh)", copilot: "Có", perplexity: "Có (tùy gói)",
-    deepseek: "Kiểm tra lại", notebooklm: "Không (có sơ đồ tư duy, Audio Overview)", grok: "Có" },
+    chatgpt: "Có", gemini: "Có", claude: "Không (chỉ vẽ bằng code/SVG)", copilot: "Có", perplexity: "Có (tùy gói)",
+    deepseek: "Không", notebooklm: "Chỉ infographic/slide", grok: "Grok Imagine (ảnh + video)" },
   { feature: "Tìm web", description: "AI tra thông tin mới trên internet và đưa nguồn để bạn kiểm tra.",
-    chatgpt: "Có", gemini: "Có", claude: "Có (tùy gói / vùng)", copilot: "Có", perplexity: "Có (trọng tâm của ứng dụng)",
-    deepseek: "Có", notebooklm: "Tìm nguồn web để thêm vào notebook", grok: "Có (web và X)" },
+    chatgpt: "ChatGPT Search", gemini: "Có (Google Search)", claude: "Web search", copilot: "Copilot Search", perplexity: "Tính năng cốt lõi, luôn có nguồn",
+    deepseek: "Nút Search", notebooklm: "Qua Fast/Deep Research", grok: "Có (web + X)" },
   { feature: "Giọng nói", description: "Nói chuyện với AI bằng giọng nói thay vì gõ.",
-    chatgpt: "Có", gemini: "Có (Gemini Live)", claude: "Có (tùy app / vùng)", copilot: "Có", perplexity: "Có (trên app)",
-    deepseek: "Kiểm tra lại", notebooklm: "Nghe Audio Overview (tóm tắt dạng podcast)", grok: "Có" }
+    chatgpt: "Voice Mode", gemini: "Gemini Live", claude: "Voice mode", copilot: "Copilot Voice", perplexity: "Voice Mode",
+    deepseek: "Hạn chế", notebooklm: "Audio Overview (podcast)", grok: "Voice Mode" }
 ];
