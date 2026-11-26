@@ -1,0 +1,8 @@
+{
+  "id": "aiag",
+  "title": "AIAG Core Tools",
+  "modules": [
+    { "id": "00-overview", "file": "00-overview.json", "title": "Tổng quan AIAG & IATF 16949", "icon": "🧭", "summary": "AIAG là gì, IATF 16949 đòi hỏi gì, và 5 Core Tools nối với nhau ra sao." },
+    { "id": "01-apqp", "file": "01-apqp.json", "title": "APQP – Hoạch định chất lượng sản phẩm", "icon": "🗺️", "summary": "5 giai đoạn, phase gate và ví dụ với sản phẩm cầm tay dùng pin lithium." }
+  ]
+}

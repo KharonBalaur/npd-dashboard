@@ -46,3 +46,12 @@ Chuyển từ `CLAUDE.md` nguyên văn (chỉ đổi chỗ, không bỏ thông t
   Tiến độ npdAi@user trong localStorage (CHƯA đồng bộ lên Sheet): {v:1, passed:{id:true}, best:{id:%}, theme, last}; lưu theo id bài, bài đã đạt giữ mãi
   (không đổi id đã phát hành); đạt >= 80% mở bài sau, thêm bài vào giữa không khóa lại người đã học. Chỉ thêm trường; đổi cấu trúc thì viết hàm nâng cấp.
   Bài học: cấp 1 (n1-01…05), cấp 2 (n2-01…06), cấp 3 (n3-01…06), mỗi cấp + bài kiểm tra tổng 10 câu (nX-final); nguồn dùng chung ở AI_SRC (chỉ trang chính thức / trang chủ). Nền tảng: 8 (PLATFORMS) + 9 tính năng (FEATURE_MAP + FEATURE_UPDATED; cột bảng lấy theo id trong PLATFORMS; ô bắt đầu bằng Không / Chưa / Đã ngừng hiện xám kèm —, phần trong ngoặc hiện chữ nhỏ; ô chưa chắc ghi "Kiểm tra lại"; ô tìm kiếm tìm cả tên, mô tả và nội dung ô). Link nguồn chưa kiểm tra được từ môi trường soạn.
+
+## AIAG Core Tools Academy (key `acad`, nhóm "l" Học tập, thư mục `academy/`)
+- Engine dùng chung: `academy/index.html` + `academy.js` + `academy.css` (JS thuần). Nhúng bằng iframe `?k=uKey("npdAcademy")&embed=1&v=…`, dùng lại `body.ai-full`
+  (toàn khung) và postMessage {aiClose} như "Học Sử Dụng AI". Sửa .js/.css → đổi `?v=` trong index.html (và `v=` trong TOOL_RUN.acad).
+- Nội dung: `academy/content/aiag/modules.json` {modules:[{id,file,title,icon,summary}]} + mỗi module một file JSON
+  {id,title,edition,icon,basics[{heading,body,example}],quiz[{q,options,answer,explain}],advanced[{heading,body}],glossary[{en,vi,def}],sources[{title,url}]};
+  trường tùy chọn `flow:[…]` vẽ sơ đồ chip ở tab Nền tảng. Thêm module = thêm file JSON + một dòng trong modules.json (không sửa code). body/example hỗ trợ **đậm** và xuống dòng.
+- Tiến độ npdAcademy@user (localStorage, chưa đồng bộ Sheet): {v:1, mods:{id:{basics,adv,best,badge}}, known:{"modId|term":true}, theme}. Quiz >= 80% → badge (giữ mãi). Không đổi id module đã phát hành.
+- Nội dung diễn đạt lại, không chép nguyên văn manual AIAG; cần mở qua http(s) (fetch JSON không chạy với file://).
