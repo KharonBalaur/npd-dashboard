@@ -4,6 +4,7 @@
    - Gói free, giới hạn, giá, tên mô hình thay đổi rất nhanh → ghi chung chung, luôn dẫn người học tới trang chính thức (url).
    - FEATURE_MAP: mỗi dòng 1 tính năng; mỗi cột = id một nền tảng trong PLATFORMS (bảng tự lấy cột theo thứ tự PLATFORMS).
      Ô chưa chắc chắn ghi "Kiểm tra lại" thay vì đoán. Tên tính năng giữ nguyên tiếng Anh như trong app.
+   - color: màu nhận diện nhẹ của thẻ (#rrggbb, chỉ dùng màu, không dùng logo); không có thì thẻ dùng màu xám.
    - Nội dung trung lập, không xếp hạng hãng nào hơn hãng nào.
    - Repo public: chỉ thông tin công khai, không dữ liệu nội bộ / khóa API. */
 const FREE_NOTE = " Kiểm tra lại trên trang chính thức.";
@@ -11,6 +12,7 @@ const FREE_NOTE = " Kiểm tra lại trên trang chính thức.";
 const PLATFORMS = [
   {
     id: "chatgpt",
+    color: "#10a37f",
     name: "ChatGPT",
     company: "OpenAI",
     strengths: [
@@ -25,6 +27,7 @@ const PLATFORMS = [
   },
   {
     id: "gemini",
+    color: "#4285f4",
     name: "Gemini",
     company: "Google",
     strengths: [
@@ -39,6 +42,7 @@ const PLATFORMS = [
   },
   {
     id: "claude",
+    color: "#d97757",
     name: "Claude",
     company: "Anthropic",
     strengths: [
@@ -53,6 +57,7 @@ const PLATFORMS = [
   },
   {
     id: "copilot",
+    color: "#db2777",
     name: "Microsoft Copilot",
     company: "Microsoft",
     strengths: [
@@ -67,6 +72,7 @@ const PLATFORMS = [
   },
   {
     id: "perplexity",
+    color: "#0891b2",
     name: "Perplexity",
     company: "Perplexity AI",
     strengths: [
@@ -81,6 +87,7 @@ const PLATFORMS = [
   },
   {
     id: "deepseek",
+    color: "#4f46e5",
     name: "DeepSeek",
     company: "DeepSeek (Trung Quốc)",
     strengths: [
@@ -95,6 +102,7 @@ const PLATFORMS = [
   },
   {
     id: "notebooklm",
+    color: "#f59e0b",
     name: "NotebookLM",
     company: "Google",
     strengths: [
@@ -109,6 +117,7 @@ const PLATFORMS = [
   },
   {
     id: "grok",
+    color: "#64748b",
     name: "Grok",
     company: "xAI",
     strengths: [

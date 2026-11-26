@@ -234,14 +234,14 @@ const LESSONS = [
     content: `
 <h4>1. Bịa thông tin (hallucination)</h4>
 <ul>
-<li>AI có thể đưa ra số liệu, trích dẫn, tên tài liệu, đường link không có thật – với giọng rất tự tin.</li>
-<li>Phòng tránh: yêu cầu nêu nguồn, tự mở nguồn ra kiểm tra; việc quan trọng thì đối chiếu tài liệu gốc.</li>
+<li>AI có thể đưa ra <b>số liệu, trích dẫn, tên tài liệu, đường link không có thật</b> – với giọng rất tự tin.</li>
+<li>Phòng tránh: <b>yêu cầu nêu nguồn, tự mở nguồn ra kiểm tra</b>; việc quan trọng thì đối chiếu tài liệu gốc.</li>
 </ul>
 <h4>2. Dữ liệu cá nhân và công ty</h4>
 <ul>
 <li>Nội dung bạn nhập có thể được lưu trên máy chủ của nhà cung cấp; tùy app và cài đặt, có thể được dùng để cải thiện mô hình.</li>
-<li>Không nhập: mật khẩu, số CCCD, số tài khoản, thông tin sức khỏe, dữ liệu khách hàng, bản vẽ, giá, hợp đồng, tài liệu nội bộ – trừ khi công ty cho phép dùng công cụ đó.</li>
-<li>Cần ví dụ → thay tên, số liệu thật bằng dữ liệu giả (ẩn danh hóa).</li>
+<li><b>Không nhập</b>: mật khẩu, số CCCD, số tài khoản, thông tin sức khỏe, dữ liệu khách hàng, bản vẽ, giá, hợp đồng, tài liệu nội bộ – trừ khi công ty cho phép dùng công cụ đó.</li>
+<li>Cần ví dụ → thay tên, số liệu thật bằng dữ liệu giả (<b>ẩn danh hóa</b>).</li>
 <li>Xem phần cài đặt quyền riêng tư: lịch sử chat, ghi nhớ, cho phép dùng dữ liệu để huấn luyện.</li>
 </ul>
 <h4>3. Bản quyền và trách nhiệm</h4>
@@ -249,12 +249,12 @@ const LESSONS = [
 <li>Nội dung AI tạo có thể giống tác phẩm có bản quyền; quy định về bản quyền nội dung AI khác nhau theo quốc gia và vẫn đang thay đổi.</li>
 <li>Không đưa tác phẩm của người khác vào AI rồi phát hành lại như của mình.</li>
 <li>Dùng ảnh / văn bản AI cho mục đích thương mại → đọc điều khoản của công cụ và hỏi quy định công ty.</li>
-<li>Bạn ký tên, bạn gửi đi → bạn chịu trách nhiệm.</li>
+<li>Bạn ký tên, bạn gửi đi → <b>bạn chịu trách nhiệm</b>.</li>
 </ul>
 <h4>4. Thiên kiến và lừa đảo</h4>
 <ul>
 <li>AI học từ dữ liệu của con người nên có thể mang định kiến – đọc với tư duy phản biện.</li>
-<li>Kẻ gian dùng AI làm email, giọng nói, video giả. Yêu cầu chuyển tiền / gửi thông tin gấp → xác minh qua kênh khác.</li>
+<li>Kẻ gian dùng AI làm email, giọng nói, video giả. Yêu cầu chuyển tiền / gửi thông tin gấp → <b>xác minh qua kênh khác</b>.</li>
 </ul>`,
     promptExample: "Dưới đây là đoạn mô tả sự cố, tôi đã thay tên khách hàng và số liệu bằng dữ liệu giả.\nHãy viết lại thành email gửi đối tác, giọng lịch sự, khoảng 120 từ.\nKhông thêm số liệu hay chi tiết nào không có trong đoạn mô tả.\n\n[Đoạn mô tả đã ẩn danh]",
     pitfalls: [

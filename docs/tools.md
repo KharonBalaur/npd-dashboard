@@ -35,7 +35,12 @@ Chuyển từ `CLAUDE.md` nguyên văn (chỉ đổi chỗ, không bỏ thông t
 
 - "Học Sử Dụng AI" (key ai, nhóm "l" Học tập, thư mục `ai-learning/`) – kiến thức AI chung cho người mới, không gắn với một nền tảng:
   `index.html` (trang riêng, JS thuần, 4 tab: Lộ trình học / Các nền tảng AI / Trình tạo prompt / Tiến độ; sáng / tối; nhúng bằng iframe .tl-fr
-  `?k=uKey("npdAi")&embed=1&v=…`, báo chiều cao qua postMessage {stackH} – dùng chung bộ nghe với Chuỗi Dung Sai),
+  `?k=uKey("npdAi")&embed=1&v=…`, khung cố định theo cửa sổ nên không còn báo chiều cao {stackH}),
+  Giao diện: khi mở trong Tools, JLTN_WEBSITE bật `body.ai-full` (CSS cuối thẻ <style>) – ẩn menu trên / chân trang / tiêu đề trang / danh sách công cụ, iframe 100vw x 100vh;
+  trong iframe: thanh trên cố định (tên + 4 tab + nút Sao chép link / Sáng-Tối / Toàn màn hình / Đóng), danh sách bài và nội dung bài cuộn riêng; điện thoại: danh sách bài là menu trượt (☰).
+  Nút Đóng gửi postMessage {aiClose} → web chính bấm nút Đóng của khung công cụ (về danh sách công cụ). Toàn màn hình = Fullscreen API (iframe có allow="fullscreen"); iPhone không hỗ trợ thì ẩn nút.
+  Màu: mỗi cấp một màu (.lv1 xanh dương, .lv2 tím, .lv3 cam: biến --lc / --lt / --lb), mỗi khối bài một màu (.blk.goal / body / ex / pit / src / quiz), mỗi nền tảng một màu nhận diện nhẹ (PLATFORMS[].color, không dùng logo);
+  sáng / tối đều đạt tương phản chữ/nền >= 4.5 (kiểm tra lại khi đổi màu).
   `data-lessons.js` (AI_LEVELS, LESSONS {id, level 1–3, title, goal, content HTML, promptExample, pitfalls[], sources[], quiz[{q, options, answer, explain}], isFinalTest}),
   `data-platforms.js` (PLATFORMS, FEATURE_MAP). Sửa file .js → đổi `?v=` trong index.html (và `v=` trong TOOL_RUN.ai nếu sửa index.html).
   Tiến độ npdAi@user trong localStorage (CHƯA đồng bộ lên Sheet): {v:1, passed:{id:true}, best:{id:%}, theme, last}; lưu theo id bài, bài đã đạt giữ mãi

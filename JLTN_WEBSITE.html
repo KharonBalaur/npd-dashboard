@@ -1699,6 +1699,14 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%} body{-webkit-tap-highl
 }
 @media (max-width:760px){#home .hm-hero .go button{min-height:36px} .fy-x{min-width:36px;min-height:36px} .fy-otb button,.fy-bub .fy-f button{min-height:36px;padding-left:12px;padding-right:12px} #lib .lrt button{min-height:34px} .um-m button,.um-m a{min-height:42px}}
 @media (hover:none){.fn-tile:hover{transform:none;box-shadow:none} #nav button:hover:not(.on){background:transparent;color:#c9d1e3}}
+/* Học Sử Dụng AI: tool chiếm trọn cửa sổ – ẩn thanh menu, chân trang, tiêu đề trang, danh sách công cụ và tiêu đề khung (nút Đóng nằm trong tool) */
+body.ai-full{overflow:hidden;padding:0!important;min-height:0}
+body.ai-full #bar,body.ai-full #ft{display:none!important}
+body.ai-full #tool.pg{position:fixed;inset:0;z-index:800;width:100%;max-width:none;margin:0;padding:0;background:var(--bg)}
+body.ai-full #tool .pg-hd,body.ai-full #tool .tl-side,body.ai-full #tool .tl-run>.tl-h{display:none!important}
+body.ai-full #tool .tl-app,body.ai-full #tool .tl-main{display:block;height:100%;margin:0;padding:0}
+body.ai-full #tool .tl-run{height:100%;margin:0;padding:0;border:0;border-radius:0;box-shadow:none;background:transparent}
+body.ai-full #tool .tl-fr{display:block;width:100vw;height:100vh!important;height:100dvh!important;border:0}
 </style>
 </head>
 <body>
@@ -3406,12 +3414,12 @@ const tlIsAdmin = () => { const u = sheetUser(); return !!u && TL_ADMIN.includes
 const toolsVis = () => TOOLS.filter(x => x[1] !== "a" || tlIsAdmin());
 // Chuỗi Dung Sai = trang riêng tools/stackup.html nhúng bằng iframe (dữ liệu lưu theo tài khoản: khóa uKey("npdStack") trong localStorage).
 const stackSrc = () => "tools/stackup.html?k=" + encodeURIComponent(uKey("npdStack"));
-const TOOL_RUN = { ai:() => `<iframe class="tl-fr" title="Học sử dụng AI" src="ai-learning/index.html?k=${encodeURIComponent(uKey("npdAi"))}&embed=1&v=20261126c"></iframe>`, stack:() => `<iframe class="tl-fr" title="QE Tolerance Stackup" src="${stackSrc()}&embed=1"></iframe>`, aql:() => aqHtml(), cpk:() => cpkHtml(), grr:() => grrHtml(), date:() => ttHtml(), unit:() => ucHtml(), link:() => lkHtml(),
+const TOOL_RUN = { ai:() => `<iframe class="tl-fr" title="Học sử dụng AI" src="ai-learning/index.html?k=${encodeURIComponent(uKey("npdAi"))}&embed=1&v=20261126e" allow="fullscreen; clipboard-write" allowfullscreen></iframe>`, stack:() => `<iframe class="tl-fr" title="QE Tolerance Stackup" src="${stackSrc()}&embed=1"></iframe>`, aql:() => aqHtml(), cpk:() => cpkHtml(), grr:() => grrHtml(), date:() => ttHtml(), unit:() => ucHtml(), link:() => lkHtml(),
   iv:() => window.IVTool ? IVTool.html() : `<div class="soon">Không tải được interview.js – tải lại trang.</div>` };
 let toolSel = "", toolQ = "";
 // Đang mở 1 công cụ (máy tính): danh sách bên trái thu thành thanh biểu tượng để vùng làm việc rộng hơn; nhớ lựa chọn ở npdToolRail.
 let toolRail = (() => { try { return localStorage.getItem("npdToolRail") !== "0"; } catch (e) { return true; } })();
-window.addEventListener("message", e => { if (e.origin !== location.origin || !e.data || !(e.data.stackH > 200)) return; const f = document.querySelector("#tool .tl-fr"); if (f) f.style.height = Math.min(20000, e.data.stackH) + "px"; });
+window.addEventListener("message", e => { if (e.origin === location.origin && e.data && e.data.aiClose && toolSel === "ai") { const b = document.querySelector("#tool [data-x=toolBack]"); if (b) b.click(); return; } if (e.origin !== location.origin || !e.data || !(e.data.stackH > 200)) return; const f = document.querySelector("#tool .tl-fr"); if (f) f.style.height = Math.min(20000, e.data.stackH) + "px"; });
 // Layout like the usual online tool sites: a side list (search + groups) and the open tool on the right. The open tool is in
 // the address (#tool/aql) so a link opens it directly, and the last one used is remembered in this tab.
 const toolHash = k => { try { history.replaceState(null, "", k ? "#tool/" + k : location.pathname + location.search); } catch (e) {} };
@@ -3419,6 +3427,7 @@ function renderTools() {
   if (!toolSel) { const h = /^#tool\/(\w+)/.exec(location.hash); try { toolSel = (h && h[1]) || sessionStorage.getItem("npdTool") || ""; } catch (e) { toolSel = h ? h[1] : ""; } }
   const VIS = toolsVis();
   if (toolSel && !VIS.some(x => x[0] === toolSel)) toolSel = "";
+  document.body.classList.toggle("ai-full", tabNow === "tool" && toolSel === "ai");   // Học Sử Dụng AI chiếm trọn cửa sổ (CSS body.ai-full)
   const t = VIS.find(x => x[0] === toolSel), run = t && TOOL_RUN[t[0]], q = toolQ.trim().toLowerCase();
   const hit = x => !q || (x[2] + " " + x[3] + " " + x[4]).toLowerCase().includes(q);
   const hall = `<svg viewBox="0 0 24 24" aria-hidden="true">${TL_IC.hall}</svg>`;
@@ -4448,6 +4457,7 @@ let tabNow = "home";
 function showTab(t) {
   if (!PAGES.includes(t)) t = "home";
   tabNow = t;
+  if (t !== "tool") document.body.classList.remove("ai-full");
   if (t !== "tool" && /^#tool\//.test(location.hash)) toolHash("");
   else if (t === "tool" && toolSel) toolHash(toolSel);
   document.body.dataset.page = t;
