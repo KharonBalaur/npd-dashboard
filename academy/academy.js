@@ -28,6 +28,9 @@ function getJSON(url) { return fetch(url, { cache: "no-cache" }).then(function (
 function loadMod(m) { if (DATA[m.id]) return Promise.resolve(DATA[m.id]); return getJSON(BASE + m.file).then(function (d) { d.id = d.id || m.id; DATA[m.id] = d; return d; }); }
 function loadAll() { return Promise.all(LIST.map(loadMod)); }
 
+function shuf(a) { a = a.slice(); for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)), x = a[i]; a[i] = a[j]; a[j] = x; } return a; }
+/* xáo thứ tự đáp án khi hiển thị (đáp án đúng đi theo nội dung, không theo vị trí) */
+function prep(q, mod) { var idx = shuf(q.options.map(function (_, i) { return i; })); return { q: q.q, explain: q.explain, mod: mod, options: idx.map(function (i) { return q.options[i]; }), answer: idx.indexOf(q.answer) }; }
 function steps(id) { var p = P.mods[id] || {}; return (p.basics ? 1 : 0) + (p.badge ? 1 : 0) + (p.adv ? 1 : 0); }
 function pct(id) { return Math.round(steps(id) / 3 * 100); }
 function totalPct() { if (!LIST.length) return 0; var s = 0; LIST.forEach(function (m) { s += steps(m.id); }); return Math.round(s / (LIST.length * 3) * 100); }
@@ -43,13 +46,14 @@ function render() {
   gbar();
   if (view === "glossary") return renderGlossary();
   if (view === "cards") return renderCards();
+  if (view === "exam") return renderExam();
   if (cur) return renderModule();
   renderList();
 }
 function note() { return storeOk ? "" : '<p class="muted">⚠ Trình duyệt chặn lưu nên tiến độ sẽ mất khi đóng trang.</p>'; }
 
 function renderList() {
-  main.innerHTML = '<h1>AIAG Core Tools Academy</h1><p class="lead">Học từng bước các công cụ chất lượng của ngành ô tô – diễn đạt lại bằng tiếng Việt, kèm ví dụ thực tế và quiz. Đạt từ 80% ở quiz để nhận huy hiệu bạc 🥈 của module. Tiến độ tổng: <b>' + totalPct() + '%</b>.</p>' + note() +
+  main.innerHTML = '<h1>AIAG Core Tools Academy</h1><p class="lead">Học từng bước các công cụ chất lượng của ngành ô tô – diễn đạt lại bằng tiếng Việt, kèm ví dụ thực tế và quiz. Đạt từ 80% ở quiz để nhận huy hiệu bạc 🥈 của module. Tiến độ tổng: <b>' + totalPct() + '%</b>.' + (P.exam && P.exam.gold ? ' <span class="badge">🥇 Huy hiệu vàng</span>' : '') + '</p>' + note() +
     '<div class="mods">' + LIST.map(function (m) {
       var p = P.mods[m.id] || {};
       return '<button class="card mod" data-m="' + esc(m.id) + '"><span class="ic">' + esc(m.icon || "📘") + '</span><h3>' + esc(m.title) + '</h3><p>' + esc(m.summary || "") + '</p>' +
@@ -158,7 +162,8 @@ function sourcesHtml(d) {
 function quizHtml(d, p) {
   var Ql = d.quiz || [];
   if (!Ql.length) return '<p class="muted">Module này chưa có câu hỏi.</p>';
-  if (!qz || qz.id !== d.id) qz = { id: d.id, i: 0, picked: null, ok: 0, end: false };
+  if (!qz || qz.id !== d.id) qz = { id: d.id, i: 0, picked: null, ok: 0, end: false, items: shuf(d.quiz).map(function (q) { return prep(q, d.id); }) };
+  Ql = qz.items;
   var h = "";
   if (qz.end) {
     var pc = Math.round(qz.ok / Ql.length * 100), pass = pc >= 80;
@@ -175,7 +180,7 @@ function quizHtml(d, p) {
   return h + "</div>";
 }
 function answer(i) {
-  var d = DATA[cur], q = d.quiz[qz.i]; if (qz.picked != null) return;
+  var q = qz.items[qz.i]; if (qz.picked != null) return;
   qz.picked = i; if (i === q.answer) qz.ok++; render();
 }
 function nextQ() {
@@ -223,9 +228,54 @@ function renderCards() {
 function fmChange(e) { fcState.mod = e.target.value; buildDeck(); renderCards(); }
 function cardGo(n) { var L = fcState.deck.length; if (!L) return; fcState.i = (fcState.i + n + L) % L; fcState.flip = false; renderCards(); }
 
+/* ---------- Thi tổng: 30 câu ngẫu nhiên từ mọi module (chia đều); huy hiệu vàng khi >= 80% và cả các module Core Tools đã đạt huy hiệu bạc ---------- */
+var EXN = 30, ex = null;
+function coreIds() { return LIST.filter(function (m) { return m.core; }).map(function (m) { return m.id; }); }
+function startExam() {
+  var pools = LIST.map(function (m) { return shuf((DATA[m.id] && DATA[m.id].quiz || []).map(function (q) { return prep(q, m.id); })); }), items = [], k = 0;
+  while (items.length < EXN && pools.some(function (p) { return p.length; })) { var p = pools[k++ % pools.length]; if (p.length) items.push(p.pop()); }
+  ex = { items: shuf(items), i: 0, picked: null, ok: 0, per: {}, end: false };
+}
+function renderExam() {
+  var core = coreIds(), miss = core.filter(function (id) { return !(P.mods[id] && P.mods[id].badge); }), g = P.exam || {};
+  if (!ex) {
+    main.innerHTML = '<h1>Thi tổng</h1><p class="lead">' + EXN + ' câu chọn ngẫu nhiên từ mọi module (chia đều). Đạt từ 80% <b>và</b> đã có huy hiệu bạc ở cả ' + core.length + ' module Core Tools để nhận <b>huy hiệu vàng 🥇</b>.</p>' + note() +
+      '<div class="card">' + (g.gold ? '<span class="badge">🥇 Bạn đã có huy hiệu vàng</span>' : "Chưa có huy hiệu vàng") + (g.best != null ? '<p class="muted">Điểm thi tổng tốt nhất: ' + g.best + "%</p>" : "") +
+      (miss.length ? '<p>Còn thiếu huy hiệu bạc: ' + miss.map(function (id) { return esc(DATA[id] ? DATA[id].title : id); }).join("; ") + ".</p>" : "<p class=\"done\">✓ Đủ huy hiệu bạc ở các Core Tools.</p>") + '<div class="row"><button class="btn" data-a="exstart">Bắt đầu thi</button></div></div>';
+    return;
+  }
+  var N = ex.items.length;
+  if (ex.end) {
+    var pc = Math.round(ex.ok / N * 100), rows = LIST.filter(function (m) { return ex.per[m.id]; }).map(function (m) { var r = ex.per[m.id]; return "<li>" + esc(m.title) + ": " + r[0] + "/" + r[1] + "</li>"; }).join("");
+    var gold = pc >= 80 && !miss.length;
+    main.innerHTML = '<div class="card"><div class="score">' + pc + "%</div><p>" + ex.ok + "/" + N + " câu đúng. " + (gold ? "🥇 Chúc mừng! Bạn nhận huy hiệu vàng." : pc >= 80 ? "Điểm đạt, nhưng còn thiếu huy hiệu bạc ở: " + miss.map(function (id) { return esc(DATA[id] ? DATA[id].title : id); }).join("; ") + "." : "Cần từ 80% để nhận huy hiệu vàng. Ôn lại các module bị sai rồi thi lại.") + "</p><ul>" + rows + '</ul><div class="row"><button class="btn" data-a="exstart">Thi lại</button><button class="btn ghost" data-a="exquit">Thoát</button></div></div>';
+    return;
+  }
+  var q = ex.items[ex.i], ans = ex.picked != null;
+  var h = '<div class="meta" style="margin:0 0 6px"><span>Thi tổng · Câu ' + (ex.i + 1) + "/" + N + "</span><span>Đúng: " + ex.ok + '</span></div><div class="card"><p class="q">' + esc(q.q) + "</p>";
+  q.options.forEach(function (o, i) { h += '<button class="opt' + (ans ? (i === q.answer ? " right" : i === ex.picked ? " wrong" : "") : "") + '" data-eo="' + i + '"' + (ans ? " disabled" : "") + ">" + esc(o) + "</button>"; });
+  if (ans) h += '<div class="exp"><b>' + (ex.picked === q.answer ? "✓ Chính xác. " : "✗ Chưa đúng. ") + "</b>" + rich(q.explain) + '</div><div class="row"><button class="btn" data-a="exnext">' + (ex.i + 1 < N ? "Câu tiếp theo →" : "Xem kết quả") + "</button></div>";
+  main.innerHTML = h + "</div>";
+}
+function exAnswer(i) {
+  if (ex.picked != null) return; var q = ex.items[ex.i], r = ex.per[q.mod] || (ex.per[q.mod] = [0, 0]);
+  ex.picked = i; r[1]++; if (i === q.answer) { ex.ok++; r[0]++; } renderExam();
+}
+function exNext() {
+  if (ex.i + 1 < ex.items.length) { ex.i++; ex.picked = null; }
+  else {
+    ex.end = true; var pc = Math.round(ex.ok / ex.items.length * 100), g = P.exam || (P.exam = {});
+    if (g.best == null || pc > g.best) g.best = pc;
+    if (pc >= 80 && !coreIds().some(function (id) { return !(P.mods[id] && P.mods[id].badge); })) g.gold = true;   /* huy hiệu vàng giữ mãi */
+    save();
+  }
+  renderExam(); main.scrollTop = 0;
+}
+
 /* ---------- Sự kiện ---------- */
 main.addEventListener("click", function (e) {
-  var el = e.target.closest("[data-m],[data-a],[data-t],[data-o]"); if (!el) return;
+  var el = e.target.closest("[data-m],[data-a],[data-t],[data-o],[data-eo]"); if (!el) return;
+  if (el.dataset.eo != null) return exAnswer(+el.dataset.eo);
   if (el.dataset.m) { cur = el.dataset.m; tab = "basics"; qz = null; loadMod(LIST.filter(function (m) { return m.id === cur; })[0]).then(function () { render(); main.scrollTop = 0; }, function () { main.innerHTML = '<p class="pad">Không tải được module.</p>'; }); return; }
   if (el.dataset.o != null) return answer(+el.dataset.o);
   if (el.dataset.t) { tab = el.dataset.t; if (tab === "quiz" && qz && qz.end) qz = null; render(); main.scrollTop = 0; return; }
@@ -233,6 +283,9 @@ main.addEventListener("click", function (e) {
   if (a === "list") { cur = null; render(); }
   else if (a === "basics" || a === "adv") { pm(cur)[a] = true; save(); render(); }
   else if (a === "next") nextQ();
+  else if (a === "exstart") { startExam(); renderExam(); main.scrollTop = 0; }
+  else if (a === "exnext") exNext();
+  else if (a === "exquit") { ex = null; renderExam(); }
   else if (a === "retry") { qz = null; render(); }
   else if (a === "flip") { fcState.flip = !fcState.flip; renderCards(); }
   else if (a === "prev") cardGo(-1);

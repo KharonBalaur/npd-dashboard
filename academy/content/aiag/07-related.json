@@ -1,0 +1,126 @@
+{
+  "id": "07-related",
+  "title": "8D, CQI & IATF 16949 liên kết Core Tools",
+  "edition": "8D · CQI series · IATF 16949:2016",
+  "icon": "🔗",
+  "flow": ["Khiếu nại / lỗi", "8D", "Cập nhật FMEA & CP", "CQI quá trình đặc biệt", "Audit IATF"],
+  "basics": [
+    {
+      "heading": "8D – giải quyết vấn đề theo 8 bước",
+      "body": "8D là quy trình giải quyết vấn đề có cấu trúc, thường dùng khi có khiếu nại khách hàng hoặc sự cố chất lượng:\n**D0** Chuẩn bị / đánh giá khẩn cấp · **D1** Lập nhóm · **D2** Mô tả vấn đề (5W2H, so sánh \"là / không là\") · **D3** Hành động ngăn chặn tạm thời (containment) · **D4** Tìm nguyên nhân gốc và **điểm lọt** (escape point) · **D5** Chọn và kiểm chứng hành động khắc phục chính thức · **D6** Thực hiện và xác nhận hiệu quả · **D7** Ngăn tái diễn (cập nhật FMEA, Control Plan, WI, bài học kinh nghiệm, triển khai ngang) · **D8** Ghi nhận nhóm, đóng.\nTrọng tâm: ngăn chặn trước, tìm nguyên nhân gốc bằng bằng chứng, và đóng vòng bằng cách cập nhật hệ thống.",
+      "example": "Khiếu nại: bình xịt rò sau 2 tuần. D3: kiểm 100% tồn kho, cách ly; D4: gioăng bị cắt do jig mòn (nguyên nhân) và test rò áp thấp bỏ sót (điểm lọt); D7: cập nhật PFMEA, CP, WI, thêm chu kỳ kiểm tra jig."
+    },
+    {
+      "heading": "Vì sao 8D gắn với Core Tools?",
+      "body": "8D không đứng riêng: nguyên nhân gốc và điểm lọt trong D4 phải đối chiếu với **PFMEA** (rủi ro này đã có chưa? chấm O và D có đúng không?) và **Control Plan** (kiểm soát có thiếu hoặc không hiệu quả?). D7 bắt buộc cập nhật các tài liệu này. Nếu sau 8D mà FMEA và CP không đổi, nhiều khả năng vấn đề sẽ tái diễn.",
+      "example": "Lỗi lọt vì test rò chỉ chạy áp thấp: sau 8D, PFMEA tăng điểm D cho kiểm soát cũ và CP đổi phương pháp test."
+    },
+    {
+      "heading": "CQI – các tài liệu của AIAG / CQI",
+      "body": "CQI (Continuous Quality Improvement) là nhóm hướng dẫn và đánh giá cho **quá trình đặc biệt** và các hệ thống hỗ trợ. Ví dụ thường gặp:\n- **CQI-9** Heat Treat System Assessment – xử lý nhiệt.\n- **CQI-11** Plating System Assessment – mạ.\n- **CQI-12** Coating System Assessment – sơn / phủ.\n- **CQI-15** Welding System Assessment – hàn.\n- **CQI-17** Soldering System Assessment – hàn thiếc.\n- **CQI-23** Molding System Assessment – ép phun.\n- **CQI-27** Casting System Assessment – đúc.\n- **CQI-8** Layered Process Audit – kiểm tra theo lớp.\n- **CQI-19** Sub-tier supplier management; **CQI-14** Warranty management.\n- **CQI-20** (và các tài liệu liên quan) về giải quyết vấn đề hiệu quả.\nDanh mục và edition thay đổi theo thời gian: hãy kiểm tra trang AIAG để xem tài liệu hiện hành và yêu cầu của khách hàng.",
+      "example": "Sản phẩm pin cầm tay: hàn tab pin có thể cần CQI-15; ép phun vỏ nhựa cần CQI-23; mạ chân tiếp điểm cần CQI-11."
+    },
+    {
+      "heading": "IATF 16949 liên kết với Core Tools thế nào?",
+      "body": "Một số điều khoản thường được gắn với từng công cụ (số điều khoản theo IATF 16949:2016):\n- **8.3.2.1** (hoạch định thiết kế và phát triển) ↔ APQP.\n- **8.3.3.3** (đặc tính đặc biệt) ↔ DFMEA / PFMEA / Control Plan.\n- **8.5.1.1** (Control Plan) ↔ Control Plan.\n- **7.1.5.1.1** (phân tích hệ thống đo lường) ↔ MSA.\n- **9.1.1.1** (theo dõi quá trình sản xuất) ↔ SPC / năng lực quá trình.\n- **8.3.4.4** (quy trình phê duyệt sản phẩm) ↔ PPAP.\n- **8.5.6.1** (kiểm soát thay đổi) ↔ nộp lại PPAP, cập nhật FMEA / CP.\n- **10.2.3** (giải quyết vấn đề) ↔ 8D.\nĐể chắc chắn, đối chiếu số điều khoản với bản tiêu chuẩn bạn được cấp phép.",
+      "example": "Auditor hỏi: \"Cho tôi xem MSA của thiết bị đo trong Control Plan.\" Bạn mở CP, chọn dòng, chỉ ra hồ sơ MSA và hạn đánh giá lại."
+    },
+    {
+      "heading": "Bức tranh tổng hợp",
+      "body": "Vòng đời: APQP định khung → FMEA tìm rủi ro → Control Plan kiểm soát → MSA bảo đảm số đo → SPC theo dõi → PPAP phê duyệt → sản xuất hàng loạt. Khi có sự cố: 8D tìm gốc rễ → cập nhật FMEA / CP. Quá trình đặc biệt có thêm đánh giá CQI. Toàn bộ nằm trong hệ thống quản lý IATF 16949 và chịu audit định kỳ."
+    }
+  ],
+  "quiz": [
+    {
+      "q": "Mục đích chính của bước D3 trong 8D là gì?",
+      "options": ["Tìm nguyên nhân gốc", "Hành động ngăn chặn tạm thời để bảo vệ khách hàng", "Khen thưởng nhóm", "Cập nhật FMEA"],
+      "answer": 1,
+      "explain": "D3 là containment: ngăn sản phẩm lỗi tới khách trong khi chưa tìm ra nguyên nhân gốc."
+    },
+    {
+      "q": "\"Escape point\" ở D4 là gì?",
+      "options": ["Điểm xảy ra lỗi", "Điểm mà hệ thống kiểm soát lẽ ra phải phát hiện nhưng đã để lỗi lọt", "Lối thoát hiểm", "Điểm kết thúc dự án"],
+      "answer": 1,
+      "explain": "D4 cần tìm cả nguyên nhân sinh ra lỗi lẫn lý do hệ thống phát hiện không bắt được."
+    },
+    {
+      "q": "D7 (ngăn tái diễn) nên có hành động nào?",
+      "options": ["Chỉ gửi báo cáo", "Cập nhật FMEA, Control Plan, WI và triển khai ngang cho quá trình tương tự", "Phạt người vận hành", "Không làm gì"],
+      "answer": 1,
+      "explain": "Đóng vòng bằng cách đưa bài học vào hệ thống tài liệu và các quá trình tương tự."
+    },
+    {
+      "q": "Nếu sau 8D, PFMEA và Control Plan không thay đổi gì, điều đó thường cho thấy?",
+      "options": ["Mọi thứ hoàn hảo", "Có khả năng vấn đề tái diễn vì hệ thống chưa học", "8D quá nhanh", "FMEA không cần thiết"],
+      "answer": 1,
+      "explain": "8D chưa đóng vòng nếu không cập nhật tài liệu hệ thống."
+    },
+    {
+      "q": "CQI-9 là đánh giá cho quá trình nào?",
+      "options": ["Hàn", "Xử lý nhiệt", "Ép phun", "Mạ"],
+      "answer": 1,
+      "explain": "CQI-9: Heat Treat System Assessment. Hàn là CQI-15, ép phun CQI-23, mạ CQI-11."
+    },
+    {
+      "q": "CQI-15 liên quan đến quá trình nào?",
+      "options": ["Hàn (welding)", "Đúc", "Sơn", "Xử lý nhiệt"],
+      "answer": 0,
+      "explain": "CQI-15 là Welding System Assessment, phù hợp cho hàn tab pin."
+    },
+    {
+      "q": "CQI-8 là gì?",
+      "options": ["Layered Process Audit – kiểm tra theo lớp", "Đánh giá hàn", "Quản lý bảo hành", "Đánh giá mạ"],
+      "answer": 0,
+      "explain": "CQI-8 hướng dẫn kiểm tra theo lớp (LPA) để duy trì kỷ luật quá trình."
+    },
+    {
+      "q": "Điều khoản IATF 16949 nào gắn với Control Plan?",
+      "options": ["8.5.1.1", "7.1.5.1.1", "9.1.1.1", "10.2.3"],
+      "answer": 0,
+      "explain": "8.5.1.1 yêu cầu Control Plan. 7.1.5.1.1 là MSA, 9.1.1.1 là theo dõi quá trình, 10.2.3 là giải quyết vấn đề."
+    },
+    {
+      "q": "Điều khoản 7.1.5.1.1 của IATF 16949 gắn với công cụ nào?",
+      "options": ["APQP", "MSA", "PPAP", "8D"],
+      "answer": 1,
+      "explain": "7.1.5.1.1 là phân tích hệ thống đo lường (MSA)."
+    },
+    {
+      "q": "Điều khoản 10.2.3 của IATF 16949 gắn với?",
+      "options": ["Giải quyết vấn đề (ví dụ 8D)", "Hoạch định thiết kế", "Phê duyệt sản phẩm", "Kiểm soát thay đổi"],
+      "answer": 0,
+      "explain": "10.2.3 yêu cầu quá trình giải quyết vấn đề; 8D là một cách tiếp cận phổ biến."
+    }
+  ],
+  "advanced": [
+    {
+      "heading": "5 Why, Is/Is-Not và Ishikawa trong 8D",
+      "body": "D2 dùng so sánh \"là / không là\" (cái gì, ở đâu, khi nào, bao nhiêu) để thu hẹp phạm vi. D4 dùng Ishikawa / 5 Why, nhưng phải **kiểm chứng** nguyên nhân bằng thí nghiệm hoặc dữ liệu: bật và tắt nguyên nhân thì lỗi xuất hiện và biến mất. Tránh dừng ở \"người vận hành sơ suất\" mà không hỏi vì sao hệ thống cho phép điều đó."
+    },
+    {
+      "heading": "Layered Process Audit trong thực tế",
+      "body": "LPA đặt các cuộc kiểm tra ngắn tại chuyền ở nhiều cấp (giám sát, quản lý, lãnh đạo), tập trung vào các điểm rủi ro cao từ PFMEA và Control Plan. Kết quả bất thường quay lại 8D và cập nhật tài liệu."
+    },
+    {
+      "heading": "Liên hệ với yêu cầu riêng của khách hàng (CSR)",
+      "body": "Nhiều khách hàng quy định cách làm 8D (hạn gửi, mẫu), mức CQI cần chứng nhận, và cách báo cáo. Luôn đọc CSR và thỏa thuận chất lượng với khách trước khi triển khai."
+    }
+  ],
+  "glossary": [
+    { "en": "8D", "vi": "8 bước giải quyết vấn đề", "def": "Quy trình giải quyết vấn đề có cấu trúc, từ D0 đến D8." },
+    { "en": "Containment", "vi": "Hành động ngăn chặn", "def": "Biện pháp tạm thời để sản phẩm lỗi không tới khách." },
+    { "en": "Root cause", "vi": "Nguyên nhân gốc", "def": "Nguyên nhân mà loại bỏ nó thì lỗi không còn xảy ra." },
+    { "en": "Escape point", "vi": "Điểm lọt", "def": "Điểm hệ thống kiểm soát lẽ ra phát hiện lỗi nhưng không." },
+    { "en": "Corrective action", "vi": "Hành động khắc phục", "def": "Hành động loại bỏ nguyên nhân gốc đã xác định." },
+    { "en": "Is / Is-Not", "vi": "Là / Không là", "def": "Kỹ thuật so sánh để thu hẹp phạm vi vấn đề." },
+    { "en": "CQI", "vi": "Cải tiến chất lượng liên tục (series)", "def": "Nhóm hướng dẫn và đánh giá cho quá trình đặc biệt và hệ thống hỗ trợ." },
+    { "en": "Special process", "vi": "Quá trình đặc biệt", "def": "Quá trình mà kết quả khó kiểm chứng hoàn toàn bằng kiểm tra sau đó (hàn, mạ, xử lý nhiệt…)." },
+    { "en": "Layered Process Audit (LPA)", "vi": "Kiểm tra quá trình theo lớp", "def": "Kiểm tra ngắn định kỳ ở nhiều cấp quản lý." },
+    { "en": "Lateral deployment", "vi": "Triển khai ngang", "def": "Áp dụng bài học cho sản phẩm / quá trình tương tự." },
+    { "en": "Clause", "vi": "Điều khoản", "def": "Mục của tiêu chuẩn IATF 16949 (ví dụ 8.5.1.1)." }
+  ],
+  "sources": [
+    { "title": "AIAG – Quality (trang chính thức)", "url": "https://www.aiag.org/quality" },
+    { "title": "IATF – International Automotive Task Force", "url": "https://www.iatfglobaloversight.org/" }
+  ]
+}

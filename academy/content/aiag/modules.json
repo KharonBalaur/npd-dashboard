@@ -14,35 +14,55 @@
       "file": "01-apqp.json",
       "title": "APQP – Hoạch định chất lượng sản phẩm",
       "icon": "🗺️",
-      "summary": "5 giai đoạn, phase gate và ví dụ với sản phẩm cầm tay dùng pin lithium."
+      "summary": "5 giai đoạn, phase gate và ví dụ với sản phẩm cầm tay dùng pin lithium.",
+      "core": true
     },
     {
       "id": "02-fmea",
       "file": "02-fmea.json",
       "title": "FMEA – Phân tích dạng & hậu quả hỏng",
       "icon": "⚠️",
-      "summary": "7 bước AIAG-VDA 2019, DFMEA / PFMEA / FMEA-MSR, S-O-D và Action Priority."
+      "summary": "7 bước AIAG-VDA 2019, DFMEA / PFMEA / FMEA-MSR, S-O-D và Action Priority.",
+      "core": true
     },
     {
       "id": "03-control-plan",
       "file": "03-control-plan.json",
       "title": "Control Plan – Kế hoạch kiểm soát",
       "icon": "📋",
-      "summary": "Prototype / Pre-launch / Production, Safe Launch, đặc tính đặc biệt, PFMEA→CP→WI."
+      "summary": "Prototype / Pre-launch / Production, Safe Launch, đặc tính đặc biệt, PFMEA→CP→WI.",
+      "core": true
     },
     {
       "id": "04-msa",
       "file": "04-msa.json",
       "title": "MSA – Phân tích hệ thống đo lường",
       "icon": "📏",
-      "summary": "Bias, linearity, stability, Gage R&R (ANOVA vs X̄-R), %GR&R, ndc và attribute agreement."
+      "summary": "Bias, linearity, stability, Gage R&R (ANOVA vs X̄-R), %GR&R, ndc và attribute agreement.",
+      "core": true
     },
     {
       "id": "05-spc",
       "file": "05-spc.json",
       "title": "SPC – Kiểm soát quá trình bằng thống kê",
       "icon": "📈",
-      "summary": "Common vs special cause, biểu đồ kiểm soát, Cp/Cpk vs Pp/Ppk và mục tiêu PPAP."
+      "summary": "Common vs special cause, biểu đồ kiểm soát, Cp/Cpk vs Pp/Ppk và mục tiêu PPAP.",
+      "core": true
+    },
+    {
+      "id": "06-ppap",
+      "file": "06-ppap.json",
+      "title": "PPAP – Phê duyệt chi tiết sản xuất",
+      "icon": "✅",
+      "summary": "18 hạng mục, 5 mức nộp (mặc định Mức 3), PSW và khi nào phải nộp lại.",
+      "core": true
+    },
+    {
+      "id": "07-related",
+      "file": "07-related.json",
+      "title": "8D, CQI & IATF 16949",
+      "icon": "🔗",
+      "summary": "8D, các tài liệu CQI và điều khoản IATF 16949 liên kết với Core Tools."
     }
   ]
 }
