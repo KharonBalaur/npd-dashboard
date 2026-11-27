@@ -180,7 +180,7 @@ function upgradeHash_(sh, rowNo, colNo, oldStored, password) {
   } finally { lock.releaseLock(); }
 }
 
-// Phiên "Ghi nhớ": đổi token còn hạn lấy token mới 30 ngày (trang gọi khi token còn dưới nửa hạn)
+// Phiên "Ghi nhớ": đổi token còn hạn lấy token mới 7 ngày (trang gọi khi token còn dưới nửa hạn)
 function renew_(token) {
   const user = authFresh_(token);
   if (!user) return { ok: false, expired: true, error: 'Phiên đăng nhập đã hết hạn' };
@@ -198,7 +198,7 @@ function renew_(token) {
  * "hết phiên" âm thầm và dữ liệu cá nhân (tiến độ game, tu luyện…) gửi lên bị từ chối.
  * Token mới = "s." + nội dung (base64) + "." + HMAC-SHA256 bằng khóa bí mật TOKEN_KEY trong Script Properties (tự tạo lần đầu,
  * không nằm trong repo). Mất bộ nhớ đệm vẫn kiểm tra được chữ ký + hạn dùng, rồi đọc lại tab Tài khoản (Khóa / Quyền mới nhất).
- * Token cũ (64 ký tự hex, chỉ có trong bộ nhớ đệm) vẫn dùng được tới khi hết hạn.
+ * Token cũ (64 ký tự hex, chỉ có trong bộ nhớ đệm) và token dài hơn 7 ngày không còn được nhận.
  */
 function tokenKey_() {
   const props = PropertiesService.getScriptProperties();
