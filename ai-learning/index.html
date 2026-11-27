@@ -143,6 +143,36 @@ th,td{padding:9px 12px;text-align:left;border-bottom:1px solid var(--line);verti
 td.f b{display:block} td.f small{color:var(--muted)} tr:last-child td{border-bottom:0}
 .cell small{font-size:11.5px;font-weight:400;color:var(--muted)} .cell.none{color:var(--muted)} .cell.none .dash{font-weight:700}
 .ftnote{margin:10px 2px 0;font-size:12.5px;color:var(--muted)}
+/* Chọn AI theo việc */
+.searchbar{margin:0 0 14px} .searchbar input{max-width:520px;font-size:15px;padding:11px 14px}
+.tg{margin:0 0 20px;border-top:5px solid var(--info)} .tg>h3{font-size:19px}
+.tasks{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px;margin:12px 0 4px}
+.task{position:relative;display:flex;align-items:center;gap:10px;min-height:62px;padding:10px 28px 10px 12px;border:1px solid var(--line);border-radius:12px;background:var(--card);text-align:left;font-weight:700;font-size:14px;line-height:1.3;color:var(--ink)}
+.task .ti{flex:none;font-size:26px;line-height:1}
+.task:hover{border-color:var(--info);background:color-mix(in srgb,var(--info) 6%,var(--card))}
+.task.on{border-color:var(--info);background:var(--info-bg);box-shadow:0 0 0 3px color-mix(in srgb,var(--info) 40%,transparent)}
+.task.on:after{content:"✓";position:absolute;top:6px;right:8px;width:18px;height:18px;border-radius:50%;display:grid;place-items:center;background:var(--info);color:var(--card);font-size:11px;font-weight:800}
+.task[hidden]{display:none}
+.tres{margin-top:14px;padding:16px 18px;border-radius:14px;border:1px solid color-mix(in srgb,var(--info) 40%,var(--line));background:color-mix(in srgb,var(--info) 5%,var(--card))}
+.tres>h4{margin:0 0 4px;font-size:18px} .tres h5{margin:16px 0 8px;font-size:12px;letter-spacing:.7px;text-transform:uppercase;color:var(--muted)}
+.picks{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.pick{--pc:#64748b;display:flex;flex-direction:column;gap:8px;padding:12px 14px;border:2px solid var(--pc);border-radius:12px;background:var(--card);background:color-mix(in srgb,var(--pc) 8%,var(--card))}
+.pk-h{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.pname{padding:0;border:0;background:none;font-weight:800;font-size:17px;color:var(--ink);text-decoration:underline dotted;text-underline-offset:4px;cursor:pointer}
+.pname:hover{text-decoration-style:solid}
+.pk-r{margin:0;flex:1;font-size:14px;line-height:1.5}
+.pick .btn{align-self:flex-start}
+.tips{margin:0;padding-left:22px;font-size:15px;line-height:1.65} .tips li{margin:3px 0}
+.tpl{border:1px solid color-mix(in srgb,#16a34a 40%,var(--line));border-left:6px solid #16a34a;border-radius:12px;overflow:hidden}
+.tpl-h{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;padding:9px 14px;background:color-mix(in srgb,#16a34a 10%,var(--card));font-size:13px;font-weight:700;color:var(--ok)}
+.tpl pre{margin:0;padding:14px 18px;white-space:pre-wrap;word-break:break-word;font:14px/1.65 ui-monospace,Consolas,"Courier New",monospace;background:var(--code-bg);color:var(--code-fg)}
+.tres .acts3{margin-top:10px}
+.twarn{margin:14px 0 0;padding:10px 14px;border-radius:10px;border-left:5px solid #e8590c;background:var(--prog-bg);color:var(--prog);font-size:14px;font-weight:600}
+.tnote{margin:10px 0 0;font-size:13px;color:var(--muted)}
+.sech{margin:0 0 10px;font-size:19px}
+.pc{scroll-margin-top:12px} .pc.flash{animation:pcflash 1.6s ease}
+@keyframes pcflash{0%,60%{box-shadow:0 0 0 4px var(--pc),0 6px 24px color-mix(in srgb,var(--pc) 50%,transparent)}100%{box-shadow:var(--shadow)}}
+@media (max-width:760px){.tasks{grid-template-columns:repeat(2,minmax(0,1fr))} .task{min-height:58px;padding:9px 10px;font-size:13px} .task .ti{font-size:22px} .tres{padding:14px} .searchbar input{max-width:none} .pname{min-height:36px;display:inline-flex;align-items:center} .btn-copy{min-height:40px}}
 .ft{min-width:1100px} .ft td.f,.ft thead th:first-child{position:sticky;left:0;z-index:2;background:var(--card);min-width:200px;box-shadow:1px 0 0 var(--line)} .ft thead th:first-child{background:var(--soft);z-index:3}
 input[type=search],input[type=text],textarea{width:100%;padding:9px 12px;border:1px solid var(--line);border-radius:8px;background:var(--card);resize:vertical}
 .srch{max-width:360px;margin:0 0 10px}
@@ -194,7 +224,7 @@ input[type=search],input[type=text],textarea{width:100%;padding:9px 12px;border:
 <p id="note" role="status" aria-live="polite"></p>
 
 <script src="data-lessons.js?v=20261126e"></script>
-<script src="data-platforms.js?v=20261127a"></script>
+<script src="data-platforms.js?v=20261127b"></script>
 <script>
 "use strict";
 const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
@@ -380,10 +410,52 @@ function cellHtml(v) {
   const main = m ? (m[1] + " " + m[3]).trim() : v, nt = m ? m[2] : "";
   return `<td class="cell${none ? " none" : ""}">${none ? `<span class="dash" aria-hidden="true">—</span> ` : ""}${esc(main)}${nt ? ` <small>(${esc(nt)})</small>` : ""}</td>`;
 }
+/* ---- Chọn AI theo việc (TASK_GUIDE) ---- */
+const TASKS = typeof TASK_GUIDE !== "undefined" && Array.isArray(TASK_GUIDE) ? TASK_GUIDE : [];
+const TWARN = typeof TASK_WARNING !== "undefined" ? TASK_WARNING : "Không dán thông tin mật, dữ liệu cá nhân vào AI.";
+const LVCHIP = { "Rất hợp": "ok", "Hợp": "info", "Dùng được": "" };
+let TASK_SEL = "";
+function taskBtns() {
+  return TASKS.map(t => `<button class="task${t.id === TASK_SEL ? " on" : ""}" data-x="task" data-id="${esc(t.id)}" aria-pressed="${t.id === TASK_SEL}" data-s="${esc(norm([t.name].concat(t.keywords || []).join(" ")))}"><span class="ti" aria-hidden="true">${esc(t.icon)}</span><span>${esc(t.name)}</span></button>`).join("");
+}
+function renderTaskRes() {
+  const box = $("#taskRes"); if (!box) return;
+  const t = TASKS.find(x => x.id === TASK_SEL);
+  if (!t) { box.innerHTML = ""; return; }
+  const picks = (t.picks || []).map(pk => {
+    const p = PLATFORMS.find(x => x.id === pk.platform); if (!p) return "";
+    const u = safeUrl(p.url), c = LVCHIP[pk.level];
+    return `<div class="pick" style="--pc:${safeColor(p.color) || "#64748b"}"><div class="pk-h"><button class="pname" data-x="goPlat" data-id="${esc(p.id)}" title="Xem thẻ ${esc(p.name)} trong danh sách nền tảng">${esc(p.name)}</button><span class="chip${c ? " " + c : ""}">${esc(pk.level)}</span></div>
+      <p class="pk-r">${esc(pk.reason)}</p>${u ? `<a class="btn pri sm" href="${esc(u)}" target="_blank" rel="noopener noreferrer">Mở ${esc(p.name)} ↗</a>` : ""}</div>`;
+  }).join("");
+  box.innerHTML = `<div class="tres" id="tres"><h4>${esc(t.icon)} ${esc(t.name)}</h4>
+    <h5>AI gợi ý (theo thứ tự)</h5><div class="picks">${picks}</div>
+    ${(t.tips || []).length ? `<h5>Mẹo dùng</h5><ul class="tips">${t.tips.map(x => `<li>${esc(x)}</li>`).join("")}</ul>` : ""}
+    ${t.promptTemplate ? `<h5>Prompt mẫu</h5><div class="tpl"><div class="tpl-h"><span>Thay phần trong [ ] bằng nội dung của bạn</span><button class="btn-copy" data-x="tplCopy">📋 Copy</button></div><pre>${esc(t.promptTemplate)}</pre></div>
+      <div class="acts3"><button class="btn" data-x="tplEdit">✍️ Chỉnh trong Trình tạo prompt</button></div>` : ""}
+    <p class="twarn">⚠️ ${esc(TWARN)}</p>${t.warning ? `<p class="twarn">⚠️ ${esc(t.warning)}</p>` : ""}
+    <p class="tnote">Gợi ý tham khảo – việc quan trọng hãy hỏi 2 AI và so sánh.</p></div>`;
+}
+function pickTask(id) {
+  TASK_SEL = TASK_SEL === id ? "" : id;
+  $$(".task").forEach(b => { const on = b.dataset.id === TASK_SEL; b.classList.toggle("on", on); b.setAttribute("aria-pressed", String(on)); });
+  renderTaskRes();
+  const r = $("#tres"); if (r && r.scrollIntoView) r.scrollIntoView({ behavior: "smooth", block: "nearest" });
+}
+function goPlat(id) {
+  const el = document.getElementById("pc-" + id); if (!el) return;
+  el.scrollIntoView({ behavior: "smooth", block: "start" });
+  el.classList.remove("flash"); void el.offsetWidth; el.classList.add("flash"); setTimeout(() => el.classList.remove("flash"), 1700);
+}
+function filterTasks(q) {
+  const T = norm(q).split(/\s+/).filter(Boolean); let n = 0;
+  $$("#tasks .task").forEach(b => { const h = !T.every(w => b.dataset.s.includes(w)); b.hidden = h; if (!h) n++; });
+  const none = $("#tnone"); if (none) none.classList.toggle("hide", n > 0 || !T.length);
+}
 function renderPlat() {
   const cards = PLATFORMS.map(p => {
     const u = safeUrl(p.url), old = ageDays(p.lastUpdated) > 90, col = safeColor(p.color);
-    return `<article class="card pc"${col ? ` style="--pc:${col}"` : ""}><h3>${esc(p.name)} <small>${esc(p.company)}</small></h3>
+    return `<article class="card pc" id="pc-${esc(p.id)}"${col ? ` style="--pc:${col}"` : ""}><h3>${esc(p.name)} <small>${esc(p.company)}</small></h3>
       <h4>Điểm mạnh</h4><ul>${(p.strengths || []).map(s => `<li>${esc(s)}</li>`).join("")}</ul>
       <h4>Phù hợp việc</h4><div class="chips">${(p.bestFor || []).map(s => `<span class="chip">${esc(s)}</span>`).join("")}</div>
       <h4>Gói miễn phí</h4><p style="margin:0">${esc(p.freeTier || "—")}</p>
@@ -391,14 +463,21 @@ function renderPlat() {
         <span class="muted" style="font-size:12.5px">Cập nhật: ${fmtDate(p.lastUpdated)}</span>${old ? ` <span class="chip warn">Đã lâu – hãy kiểm tra lại</span>` : ""}</div></article>`; }).join("");
   const head = COLS.map(([k, n, c]) => `<th${c ? ` style="--pc:${c}"` : ""}>${esc(n)}</th>`).join("");
   const rows = FEATURE_MAP.map(r => `<tr data-s="${esc(norm([r.feature, r.description].concat(COLS.map(([k]) => r[k])).join(" ")))}"><td class="f"><b>${esc(r.feature)}</b><small>${esc(r.description)}</small></td>${COLS.map(([k]) => cellHtml(r[k])).join("")}</tr>`).join("");
-  $("#view").innerHTML = `<div class="scroll"><div class="wrap"><div class="grid">${cards}</div>
+  $("#view").innerHTML = `<div class="scroll"><div class="wrap">
+    <div class="searchbar"><input type="search" id="fq" placeholder="Tìm việc hoặc tính năng… (vd: dịch, ngữ pháp, excel, ảnh)" aria-label="Tìm việc hoặc tính năng" autocomplete="off"></div>
+    <section class="card tg" id="tg"><h3>🧭 Tôi muốn làm gì? – Chọn AI theo việc</h3>
+      <p class="muted" style="margin:0">Bấm vào một việc để xem AI nên dùng, mẹo và prompt mẫu.</p>
+      <div class="tasks" id="tasks">${taskBtns()}</div><p class="muted hide" id="tnone" style="margin:8px 0 0">Không có việc nào khớp – thử từ khóa khác hoặc xem bảng tính năng bên dưới.</p>
+      <div id="taskRes"></div></section>
+    <h3 class="sech">Các nền tảng AI</h3><div class="grid">${cards}</div>
     <div class="card" style="margin-top:16px"><h3>Tính năng tương đương giữa các ứng dụng</h3>
       <p class="muted" style="margin:0 0 10px">Tên gọi khác nhau nhưng việc làm được thì gần giống nhau. Bảng chỉ mang tính tham khảo – tính năng thay đổi theo gói, vùng và thời điểm.</p>
-      <input class="srch" type="search" id="fq" placeholder="Tìm tính năng… (vd: ảnh, tìm web)" aria-label="Tìm tính năng" autocomplete="off">
       <div class="tw"><table class="ft"><thead><tr><th>Tính năng</th>${head}</tr></thead><tbody id="ftb">${rows}<tr id="fnone" class="hide"><td colspan="${COLS.length + 1}" class="muted">Không có tính năng nào khớp.</td></tr></tbody></table></div>
       <p class="ftnote">Cập nhật ${fmtDate(typeof FEATURE_UPDATED !== "undefined" ? FEATURE_UPDATED : "")}. Tính năng thay đổi theo gói, vùng và thời điểm – hãy kiểm tra lại trên trang chính thức.</p></div>${DISC}</div></div>`;
+  renderTaskRes();
 }
 function filterFeat(q) {
+  filterTasks(q);
   const T = norm(q).split(/\s+/).filter(Boolean); let n = 0;              // mọi từ gõ vào đều phải có trong dòng (không cần đúng thứ tự)
   $$("#ftb tr[data-s]").forEach(tr => { const h = !T.every(w => tr.dataset.s.includes(w)); tr.hidden = h; if (!h) n++; });
   const none = $("#fnone"); if (none) none.classList.toggle("hide", n > 0);
@@ -472,6 +551,10 @@ document.addEventListener("click", e => {
   else if (x === "ans") answer(+b.dataset.q, +b.dataset.o);
   else if (x === "retry") { delete QZ[curId]; renderQuiz(); const el = $("#qz"); if (el && el.scrollIntoView) el.scrollIntoView({ block: "start" }); }
   else if (x === "copy") doCopy(b, b.closest(".blk").querySelector("pre").textContent);
+  else if (x === "task") pickTask(b.dataset.id);
+  else if (x === "goPlat") goPlat(b.dataset.id);
+  else if (x === "tplCopy") { const t = TASKS.find(z => z.id === TASK_SEL); if (t) doCopy(b, t.promptTemplate); }
+  else if (x === "tplEdit") { const t = TASKS.find(z => z.id === TASK_SEL); if (t) { DRAFT.task = t.promptTemplate; go("build"); const f = $("#bf_task"); if (f) f.focus(); note("Đã điền prompt mẫu vào ô Nhiệm vụ – thay phần trong [ ] rồi bấm Copy prompt."); } }
   else if (x === "bCopy") doCopy(b, buildPrompt());
   else if (x === "bExample") { Object.assign(DRAFT, EXAMPLE); renderBuild(); }
   else if (x === "bClear") { Object.keys(DRAFT).forEach(k => { DRAFT[k] = ""; }); renderBuild(); }
