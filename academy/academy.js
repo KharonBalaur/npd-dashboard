@@ -78,20 +78,32 @@ function renderModule() {
 }
 
 /* ---------- Widget dùng lại: khai báo trong JSON ở mục advanced[].widget = {type, ...cấu hình}; thêm loại mới = thêm vào WIDGETS ---------- */
+/* đọc ap-table.csv: bỏ dòng tiêu đề / dòng sai; AP chỉ nhận H, M, L; trả [[sMin,sMax,oMin,oMax,dMin,dMax,AP]] */
+function parseAP(t) {
+  return String(t).split(/\r?\n/).map(function (l) { return l.split(/[,;\t]/).map(function (x) { return x.trim(); }); }).map(function (c) {
+    var n = c.slice(0, 6).map(Number), ap = (c[6] || "").toUpperCase();
+    return c.length >= 7 && n.every(function (x) { return isFinite(x) && x >= 1 && x <= 10; }) && /^[HML]$/.test(ap) ? n.concat(ap) : null;
+  }).filter(Boolean);
+}
 var WIDGETS = {
   /* ap: tra Action Priority. cấu hình: rules [[sMin,sMax,oMin,oMax,dMin,dMax,"H|M|L"], …] (quy tắc khớp đầu tiên thắng, không khớp = L), labels, note */
   ap: function (el, w) {
     var sel = function (id, l) { var o = ""; for (var i = 1; i <= 10; i++) o += '<option value="' + i + '">' + i + "</option>"; return '<label class="wl">' + l + '<select id="' + id + '">' + o + "</select></label>"; };
     el.innerHTML = '<div class="wbox"><div class="wrow">' + sel("ws", "Severity (S)") + sel("wo", "Occurrence (O)") + sel("wd", "Detection (D)") + '</div><div id="wr" class="wres" aria-live="polite"></div><p class="muted wn">' + esc(w.note || "") + "</p></div>";
-    var S = el.querySelector("#ws"), O = el.querySelector("#wo"), D = el.querySelector("#wd"), R = el.querySelector("#wr");
+    var S = el.querySelector("#ws"), O = el.querySelector("#wo"), D = el.querySelector("#wd"), R = el.querySelector("#wr"), rules = w.rules || [];
+    var fix = document.createElement("p"); fix.className = "wfix"; fix.textContent = "Minh họa – không thay thế bảng AP chính thức trong AIAG-VDA FMEA Handbook"; el.firstChild.insertBefore(fix, el.firstChild.firstChild);
     function calc() {
       var s = +S.value, o = +O.value, d = +D.value, ap = "L";
-      (w.rules || []).some(function (r) { if (s >= r[0] && s <= r[1] && o >= r[2] && o <= r[3] && d >= r[4] && d <= r[5]) { ap = r[6]; return true; } return false; });
+      rules.some(function (r) { if (s >= r[0] && s <= r[1] && o >= r[2] && o <= r[3] && d >= r[4] && d <= r[5]) { ap = r[6]; return true; } return false; });
       var rpn = s * o * d, lab = (w.labels || {})[ap] || "";
       R.className = "wres ap" + esc(ap);
       R.innerHTML = '<b class="apv">AP = ' + esc(ap) + "</b> " + esc(lab) + '<div class="muted wn">So sánh: RPN cũ = ' + s + "×" + o + "×" + d + " = " + rpn + " – cùng RPN có thể ứng với AP khác nhau.</div>";
     }
     [S, O, D].forEach(function (x) { x.addEventListener("change", calc); }); S.value = 8; O.value = 4; D.value = 5; calc();
+    /* nếu có content/aiag/ap-table.csv (cột S_min,S_max,O_min,O_max,D_min,D_max,AP) thì dùng bảng đó thay bản xấp xỉ */
+    fetch(BASE + "ap-table.csv", { cache: "no-cache" }).then(function (r) { if (!r.ok) throw 0; return r.text(); }).then(function (t) {
+      var T = parseAP(t); if (!T.length) throw 0; rules = T; calc();
+      var n = el.querySelector(".wbox > .wn"); if (n) n.textContent = "Đang dùng bảng từ ap-table.csv (" + T.length + " dòng)."; }).catch(function () {});
   },
   /* grr: kết luận hệ đo từ %GR&R + ndc. cấu hình: good (mặc định 10), limit (30), ndcMin (5), note */
   grr: function (el, w) {

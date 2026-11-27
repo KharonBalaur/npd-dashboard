@@ -21,7 +21,7 @@
     },
     {
       "heading": "Safe Launch",
-      "body": "Safe Launch (hay kiểm soát giai đoạn khởi động) là quãng đầu của sản xuất hàng loạt, nơi nhà cung cấp **tạm áp dụng kiểm soát chặt hơn bình thường** (kiểm 100%, thêm điểm kiểm, theo dõi sát) cho đến khi dữ liệu chứng minh quá trình ổn định và đạt năng lực. Cần có **tiêu chí vào và ra** rõ ràng. Theo tóm tắt của AIAG, nhóm phải đặt tiêu chí để thoát Safe Launch, thường là một khoảng thời gian vận hành (ví dụ 90 ngày) không phát sinh vấn đề với khách hàng; có thể bổ sung ngưỡng Cpk hoặc tỉ lệ lỗi. Hãy đối chiếu với manual và yêu cầu của khách.",
+      "body": "Safe Launch (hay kiểm soát giai đoạn khởi động) là quãng đầu của sản xuất hàng loạt, nơi nhà cung cấp **tạm áp dụng kiểm soát chặt hơn bình thường** (kiểm 100%, thêm điểm kiểm, theo dõi sát) cho đến khi dữ liệu chứng minh quá trình ổn định và đạt năng lực. Cần có **tiêu chí vào và ra** rõ ràng. **Tiêu chí thoát Safe Launch do khách hàng và tổ chức xác định**, không có con số cố định. Ví dụ: một khoảng thời gian vận hành (chẳng hạn 90 ngày) không phát sinh vấn đề với khách hàng, có thể kèm ngưỡng Cpk hoặc tỉ lệ lỗi. Hãy đối chiếu với manual và yêu cầu của khách.",
       "example": "6 tuần đầu: kiểm 100% độ kín và thêm điểm kiểm cuối chuyền. Rời Safe Launch khi đủ thời gian đã thống nhất không có vấn đề với khách và Cpk ≥ mục tiêu."
     },
     {

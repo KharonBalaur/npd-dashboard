@@ -84,3 +84,4 @@ ul.src{padding-left:18px}
 .apv{font-size:18px}.wn{font-size:12.5px;margin:6px 0 0}
 .wi,.wk{padding:8px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--ink);width:110px;font-weight:400}.wk{width:auto}
 @media(max-width:340px){.nav button{padding:6px 6px;font-size:12px}}
+.wfix{margin:0 0 8px;padding:6px 10px;border-radius:6px;background:var(--gold-bg);border:1px solid var(--gold-bd);color:var(--gold-ink);font-size:12.5px;font-weight:700}
