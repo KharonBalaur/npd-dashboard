@@ -6,6 +6,7 @@ Chuyển từ `CLAUDE.md` nguyên văn (chỉ đổi chỗ, không bỏ thông t
   "s.<nội dung base64>.<HMAC-SHA256>" ký bằng TOKEN_KEY (Script Properties, tự tạo, không ở repo): bộ nhớ đệm CacheService bị
   Google xóa sớm vẫn kiểm tra được (đọc lại tab Tài khoản). Token có thêm `i` (lúc cấp, ms). Token hex cũ và token dài hơn 7 ngày không còn được nhận (đăng nhập lại 1 lần).
   Mọi hành động có token đều qua authFresh_: đọc lại tab Tài khoản nên khóa tài khoản / đổi quyền / đổi mật khẩu có hiệu lực ngay.
+- {action:"ai_get", token} → {ok, progress|null, at} · {action:"ai_put", token, progress, at} → {ok, at} hoặc {ok, stale:true, progress, at} nếu Sheet đã có bản mới hơn (tiến độ AI, tab AI_Progress; 45.000 ký tự tối đa).
 - {action:"renew", token} → {ok, token, user, expiresIn} – token mới 7 ngày, token cũ bị thu hồi. Thu hồi (đăng xuất, gia hạn):
   cache "out…" + Script Properties REVOKED {chữ ký: hạn} cho token còn sống quá 6 giờ (tự dọn mục hết hạn).
 - {action:"register", username, password, name} → {ok, pending, message} (Trạng thái = "Chờ duyệt" nếu SIGNUP_APPROVAL)

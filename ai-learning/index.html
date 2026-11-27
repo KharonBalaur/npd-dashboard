@@ -54,6 +54,11 @@ a{color:var(--info)}
 .scroll{height:100%;overflow:auto;padding:18px;padding-left:max(18px,env(safe-area-inset-left));padding-right:max(18px,env(safe-area-inset-right));padding-bottom:max(24px,env(safe-area-inset-bottom))}
 .wrap{max-width:1240px;margin:0 auto}
 #note{position:fixed;left:50%;bottom:max(16px,env(safe-area-inset-bottom));transform:translateX(-50%);z-index:60;max-width:min(92vw,560px);margin:0}
+.sync{position:fixed;left:max(10px,env(safe-area-inset-left));bottom:max(10px,env(safe-area-inset-bottom));z-index:50;padding:4px 10px;border-radius:99px;font-size:12px;font-weight:600;border:1px solid var(--line);background:var(--soft);color:var(--muted);box-shadow:var(--shadow);pointer-events:auto;cursor:default}
+.sync:empty{display:none}
+.sync.saved{background:var(--ok-bg);color:var(--ok);border-color:var(--ok-bar)}
+.sync.saving{background:var(--prog-bg);color:var(--prog);border-color:var(--prog)}
+@media(max-width:760px){.sync{bottom:max(64px,env(safe-area-inset-bottom));pointer-events:none;opacity:.92}}
 #note:not(:empty){padding:10px 16px;border-radius:10px;background:var(--prog-bg);color:var(--prog);border:1px solid var(--prog);font-weight:600;box-shadow:0 6px 24px rgba(0,0,0,.28)}
 /* nút, thẻ, nhãn */
 .btn{display:inline-flex;align-items:center;gap:6px;min-height:36px;padding:0 14px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--ink);font-weight:600;font-size:13px;text-decoration:none;white-space:nowrap}
@@ -192,6 +197,7 @@ input[type=search],input[type=text],textarea{width:100%;padding:9px 12px;border:
 </div>
 <div class="scrim" id="scrim" data-x="sideTg"></div>
 <p id="note" role="status" aria-live="polite"></p>
+<div id="sync" class="sync local" role="status" aria-live="polite"></div>
 
 <script src="data-lessons.js?v=20261126e"></script>
 <script src="data-platforms.js?v=20261127a"></script>
@@ -212,11 +218,13 @@ const isObj = o => !!o && typeof o === "object" && !Array.isArray(o);
 function clean(o) {
   o = isObj(o) ? o : {};
   return Object.assign({}, o, { v: 1, passed: isObj(o.passed) ? o.passed : {}, best: isObj(o.best) ? o.best : {},
-    theme: o.theme === "dark" || o.theme === "light" ? o.theme : "", last: typeof o.last === "string" ? o.last : "" });
+    theme: o.theme === "dark" || o.theme === "light" ? o.theme : "", last: typeof o.last === "string" ? o.last : "",
+    at: +o.at > 0 ? +o.at : 0, rs: +o.rs > 0 ? +o.rs : 0 });             // at = lúc sửa cuối (ms), rs = lúc Reset (ms): dùng để đồng bộ giữa các máy
 }
 let storeOk = true;
 function load() { try { return clean(JSON.parse(localStorage.getItem(KEY))); } catch (e) { storeOk = false; return clean(null); } }
-function save() { try { localStorage.setItem(KEY, JSON.stringify(P)); } catch (e) { storeOk = false; note("Không lưu được tiến độ trên trình duyệt này (bị chặn hoặc đầy bộ nhớ). Tiến độ chỉ giữ đến khi đóng trang."); } }
+function persist() { try { localStorage.setItem(KEY, JSON.stringify(P)); } catch (e) { storeOk = false; note("Không lưu được tiến độ trên trình duyệt này (bị chặn hoặc đầy bộ nhớ). Tiến độ chỉ giữ đến khi đóng trang."); } }
+function save() { P.at = Date.now(); persist(); Sync.mark(); }               // ghi máy này ngay; Sync gửi lên Sheet sau ~3 giây
 const P = load();
 
 /* ---------- Dữ liệu ---------- */
@@ -477,7 +485,7 @@ document.addEventListener("click", e => {
   else if (x === "bClear") { Object.keys(DRAFT).forEach(k => { DRAFT[k] = ""; }); renderBuild(); }
   else if (x === "reset") {
     if (!confirm("Xóa toàn bộ điểm và tiến độ học? Không thể hoàn tác.")) return;
-    P.passed = {}; P.best = {}; P.last = ""; save(); Object.keys(QZ).forEach(k => delete QZ[k]); curId = ""; go("prog"); note("Đã reset tiến độ.");
+    P.passed = {}; P.best = {}; P.last = ""; P.rs = Date.now(); save(); Object.keys(QZ).forEach(k => delete QZ[k]); curId = ""; go("prog"); note("Đã reset tiến độ.");
   }
 });
 document.addEventListener("input", e => {
@@ -489,8 +497,104 @@ document.addEventListener("webkitfullscreenchange", renderTop);
 document.addEventListener("keydown", e => { if (e.key === "Escape" && !fsEl()) { const s = $("#side"); if (s && s.classList.contains("open")) sideOpen(false); } });
 window.addEventListener("resize", () => { if (innerWidth > 760) sideOpen(false); });
 
+/* ---------- Đồng bộ tiến độ theo tài khoản ----------
+   Dùng đúng cơ chế của web chính: trang chính (sheets-auth.js) giữ phiên đăng nhập và gọi Apps Script; công cụ này nằm trong iframe cùng origin
+   nên gọi parent.NPD.call("ai_get" | "ai_put"). Dữ liệu ở tab "AI_Progress" (Username | ProgressJSON | UpdatedAt), mỗi người chỉ thấy dòng của mình.
+   - Mở công cụ: lấy bản Sheet, gộp với bản localStorage: bản có `at` mới hơn làm gốc; bài đã đạt / điểm cao nhất của bản cũ vẫn giữ,
+     trừ khi bản mới hơn vừa Reset sau đó (rs). Khác bản Sheet thì gửi lên.
+   - Lưu: localStorage ngay (save()), gửi Sheet sau 3 giây không sửa nữa; mất mạng / lỗi: giữ cờ "chưa gửi" (cũng trong localStorage),
+     tự thử lại khi có mạng, mỗi 30 giây, và khi đóng / ẩn trang.
+   - Chạy riêng (không nhúng, chưa đăng nhập) hoặc máy chủ chưa cập nhật Apps Script: chỉ lưu trên máy này, không báo lỗi. */
+const Sync = (() => {
+  const DKEY = KEY + "~dirty", WHO = (KEY.split("@")[1] || "").toLowerCase(), DELAY = 3000, RETRY = [5, 15, 30, 60, 120];
+  let timer = 0, retryT = 0, busy = false, again = false, off = false, tries = 0, memDirty = false;
+  const npd = () => { try { const n = (parent !== window && parent.NPD) || window.NPD; return n && typeof n.call === "function" ? n : null; } catch (e) { return null; } };
+  const me = () => { try { const n = npd(), u = n && n.user && n.user(); return u ? String(u.username).toLowerCase() : ""; } catch (e) { return ""; } };
+  const can = () => !off && !!WHO && me() === WHO;
+  const isDirty = () => { try { return localStorage.getItem(DKEY) === "1"; } catch (e) { return memDirty; } };
+  const setDirty = on => { memDirty = on; try { if (on) localStorage.setItem(DKEY, "1"); else localStorage.removeItem(DKEY); } catch (e) { /* bỏ qua */ } };
+  const TXT = { saved: "Đã lưu ☁️", saving: "Đang lưu...", local: "Chỉ lưu trên máy này" };
+  const show = (s, why) => { const el = $("#sync"); if (!el) return; el.className = "sync " + s; el.textContent = TXT[s];
+    el.title = why || (s === "saved" ? "Tiến độ đã được lưu trên máy chủ theo tài khoản của bạn." : s === "saving" ? "Đang gửi tiến độ lên máy chủ." : ""); };
+  const whyLocal = () => off ? "Máy chủ chưa hỗ trợ đồng bộ (cần cập nhật Apps Script)."
+    : !WHO || !npd() ? "Mở công cụ từ trang web chính (đã đăng nhập) để đồng bộ giữa các máy."
+    : me() !== WHO ? "Chưa đăng nhập đúng tài khoản: tiến độ chỉ lưu trên máy này."
+    : isDirty() ? "Chưa gửi được (mất mạng?). Đã lưu trên máy, sẽ tự gửi khi có mạng." : "";
+  const sorted = o => Object.keys(o || {}).sort().map(k => [k, o[k]]);
+  const sig = p => JSON.stringify([sorted(p.passed), sorted(p.best), p.theme, p.last]);
+  const copy = o => JSON.parse(JSON.stringify(o));
+  // Bản có `at` mới hơn làm gốc (bằng nhau: bản máy này). Bản cũ chỉ bổ sung bài đã đạt / điểm cao hơn nếu không bị Reset sau đó.
+  function merge(x, y) {
+    const nw = x.at >= y.at ? x : y, ol = nw === x ? y : x, r = copy(nw);
+    if (!(nw.rs && ol.at <= nw.rs)) {
+      Object.keys(ol.passed).forEach(k => { if (ol.passed[k]) r.passed[k] = true; });
+      Object.keys(ol.best).forEach(k => { if (!(r.best[k] >= ol.best[k])) r.best[k] = ol.best[k]; });
+    }
+    return r;
+  }
+  function adopt(m) { const was = sig(P); Object.keys(P).forEach(k => delete P[k]); Object.assign(P, m); persist(); if (sig(P) !== was) { applyTheme(); go(tab); } }
+  const later = ms => { clearTimeout(retryT); retryT = setTimeout(() => push(false), ms); };
+  const backoff = () => { later(RETRY[Math.min(tries++, RETRY.length - 1)] * 1000); show("local", whyLocal() || "Chưa gửi được lên máy chủ, sẽ thử lại."); };
+  const unsupported = r => r && r.ok === false && /không hợp lệ/i.test(String(r.error || "")) && !r.expired;
+
+  async function pull() {
+    if (!can()) { show("local", whyLocal()); return; }
+    show("saving");
+    let r; try { r = await npd().call("ai_get"); } catch (e) { backoff(); return; }
+    if (r && r.expired) { show("local", "Phiên đăng nhập đã hết hạn: đăng nhập lại để đồng bộ."); return; }
+    if (unsupported(r)) { off = true; show("local", whyLocal()); return; }
+    if (!r || !r.ok) { backoff(); return; }
+    const remote = r.progress ? clean(r.progress) : null;
+    if (remote && !remote.at) remote.at = +r.at || 0;
+    if (!remote) { if (isDirty() || sig(P) !== sig(clean(null))) { P.at = P.at || Date.now(); persist(); setDirty(true); push(false); } else show("saved"); return; }
+    const m = merge(P, remote), diff = sig(m) !== sig(remote);
+    if (diff) m.at = Math.max(m.at, Date.now());                         // có phần máy này mà Sheet chưa có: bản gộp là bản mới nhất
+    adopt(m);
+    if (diff) { setDirty(true); push(false); } else { setDirty(false); show("saved"); }
+  }
+  async function push(keepalive) {
+    clearTimeout(timer); timer = 0;
+    if (!can()) { show("local", whyLocal()); return false; }
+    if (navigator.onLine === false) { show("local", whyLocal() || "Chưa có mạng: đã lưu trên máy, sẽ tự gửi khi có mạng."); return false; }
+    if (busy) { again = true; return false; }
+    busy = true; show("saving");
+    const sent = P.at, body = copy(P);
+    try {
+      const r = await npd().call("ai_put", { progress: body, at: sent }, keepalive ? { keepalive: true } : undefined);
+      if (r && r.expired) { show("local", "Phiên đăng nhập đã hết hạn: đăng nhập lại để đồng bộ."); return false; }
+      if (unsupported(r)) { off = true; show("local", whyLocal()); return false; }
+      if (!r || !r.ok) { backoff(); return false; }
+      if (r.stale && r.progress) {                                         // máy khác đã lưu bản mới hơn trong lúc này: gộp rồi gửi lại
+        const m = merge(P, clean(r.progress)); m.at = Math.max(m.at, Date.now()); adopt(m); setDirty(true);
+        if (tries++ < 3) { again = true; return false; }
+        backoff(); return false;
+      }
+      tries = 0;
+      if (P.at === sent) { setDirty(false); show("saved"); } else { again = true; }   // lại có sửa trong lúc gửi
+      return true;
+    } catch (e) { backoff(); return false; }
+    finally { busy = false; if (again) { again = false; later(300); } }
+  }
+  function mark() {
+    setDirty(true);
+    if (!can()) { show("local", whyLocal()); return; }
+    show("saving"); clearTimeout(timer); timer = setTimeout(() => push(false), DELAY);
+  }
+  function start() {
+    window.addEventListener("online", () => { if (isDirty()) push(false); else if (can()) pull(); });
+    window.addEventListener("offline", () => { if (isDirty()) show("local", "Mất mạng: đã lưu trên máy, sẽ tự gửi khi có mạng."); });
+    const flush = () => { if (isDirty() && can()) push(true); };
+    window.addEventListener("pagehide", flush);
+    document.addEventListener("visibilitychange", () => { if (document.visibilityState === "hidden") flush(); });
+    setInterval(() => { if (isDirty() && !busy && !timer) push(false); }, 30000);
+    pull();
+  }
+  return { start, mark, push, pull, state: () => ({ dirty: isDirty(), off, can: can() }) };
+})();
+
 applyTheme();
 go("learn");
+Sync.start();
 </script>
 </body>
 </html>

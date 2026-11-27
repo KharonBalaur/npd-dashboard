@@ -42,6 +42,8 @@ const CFG = {
   SHEET_PRACTICE: 'Tu luyện',
   PRACTICE_MAX: 4000,      // ký tự / bài thực hành
   PRACTICE_SEND: 400,      // Admin: số dòng mới nhất gửi về (dòng Chờ duyệt luôn được gửi)
+  SHEET_AI: 'AI_Progress', // tiến độ công cụ "Học sử dụng AI": Username | ProgressJSON | UpdatedAt (mỗi người chỉ đọc / ghi dòng của mình)
+  AI_MAX: 45000,           // ký tự JSON tiến độ AI (giới hạn của một ô Sheet là 50.000)
 };
 
 // Tab gửi về trình duyệt (các tab khác trong Sheet, vd dữ liệu NPD cũ, không bao giờ gửi đi)
@@ -92,6 +94,8 @@ function doPost(e) {
       case 'img_put': out = imgPut_(req.token, req.name, req.data); break;
       case 'img_get': out = imgGet_(req.token, req.ids); break;
       case 'presence': out = presence_(req.token, req.model, req.active); break;
+      case 'ai_get': out = aiGet_(req.token); break;
+      case 'ai_put': out = aiPut_(req.token, req.progress, req.at); break;
       case 'logout': out = logout_(req.token); break;
       default:       out = { ok: false, error: 'Yêu cầu không hợp lệ' };
     }
@@ -850,6 +854,64 @@ function mineSheet_() {
   return sh;
 }
 
+/* ---------------- Tiến độ "Học sử dụng AI" (tab AI_Progress) ----------------
+ * Một dòng / tài khoản: Username | ProgressJSON | UpdatedAt. Username lấy từ token (không tin trình duyệt): ai cũng chỉ đọc / ghi dòng của mình,
+ * kể cả Viewer. Tab này không nằm trong READ_TABS nên không bao giờ đi qua action "data". Mốc `at` (mili-giây) nằm trong JSON; ai_put chỉ ghi khi
+ * `at` không cũ hơn bản đang lưu, nếu cũ hơn thì trả bản trong Sheet (stale) để trang gộp rồi gửi lại.
+ */
+const AI_HEAD = ['Username', 'ProgressJSON', 'UpdatedAt'];
+function aiSheet_() {
+  const ss = SpreadsheetApp.getActive();
+  let sh = ss.getSheetByName(CFG.SHEET_AI);
+  if (!sh) {
+    sh = ss.insertSheet(CFG.SHEET_AI);
+    sh.getRange(1, 1, 1, AI_HEAD.length).setValues([AI_HEAD]).setFontWeight('bold');
+    sh.setFrozenRows(1);
+    sh.getRange('A:C').setNumberFormat('@');             // giữ dạng chữ (tên đăng nhập toàn số, ngày ISO)
+  }
+  return sh;
+}
+// dòng của một tài khoản: { row (1-based), progress, at } hoặc null
+function aiFind_(sh, username) {
+  if (!sh || sh.getLastRow() < 2) return null;
+  const vals = sh.getRange(2, 1, sh.getLastRow() - 1, AI_HEAD.length).getValues();
+  const i = vals.findIndex(r => norm_(r[0]) === norm_(username));
+  if (i < 0) return null;
+  let progress = null; try { progress = JSON.parse(vals[i][1]); } catch (e) { progress = null; }
+  if (!progress || typeof progress !== 'object' || Array.isArray(progress)) progress = null;
+  const at = progress ? Number(progress.at) || Date.parse(vals[i][2]) || 0 : 0;
+  return { row: i + 2, progress, at };
+}
+function aiGet_(token) {
+  const user = authFresh_(token);
+  if (!user) return { ok: false, expired: true, error: 'Phiên đăng nhập đã hết hạn' };
+  const f = aiFind_(SpreadsheetApp.getActive().getSheetByName(CFG.SHEET_AI), user.username);
+  return { ok: true, progress: f ? f.progress : null, at: f ? f.at : 0 };
+}
+function aiPut_(token, progress, at) {
+  const user = authFresh_(token);
+  if (!user) return { ok: false, expired: true, error: 'Phiên đăng nhập đã hết hạn' };
+  if (!progress || typeof progress !== 'object' || Array.isArray(progress)) return { ok: false, error: 'Tiến độ không hợp lệ' };
+  const now = Date.now();
+  at = Number(at) || 0;
+  if (!(at > 0) || at > now + 5 * 60 * 1000) at = now;     // thiếu / lệch đồng hồ quá xa: lấy giờ máy chủ
+  const body = Object.assign({}, progress, { at });
+  const json = JSON.stringify(body);
+  if (json.length > CFG.AI_MAX) return { ok: false, error: 'Dữ liệu quá lớn (' + json.length + ' ký tự)' };
+  const lock = LockService.getScriptLock();
+  if (!lock.tryLock(10000)) return { ok: false, error: 'Máy chủ bận, thử lại sau' };
+  try {
+    const sh = aiSheet_();
+    const f = aiFind_(sh, user.username);
+    if (f && f.progress && f.at > at) return { ok: true, stale: true, progress: f.progress, at: f.at };
+    const row = [user.username, json, new Date(at).toISOString()];
+    sh.getRange(f ? f.row : sh.getLastRow() + 1, 1, 1, 3).setValues([row]);
+    return { ok: true, at };
+  } finally {
+    lock.releaseLock();
+  }
+}
+
 /* ---------------- Luyện phỏng vấn (chỉ Admin) ----------------
  * Tab "Phỏng vấn": ID | Loại | Nhóm | Tiêu đề | Dữ liệu (JSON) | Cập nhật. Có câu trả lời theo CV nên KHÔNG nằm trong READ_TABS /
  * EDIT_TABS, chỉ trả cho tài khoản Admin (đọc lại tab Tài khoản mỗi lần gọi). Loại: q = câu hỏi, k = thẻ kiến thức, meta = nhóm,
@@ -1080,6 +1142,6 @@ function imgGet_(token, ids) {
 
 // Chạy 1 lần trong trình soạn Apps Script (chọn hàm setup → Run) để cấp quyền Drive và tạo sẵn các tab
 function setup() {
-  imgFolder_(); mineSheet_(); historySheet_(); practiceSheet_();
+  imgFolder_(); mineSheet_(); historySheet_(); practiceSheet_(); aiSheet_();
   ensureColumns_({ 'Cài đặt': ['Khóa', 'Giá trị'] });
 }

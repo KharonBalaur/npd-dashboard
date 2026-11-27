@@ -152,4 +152,28 @@ ok(post({ action: 'data', token: run("signToken_({username:'gn'}, 30*24*3600)") 
 const rn = post({ action: 'renew', token: R.token }); ok(rn.ok === true && rn.expiresIn === 7 * 86400, 'gia hạn trả token 7 ngày');
 NOW += 8 * 86400000; ok(post({ action: 'data', token: rn.token }).ok !== true, 'sau 8 ngày token hết hạn');
 
+
+console.log('Tiến độ AI (ai_get / ai_put, tab AI_Progress)');
+reset([['ai1', 'MatKhauAi123', 'A1', 'Member', ''], ['ai2', 'MatKhauAi123', 'A2', 'Viewer', ''], ['ai3', 'MatKhauAi123', 'A3', 'Member', '']]);
+const T1 = login('ai1', 'MatKhauAi123').token, T2 = login('ai2', 'MatKhauAi123').token;
+ok(post({ action: 'ai_get' }).ok === false && post({ action: 'ai_put', progress: {} }).ok === false && post({ action: 'ai_get', token: 'fake' }).expired === true, 'không token / token giả → từ chối');
+ok(post({ action: 'ai_get', token: T1 }).progress === null, 'chưa có dòng → progress null (không tự tạo tab khi chỉ đọc)');
+const base = NOW + 1000;                                                   // giờ của máy chủ giả
+const w1 = post({ action: 'ai_put', token: T1, progress: { v: 1, passed: { 'n1-01': true }, best: { 'n1-01': 90 } }, at: base });
+ok(w1.ok === true && w1.at === base && sheets['AI_Progress'] && sheets['AI_Progress'].rows[0].join('|') === 'Username|ProgressJSON|UpdatedAt', 'ghi lần đầu: tạo tab AI_Progress đúng tiêu đề');
+ok(sheets['AI_Progress'].rows[1][0] === 'ai1' && JSON.parse(sheets['AI_Progress'].rows[1][1]).at === base && sheets['AI_Progress'].rows[1][2] === new Date(base).toISOString(), 'dòng: Username | JSON có at | UpdatedAt ISO');
+const g1 = post({ action: 'ai_get', token: T1 }); ok(g1.progress.passed['n1-01'] === true && g1.at === base, 'đọc lại đúng');
+ok(post({ action: 'ai_get', token: login('ai3', 'MatKhauAi123').token }).progress === null, 'tài khoản khác không thấy tiến độ của ai1');
+const w2 = post({ action: 'ai_put', token: T2, progress: { v: 1, passed: { x: true } }, at: base }); ok(w2.ok === true, 'Viewer ghi được tiến độ cá nhân');
+ok(sheets['AI_Progress'].rows.length === 3 && post({ action: 'ai_get', token: T1 }).progress.passed.x === undefined, 'mỗi tài khoản một dòng riêng, không đè nhau');
+const st = post({ action: 'ai_put', token: T1, progress: { v: 1, passed: {} }, at: base - 500 });
+ok(st.ok === true && st.stale === true && st.progress.passed['n1-01'] === true, 'ghi bản CŨ hơn → stale + trả bản đang lưu (không ghi đè)');
+const w3 = post({ action: 'ai_put', token: T1, progress: { v: 1, passed: { 'n1-01': true, 'n1-02': true } }, at: base + 10 }); ok(w3.ok && !w3.stale, 'ghi bản mới hơn → được ghi');
+ok(sheets['AI_Progress'].rows.length === 3, 'ghi lại cùng tài khoản = cập nhật dòng cũ (không thêm dòng)');
+ok(post({ action: 'ai_put', token: T1, progress: [1, 2], at: base }).ok === false && post({ action: 'ai_put', token: T1, progress: 'x', at: base }).ok === false, 'tiến độ không phải object → từ chối');
+ok(post({ action: 'ai_put', token: T1, progress: { blob: 'x'.repeat(50000) }, at: base + 20 }).ok === false, 'quá 45.000 ký tự → từ chối');
+const fut = post({ action: 'ai_put', token: T1, progress: { v: 1 }, at: base + 10 * 86400000 }); ok(fut.ok && fut.at < NOW + 6 * 60 * 1000, 'mốc `at` quá xa trong tương lai bị kéo về giờ máy chủ');
+ok(!('AI_Progress' in post({ action: 'data', token: T1 }).tabs), 'action "data" không bao giờ gửi tab AI_Progress');
+sheets['Tài khoản'].getRange(2, 5).setValue('Khóa'); ok(post({ action: 'ai_get', token: T1 }).ok !== true && post({ action: 'ai_put', token: T1, progress: {}, at: 1 }).ok !== true, 'tài khoản bị khóa → ai_get / ai_put bị từ chối ngay');
+
 console.log(bad ? `\nCÓ ${bad} LỖI` : '\nTất cả đạt'); process.exit(bad ? 1 : 0);

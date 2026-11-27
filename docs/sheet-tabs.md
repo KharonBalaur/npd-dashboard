@@ -4,6 +4,7 @@ Chuyển từ `CLAUDE.md` nguyên văn (chỉ đổi chỗ, không bỏ thông t
 
 - Tài khoản: Tên đăng nhập | Mật khẩu (băm `pbkdf2$vòng$muối$băm`: PBKDF2-HMAC-SHA256, muối riêng từng tài khoản; băm SHA-256 + SALT cũ và chữ thường vẫn đăng nhập được MỘT lần rồi tự nâng cấp) | Họ tên | Quyền (Viewer = chỉ xem, khác = sửa) |
   Trạng thái (Khóa / Chờ duyệt = chặn) | Đổi mật khẩu lúc (ms, tự tạo khi đổi mật khẩu; token cấp trước mốc này bị từ chối) → KHÔNG bao giờ gửi tab này về trình duyệt
+- AI_Progress (tự tạo): Username | ProgressJSON | UpdatedAt – tiến độ công cụ Học Sử Dụng AI, mỗi tài khoản một dòng, chỉ chủ tài khoản đọc / ghi (aiGet_ / aiPut_)
 - Lịch sử (tự tạo): Thời gian | Người sửa | Tab | TTi model | Dòng | Cột | Giá trị cũ | Giá trị mới
 - Cá nhân (tự tạo, chỉ chủ tài khoản đọc được): Tên đăng nhập | Khóa | Dữ liệu (JSON) | Cập nhật
 - Phỏng vấn (tự tạo, chỉ Admin đọc / ghi qua iv_data / iv_save): ID | Loại | Nhóm | Tiêu đề | Dữ liệu (JSON) | Cập nhật
