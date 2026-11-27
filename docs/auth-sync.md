@@ -4,7 +4,8 @@ Chuyển từ `CLAUDE.md` nguyên văn (chỉ đổi chỗ, không bỏ thông t
 
 - `sheets-auth.js` – đăng nhập / tạo tài khoản, menu tài khoản (đổi mật khẩu, đăng xuất), gọi API, lưu phiên:
   mặc định token 6h trong sessionStorage (tab mới / người khác mở link = phải đăng nhập); tick "Ghi nhớ" → localStorage +
-  token 30 ngày (gửi remember khi login), mỗi lần tải dữ liệu nếu còn dưới 15 ngày thì renew() đổi token mới 30 ngày.
+  token 7 ngày (gửi remember khi login), mỗi lần tải dữ liệu nếu còn dưới 3,5 ngày thì renew() đổi token mới 7 ngày.
+  Đổi mật khẩu: máy chủ vô hiệu mọi token cũ và trả token mới cho phiên hiện tại; thiết bị khác phải đăng nhập lại.
   window.NPD: refresh(), logout(), user(), call(action, payload, {keepalive}), apply(kết quả), expired(), menu().
   Đăng xuất: gửi nốt dữ liệu cá nhân; còn phần chưa lưu được thì hỏi trước khi xóa khỏi máy.
 
@@ -19,3 +20,12 @@ Chuyển từ `CLAUDE.md` nguyên văn (chỉ đổi chỗ, không bỏ thông t
   Game chỉ tạo nhân vật / ghi tiến độ sau khi npdPersonalReady() (đã nhận bản từ máy chủ; sự kiện npd:mine-ready / npd:mine-fail), npdFun trống
   không ghi đè bản đã lưu. Khôi phục từ bản sao: npdBackupGet(khóa) / npdBackupRestore(khóa, phần) – chỉ chạy khi người dùng bấm (nút cuối Thư viện
   của game, có xác nhận); bản đang có cất vào chỗ của bản sao (bấm lần nữa để quay về), rồi gửi lên máy chủ.
+
+## Bảo mật đăng nhập (Code.gs) – tóm tắt
+- Mật khẩu: PBKDF2-HMAC-SHA256, muối riêng, CFG.HASH_ROUNDS vòng (chạy `benchHash` trong Apps Script để chỉnh, mục tiêu ~1 s). Chữ thường / băm cũ / ít vòng
+  → nâng cấp ở lần đăng nhập đúng kế tiếp (`checkPass_` trả {ok, upgrade}; `upgradeHash_` chỉ ghi nếu ô chưa bị đổi).
+- Chống dò: khóa theo tên (MAX_FAIL) + khóa toàn hệ thống (GLOBAL_MAX_FAIL lần sai / 10 phút, mọi tên). Đổi lại: kẻ xấu cố ý sai ~30 lần có thể tạm chặn cả nhóm 10 phút.
+- Đăng ký trả cùng một phản hồi dù tên đã tồn tại hay chưa. Tên không tồn tại vẫn tốn cùng thời gian băm.
+- Tự đặt lại mật khẩu bằng cách sửa ô trong Sheet: chạy menu NPD Dashboard → "Thu hồi mọi phiên của dòng đang chọn".
+- Kiểm thử tự động: `node tools/test-auth.js` (chạy Code.gs thật với Google API giả); chạy lại sau mỗi lần sửa Code.gs.
+- Tương thích web ↔ Code.gs khác phiên bản: `FE=<thư mục web> CODE=<Code.gs> node tools/test-compat.js` (đăng nhập, đọc, ghi, Viewer, đổi mật khẩu, "Ghi nhớ", token cũ, đăng xuất).

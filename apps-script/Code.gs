@@ -23,8 +23,10 @@
 const CFG = {
   SHEET_USERS: 'Tài khoản',
   TOKEN_TTL: 6 * 60 * 60,  // phiên đăng nhập 6 giờ (tối đa của CacheService)
-  REMEMBER_TTL: 30 * 24 * 60 * 60,   // tick "Ghi nhớ đăng nhập trên máy này": token có chữ ký sống 30 ngày, mở trang thì tự gia hạn
-  MAX_FAIL: 5,             // sai 5 lần → khóa tạm
+  REMEMBER_TTL: 7 * 24 * 60 * 60,    // tick "Ghi nhớ đăng nhập trên máy này": token có chữ ký sống 7 ngày, mở trang khi còn dưới nửa hạn thì tự gia hạn
+  MAX_FAIL: 5,             // sai 5 lần với MỘT tên đăng nhập → khóa tên đó tạm
+  GLOBAL_MAX_FAIL: 30,     // tổng số lần đăng nhập sai (mọi tên) trong LOCK_SEC → tạm khóa MỌI đăng nhập (chống dò mật khẩu hàng loạt)
+  HASH_ROUNDS: 1000,       // số vòng PBKDF2-HMAC-SHA256 cho mật khẩu mới; chạy hàm benchHash để đo rồi chỉnh (mục tiêu ~1 giây / lần đăng nhập)
   LOCK_SEC: 10 * 60,       // khóa 10 phút
   SHEET_HISTORY: 'Lịch sử',
   HISTORY_SEND: 500,       // số dòng Lịch sử mới nhất gửi về trang (Change log)
@@ -40,6 +42,8 @@ const CFG = {
   SHEET_PRACTICE: 'Tu luyện',
   PRACTICE_MAX: 4000,      // ký tự / bài thực hành
   PRACTICE_SEND: 400,      // Admin: số dòng mới nhất gửi về (dòng Chờ duyệt luôn được gửi)
+  SHEET_AI: 'AI_Progress', // tiến độ công cụ "Học sử dụng AI": Username | ProgressJSON | UpdatedAt (mỗi người chỉ đọc / ghi dòng của mình)
+  AI_MAX: 45000,           // ký tự JSON tiến độ AI (giới hạn của một ô Sheet là 50.000)
 };
 
 // Tab gửi về trình duyệt (các tab khác trong Sheet, vd dữ liệu NPD cũ, không bao giờ gửi đi)
@@ -62,9 +66,11 @@ const COLS = {
   name:   ['họ tên', 'họ và tên', 'tên', 'name'],
   role:   ['quyền', 'vai trò', 'role'],
   active: ['trạng thái', 'kích hoạt', 'active'],
+  pwat:   ['đổi mật khẩu lúc', 'password changed at', 'pwchanged'],   // mili-giây; token cấp trước mốc này bị từ chối
 };
 const INACTIVE = ['khóa', 'khoá', 'khoa', 'ngưng', 'inactive', 'locked', 'no', 'false', '0', 'chờ duyệt', 'cho duyet', 'pending'];
-const HASH_RE = /^[0-9a-f]{64}$/;
+const HASH_RE = /^[0-9a-f]{64}$/;                                      // kiểu cũ: SHA-256(SALT chung + mật khẩu)
+const PBK_RE = /^pbkdf2\$(\d{1,7})\$([0-9a-f]{32})\$([0-9a-f]{64})$/;      // kiểu mới: pbkdf2$vòng$muối$băm (muối riêng từng tài khoản)
 
 /* ---------------- Điểm vào của API ---------------- */
 
@@ -88,6 +94,8 @@ function doPost(e) {
       case 'img_put': out = imgPut_(req.token, req.name, req.data); break;
       case 'img_get': out = imgGet_(req.token, req.ids); break;
       case 'presence': out = presence_(req.token, req.model, req.active); break;
+      case 'ai_get': out = aiGet_(req.token); break;
+      case 'ai_put': out = aiPut_(req.token, req.progress, req.at); break;
       case 'logout': out = logout_(req.token); break;
       default:       out = { ok: false, error: 'Yêu cầu không hợp lệ' };
     }
@@ -109,35 +117,46 @@ function login_(username, password, remember) {
   username = norm_(username);
   password = String(password || '');
   if (!username || !password) return { ok: false, error: 'Vui lòng nhập tài khoản và mật khẩu' };
+  if (password.length > 200 || username.length > 64) return { ok: false, error: 'Sai tài khoản hoặc mật khẩu' };
 
   const cache = CacheService.getScriptCache();
   const failKey = 'fail_' + username;
+  const gKey = globalFailKey_();
+  if (Number(cache.get(gKey) || 0) >= CFG.GLOBAL_MAX_FAIL) {
+    return { ok: false, error: 'Có quá nhiều lần đăng nhập sai. Hệ thống tạm dừng đăng nhập vài phút, vui lòng thử lại sau.' };
+  }
   const fails = Number(cache.get(failKey) || 0);
   if (fails >= CFG.MAX_FAIL) {
+    countGlobalFail_(cache, gKey);
     return { ok: false, error: 'Sai quá ' + CFG.MAX_FAIL + ' lần. Vui lòng thử lại sau 10 phút.' };
   }
 
-  const values = sheet_(CFG.SHEET_USERS).getDataRange().getValues();
+  const sh = sheet_(CFG.SHEET_USERS);
+  const values = sh.getDataRange().getValues();
   const idx = headerIndex_(values[0]);
   if (idx.user < 0 || idx.pass < 0) {
     return { ok: false, error: 'Tab "' + CFG.SHEET_USERS + '" thiếu cột Tên đăng nhập hoặc Mật khẩu' };
   }
 
-  const row = values.find((r, i) => i > 0 && norm_(r[idx.user]) === username);
-  const passOk = row && checkPass_(password, row[idx.pass]);
+  const ri = values.findIndex((r, i) => i > 0 && norm_(r[idx.user]) === username);
+  const row = ri > 0 ? values[ri] : null;
+  // Tên không tồn tại vẫn tốn cùng thời gian băm: không dò được tên đăng nhập qua độ trễ
+  const chk = row ? checkPass_(password, row[idx.pass]) : (dummyHash_(password), { ok: false, upgrade: false });
+  const passOk = chk.ok;
   if (passOk && !isActive_(row, idx)) {
     const pending = idx.active >= 0 && ['chờ duyệt', 'cho duyet', 'pending'].includes(norm_(row[idx.active]));
     return { ok: false, error: pending ? 'Tài khoản đang chờ duyệt. Vui lòng báo quản trị viên.' : 'Tài khoản đã bị khóa' };
   }
-  const valid = passOk && isActive_(row, idx);
 
-  if (!valid) {
+  if (!passOk) {
     cache.put(failKey, String(fails + 1), CFG.LOCK_SEC);
-    Utilities.sleep(400); // làm chậm dò mật khẩu
+    countGlobalFail_(cache, gKey);
     return { ok: false, error: 'Sai tài khoản hoặc mật khẩu' };
   }
 
   cache.remove(failKey);
+  // Mật khẩu còn ở dạng chữ thường / băm kiểu cũ / ít vòng: ghi lại bằng băm mới (chỉ khi ô chưa bị đổi trong lúc này)
+  if (chk.upgrade) upgradeHash_(sh, ri + 1, idx.pass + 1, row[idx.pass], password);
   const user = {
     username: String(row[idx.user]).trim(),
     name: idx.name >= 0 && row[idx.name] ? String(row[idx.name]) : String(row[idx.user]),
@@ -149,9 +168,25 @@ function login_(username, password, remember) {
   return { ok: true, token, user, expiresIn: ttl };
 }
 
-// Phiên "Ghi nhớ": đổi token còn hạn lấy token mới 30 ngày (trang gọi khi token còn dưới nửa hạn)
+// Bộ đếm đăng nhập sai toàn hệ thống theo khung LOCK_SEC (khung cố định; CacheService không tăng nguyên tử nên chỉ là xấp xỉ)
+function globalFailKey_() { return 'gfail_' + Math.floor(Date.now() / (CFG.LOCK_SEC * 1000)); }
+function countGlobalFail_(cache, key) { cache.put(key, String(Number(cache.get(key) || 0) + 1), CFG.LOCK_SEC * 2); }
+
+function upgradeHash_(sh, rowNo, colNo, oldStored, password) {
+  const lock = LockService.getScriptLock();
+  if (!lock.tryLock(5000)) return;                       // lần đăng nhập sau sẽ nâng cấp tiếp
+  try {
+    const cell = sh.getRange(rowNo, colNo);
+    if (String(cell.getValue() == null ? '' : cell.getValue()).trim() === String(oldStored == null ? '' : oldStored).trim()) {
+      cell.setNumberFormat('@');                         // giữ dạng chữ
+      cell.setValue(hashPass_(password));
+    }
+  } finally { lock.releaseLock(); }
+}
+
+// Phiên "Ghi nhớ": đổi token còn hạn lấy token mới 7 ngày (trang gọi khi token còn dưới nửa hạn)
 function renew_(token) {
-  const user = auth_(token);
+  const user = authFresh_(token);
   if (!user) return { ok: false, expired: true, error: 'Phiên đăng nhập đã hết hạn' };
   const fresh = activeUser_(user.username);
   if (!fresh) return { ok: false, expired: true, error: 'Tài khoản đã bị khóa' };
@@ -167,7 +202,7 @@ function renew_(token) {
  * "hết phiên" âm thầm và dữ liệu cá nhân (tiến độ game, tu luyện…) gửi lên bị từ chối.
  * Token mới = "s." + nội dung (base64) + "." + HMAC-SHA256 bằng khóa bí mật TOKEN_KEY trong Script Properties (tự tạo lần đầu,
  * không nằm trong repo). Mất bộ nhớ đệm vẫn kiểm tra được chữ ký + hạn dùng, rồi đọc lại tab Tài khoản (Khóa / Quyền mới nhất).
- * Token cũ (64 ký tự hex, chỉ có trong bộ nhớ đệm) vẫn dùng được tới khi hết hạn.
+ * Token cũ (64 ký tự hex, chỉ có trong bộ nhớ đệm) và token dài hơn 7 ngày không còn được nhận.
  */
 function tokenKey_() {
   const props = PropertiesService.getScriptProperties();
@@ -177,8 +212,8 @@ function tokenKey_() {
 }
 function hex_(bytes) { return bytes.map(b => ((b + 256) % 256).toString(16).padStart(2, '0')).join(''); }
 function sign_(text) { return hex_(Utilities.computeHmacSha256Signature(text, tokenKey_(), Utilities.Charset.UTF_8)); }
-function signToken_(user, ttl) {
-  const body = JSON.stringify({ u: user.username, e: Math.floor(Date.now() / 1000) + (ttl || CFG.TOKEN_TTL), n: Utilities.getUuid().slice(0, 8) });
+function signToken_(user, ttl, iat) {
+  const body = JSON.stringify({ u: user.username, e: Math.floor(Date.now() / 1000) + (ttl || CFG.TOKEN_TTL), i: iat || Date.now(), n: Utilities.getUuid().slice(0, 8) });   // i = lúc cấp (ms)
   const p = Utilities.base64EncodeWebSafe(body, Utilities.Charset.UTF_8).replace(/=+$/, '');
   return 's.' + p + '.' + sign_(p);
 }
@@ -194,7 +229,13 @@ function verifyToken_(token) {
     p = JSON.parse(Utilities.newBlob(Utilities.base64DecodeWebSafe(b64)).getDataAsString('UTF-8'));
   } catch (e) { return null; }
   if (!p || !p.u || !(p.e * 1000 > Date.now())) return null;
+  if (p.e * 1000 - Date.now() > CFG.REMEMBER_TTL * 1000 + 60000) return null;   // token dài hơn hạn tối đa hiện hành (vd 30 ngày cũ): đăng nhập lại 1 lần
   return String(p.u);
+}
+// thời điểm cấp token (ms); token cũ chưa ghi thì 0
+function tokenIat_(token) {
+  const m = /^s\.([A-Za-z0-9_-]+)\./.exec(String(token || '')); if (!m) return 0;
+  try { return +JSON.parse(Utilities.newBlob(Utilities.base64DecodeWebSafe(m[1] + '==='.slice((m[1].length + 3) % 4))).getDataAsString('UTF-8')).i || 0; } catch (e) { return 0; }
 }
 // hạn dùng (giây) ghi trong token đã ký, 0 nếu không đọc được
 function tokenExp_(token) {
@@ -244,23 +285,16 @@ function logout_(token) {
 }
 
 function auth_(token) {
-  if (!token) return null;
+  if (!token || String(token).indexOf('s.') !== 0) return null;      // chỉ nhận token có chữ ký (token hex cũ trong bộ nhớ đệm không còn dùng)
   const cache = CacheService.getScriptCache();
-  if (String(token).indexOf('s.') === 0) {
-    const username = verifyToken_(token);
-    if (!username || cache.get('out' + tkKey_(token))) return null;
-    const raw = cache.get(tkKey_(token));
-    if (raw) return JSON.parse(raw);
-    if (revoked_(token)) return null;                        // đã đăng xuất / đã gia hạn sang token mới
-    const user = activeUser_(username);                     // bộ nhớ đệm bị xóa: dựng lại phiên từ token đã ký
-    if (user) cache.put(tkKey_(token), JSON.stringify(user), CFG.TOKEN_TTL);
-    return user;
-  }
-  if (!/^[0-9a-f]{64}$/.test(token)) return null;
-  const raw = cache.get('tk_' + token);
-  if (!raw) return null;
-  cache.put('tk_' + token, raw, CFG.TOKEN_TTL); // còn dùng thì gia hạn phiên
-  return JSON.parse(raw);
+  const username = verifyToken_(token);
+  if (!username || cache.get('out' + tkKey_(token))) return null;
+  const raw = cache.get(tkKey_(token));
+  if (raw) return JSON.parse(raw);
+  if (revoked_(token)) return null;                        // đã đăng xuất / đã gia hạn sang token mới
+  const user = activeUser_(username);                     // bộ nhớ đệm bị xóa: dựng lại phiên từ token đã ký
+  if (user) cache.put(tkKey_(token), JSON.stringify(user), CFG.TOKEN_TTL);
+  return user;
 }
 
 // Như auth_, nhưng đọc lại tab Tài khoản: tài khoản vừa bị Khóa / đổi Quyền có hiệu lực ngay
@@ -271,6 +305,8 @@ function authFresh_(token) {
   const idx = headerIndex_(values[0]);
   const row = values.find((r, i) => i > 0 && norm_(r[idx.user]) === norm_(user.username));
   if (!row || !isActive_(row, idx)) { logout_(token); return null; }
+  const pwat = idx.pwat >= 0 ? Number(row[idx.pwat]) || 0 : 0;      // đã đổi mật khẩu sau lúc cấp token → token này vô hiệu
+  if (pwat && tokenIat_(token) <= pwat) { logout_(token); return null; }
   user.role = idx.role >= 0 ? String(row[idx.role]).trim() : '';
   if (idx.name >= 0 && row[idx.name]) user.name = String(row[idx.name]);
   CacheService.getScriptCache().put(tkKey_(token), JSON.stringify(user), CFG.TOKEN_TTL);
@@ -300,17 +336,19 @@ function register_(username, password, name) {
   try {
     const sh = sheet_(CFG.SHEET_USERS), values = sh.getDataRange().getValues(), idx = headerIndex_(values[0]);
     if (idx.user < 0 || idx.pass < 0) return { ok: false, error: 'Tab Tài khoản thiếu cột Tên đăng nhập hoặc Mật khẩu' };
-    if (values.some((r, i) => i > 0 && norm_(r[idx.user]) === norm_(username))) return { ok: false, error: 'Tên đăng nhập đã có người dùng' };
+    // Tên đã có: trả CÙNG câu trả lời như khi tạo mới (không lộ tên nào đã tồn tại), không ghi gì
+    const approvalMsg = CFG.SIGNUP_APPROVAL && idx.active >= 0 ? 'Đã ghi nhận yêu cầu. Vui lòng chờ quản trị viên duyệt rồi đăng nhập; nếu không đăng nhập được, hãy liên hệ quản trị viên.' : 'Đã ghi nhận yêu cầu. Hãy thử đăng nhập; nếu không được, liên hệ quản trị viên.';
+    if (values.some((r, i) => i > 0 && norm_(r[idx.user]) === norm_(username))) { cache.put(hour, String(Number(cache.get(hour) || 0) + 1), 3600); return { ok: true, pending: CFG.SIGNUP_APPROVAL, message: approvalMsg }; }
     const row = new Array(values[0].length).fill('');
     row[idx.user] = username;
-    row[idx.pass] = hash_(password);
+    row[idx.pass] = hashPass_(password);
     if (idx.name >= 0) row[idx.name] = name;
     if (idx.role >= 0) row[idx.role] = 'Member';
     if (idx.active >= 0) row[idx.active] = CFG.SIGNUP_APPROVAL ? CFG.PENDING : '';
     sh.getRange(sh.getLastRow() + 1, 1, 1, row.length).setValues([row.map(cellValue_)]);   // chữ giữ nguyên dạng chữ (vd tên đăng nhập toàn số)
     cache.put(hour, String(Number(cache.get(hour) || 0) + 1), 3600);
     const approval = CFG.SIGNUP_APPROVAL && idx.active >= 0;
-    return { ok: true, pending: approval, message: approval ? 'Đã tạo tài khoản. Vui lòng chờ quản trị viên duyệt rồi đăng nhập.' : 'Đã tạo tài khoản, mời đăng nhập.' };
+    return { ok: true, pending: approval, message: approvalMsg };
   } finally {
     lock.releaseLock();
   }
@@ -320,12 +358,34 @@ function changePassword_(token, oldPass, newPass) {
   const user = authFresh_(token);
   if (!user) return { ok: false, expired: true, error: 'Phiên đăng nhập đã hết hạn' };
   newPass = String(newPass || '');
-  if (newPass.length < 8) return { ok: false, error: 'Mật khẩu mới tối thiểu 8 ký tự' };
-  const sh = sheet_(CFG.SHEET_USERS), values = sh.getDataRange().getValues(), idx = headerIndex_(values[0]);
-  const i = values.findIndex((r, k) => k > 0 && norm_(r[idx.user]) === norm_(user.username));
-  if (i < 0 || !checkPass_(String(oldPass || ''), values[i][idx.pass])) { Utilities.sleep(400); return { ok: false, error: 'Mật khẩu hiện tại không đúng' }; }
-  sh.getRange(i + 1, idx.pass + 1).setValue(hash_(newPass));
-  return { ok: true };
+  if (newPass.length < 8 || newPass.length > 200) return { ok: false, error: 'Mật khẩu mới 8–200 ký tự' };
+  const cache = CacheService.getScriptCache(), failKey = 'fail_' + norm_(user.username), fails = Number(cache.get(failKey) || 0);
+  if (fails >= CFG.MAX_FAIL) return { ok: false, error: 'Sai quá ' + CFG.MAX_FAIL + ' lần. Vui lòng thử lại sau 10 phút.' };
+  const lock = LockService.getScriptLock();
+  if (!lock.tryLock(10000)) return { ok: false, error: 'Máy chủ bận, thử lại sau' };
+  try {
+    const sh = sheet_(CFG.SHEET_USERS), values = sh.getDataRange().getValues(), idx = headerIndex_(values[0]);
+    const i = values.findIndex((r, k) => k > 0 && norm_(r[idx.user]) === norm_(user.username));
+    if (i < 0 || !checkPass_(String(oldPass || ''), values[i][idx.pass]).ok) { cache.put(failKey, String(fails + 1), CFG.LOCK_SEC); return { ok: false, error: 'Mật khẩu hiện tại không đúng' }; }
+    cache.remove(failKey);
+    const now = Date.now(), pwCol = pwatCol_(sh, idx);
+    const pc = sh.getRange(i + 1, idx.pass + 1); pc.setNumberFormat('@'); pc.setValue(hashPass_(newPass));
+    sh.getRange(i + 1, pwCol).setValue(now);                         // mọi token cấp trước mốc này bị từ chối
+    const ttl = tokenExp_(token) - Math.floor(now / 1000) > CFG.TOKEN_TTL ? CFG.REMEMBER_TTL : CFG.TOKEN_TTL;
+    const fresh = { username: user.username, name: user.name, role: user.role };
+    const nt = signToken_(fresh, ttl, now + 1);                      // phiên hiện tại sống tiếp bằng token mới (iat > mốc đổi)
+    cache.put(tkKey_(nt), JSON.stringify(fresh), CFG.TOKEN_TTL);
+    return { ok: true, token: nt, user: fresh, expiresIn: ttl };
+  } finally { lock.releaseLock(); }
+}
+
+// số cột (1-based) của "Đổi mật khẩu lúc"; chưa có thì thêm vào cuối dòng tiêu đề
+function pwatCol_(sh, idx) {
+  if (idx.pwat >= 0) return idx.pwat + 1;
+  const col = sh.getLastColumn() + 1;
+  sh.getRange(1, col).setValue('Đổi mật khẩu lúc');
+  idx.pwat = col - 1;
+  return col;
 }
 
 /* ---------------- Dữ liệu ---------------- */
@@ -587,7 +647,7 @@ function ensureColumns_(ensure) {
 // Trang Data Entry gọi mỗi ~40 giây khi đang mở. Trả về những người khác đang sửa
 // và lần lưu gần nhất (để trang biết dữ liệu mình đang xem đã cũ).
 function presence_(token, model, active) {
-  const user = auth_(token);
+  const user = authFresh_(token);
   if (!user) return { ok: false, expired: true, error: 'Phiên đăng nhập đã hết hạn' };
   const cache = CacheService.getScriptCache();
   const lock = LockService.getScriptLock();
@@ -636,14 +696,52 @@ function isActive_(row, idx) {
   return v === '' || !INACTIVE.includes(v);
 }
 
-// Ô mật khẩu có thể là chữ thường (chưa mã hóa) hoặc mã SHA-256 (đã mã hóa)
+// Ô mật khẩu có 3 dạng: băm mới pbkdf2$vòng$muối$băm; băm cũ SHA-256 (64 hex); hoặc chữ thường (chưa mã hóa).
+// Trả { ok, upgrade }: chữ thường / băm cũ / ít vòng hơn CFG.HASH_ROUNDS mà đúng → upgrade = true (login_ ghi lại bằng băm mới).
+// Chữ thường chỉ được chấp nhận MỘT lần để chuyển sang băm; sau đó không còn dạng chữ thường nào trong Sheet.
 function checkPass_(input, stored) {
+  input = String(input == null ? '' : input);
   stored = String(stored == null ? '' : stored).trim();
-  if (!stored) return false;
-  return HASH_RE.test(stored) ? hash_(input) === stored : input === stored;
+  if (!stored) return { ok: false, upgrade: false };
+  const m = PBK_RE.exec(stored);
+  if (m) {
+    const rounds = Number(m[1]);
+    return { ok: safeEq_(pbkdf2Hex_(input, m[2], rounds), m[3]), upgrade: rounds < CFG.HASH_ROUNDS };
+  }
+  if (HASH_RE.test(stored)) return { ok: safeEq_(legacyHash_(input), stored), upgrade: true };
+  return { ok: safeEq_(input, stored), upgrade: true };
 }
 
-function hash_(text) {
+// so sánh không dừng sớm (thời gian không phụ thuộc vị trí khác biệt đầu tiên)
+function safeEq_(a, b) {
+  a = String(a); b = String(b);
+  let d = a.length ^ b.length;
+  for (let i = 0; i < Math.max(a.length, b.length); i++) d |= (a.charCodeAt(i) || 0) ^ (b.charCodeAt(i) || 0);
+  return d === 0;
+}
+
+// PBKDF2-HMAC-SHA256 (1 khối 32 byte). Byte của Apps Script có dấu (-128..127); XOR vẫn đúng, hex_ đổi về 0..255.
+function pbkdf2Hex_(password, saltText, rounds) {
+  const key = Utilities.newBlob(password).getBytes();
+  const salt = Utilities.newBlob(saltText).getBytes().concat([0, 0, 0, 1]);
+  let u = Utilities.computeHmacSha256Signature(salt, key);
+  const t = u.slice();
+  for (let i = 1; i < rounds; i++) {
+    u = Utilities.computeHmacSha256Signature(u, key);
+    for (let k = 0; k < 32; k++) t[k] ^= u[k];
+  }
+  return hex_(t);
+}
+
+// Băm mới: muối ngẫu nhiên riêng từng tài khoản + CFG.HASH_ROUNDS vòng
+function hashPass_(text) {
+  const salt = Utilities.getUuid().replace(/-/g, '');
+  return 'pbkdf2$' + CFG.HASH_ROUNDS + '$' + salt + '$' + pbkdf2Hex_(String(text), salt, CFG.HASH_ROUNDS);
+}
+function dummyHash_(text) { return pbkdf2Hex_(String(text), '00000000000000000000000000000000', CFG.HASH_ROUNDS); }
+
+// Băm kiểu cũ (chỉ để đăng nhập được với mật khẩu chưa nâng cấp)
+function legacyHash_(text) {
   const bytes = Utilities.computeDigest(
     Utilities.DigestAlgorithm.SHA_256, salt_() + text, Utilities.Charset.UTF_8);
   return bytes.map(b => ((b + 256) % 256).toString(16).padStart(2, '0')).join('');
@@ -656,29 +754,56 @@ function salt_() {
   return s;
 }
 
+// Chạy trong trình soạn Apps Script (chọn benchHash → Run → xem Execution log) để đo tốc độ băm trên chính tài khoản Google của bạn
+function benchHash() {
+  const out = [];
+  [200, 500, 1000, 2000, 5000].forEach(n => {
+    const t0 = Date.now(); pbkdf2Hex_('benchmark-password', '00000000000000000000000000000000', n);
+    out.push(n + ' vòng: ' + (Date.now() - t0) + ' ms');
+  });
+  Logger.log(out.join('\n') + '\nChọn CFG.HASH_ROUNDS sao cho đăng nhập ≈ 1 giây (không quá ~2 giây).');
+  return out.join('\n');
+}
+
 /* ---------------- Menu trong Google Sheet ---------------- */
 
 function onOpen() {
   SpreadsheetApp.getUi()
     .createMenu('NPD Dashboard')
     .addItem('Mã hóa mật khẩu', 'hashAllPasswords')
+    .addItem('Thu hồi mọi phiên của dòng đang chọn', 'revokeSelectedUser')
     .addToUi();
 }
 
-// Đổi các mật khẩu đang để chữ thường thành mã SHA-256 (chạy lại mỗi khi thêm người)
+// Đổi các mật khẩu đang để chữ thường thành băm mới (muối riêng + nhiều vòng). Băm kiểu cũ (64 hex) giữ nguyên:
+// tự nâng cấp ở lần đăng nhập đúng kế tiếp của người đó. Mỗi mật khẩu chữ thường tốn ~1 giây.
 function hashAllPasswords() {
   const sh = sheet_(CFG.SHEET_USERS);
   const v = sh.getDataRange().getValues();
   const idx = headerIndex_(v[0]);
   if (idx.pass < 0 || v.length < 2) return;
-  let n = 0;
+  let n = 0, old = 0;
   const col = v.slice(1).map(r => {
     const p = String(r[idx.pass] == null ? '' : r[idx.pass]).trim();
-    if (p && !HASH_RE.test(p)) { n++; return [hash_(p)]; }
-    return [r[idx.pass]];
+    if (!p) return [r[idx.pass]];
+    if (PBK_RE.test(p)) return [r[idx.pass]];
+    if (HASH_RE.test(p)) { old++; return [r[idx.pass]]; }
+    n++; return [hashPass_(p)];
   });
-  sh.getRange(2, idx.pass + 1, col.length, 1).setValues(col);
-  SpreadsheetApp.getUi().alert('Đã mã hóa ' + n + ' mật khẩu.');
+  const rg = sh.getRange(2, idx.pass + 1, col.length, 1); rg.setNumberFormat('@'); rg.setValues(col);
+  SpreadsheetApp.getUi().alert('Đã mã hóa ' + n + ' mật khẩu chữ thường. Còn ' + old + ' băm kiểu cũ (tự nâng cấp khi người đó đăng nhập).');
+}
+
+// Sau khi tự đặt lại mật khẩu bằng cách sửa ô trong Sheet: chọn một ô trong dòng của tài khoản rồi chạy mục này,
+// mọi phiên đăng nhập cũ của tài khoản đó bị vô hiệu ngay.
+function revokeSelectedUser() {
+  const sh = SpreadsheetApp.getActiveSheet();
+  if (sh.getName() !== CFG.SHEET_USERS) { SpreadsheetApp.getUi().alert('Hãy chọn một ô trong tab "' + CFG.SHEET_USERS + '".'); return; }
+  const row = sh.getActiveRange().getRow();
+  if (row < 2) { SpreadsheetApp.getUi().alert('Hãy chọn một dòng tài khoản (không phải dòng tiêu đề).'); return; }
+  const idx = headerIndex_(sh.getRange(1, 1, 1, sh.getLastColumn()).getValues()[0]);
+  sh.getRange(row, pwatCol_(sh, idx)).setValue(Date.now());
+  SpreadsheetApp.getUi().alert('Đã thu hồi mọi phiên đăng nhập của dòng ' + row + '.');
 }
 
 /* ---------------- Dữ liệu cá nhân (Động Phủ, Training, sổ OT, lời nhắc) ---------------- */
@@ -696,7 +821,7 @@ function readMine_(username) {
 }
 
 function mine_(token, key, value) {
-  const user = auth_(token);
+  const user = authFresh_(token);
   if (!user) return { ok: false, expired: true, error: 'Phiên đăng nhập đã hết hạn' };
   if (!MINE_KEYS.includes(key)) return { ok: false, error: 'Khóa không hợp lệ' };
   const json = JSON.stringify(value == null ? {} : value);
@@ -727,6 +852,64 @@ function mineSheet_() {
     sh.getRange('A:C').setNumberFormat('@');
   }
   return sh;
+}
+
+/* ---------------- Tiến độ "Học sử dụng AI" (tab AI_Progress) ----------------
+ * Một dòng / tài khoản: Username | ProgressJSON | UpdatedAt. Username lấy từ token (không tin trình duyệt): ai cũng chỉ đọc / ghi dòng của mình,
+ * kể cả Viewer. Tab này không nằm trong READ_TABS nên không bao giờ đi qua action "data". Mốc `at` (mili-giây) nằm trong JSON; ai_put chỉ ghi khi
+ * `at` không cũ hơn bản đang lưu, nếu cũ hơn thì trả bản trong Sheet (stale) để trang gộp rồi gửi lại.
+ */
+const AI_HEAD = ['Username', 'ProgressJSON', 'UpdatedAt'];
+function aiSheet_() {
+  const ss = SpreadsheetApp.getActive();
+  let sh = ss.getSheetByName(CFG.SHEET_AI);
+  if (!sh) {
+    sh = ss.insertSheet(CFG.SHEET_AI);
+    sh.getRange(1, 1, 1, AI_HEAD.length).setValues([AI_HEAD]).setFontWeight('bold');
+    sh.setFrozenRows(1);
+    sh.getRange('A:C').setNumberFormat('@');             // giữ dạng chữ (tên đăng nhập toàn số, ngày ISO)
+  }
+  return sh;
+}
+// dòng của một tài khoản: { row (1-based), progress, at } hoặc null
+function aiFind_(sh, username) {
+  if (!sh || sh.getLastRow() < 2) return null;
+  const vals = sh.getRange(2, 1, sh.getLastRow() - 1, AI_HEAD.length).getValues();
+  const i = vals.findIndex(r => norm_(r[0]) === norm_(username));
+  if (i < 0) return null;
+  let progress = null; try { progress = JSON.parse(vals[i][1]); } catch (e) { progress = null; }
+  if (!progress || typeof progress !== 'object' || Array.isArray(progress)) progress = null;
+  const at = progress ? Number(progress.at) || Date.parse(vals[i][2]) || 0 : 0;
+  return { row: i + 2, progress, at };
+}
+function aiGet_(token) {
+  const user = authFresh_(token);
+  if (!user) return { ok: false, expired: true, error: 'Phiên đăng nhập đã hết hạn' };
+  const f = aiFind_(SpreadsheetApp.getActive().getSheetByName(CFG.SHEET_AI), user.username);
+  return { ok: true, progress: f ? f.progress : null, at: f ? f.at : 0 };
+}
+function aiPut_(token, progress, at) {
+  const user = authFresh_(token);
+  if (!user) return { ok: false, expired: true, error: 'Phiên đăng nhập đã hết hạn' };
+  if (!progress || typeof progress !== 'object' || Array.isArray(progress)) return { ok: false, error: 'Tiến độ không hợp lệ' };
+  const now = Date.now();
+  at = Number(at) || 0;
+  if (!(at > 0) || at > now + 5 * 60 * 1000) at = now;     // thiếu / lệch đồng hồ quá xa: lấy giờ máy chủ
+  const body = Object.assign({}, progress, { at });
+  const json = JSON.stringify(body);
+  if (json.length > CFG.AI_MAX) return { ok: false, error: 'Dữ liệu quá lớn (' + json.length + ' ký tự)' };
+  const lock = LockService.getScriptLock();
+  if (!lock.tryLock(10000)) return { ok: false, error: 'Máy chủ bận, thử lại sau' };
+  try {
+    const sh = aiSheet_();
+    const f = aiFind_(sh, user.username);
+    if (f && f.progress && f.at > at) return { ok: true, stale: true, progress: f.progress, at: f.at };
+    const row = [user.username, json, new Date(at).toISOString()];
+    sh.getRange(f ? f.row : sh.getLastRow() + 1, 1, 1, 3).setValues([row]);
+    return { ok: true, at };
+  } finally {
+    lock.releaseLock();
+  }
 }
 
 /* ---------------- Luyện phỏng vấn (chỉ Admin) ----------------
@@ -876,7 +1059,7 @@ function review_(token, who, realm, topic, status, note) {
 // Mọi tài khoản đăng nhập đều xem được. Chỉ gửi: họ tên, đạo hiệu, cảnh giới, số bí kíp đã đạt, số lần tẩu hỏa nhập ma,
 // số câu sai / đã trả lời, số kiếp (Binh Giải), kỷ lục trò chơi Tiêu Dao Các (fun). Không gửi tên đăng nhập; dòng của người xem: me = true.
 function rank_(token) {
-  const user = auth_(token);
+  const user = authFresh_(token);
   if (!user) return { ok: false, expired: true, error: 'Phiên đăng nhập đã hết hạn' };
   const cache = CacheService.getScriptCache();
   let rows = null;
@@ -940,7 +1123,7 @@ function imgPut_(token, name, data) {
 
 // ids: các id trong cột Link ảnh dạng "npd:<id>" → { ok, images: { id: dataUrl } }. Chỉ file nằm trong thư mục ảnh.
 function imgGet_(token, ids) {
-  const user = auth_(token);
+  const user = authFresh_(token);
   if (!user) return { ok: false, expired: true, error: 'Phiên đăng nhập đã hết hạn' };
   const folderId = imgFolder_().getId(), images = {};
   (Array.isArray(ids) ? ids : []).slice(0, 30).forEach(id => {
@@ -959,6 +1142,6 @@ function imgGet_(token, ids) {
 
 // Chạy 1 lần trong trình soạn Apps Script (chọn hàm setup → Run) để cấp quyền Drive và tạo sẵn các tab
 function setup() {
-  imgFolder_(); mineSheet_(); historySheet_(); practiceSheet_();
+  imgFolder_(); mineSheet_(); historySheet_(); practiceSheet_(); aiSheet_();
   ensureColumns_({ 'Cài đặt': ['Khóa', 'Giá trị'] });
 }

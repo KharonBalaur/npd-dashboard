@@ -3565,7 +3565,9 @@ document.addEventListener("input", e => {
 const LINKS_DEF = [{ n:"TTICN - Home", t:"TeamCenter", u:"" }, { n:"Overtime Registration", t:"OT", u:"" }, { n:"Ryobi Dashboard - TTI Dashboard", t:"TTi", u:"" },
   { n:"K2 Eng System", t:"SER Check", u:"" }, { n:"Login", t:"Cadena", u:"" }];
 let LK_EDIT = false;
-const lkUrl = u => !u ? "" : /^[a-z][\w+.-]*:/i.test(u) ? u : "https://" + u;
+// Only http:// and https:// links are allowed (the value comes from the shared Sheet: any member could type "javascript:…", "data:…").
+// Always returns "" or a string that starts with http:// or https://. "host:8080/x" (a port, not a scheme) gets https:// in front.
+const lkUrl = u => { const s = String(u ?? "").trim(); if (!s) return ""; if (/^https?:\/\//i.test(s)) return s; if (/^[a-z][\w+.-]*:(?!\d)/i.test(s)) return ""; return "https://" + s.replace(/^\/+/, ""); };
 const lkHost = u => { try { return new URL(lkUrl(u)).host; } catch (e) { return u; } };
 const otLink = () => { const l = (S.links || []).find(z => z.t.trim().toUpperCase() === "OT" && z.u); return l ? lkUrl(l.u) : ""; };
 function lkHtml() {
@@ -3575,8 +3577,8 @@ function lkHtml() {
         <td><input data-lk="${i}.u" value="${esc(l.u)}" placeholder="https://…"></td><td><button data-x="lkDel" data-k="${i}" title="Xóa">✕</button></td></tr>`).join("")}</tbody></table>
     <div class="lk-f"><button data-x="lkAdd">＋ Thêm link</button><button class="pri" data-x="lkEdit">✓ Xong</button></div>
     <p class="muted">Link lưu trong file dashboard dùng chung: ai mở file cũng thấy. Link có tên hệ thống “OT” cũng được Ngọc Nhi dùng khi nhắc submit OT.</p>`;
-  return `<div class="lk-grid">${L.map(l => l.u ? `<a class="lk" href="${esc(lkUrl(l.u))}" target="_blank" rel="noopener"><span class="lk-ic">🌀</span><b>${esc(l.n)}</b><small>${esc(l.t)}</small><em>${esc(lkHost(l.u))}</em></a>`
-      : `<div class="lk off"><span class="lk-ic">🌀</span><b>${esc(l.n)}</b><small>${esc(l.t)}</small><em>Chưa có link · bấm “Sửa link” để thêm</em></div>`).join("")}</div>
+  return `<div class="lk-grid">${L.map(l => lkUrl(l.u) ? `<a class="lk" href="${esc(lkUrl(l.u))}" target="_blank" rel="noopener"><span class="lk-ic">🌀</span><b>${esc(l.n)}</b><small>${esc(l.t)}</small><em>${esc(lkHost(l.u))}</em></a>`
+      : `<div class="lk off"><span class="lk-ic">🌀</span><b>${esc(l.n)}</b><small>${esc(l.t)}</small><em>${l.u ? "Link không hợp lệ (chỉ cho phép http / https)" : "Chưa có link · bấm “Sửa link” để thêm"}</em></div>`).join("")}</div>
     <div class="lk-f"><button data-x="lkEdit">✎ Sửa link</button></div>`;
 }
 document.addEventListener("input", e => {
@@ -4052,7 +4054,7 @@ function renderCave() {
   const c = cave(), P_ = c.profile, R = c.rem, u = sheetUser(), [c1, c2] = CV_THEMES[P_.theme] || CV_THEMES.navy, E = CAVE_EDIT;
   const f = (k, l, t = "text", ph = "") => `<label class="cv-f"><span>${l}</span><input type="${t}" data-cv="${k}" value="${esc(getPath(c, k))}" placeholder="${esc(ph)}"></label>`;
   const ini = String(P_.name || u.name).trim().split(/\s+/).slice(-2).map(w => w[0]).join("").toUpperCase();
-  const contact = [["✉", P_.email, "mailto:" + P_.email], ["☎", P_.phone, "tel:" + P_.phone], ["📍", P_.location], ["in", P_.linkedin, P_.linkedin && (/^https?:/.test(P_.linkedin) ? P_.linkedin : "https://" + P_.linkedin)]]
+  const contact = [["✉", P_.email, "mailto:" + P_.email], ["☎", P_.phone, "tel:" + P_.phone], ["📍", P_.location], ["in", P_.linkedin, lkUrl(P_.linkedin)]]
     .filter(x => x[1]).map(([i, t, h]) => h ? `<a href="${esc(h)}" target="_blank" rel="noopener"><b>${i}</b>${esc(t)}</a>` : `<span><b>${i}</b>${esc(t)}</span>`).join("");
   const hero = `<div class="cv-hero" style="--c1:${c1};--c2:${c2}">
     <div class="cv-cover"></div>
@@ -4330,7 +4332,7 @@ function fairyBubble() {
       <div class="fy-otb"><button data-x="fy" data-k="ot:0">Không</button>${[1, 1.5, 2, 2.5, 3, 4].map(v => `<button data-x="fy" data-k="ot:${v}">${hFmt(v)} h</button>`).join("")}
         <input id="fyOt" type="number" min="0" max="24" step="0.5" placeholder="Khác"><button data-x="fy" data-k="ot:in" title="Lưu số giờ đã gõ">✓</button></div>` : ""}
     ${R.map(r => `<div class="fy-r"><span class="ic">${r.ic}</span><span class="t">${esc(r.t)}<small>từ ${esc(r.at)}</small></span>
-      <span class="a">${r.link ? `<a href="${esc(r.link)}" target="_blank" rel="noopener">Mở</a>` : ""}<button data-x="fy" data-k="done:${r.id}">✓ Đã xong</button></span></div>`).join("")}
+      <span class="a">${lkUrl(r.link) ? `<a href="${esc(lkUrl(r.link))}" target="_blank" rel="noopener">Mở</a>` : ""}<button data-x="fy" data-k="done:${r.id}">✓ Đã xong</button></span></div>`).join("")}
     ${T.length ? `<div class="fy-s">📋 ${T.length} việc đang chờ${today ? ` · <b>${today} tới hạn</b>` : ""}</div>${T.slice(0, 3).map(x => `<div class="fy-tk ${x.due && x.due < todayISO() ? "late" : ""}">• ${esc(x.text)}${x.due ? ` <small>${dMy(x.due)}</small>` : ""}</div>`).join("")}` : ""}
     ${late.map(([t, l]) => `<div class="fy-s">📖 Bài ${l} hôm nay chưa học <button data-x="fy" data-k="go:${t}">Học ngay</button></div>`).join("")}
     ${!R.length && !T.length && !late.length && !od && !gr ? `<div class="fy-idle">${FY_IDLE[Math.floor(Math.random() * FY_IDLE.length)]}</div>` : ""}
@@ -4555,5 +4557,5 @@ window.addEventListener("pagehide", () => { try { sessionStorage.setItem(VKEY, J
 
 
 <script src="sheets-bridge.js?v=20261120b"></script>
-<script src="sheets-auth.js?v=20261120a"></script>
+<script src="sheets-auth.js?v=20261127a"></script>
 </body></html>

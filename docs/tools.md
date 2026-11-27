@@ -43,7 +43,7 @@ Chuyển từ `CLAUDE.md` nguyên văn (chỉ đổi chỗ, không bỏ thông t
   sáng / tối đều đạt tương phản chữ/nền >= 4.5 (kiểm tra lại khi đổi màu).
   `data-lessons.js` (AI_LEVELS, LESSONS {id, level 1–3, title, goal, content HTML, promptExample, pitfalls[], sources[], quiz[{q, options, answer, explain}], isFinalTest}),
   `data-platforms.js` (PLATFORMS, FEATURE_MAP). Sửa file .js → đổi `?v=` trong index.html (và `v=` trong TOOL_RUN.ai nếu sửa index.html).
-  Tiến độ npdAi@user trong localStorage (CHƯA đồng bộ lên Sheet): {v:1, passed:{id:true}, best:{id:%}, theme, last}; lưu theo id bài, bài đã đạt giữ mãi
+  Tiến độ npdAi@user trong localStorage, ĐỒNG BỘ lên tab "AI_Progress" của Sheet (xem dưới): {v:1, passed:{id:true}, best:{id:%}, theme, last, at (ms, lúc sửa cuối), rs (ms, lúc Reset)}; lưu theo id bài, bài đã đạt giữ mãi
   (không đổi id đã phát hành); đạt >= 80% mở bài sau, thêm bài vào giữa không khóa lại người đã học. Chỉ thêm trường; đổi cấu trúc thì viết hàm nâng cấp.
   Bài học: cấp 1 (n1-01…05), cấp 2 (n2-01…06), cấp 3 (n3-01…06), mỗi cấp + bài kiểm tra tổng 10 câu (nX-final); nguồn dùng chung ở AI_SRC (chỉ trang chính thức / trang chủ). Nền tảng: 8 (PLATFORMS) + 9 tính năng (FEATURE_MAP + FEATURE_UPDATED; cột bảng lấy theo id trong PLATFORMS; ô bắt đầu bằng Không / Chưa / Đã ngừng hiện xám kèm —, phần trong ngoặc hiện chữ nhỏ; ô chưa chắc ghi "Kiểm tra lại"; ô tìm kiếm tìm cả tên, mô tả và nội dung ô).
   Tab Các nền tảng AI có khu "Tôi muốn làm gì? – Chọn AI theo việc" trên bảng tính năng: TASK_GUIDE (14 việc: id, icon, name, keywords[], picks[{platform = id trong PLATFORMS, level Rất hợp / Hợp / Dùng được, reason}], tips[], promptTemplate có chỗ trống [ … ], warning?) + TASK_WARNING (cảnh báo chung);
@@ -63,3 +63,11 @@ Chuyển từ `CLAUDE.md` nguyên văn (chỉ đổi chỗ, không bỏ thông t
 - Rà soát 2026-11: đối chiếu nội dung Academy với nguồn AIAG (APQP 3rd 03/2024 tách Control Plan 1st thành manual riêng; Safe Launch có tiêu chí thoát; CQI-20 (2018) thay CQI-10). Tên chính xác giai đoạn 2–5 của APQP 3rd và bảng AP chính thức CHƯA đối chiếu được (cần manual): xem ghi chú trong 01-apqp / 02-fmea.
 - Widget `ap`: luôn có nhãn cố định "Minh họa – không thay thế bảng AP chính thức…". Nếu tồn tại `academy/content/aiag/ap-table.csv` (cột `S_min,S_max,O_min,O_max,D_min,D_max,AP`, AP = H/M/L, có dòng tiêu đề; quy tắc khớp đầu tiên thắng) thì widget dùng bảng đó thay `rules` xấp xỉ trong 02-fmea.json; dòng sai bị bỏ qua, không có dòng hợp lệ thì quay về `rules`. Bảng AP chính thức có bản quyền AIAG-VDA: chỉ thêm file khi được phép.
 - 01-apqp: 5 giai đoạn theo tên APQP 3rd (Plan and Define Program / Product Design and Development / Process Design and Development / Product and Process Validation / Feedback, Assessment and Corrective Action). 03-control-plan: tiêu chí thoát Safe Launch do khách hàng và tổ chức xác định, "90 ngày" chỉ là ví dụ.
+
+- Đồng bộ tiến độ "Học Sử Dụng AI" theo tài khoản (`ai-learning/index.html`, module `Sync` cuối file; máy chủ `aiGet_` / `aiPut_` trong Code.gs):
+  dùng đúng cơ chế web chính: iframe cùng origin gọi `parent.NPD.call("ai_get" | "ai_put")` (token của sheets-auth.js), Apps Script đọc / ghi tab `AI_Progress`
+  (Username | ProgressJSON | UpdatedAt; tự tạo lần ghi đầu; mỗi tài khoản một dòng, Username lấy từ token; không nằm trong READ_TABS).
+  Mở công cụ: ai_get → gộp với localStorage: bản có `at` mới hơn làm gốc, bản cũ chỉ BỔ SUNG bài đã đạt / điểm cao hơn (trừ khi bản mới hơn Reset sau đó: `rs`). Lưu: `save()` ghi localStorage ngay + đặt `at`,
+  gửi Sheet sau 3 giây không sửa; cờ chưa gửi ở localStorage `<khóa>~dirty`; mất mạng / lỗi → thử lại khi `online`, mỗi 30 giây, backoff 5–120 giây, và khi ẩn / đóng trang (keepalive). Server từ chối bản cũ hơn (`stale`, trả bản đang lưu) → trang gộp rồi gửi lại.
+  Góc trái dưới: "Đã lưu ☁️" / "Đang lưu..." / "Chỉ lưu trên máy này" (chạy riêng, chưa đăng nhập, mất mạng, hoặc Apps Script chưa cập nhật). Chỉ thêm trường `at`, `rs`; không đổi định dạng cũ.
+  Kiểm thử: `node tools/test-ai-sync.js` (2 trình duyệt cùng tài khoản; cần Playwright) và phần "Tiến độ AI" trong `node tools/test-auth.js`.
