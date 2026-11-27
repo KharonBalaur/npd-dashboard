@@ -1,0 +1,205 @@
+{
+  "id": "01-apqp",
+  "title": "APQP – Hoạch định chất lượng sản phẩm",
+  "edition": "APQP 3rd Edition (2024)",
+  "icon": "🗺️",
+  "flow": [
+    "1 Hoạch định",
+    "2 Thiết kế SP",
+    "3 Thiết kế QT",
+    "4 Xác nhận",
+    "5 Phản hồi"
+  ],
+  "basics": [
+    {
+      "heading": "APQP giải quyết vấn đề gì?",
+      "body": "APQP (Advanced Product Quality Planning) là khung làm việc giúp nhiều bộ phận – thiết kế, mua hàng, QE, sản xuất, kho – cùng đi theo một lộ trình để sản phẩm mới đạt yêu cầu khách hàng ngay từ đầu, thay vì phát hiện lỗi muộn khi đã đầu tư khuôn, jig và hàng loạt.\nÝ tưởng cốt lõi: **phòng ngừa thay vì chữa cháy**, và **làm việc theo nhóm liên chức năng**.",
+      "example": "Dự án bình xịt cầm tay dùng pin mới: nếu QE chỉ vào cuộc sau khi khuôn nhựa đã xong, lỗi thiết kế gioăng sẽ phải sửa khuôn rất tốn. APQP kéo QE vào ngay từ giai đoạn định nghĩa sản phẩm."
+    },
+    {
+      "heading": "5 giai đoạn của APQP (bản 3rd Edition)",
+      "body": "1. **Plan and Define Program** – Hoạch định và xác định chương trình: thu thập tiếng nói khách hàng, mục tiêu, yêu cầu; bản 3rd Edition nhấn mạnh ngay từ giai đoạn này: hoạch định năng lực (capacity planning), quản lý thay đổi (change management), chỉ số theo dõi chương trình (program metrics) và đánh giá rủi ro kèm kế hoạch giảm thiểu (risk assessment & mitigation plan).\n2. **Product Design and Development** – Thiết kế và phát triển sản phẩm: thiết kế, DFMEA, prototype, đặc tính đặc biệt.\n3. **Process Design and Development** – Thiết kế và phát triển quá trình: sơ đồ quá trình, PFMEA, Control Plan sơ bộ, kế hoạch hệ đo.\n4. **Product and Process Validation** – Xác nhận sản phẩm và quá trình: chạy thử sản xuất, MSA, năng lực quá trình, PPAP.\n5. **Feedback, Assessment and Corrective Action** – Phản hồi, đánh giá, hành động khắc phục: sản xuất hàng loạt, giảm biến động, rút kinh nghiệm.\nLưu ý: APQP 3rd Edition (phát hành 2024) tách Control Plan thành manual riêng. Tên gọi và cách đánh số các giai đoạn nên được đối chiếu với manual AIAG bản hiện hành.",
+      "example": "Với motor cho dụng cụ cầm tay: giai đoạn 2 thiết kế cuộn dây và vỏ; giai đoạn 3 thiết kế line quấn dây và trạm test; giai đoạn 4 chạy thử và nộp PPAP; giai đoạn 5 theo dõi tỉ lệ lỗi sau SOP."
+    },
+    {
+      "heading": "Phase gate – cổng chuyển giai đoạn",
+      "body": "Cuối mỗi giai đoạn có một cuộc họp \"cổng\": nhóm đối chiếu đầu ra với tiêu chí đã đặt, quyết định đi tiếp, đi tiếp có điều kiện, hay dừng để xử lý tồn đọng. Cổng giúp lãnh đạo thấy rủi ro sớm và tránh tình trạng \"dự án cứ chạy cho kịp lịch\".\nMột cổng tốt có: tiêu chí rõ ràng, người quyết định rõ ràng, danh sách việc tồn đọng có người chịu trách nhiệm và hạn.",
+      "example": "Gate 3 của dự án bình xịt: Control Plan sơ bộ đã có, 2 đặc tính đặc biệt (độ kín gioăng, áp suất bơm) đã có phương pháp đo; còn thiếu chứng nhận jig test → đi tiếp có điều kiện, hạn 2 tuần, chủ trì: QE."
+    },
+    {
+      "heading": "Đầu vào và đầu ra điển hình",
+      "body": "Mỗi giai đoạn có đầu vào (kết quả giai đoạn trước, yêu cầu khách hàng) và đầu ra (tài liệu, bằng chứng). Một số đầu ra quen thuộc: danh sách đặc tính đặc biệt, DFMEA, PFMEA, sơ đồ quá trình, Control Plan (mẫu thử → tiền sản xuất → sản xuất), kế hoạch MSA và SPC, bằng chứng chạy thử, hồ sơ PPAP.\nĐừng coi đầu ra là biểu mẫu để điền; hãy coi là **câu trả lời cho các câu hỏi** nhóm cần giải trước khi sang bước sau.",
+      "example": "Đầu ra giai đoạn 3 \"sơ đồ quá trình\" của pack pin: nhận cell → hàn tab → lắp BMS → test điện → đóng vỏ → test rò → kiểm cuối. Mỗi bước sẽ là một hàng trong PFMEA và Control Plan."
+    },
+    {
+      "heading": "Ví dụ cho sản phẩm cầm tay dùng pin lithium",
+      "body": "Với dụng cụ cầm tay dùng pin lithium, ngoài chức năng còn có yếu tố an toàn: nhiệt, đoản mạch, ngấm nước. APQP giúp đưa các rủi ro này vào sớm:\n- Giai đoạn 1: xác định yêu cầu an toàn, quy định, môi trường sử dụng của người dùng.\n- Giai đoạn 2: đặc tính đặc biệt (ví dụ độ kín, bảo vệ quá dòng), DFMEA cho pack và vỏ.\n- Giai đoạn 3: thiết kế quá trình hàn tab, bơm, test rò; PFMEA; Control Plan sơ bộ.\n- Giai đoạn 4: chạy thử số lượng nhỏ, MSA cho trạm test, Cpk các đặc tính đặc biệt, PPAP.\n- Giai đoạn 5: theo dõi SPC, khiếu nại thị trường, cập nhật FMEA.",
+      "example": "Bình xịt: đặc tính đặc biệt = \"áp suất bơm\" và \"độ kín\"; motor: \"dòng không tải\" và \"độ ồn\". Mỗi đặc tính phải có phương pháp đo đã qua MSA trước khi nộp PPAP."
+    }
+  ],
+  "quiz": [
+    {
+      "q": "Mục tiêu chính của APQP là gì?",
+      "options": [
+        "Điền đủ biểu mẫu cho audit",
+        "Thay thế việc kiểm tra cuối chuyền",
+        "Chỉ quản lý thời gian dự án",
+        "Phòng ngừa lỗi bằng hoạch định liên chức năng từ sớm"
+      ],
+      "answer": 3,
+      "explain": "APQP hướng tới phòng ngừa: kéo các bộ phận vào sớm để lỗi được phát hiện khi chi phí sửa còn thấp."
+    },
+    {
+      "q": "APQP 3rd Edition có bao nhiêu giai đoạn?",
+      "options": [
+        "5",
+        "3",
+        "4",
+        "7"
+      ],
+      "answer": 0,
+      "explain": "Có 5 giai đoạn: Hoạch định & xác định → Thiết kế SP → Thiết kế QT → Xác nhận SP & QT → Phản hồi, đánh giá, khắc phục."
+    },
+    {
+      "q": "PFMEA và Control Plan sơ bộ thường được xây chủ yếu ở giai đoạn nào?",
+      "options": [
+        "Giai đoạn 1",
+        "Giai đoạn 3 – thiết kế quá trình",
+        "Giai đoạn 2",
+        "Chỉ sau SOP"
+      ],
+      "answer": 1,
+      "explain": "Khi đã thiết kế quá trình (sơ đồ, thiết bị, jig), nhóm mới phân tích rủi ro quá trình và dựng kế hoạch kiểm soát."
+    },
+    {
+      "q": "Phase gate dùng để làm gì?",
+      "options": [
+        "Chỉ để ký tên cho đủ",
+        "Thay cho họp nhóm hằng tuần",
+        "Đối chiếu đầu ra với tiêu chí và quyết định đi tiếp / có điều kiện / dừng",
+        "Chỉ dành cho khách hàng"
+      ],
+      "answer": 2,
+      "explain": "Cổng là điểm ra quyết định có tiêu chí rõ, giúp lộ rủi ro sớm. Đi tiếp có điều kiện phải kèm việc tồn đọng, người chịu trách nhiệm và hạn."
+    },
+    {
+      "q": "Trước khi nộp PPAP, phương pháp đo của một đặc tính đặc biệt nên đã được gì?",
+      "options": [
+        "Bỏ qua nếu dùng thiết bị mới",
+        "Chỉ cần hiệu chuẩn",
+        "Giao cho khách hàng đo",
+        "Đánh giá bằng MSA"
+      ],
+      "answer": 3,
+      "explain": "MSA cho biết hệ đo có đủ tốt để quyết định sản phẩm đạt hay không. Hiệu chuẩn là cần thiết nhưng chưa đủ."
+    },
+    {
+      "q": "Giai đoạn 5 (Phản hồi, đánh giá, khắc phục) gắn với việc nào?",
+      "options": [
+        "Theo dõi sản xuất hàng loạt, giảm biến động, cập nhật FMEA và rút kinh nghiệm",
+        "Chọn nhà cung cấp ban đầu",
+        "Thiết kế prototype",
+        "Vẽ sơ đồ quá trình"
+      ],
+      "answer": 0,
+      "explain": "Sau SOP, dữ liệu thật (SPC, khiếu nại, hàng trả) quay về cải tiến sản phẩm / quá trình và bài học cho dự án sau."
+    },
+    {
+      "q": "Dự án bình xịt pin: \"độ kín gioăng\" xác định là đặc tính đặc biệt. Việc hợp lý nhất là gì?",
+      "options": [
+        "Chỉ ghi trong báo giá",
+        "Đưa vào FMEA, Control Plan, có phương pháp đo qua MSA và theo dõi SPC / kiểm 100% theo rủi ro",
+        "Giao cho công nhân tự phán đoán",
+        "Chỉ kiểm khi khách hỏi"
+      ],
+      "answer": 1,
+      "explain": "Đặc tính đặc biệt đi xuyên suốt: FMEA → Control Plan → MSA → SPC → PPAP."
+    }
+  ],
+  "advanced": [
+    {
+      "heading": "Điều chỉnh APQP theo quy mô dự án",
+      "body": "APQP không bắt buộc mọi dự án phải đầy đủ như nhau. Với thay đổi nhỏ có thể rút gọn, với sản phẩm mới an toàn cao thì cần chặt hơn. Quan trọng là quyết định mức độ và ghi lý do, chứ không âm thầm bỏ bước."
+    },
+    {
+      "heading": "Tích hợp với quản lý dự án và quản lý thay đổi",
+      "body": "Phase gate nên khớp với lịch dự án (milestone). Mọi thay đổi thiết kế / quá trình sau gate cần đi qua quản lý thay đổi và cập nhật tài liệu liên quan (FMEA, Control Plan, hướng dẫn công việc), nếu không hồ sơ sẽ lệch thực tế."
+    },
+    {
+      "heading": "Bài học kinh nghiệm (Lessons Learned)",
+      "body": "Đầu ra giai đoạn 5 có giá trị nhất khi được dùng đầu vào cho dự án sau: rủi ro lặp lại, lỗi thường gặp ở nhà cung cấp, chu kỳ chạy thử thực tế. Duy trì một thư viện bài học và rà lại ở gate 1 của dự án mới."
+    }
+  ],
+  "glossary": [
+    {
+      "en": "Phase gate",
+      "vi": "Cổng giai đoạn",
+      "def": "Điểm rà soát cuối mỗi giai đoạn để quyết định đi tiếp, đi tiếp có điều kiện hoặc dừng."
+    },
+    {
+      "en": "Cross-functional team",
+      "vi": "Nhóm liên chức năng",
+      "def": "Nhóm gồm thiết kế, QE, sản xuất, mua hàng… cùng chịu trách nhiệm dự án."
+    },
+    {
+      "en": "Special characteristic",
+      "vi": "Đặc tính đặc biệt",
+      "def": "Đặc tính sản phẩm / quá trình ảnh hưởng an toàn, tuân thủ hoặc chức năng quan trọng, cần kiểm soát chặt."
+    },
+    {
+      "en": "DFMEA",
+      "vi": "FMEA thiết kế",
+      "def": "Phân tích rủi ro ở mức thiết kế sản phẩm."
+    },
+    {
+      "en": "PFMEA",
+      "vi": "FMEA quá trình",
+      "def": "Phân tích rủi ro ở mức quá trình sản xuất."
+    },
+    {
+      "en": "Process flow diagram",
+      "vi": "Sơ đồ quá trình",
+      "def": "Sơ đồ các bước từ nguyên liệu đến thành phẩm, làm nền cho PFMEA và Control Plan."
+    },
+    {
+      "en": "Prototype",
+      "vi": "Mẫu thử",
+      "def": "Mẫu sản phẩm đầu tiên để kiểm chứng thiết kế."
+    },
+    {
+      "en": "Pre-launch",
+      "vi": "Tiền sản xuất",
+      "def": "Giai đoạn chạy thử trước khi sản xuất hàng loạt."
+    },
+    {
+      "en": "SOP",
+      "vi": "Bắt đầu sản xuất hàng loạt",
+      "def": "Start of Production – mốc bắt đầu sản xuất hàng loạt."
+    },
+    {
+      "en": "Run at rate",
+      "vi": "Chạy thử đúng năng suất",
+      "def": "Chạy thử theo sản lượng và nhịp dự kiến để xác nhận năng lực chuyền."
+    },
+    {
+      "en": "Lessons learned",
+      "vi": "Bài học kinh nghiệm",
+      "def": "Kinh nghiệm rút ra để dự án sau không lặp lại sai sót."
+    },
+    {
+      "en": "Voice of the customer",
+      "vi": "Tiếng nói khách hàng",
+      "def": "Nhu cầu và kỳ vọng khách hàng thu thập ở giai đoạn đầu."
+    }
+  ],
+  "sources": [
+    {
+      "title": "AIAG – APQP (trang sản phẩm chính thức)",
+      "url": "https://www.aiag.org/quality"
+    },
+    {
+      "title": "IATF – International Automotive Task Force",
+      "url": "https://www.iatfglobaloversight.org/"
+    }
+  ]
+}
