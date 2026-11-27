@@ -45,7 +45,7 @@
 
   /* ---------- Lưu phiên (an toàn khi trình duyệt chặn storage) ----------
      Mặc định phiên chỉ sống trong tab đang mở (sessionStorage): mở link ở tab mới / máy khác / gửi link cho người khác
-     đều phải đăng nhập lại. Chỉ khi tick "Ghi nhớ trên máy này" phiên mới được giữ trong trình duyệt này (localStorage). */
+     đều phải đăng nhập lại. Chỉ khi tick "Ghi nhớ trên máy này" phiên mới được giữ trong trình duyệt này (localStorage, tối đa 7 ngày). */
   const areas = () => { const a = []; try { a.push(sessionStorage); } catch { /* bị chặn */ } try { a.push(localStorage); } catch { /* bị chặn */ } return a; };
   const remembered = () => { try { const s = JSON.parse(localStorage.getItem(STORE_KEY)); return !!(s && s.remember); } catch { return false; } };
   const store = {
@@ -136,7 +136,7 @@
           return;
         }
         const remember = !!(form.r && form.r.checked);
-        const r = await api('login', { username, password, remember });    // Ghi nhớ: máy chủ cấp token 30 ngày
+        const r = await api('login', { username, password, remember });    // Ghi nhớ: máy chủ cấp token 7 ngày
         if (!r.ok) throw new Error(r.error);
         store.set(STORE_KEY, { token: r.token, user: r.user, exp: Date.now() + r.expiresIn * 1000, remember }, remember);
         wrap.remove();
@@ -182,7 +182,10 @@
       if (f.n.value !== f.n2.value) { er.textContent = 'Hai mật khẩu mới không giống nhau'; return; }
       const r = await window.NPD.call('password', { old: f.o.value, password: f.n.value }).catch(ex => ({ ok: false, error: ex.message }));
       if (!r.ok) { er.textContent = r.error; return; }
-      m.remove(); alert('Đã đổi mật khẩu.');
+      const cur = getSession();                                         // máy chủ vô hiệu mọi token cũ và trả token mới cho phiên này
+      if (r.token && cur) store.set(STORE_KEY, { ...cur, token: r.token, user: r.user || cur.user, exp: Date.now() + r.expiresIn * 1000 }, !!cur.remember);
+      store.del(DATA_KEY);
+      m.remove(); alert('Đã đổi mật khẩu. Các thiết bị khác đang đăng nhập sẽ phải đăng nhập lại.');
     };
   }
   function helpDialog() {
@@ -251,10 +254,10 @@
     }
   }
 
-  // Phiên "Ghi nhớ": còn dưới 15 ngày thì đổi lấy token mới 30 ngày – dùng thường xuyên thì không phải đăng nhập lại.
+  // Phiên "Ghi nhớ": còn dưới 3,5 ngày thì đổi lấy token mới 7 ngày – dùng thường xuyên thì không phải đăng nhập lại.
   // (Máy chủ chưa cập nhật thì trả lỗi "action" lạ: bỏ qua, phiên vẫn dùng tới khi hết hạn như cũ.)
   async function renew() {
-    const s = getSession(); if (!s || !s.remember || s.exp - Date.now() > 15 * 864e5) return;
+    const s = getSession(); if (!s || !s.remember || s.exp - Date.now() > 3.5 * 864e5) return;
     try {
       const r = await api('renew', { token: s.token });
       const cur = getSession();
