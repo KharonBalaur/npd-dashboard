@@ -35,10 +35,10 @@ const ctx = vm.createContext({
   CacheService: { getScriptCache: () => cache },
   PropertiesService: { getScriptProperties: () => ({ getProperty: k => (props.has(k) ? props.get(k) : null), setProperty: (k, v) => props.set(k, v) }) },
   LockService: { getScriptLock: () => ({ tryLock: () => true, releaseLock() {} }) },
-  SpreadsheetApp: { getActive: () => ({ getSheetByName: n => sheets[n] || null, insertSheet: n => (sheets[n] = mkSheet(n, [])), getSheets: () => Object.values(sheets), getSpreadsheetTimeZone: () => 'UTC' }) },
+  SpreadsheetApp: { flush() {}, getActive: () => ({ getSheetByName: n => sheets[n] || null, insertSheet: n => (sheets[n] = mkSheet(n, [])), getSheets: () => Object.values(sheets), getSpreadsheetTimeZone: () => 'UTC' }) },
   ContentService: { createTextOutput: s => ({ s, setMimeType() { return this; } }), MimeType: { JSON: 'JSON' } },
 });
-vm.runInContext(fs.readFileSync(process.env.CODE || path.join(__dirname, '..', 'apps-script', 'Code.gs'), 'utf8'), ctx, { filename: 'Code.gs' });
+vm.runInContext(fs.readFileSync(process.env.CODE || process.env.CODE || path.join(__dirname, '..', 'apps-script', 'Code.gs'), 'utf8'), ctx, { filename: 'Code.gs' });
 
 const run = code => vm.runInContext(code, ctx);
 const post = o => JSON.parse(run('doPost')({ postData: { contents: JSON.stringify(o) } }).s);

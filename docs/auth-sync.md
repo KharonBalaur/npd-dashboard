@@ -28,3 +28,4 @@ Chuyển từ `CLAUDE.md` nguyên văn (chỉ đổi chỗ, không bỏ thông t
 - Đăng ký trả cùng một phản hồi dù tên đã tồn tại hay chưa. Tên không tồn tại vẫn tốn cùng thời gian băm.
 - Tự đặt lại mật khẩu bằng cách sửa ô trong Sheet: chạy menu NPD Dashboard → "Thu hồi mọi phiên của dòng đang chọn".
 - Kiểm thử tự động: `node tools/test-auth.js` (chạy Code.gs thật với Google API giả); chạy lại sau mỗi lần sửa Code.gs.
+- Tương thích web ↔ Code.gs khác phiên bản: `FE=<thư mục web> CODE=<Code.gs> node tools/test-compat.js` (đăng nhập, đọc, ghi, Viewer, đổi mật khẩu, "Ghi nhớ", token cũ, đăng xuất).
